@@ -1,0 +1,6 @@
+@PokeChess.Server_HostAddress = http://localhost:5043
+
+GET {{PokeChess.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
