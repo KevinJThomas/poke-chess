@@ -4,6 +4,10 @@ import kaplay from 'kaplay';
 // initialize context
 const k = kaplay();
 
+let pokemonBeingDragged = null;
+
+k.setLayers(['background', 'game', 'foreground'], 'game');
+
 // load assets
 k.loadSprite('pokemon', 'sheet/pokemon.png', {
   sliceX: 12, // how many sprites are in the X axis
@@ -28,6 +32,7 @@ for (let i = 0; i < 10; i++) {
     sprite('pokemon', { frame: i }),
     pos(i * 128 + 128 / 2, 128),
     anchor('center'),
+    layer('game'),
     area(),
     'pokemon',
   ]);
@@ -42,20 +47,32 @@ for (let i = 0; i < 10; i++) {
 //   console.log('clicked', pokemon);
 // });
 
-k.onHoverUpdate('pokemon', (pokemon) => {
-  if (k.isMouseDown('left')) {
-    pokemon.pos = k.mousePos();
-  }
-  console.log('hover', pokemon);
-});
+// k.onHoverUpdate('pokemon', (pokemon) => {
+//   if (k.isMouseDown('left')) {
+//     pokemon.pos = k.mousePos();
+//   }
+//   console.log('hover', pokemon);
+// });
 
 // k.onHoverUpdate('pokemon', (pokemon) => {
 //   console.log('hover-update', pokemon);
 // });
 
-// k.onHoverEnd('pokemon', (pokemon) => {
-//   console.log('hover-end', pokemon);
-// });
+k.onClick('pokemon', (pokemon) => {
+  if (pokemonBeingDragged !== null) {
+    return;
+  }
+  pokemonBeingDragged = pokemon;
+});
+
+k.onMouseRelease('left', () => {
+  if (pokemonBeingDragged === null) {
+    return;
+  }
+
+  pokemonBeingDragged.layer = 'game';
+  pokemonBeingDragged = null;
+});
 
 // k.onMouseDown('left', () => {
 //   pokemon.pos = k.mousePos();
@@ -65,9 +82,14 @@ k.onHoverUpdate('pokemon', (pokemon) => {
 //   console.log('mouse-move', pos);
 // });
 
-// k.onUpdate(() => {
-//   console.log(k.isMouseDown('left'));
-// });
+k.onUpdate(() => {
+  if (k.isMouseDown('left')) {
+    if (pokemonBeingDragged !== null) {
+      pokemonBeingDragged.layer = 'foreground';
+      pokemonBeingDragged.pos = k.mousePos();
+    }
+  }
+});
 
 // k.onMousePress(() => console.log('mouse-press'));
 
