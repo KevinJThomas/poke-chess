@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using PokeChess.Server.Managers;
 
 namespace PokeChess.Server.UnitTests.Managers
@@ -6,18 +7,16 @@ namespace PokeChess.Server.UnitTests.Managers
     public class GameManagerTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestInitialize()
         {
             // Arrange
-            var input = "is fluffy";
             var instance = GameManager.Instance;
 
             // Act
-            var result = instance.TestGame(input);
+            instance.Initialize(null);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result.Length > input.Length);
+            Assert.IsTrue(instance.Initialized);
         }
     }
 }

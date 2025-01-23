@@ -2,8 +2,10 @@
 {
     public sealed class GameManager
     {
+        public bool Initialized { get; private set; }
+
         private static readonly Lazy<GameManager> _instance = new Lazy<GameManager>(() => new GameManager());
-        private readonly string _testString = "Pixel ";
+        private ILogger _logger;
 
         private GameManager()
         {
@@ -17,9 +19,10 @@
             }
         }
 
-        public string TestGame(string input)
+        public void Initialize(ILogger logger)
         {
-            return _testString + input;
+            _logger = logger;
+            Initialized = true;
         }
     }
 }
