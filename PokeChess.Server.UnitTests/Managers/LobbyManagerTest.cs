@@ -1,10 +1,9 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 using PokeChess.Server.Helpers;
 using PokeChess.Server.Managers;
-using PokeChess.Server.Managers.Interfaces;
+using PokeChess.Server.Models.Player;
 
 namespace PokeChess.Server.UnitTests.Managers
 {
@@ -12,16 +11,6 @@ namespace PokeChess.Server.UnitTests.Managers
     public class LobbyManagerTest
     {
         private readonly Mock<ILogger<MessageHub>> _loggerMock = new();
-        private readonly Mock<ILobbyManager> _lobbyManagerMock = new();
-
-        private static IConfiguration InitConfiguration()
-        {
-            var config = new ConfigurationBuilder()
-               .AddJsonFile("appsettings.test.json")
-                .AddEnvironmentVariables()
-                .Build();
-            return config;
-        }
 
         [TestMethod]
         public void TestInitialize()
@@ -40,17 +29,38 @@ namespace PokeChess.Server.UnitTests.Managers
             Assert.IsTrue(success);
         }
 
-        //[TestMethod]
-        //public void TestPlayerJoined()
-        //{
-        //    // Arrange
-        //    var instance = LobbyManager.Instance;
+        [TestMethod]
+        public void TestPlayerJoined()
+        {
+            // Arrange
+            var logger = _loggerMock.Object;
+            var config = InitConfiguration();
+            ConfigurationHelper.Initialize(config);
+            var instance = LobbyManager.Instance;
+            var id = Guid.NewGuid().ToString();
+            var name = "Player 1";
+            var player = new Player(id, name);
 
-        //    // Act
-        //    instance.Initialize(null);
+            // Act
+            instance.Initialize(_loggerMock.Object);
+            var lobby = instance.PlayerJoined(player);
 
-        //    // Assert
-        //    Assert.IsTrue(instance.Initialized);
-        //}
+            // Assert
+            Assert.IsTrue(lobby.Players.Contains(player));
+            Assert.IsTrue(instance.GetLobbyById(lobby.Id).Players.Contains(player));
+        }
+
+        #region private methods
+
+        private static IConfiguration InitConfiguration()
+        {
+            var config = new ConfigurationBuilder()
+               .AddJsonFile("appsettings.test.json")
+                .AddEnvironmentVariables()
+                .Build();
+            return config;
+        }
+
+        #endregion
     }
 }

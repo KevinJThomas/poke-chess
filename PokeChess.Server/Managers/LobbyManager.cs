@@ -2,21 +2,25 @@
 using PokeChess.Server.Managers.Interfaces;
 using PokeChess.Server.Models;
 using PokeChess.Server.Models.Player;
+using PokeChess.Server.Services;
+using PokeChess.Server.Services.Interfaces;
 
 namespace PokeChess.Server.Managers
 {
     public sealed class LobbyManager : ILobbyManager
     {
         private static readonly Lazy<LobbyManager> _instance = new Lazy<LobbyManager>(() => new LobbyManager());
+        private readonly IGameService _gameService;
         private bool _initialized = false;
         private ILogger _logger;
-        private Dictionary<string, Lobby> _lobbies;
+        private Dictionary<string, Lobby> _lobbies = new Dictionary<string, Lobby>();
         private static readonly int _playerMaxPerLobby = ConfigurationHelper.config.GetValue<int>("App:PlayerMaxPerLobby");
 
         #region class setup
 
         private LobbyManager()
         {
+            _gameService = GameService.Instance;
         }
 
         public static LobbyManager Instance
@@ -69,6 +73,11 @@ namespace PokeChess.Server.Managers
                 _logger.LogError($"PlayerJoined exception: {ex.Message}");
                 return null;
             }
+        }
+
+        public Lobby GetLobbyById(string id)
+        {
+            return _lobbies[id];
         }
 
         #endregion
