@@ -126,10 +126,14 @@ namespace PokeChess.Server.UnitTests.Services
             });
             var boardCount = lobby.Players[0].Board.Count();
             var cardIdToRemove = lobby.Players[0].Board[0].Id;
+            var cardPoolCountBeforeSell = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
             lobby = instance.SellMinion(lobby, lobby.Players[0], lobby.Players[0].Board[0]);
+            var cardPoolCountAfterSell = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
 
             // Assert
             Assert.IsFalse(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(lobby.Players[0].Board.Count() < boardCount);
+            Assert.IsTrue(cardPoolCountBeforeSell < cardPoolCountAfterSell);
         }
     }
 }
