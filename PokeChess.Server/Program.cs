@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging.AzureAppServices;
 using PokeChess.Server;
 using PokeChess.Server.Helpers;
+using PokeChess.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +39,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<MessageHub>("/chatHub");
+app.MapHub<MessageHub>("/messageHub");
 
 app.MapFallbackToFile("/index.html");
 
@@ -51,5 +52,6 @@ app.UseCors(options =>
 });
 
 ConfigurationHelper.Initialize(app.Configuration);
+CardService.Instance.GetAllCards();
 
 app.Run();

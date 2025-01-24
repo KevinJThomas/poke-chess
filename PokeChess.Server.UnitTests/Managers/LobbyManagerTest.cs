@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 using PokeChess.Server.Helpers;
@@ -8,7 +7,7 @@ using PokeChess.Server.Models.Player;
 namespace PokeChess.Server.UnitTests.Managers
 {
     [TestClass]
-    public class LobbyManagerTest
+    public class LobbyManagerTest : BaseTest
     {
         private readonly Mock<ILogger<MessageHub>> _loggerMock = new();
 
@@ -49,18 +48,5 @@ namespace PokeChess.Server.UnitTests.Managers
             Assert.IsTrue(lobby.Players.Contains(player));
             Assert.IsTrue(instance.GetLobbyById(lobby.Id).Players.Contains(player));
         }
-
-        #region private methods
-
-        private static IConfiguration InitConfiguration()
-        {
-            var config = new ConfigurationBuilder()
-               .AddJsonFile("appsettings.test.json")
-                .AddEnvironmentVariables()
-                .Build();
-            return config;
-        }
-
-        #endregion
     }
 }

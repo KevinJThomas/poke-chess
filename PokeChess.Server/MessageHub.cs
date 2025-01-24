@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using PokeChess.Server.Managers;
+using PokeChess.Server.Managers.Interfaces;
 using PokeChess.Server.Models.Player;
 
 namespace PokeChess.Server
@@ -7,7 +8,7 @@ namespace PokeChess.Server
     public class MessageHub : Hub
     {
         private readonly ILogger _logger;
-        private readonly LobbyManager _lobbyManager = LobbyManager.Instance;
+        private readonly ILobbyManager _lobbyManager = LobbyManager.Instance;
 
         public MessageHub(ILogger<MessageHub> logger)
         {

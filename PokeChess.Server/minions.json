@@ -1,0 +1,50 @@
+[
+  {
+    "pokemonId": 1,
+    "tier": 1,
+    "name": "Bulbasaur",
+    "text": "",
+    "baseAttack": 2,
+    "baseHealth": 1,
+    "baseCost": 3,
+    "minionType": 3,
+    "cardType": 0,
+    "keywords": []
+  },
+  {
+    "pokemonId": 4,
+    "tier": 1,
+    "name": "Charmander",
+    "text": "",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": []
+  },
+  {
+    "pokemonId": 6,
+    "tier": 4,
+    "name": "Charizard",
+    "text": "",
+    "baseAttack": 6,
+    "baseHealth": 6,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": []
+  },
+  {
+    "pokemonId": 7,
+    "tier": 1,
+    "name": "Squirtle",
+    "text": "",
+    "baseAttack": 2,
+    "baseHealth": 3,
+    "baseCost": 3,
+    "minionType": 2,
+    "cardType": 0,
+    "keywords": []
+  }
+]

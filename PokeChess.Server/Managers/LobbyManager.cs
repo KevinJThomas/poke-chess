@@ -14,7 +14,7 @@ namespace PokeChess.Server.Managers
         private bool _initialized = false;
         private ILogger _logger;
         private Dictionary<string, Lobby> _lobbies = new Dictionary<string, Lobby>();
-        private static readonly int _playerMaxPerLobby = ConfigurationHelper.config.GetValue<int>("App:PlayerMaxPerLobby");
+        private static readonly int _playersPerLobby = ConfigurationHelper.config.GetValue<int>("App:Game:PlayersPerLobby");
 
         #region class setup
 
@@ -48,6 +48,12 @@ namespace PokeChess.Server.Managers
 
         public Lobby PlayerJoined(Player player)
         {
+            if (!Initialized())
+            {
+                _logger.LogError($"PlayerJoined failed because LobbyManager was not initialized");
+                return null;
+            }
+
             if (player == null || string.IsNullOrWhiteSpace(player.Name) || string.IsNullOrWhiteSpace(player.Id))
             {
                 _logger.LogError($"PlayerJoined received invalid player. name: {player.Name}, id: {player.Id}");
@@ -105,7 +111,7 @@ namespace PokeChess.Server.Managers
 
         private Lobby FindAvailableLobby()
         {
-            var nextAvailableLobby = _lobbies.Where(x => x.Value.IsActive && x.Value.IsWaitingToStart && x.Value.Players.Count < _playerMaxPerLobby).FirstOrDefault().Value;
+            var nextAvailableLobby = _lobbies.Where(x => x.Value.IsActive && x.Value.IsWaitingToStart && x.Value.Players.Count < _playersPerLobby).FirstOrDefault().Value;
 
             if (nextAvailableLobby == null || string.IsNullOrWhiteSpace(nextAvailableLobby.Id))
             {
