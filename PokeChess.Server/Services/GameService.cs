@@ -198,12 +198,12 @@ namespace PokeChess.Server.Services
 
             var playerDictionary = new Dictionary<Player, Player>();
             var indexDictionary = new Dictionary<int, bool>();
-            for (var i = 0; i < _playersPerLobby; i++)
+            for (var i = 0; i < players.Count(); i++)
             {
                 indexDictionary.Add(i, false);
             }
 
-            for (var i = 0; i < _playersPerLobby / 2; i++)
+            for (var i = 0; i < players.Count() / 2; i++)
             {
                 (indexDictionary, var index1) = GetUnusedIndex(indexDictionary);
                 (indexDictionary, var index2) = GetUnusedIndex(indexDictionary);
@@ -250,7 +250,9 @@ namespace PokeChess.Server.Services
 
         private bool IsLobbyValid(Lobby lobby)
         {
-            if (lobby == null || lobby.GameState == null || lobby.Players == null || !lobby.Players.Any() || lobby.Players.Count != _playersPerLobby)
+            // Foregoing _playersPerLobby check while developing
+            //if (lobby == null || lobby.GameState == null || lobby.Players == null || !lobby.Players.Any() || lobby.Players.Count != _playersPerLobby)
+            if (lobby == null || lobby.GameState == null || lobby.Players == null || !lobby.Players.Any())
             {
                 return false;
             }
