@@ -125,6 +125,22 @@ namespace PokeChess.Server
             }
         }
 
+        public async Task UpgradeTavern()
+        {
+            if (!_lobbyManager.Initialized())
+            {
+                _lobbyManager.Initialize(_logger);
+            }
+
+            var id = Context.ConnectionId;
+            var player = _lobbyManager.UpgradeTavern(id);
+
+            if (player != null)
+            {
+                await Clients.Caller.SendAsync("PlayerUpdated", player);
+            }
+        }
+
         public async Task SendChat(string message)
         {
             var lobby = _lobbyManager.GetLobbyByPlayerId(Context.ConnectionId);

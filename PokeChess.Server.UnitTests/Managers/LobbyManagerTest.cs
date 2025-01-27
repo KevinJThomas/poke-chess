@@ -218,5 +218,30 @@ namespace PokeChess.Server.UnitTests.Managers
             Assert.IsTrue(player1.IsShopFrozen);
             Assert.IsFalse(player2.IsShopFrozen);
         }
+
+        [TestMethod]
+        public void TestUpgradeTavern()
+        {
+            // Arrange
+            (var setupLobby, var logger) = InitializeSetup();
+            var instance = LobbyManager.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            foreach (var player in setupLobby.Players)
+            {
+                instance.PlayerJoined(player);
+            }
+            var startGame = instance.StartGame(setupLobby.Players[0].Id);
+            startGame.Players[0].Gold = 50;
+            startGame.Players[1].Gold = 0;
+            var player1 = instance.UpgradeTavern(startGame.Players[0].Id);
+            var player2 = instance.UpgradeTavern(startGame.Players[1].Id);
+
+            // Assert
+            Assert.IsNotNull(player1);
+            Assert.IsNotNull(player2);
+            Assert.IsTrue(player1.Tier > player2.Tier);
+        }
     }
 }
