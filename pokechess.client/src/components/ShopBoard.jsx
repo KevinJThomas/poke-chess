@@ -6,28 +6,16 @@ import Row from "./Row";
 import Shop from "./Shop";
 import TavernRow from "./TavernRow";
 
-export default function ShopBoard({
-  players,
-  gameState,
-  playerId,
-  connection,
-}) {
+export default function ShopBoard({ players, gameState, connection, player }) {
   console.log("players", players);
   console.log("gameState", gameState);
-
-  const player = players.find((player) => player.id === playerId);
-
-  const tavern = [
-    { id: "1", name: "Pikachu", attack: 10, health: 100, tier: 1 },
-    { id: "2", name: "Charmander", attack: 10, health: 100, tier: 1 },
-    { id: "3", name: "Bulbasaur", attack: 10, health: 100, tier: 1 },
-  ];
 
   function upgrade() {
     connection.invoke("Upgrade");
   }
 
   function refresh() {
+    console.log("get new shop");
     connection.invoke("GetNewShop");
   }
 
@@ -44,19 +32,21 @@ export default function ShopBoard({
     <div className="flex h-screen flex-col items-center justify-center">
       <Row>
         <div className="w-16"></div>
-        <Button onClick={upgrade}>Upgrade (6)</Button>
-        <Shop />
-        <Button onClick={refresh}>Refresh</Button>
-        <Button onClick={freeze}>Freeze</Button>
+        <Button onClick={upgrade}>Upgrade ({player.upgradeCost})</Button>
+        <Shop player={player} />
+        <Button onClick={refresh} disabled={player.refreshCost > player.gold}>
+          Refresh ({player.refreshCost})
+        </Button>
+        <Button onClick={freeze}>Freeze (0)</Button>
       </Row>
       <TavernRow tavern={player?.shop ?? []} isDragDisabled={false} />
       <Row>
         <PlayerPokemon board={player?.board ?? []} />
       </Row>
       <Row>
-        <Hero name="Ash" health={30} armor={10} />
+        <Hero name={player.name} health={player.health} armor={player.armor} />
       </Row>
-      <HandRow isDragDisabled={false} />
+      <HandRow hand={player.hand} isDragDisabled={false} />
     </div>
   );
 }

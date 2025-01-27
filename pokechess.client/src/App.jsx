@@ -19,8 +19,16 @@ export default function App() {
   const [gameState, setGameState] = useState();
   const [playerId, setPlayerId] = useState();
 
+  const player = players.find((player) => player.id === playerId);
+
   function onDragEnd(result) {
-    console.log("onDragEnd", result);
+    // Buy
+    if (
+      result.source.droppableId === "droppable-shop" &&
+      result.destination.droppableId === "droppable-board"
+    ) {
+      connection.invoke("MoveCard", result.draggableId, 0);
+    }
   }
 
   useEffect(() => {
@@ -69,12 +77,39 @@ export default function App() {
       setGameStatus("shop");
     });
 
+    connection.on("GetNewShopConfirmed", (newPlayer) => {
+      setPlayers((prev) =>
+        prev.map((player) => {
+          if (player.id === playerId) {
+            return newPlayer;
+          }
+
+          return player;
+        }),
+      );
+    });
+
+    connection.on("MoveCardConfirmed", (newPlayer) => {
+      console.log("MoveCardConfirmed", newPlayer);
+      setPlayers((prev) =>
+        prev.map((player) => {
+          if (player.id === playerId) {
+            return newPlayer;
+          }
+
+          return player;
+        }),
+      );
+    });
+
     return () => {
       connection.off("LobbyUpdated");
       connection.off("GameError");
       connection.off("StartGameConfirmed");
+      connection.off("GetNewShopConfirmed");
+      connection.off("MoveCardConfirmed");
     };
-  }, [connection]);
+  }, [connection, playerId]);
 
   if (gameStatus === "error") {
     return <Error error={error} />;
@@ -104,12 +139,12 @@ export default function App() {
             connection={connection}
             players={players}
             gameState={gameState}
-            playerId={playerId}
+            player={player}
           />
         )}
         {gameStatus === "battle" && <BattleBoard />}
         <Button className="absolute top-1/2 right-0">End Turn</Button>
-        <Gold gold={0} maxGold={5} />
+        <Gold gold={player.gold} maxGold={player.baseGold} />
         <Players players={players} />
       </div>
     </DragDropContext>

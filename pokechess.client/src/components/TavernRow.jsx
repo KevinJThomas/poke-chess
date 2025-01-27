@@ -38,7 +38,7 @@ export default function TavernRow({ tavern, isDragDisabled }) {
   }
 
   return (
-    <Droppable droppableId="droppable-tavern" direction="horizontal">
+    <Droppable droppableId="droppable-shop" direction="horizontal">
       {(provided, snapshot) => (
         <div
           className="flex h-1/5 w-screen items-center justify-center"
@@ -63,12 +63,7 @@ export default function TavernRow({ tavern, isDragDisabled }) {
                     provided.draggableProps.style,
                   )}
                 >
-                  <Pokemon
-                    name={pokemon.name}
-                    attack={pokemon.attack}
-                    health={pokemon.health}
-                    id={pokemon.id}
-                  />
+                  <Pokemon key={pokemon.id} {...pokemon} />
                 </div>
               )}
             </Draggable>
