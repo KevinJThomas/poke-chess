@@ -7,11 +7,15 @@ import { DragDropContext } from "@hello-pangea/dnd";
 import { useEffect, useState } from "react";
 import * as signalR from "@microsoft/signalr";
 import Error from "./components/Error";
+import Lobby from "./components/pages/LobbyPage";
+import NamePage from "./components/pages/NamePage";
 
 export default function App() {
   const [gameStatus, setGameStatus] = useState("shop");
   const [connection, setConnection] = useState();
   const [error, setError] = useState();
+  const [players, setPlayers] = useState([]);
+  const [name, setName] = useState("");
 
   function onDragEnd(result) {
     console.log(result);
@@ -39,8 +43,51 @@ export default function App() {
     setConnection(connection);
   }, []);
 
+  useEffect(() => {
+    if (!connection) {
+      return;
+    }
+
+    connection.on("LobbyUpdated", (lobby, playerId) => {
+      if (playerId) {
+        setGameStatus("lobby");
+      }
+      setPlayers(lobby.players);
+    });
+
+    connection.on("GameError", (error) => {
+      setError(error);
+      setGameStatus("error");
+    });
+
+    return () => {
+      connection.off("LobbyUpdated");
+      connection.off("GameError");
+      connection.off("ConfirmNextRound");
+      connection.off("RoundComplete");
+      connection.off("VoteComplete");
+      connection.off("ChatReceived");
+    };
+  }, [connection]);
+
   if (gameStatus === "error") {
     return <Error error={error} />;
+  }
+
+  if (gameStatus === "lobby") {
+    return <Lobby players={players} connection={connection} />;
+  }
+
+  if (gameStatus === "name") {
+    return (
+      <NamePage
+        connection={connection}
+        setGameStatus={setGameStatus}
+        setError={setError}
+        name={name}
+        setName={setName}
+      />
+    );
   }
 
   return (
