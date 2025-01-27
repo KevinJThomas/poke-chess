@@ -1,4 +1,5 @@
-﻿using PokeChess.Server.Helpers;
+﻿using PokeChess.Server.Enums;
+using PokeChess.Server.Helpers;
 using PokeChess.Server.Managers.Interfaces;
 using PokeChess.Server.Models;
 using PokeChess.Server.Models.Game;
@@ -132,7 +133,7 @@ namespace PokeChess.Server.Managers
         {
             if (!Initialized())
             {
-                _logger.LogError($"StaGetNewShoprtGame failed because LobbyManager was not initialized");
+                _logger.LogError($"GetNewShop failed because LobbyManager was not initialized");
                 return null;
             }
 
@@ -148,7 +149,7 @@ namespace PokeChess.Server.Managers
                 var lobby = _lobbies.Where(x => x.Value.Players.Any(y => y.Id == playerId)).FirstOrDefault();
                 if (string.IsNullOrWhiteSpace(lobby.Key) || lobby.Value == null)
                 {
-                    _logger.LogError($"StartGame couldn't find lobby by player id: {playerId}");
+                    _logger.LogError($"GetNewShop couldn't find lobby by player id: {playerId}");
                     return null;
                 }
 
@@ -160,6 +161,61 @@ namespace PokeChess.Server.Managers
                 (_lobbies[lobby.Key], var list) = _gameService.GetNewShop(_lobbies[lobby.Key], _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault());
 
                 return list;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"GetNewShop exception: {ex.Message}");
+                return null;
+            }
+        }
+
+        public GameState MoveCard(string playerId, string cardId, MoveCardAction action)
+        {
+
+            if (!Initialized())
+            {
+                _logger.LogError($"MoveCard failed because LobbyManager was not initialized");
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(playerId))
+            {
+                _logger.LogError($"MoveCard received null or empty playerId");
+                return null;
+            }
+
+            try
+            {
+                _logger.LogInformation($"MoveCard. playerId: {playerId}");
+                var lobby = _lobbies.Where(x => x.Value.Players.Any(y => y.Id == playerId)).FirstOrDefault();
+                if (string.IsNullOrWhiteSpace(lobby.Key) || lobby.Value == null)
+                {
+                    _logger.LogError($"MoveCard couldn't find lobby by player id: {playerId}");
+                    return null;
+                }
+
+                if (!_gameService.Initialized())
+                {
+                    _gameService.Initialize(_logger);
+                }
+
+                var player  = _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                var card = new Card();
+                switch (action)
+                {
+                    case MoveCardAction.Buy:
+                        card = player.Shop.Where(x => x.Id == cardId).FirstOrDefault();
+                        break;
+                    case MoveCardAction.Sell:
+                        card = player.Board.Where(x => x.Id == cardId).FirstOrDefault();
+                        break;
+                    case MoveCardAction.Play:
+                        card = player.Hand.Where(x => x.Id == cardId).FirstOrDefault();
+                        break;
+                }
+                _lobbies[lobby.Key] = _gameService.MoveCard(lobby.Value, player, card, action);
+
+                return _lobbies[lobby.Key].GameState;
             }
             catch (Exception ex)
             {
