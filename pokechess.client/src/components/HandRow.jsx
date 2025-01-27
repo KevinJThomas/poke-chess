@@ -1,7 +1,8 @@
 import Pokemon from "./Pokemon";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
+import clsx from "clsx";
 
-export default function HandRow({ hand, isDragDisabled }) {
+export default function HandRow({ hand, isDragDisabled, isDropDisabled }) {
   function getListStyle(isDraggingOver, itemsLength) {
     return {
       // background: isDraggingOver ? "lightblue" : "lightgrey",
@@ -30,7 +31,11 @@ export default function HandRow({ hand, isDragDisabled }) {
   }
 
   return (
-    <Droppable droppableId="droppable-hand" direction="horizontal">
+    <Droppable
+      droppableId="droppable-hand"
+      direction="horizontal"
+      isDropDisabled={isDropDisabled}
+    >
       {(provided, snapshot) => (
         <div
           className="flex h-1/5 w-screen items-center justify-center"
@@ -43,10 +48,11 @@ export default function HandRow({ hand, isDragDisabled }) {
               key={card.id}
               draggableId={card.id}
               index={index}
-              isDragDisabled={isDragDisabled}
+              isDragDisabled={isDragDisabled || card.id === "empty-slot"}
             >
               {(provided, snapshot) => (
                 <div
+                  key={card.id}
                   ref={provided.innerRef}
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
@@ -54,8 +60,9 @@ export default function HandRow({ hand, isDragDisabled }) {
                     snapshot.isDragging,
                     provided.draggableProps.style,
                   )}
+                  // className={clsx(card.id === "empty-slot" && "bg-gray-300")}
                 >
-                  <Pokemon key={card.id} {...card} />
+                  <Pokemon {...card} />
                 </div>
               )}
             </Draggable>

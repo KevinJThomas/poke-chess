@@ -1,7 +1,8 @@
 import Pokemon from "./Pokemon";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
+import clsx from "clsx";
 
-export default function TavernRow({ tavern, isDragDisabled }) {
+export default function TavernRow({ isDragDisabled, player, isDropDisabled }) {
   function getListStyle(isDraggingOver, itemsLength) {
     return {
       // background: isDraggingOver ? "lightblue" : "lightgrey",
@@ -10,14 +11,6 @@ export default function TavernRow({ tavern, isDragDisabled }) {
       // width: itemsLength * 68.44 + 16,
     };
   }
-
-  const getItems = (count) =>
-    Array.from({ length: count }, (v, k) => k).map((k) => ({
-      id: `item-${k}-tavern`,
-      content: `item ${k}`,
-    }));
-
-  const items = getItems(3);
 
   function getItemStyle(isDragging, draggableStyle) {
     return {
@@ -38,20 +31,27 @@ export default function TavernRow({ tavern, isDragDisabled }) {
   }
 
   return (
-    <Droppable droppableId="droppable-shop" direction="horizontal">
+    <Droppable
+      droppableId="droppable-shop"
+      direction="horizontal"
+      isDropDisabled={isDropDisabled}
+    >
       {(provided, snapshot) => (
         <div
-          className="flex h-1/5 w-screen items-center justify-center"
+          className={clsx(
+            "flex h-1/5 w-screen items-center justify-center",
+            player.isShopFrozen && "bg-blue-200",
+          )}
           ref={provided.innerRef}
-          style={getListStyle(snapshot.isDraggingOver, items.length)}
+          style={getListStyle(snapshot.isDraggingOver, player.shop.length)}
           {...provided.droppableProps}
         >
-          {tavern.map((pokemon, index) => (
+          {(player.shop ?? []).map((pokemon, index) => (
             <Draggable
               key={pokemon.id}
               draggableId={pokemon.id}
               index={index}
-              isDragDisabled={isDragDisabled}
+              isDragDisabled={isDragDisabled || pokemon.cost > player.gold}
             >
               {(provided, snapshot) => (
                 <div

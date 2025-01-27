@@ -1,7 +1,7 @@
 import Hero from "./Hero";
 import { Droppable } from "@hello-pangea/dnd";
 
-export default function Shop({ player }) {
+export default function Shop({ player, isDropDisabled }) {
   function getListStyle(isDraggingOver) {
     return {
       // background: isDraggingOver ? "lightblue" : "lightgrey",
@@ -12,7 +12,11 @@ export default function Shop({ player }) {
   }
 
   return (
-    <Droppable droppableId="droppable-sell" direction="horizontal">
+    <Droppable
+      droppableId="droppable-sell"
+      direction="horizontal"
+      isDropDisabled={isDropDisabled}
+    >
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}

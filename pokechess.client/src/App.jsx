@@ -9,6 +9,7 @@ import * as signalR from "@microsoft/signalr";
 import Error from "./components/Error";
 import Lobby from "./components/pages/LobbyPage";
 import NamePage from "./components/pages/NamePage";
+import cloneDeep from "lodash/cloneDeep";
 
 export default function App() {
   const [gameStatus, setGameStatus] = useState("name");
@@ -18,15 +19,97 @@ export default function App() {
   const [name, setName] = useState("");
   const [gameState, setGameState] = useState();
   const [playerId, setPlayerId] = useState();
+  const [disableSellDrop, setDisableSellDrop] = useState(false);
+  const [disableBoardDrop, setDisableBoardDrop] = useState(false);
+  const [disableShopDrop, setDisableShopDrop] = useState(false);
+  const [disableHandDrop, setDisableHandDrop] = useState(false);
 
   const player = players.find((player) => player.id === playerId);
 
+  function onDragStart(result) {
+    if (result.source.droppableId === "droppable-shop") {
+      setDisableSellDrop(true);
+      setDisableBoardDrop(true);
+    }
+
+    if (result.source.droppableId === "droppable-hand") {
+      setDisableShopDrop(true);
+    }
+
+    if (result.source.droppableId === "droppable-board") {
+      setDisableShopDrop(true);
+      setDisableHandDrop(true);
+    }
+  }
+
   function onDragEnd(result) {
+    setDisableSellDrop(false);
+    setDisableBoardDrop(false);
+    setDisableShopDrop(false);
+    setDisableHandDrop(false);
+    // Check if the drag was canceled
+    if (!result.destination) return;
+
+    const cardId = result.draggableId;
+
+    // Play
+    if (
+      result.source.droppableId === "droppable-hand" &&
+      result.destination.droppableId === "droppable-board"
+    ) {
+      const clonedPlayers = cloneDeep(players);
+
+      const playerIndex = clonedPlayers.findIndex(
+        (player) => player.id === playerId,
+      );
+
+      const card = clonedPlayers[playerIndex].hand.find(
+        (card) => card.id === cardId,
+      );
+
+      clonedPlayers[playerIndex].hand = clonedPlayers[playerIndex].hand.filter(
+        (card) => card.id !== cardId,
+      );
+
+      clonedPlayers[playerIndex].board.splice(
+        result.destination.index,
+        0,
+        card,
+      );
+
+      setPlayers(clonedPlayers);
+
+      connection.invoke(
+        "MoveCard",
+        result.draggableId,
+        2,
+        result.destination.index,
+      );
+    }
+
     // Buy
     if (
       result.source.droppableId === "droppable-shop" &&
-      result.destination.droppableId === "droppable-board"
+      result.destination.droppableId === "droppable-hand"
     ) {
+      const clonedPlayers = cloneDeep(players);
+
+      const playerIndex = clonedPlayers.findIndex(
+        (player) => player.id === playerId,
+      );
+
+      const card = clonedPlayers[playerIndex].shop.find(
+        (card) => card.id === cardId,
+      );
+
+      clonedPlayers[playerIndex].shop = clonedPlayers[playerIndex].shop.filter(
+        (card) => card.id !== cardId,
+      );
+
+      clonedPlayers[playerIndex].hand.push(card);
+
+      setPlayers(clonedPlayers);
+
       connection.invoke("MoveCard", result.draggableId, 0);
     }
   }
@@ -77,20 +160,8 @@ export default function App() {
       setGameStatus("shop");
     });
 
-    connection.on("GetNewShopConfirmed", (newPlayer) => {
-      setPlayers((prev) =>
-        prev.map((player) => {
-          if (player.id === playerId) {
-            return newPlayer;
-          }
-
-          return player;
-        }),
-      );
-    });
-
-    connection.on("MoveCardConfirmed", (newPlayer) => {
-      console.log("MoveCardConfirmed", newPlayer);
+    connection.on("PlayerUpdated", (newPlayer) => {
+      console.log("PlayerUpdated", newPlayer);
       setPlayers((prev) =>
         prev.map((player) => {
           if (player.id === playerId) {
@@ -106,10 +177,13 @@ export default function App() {
       connection.off("LobbyUpdated");
       connection.off("GameError");
       connection.off("StartGameConfirmed");
-      connection.off("GetNewShopConfirmed");
-      connection.off("MoveCardConfirmed");
+      connection.off("PlayerUpdated");
     };
   }, [connection, playerId]);
+
+  function endTurn() {
+    connection.invoke("EndTurn");
+  }
 
   if (gameStatus === "error") {
     return <Error error={error} />;
@@ -132,7 +206,7 @@ export default function App() {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
       <div className="relative h-screen w-screen bg-gray-200">
         {gameStatus === "shop" && (
           <ShopBoard
@@ -140,10 +214,16 @@ export default function App() {
             players={players}
             gameState={gameState}
             player={player}
+            disableSellDrop={disableSellDrop}
+            disableBoardDrop={disableBoardDrop}
+            disableShopDrop={disableShopDrop}
+            disableHandDrop={disableHandDrop}
           />
         )}
         {gameStatus === "battle" && <BattleBoard />}
-        <Button className="absolute top-1/2 right-0">End Turn</Button>
+        <Button className="absolute top-1/2 right-0" onClick={endTurn}>
+          End Turn
+        </Button>
         <Gold gold={player.gold} maxGold={player.baseGold} />
         <Players players={players} />
       </div>

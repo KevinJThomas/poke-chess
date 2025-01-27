@@ -6,7 +6,16 @@ import Row from "./Row";
 import Shop from "./Shop";
 import TavernRow from "./TavernRow";
 
-export default function ShopBoard({ players, gameState, connection, player }) {
+export default function ShopBoard({
+  players,
+  gameState,
+  connection,
+  player,
+  disableSellDrop,
+  disableBoardDrop,
+  disableShopDrop,
+  disableHandDrop,
+}) {
   console.log("players", players);
   console.log("gameState", gameState);
 
@@ -20,33 +29,42 @@ export default function ShopBoard({ players, gameState, connection, player }) {
   }
 
   function freeze() {
-    connection.invoke("Freeze");
+    connection.invoke("FreezeShop");
   }
-  // const hand = [
-  //   { id: "1", name: "Pikachu", attack: 10, health: 100, tier: 1 },
-  //   { id: "2", name: "Pikachu", attack: 10, health: 100, tier: 1 },
-  //   { id: "3", name: "Pikachu", attack: 10, health: 100, tier: 1 },
-  // ];
 
   return (
     <div className="flex h-screen flex-col items-center justify-center">
       <Row>
         <div className="w-16"></div>
         <Button onClick={upgrade}>Upgrade ({player.upgradeCost})</Button>
-        <Shop player={player} />
+        <Shop player={player} isDropDisabled={disableSellDrop} />
         <Button onClick={refresh} disabled={player.refreshCost > player.gold}>
           Refresh ({player.refreshCost})
         </Button>
         <Button onClick={freeze}>Freeze (0)</Button>
       </Row>
-      <TavernRow tavern={player?.shop ?? []} isDragDisabled={false} />
+      <TavernRow
+        player={player}
+        isDragDisabled={false}
+        isDropDisabled={disableShopDrop}
+      />
       <Row>
-        <PlayerPokemon board={player?.board ?? []} />
+        <PlayerPokemon
+          board={
+            player.board.length === 0 ? [{ id: "empty-slot" }] : player.board
+          }
+          player={player}
+          isDropDisabled={disableBoardDrop}
+        />
       </Row>
       <Row>
         <Hero name={player.name} health={player.health} armor={player.armor} />
       </Row>
-      <HandRow hand={player.hand} isDragDisabled={false} />
+      <HandRow
+        hand={player.hand.length === 0 ? [{ id: "empty-slot" }] : player.hand}
+        isDragDisabled={false}
+        isDropDisabled={disableHandDrop}
+      />
     </div>
   );
 }
