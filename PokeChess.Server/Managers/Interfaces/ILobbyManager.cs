@@ -14,7 +14,7 @@ namespace PokeChess.Server.Managers.Interfaces
         Lobby PlayerJoined(Player player);
         Lobby StartGame(string playerId);
         Player GetNewShop(string playerId);
-        Player MoveCard(string playerId, string cardId, MoveCardAction action);
+        Player MoveCard(string playerId, string cardId, MoveCardAction action, int boardIndex);
         Lobby PlayerLeft(string id);
         void AddNewChatMessage(string lobbyId, Message message);
         Lobby CombatRound(string playerId);

@@ -137,7 +137,7 @@ namespace PokeChess.Server.Services
             return (lobby, player);
         }
 
-        public Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action)
+        public Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action, int boardIndex)
         {
             if (!Initialized())
             {
@@ -172,7 +172,7 @@ namespace PokeChess.Server.Services
                         (lobby, player) = SellMinion(lobby, player, card);
                         break;
                     case MoveCardAction.Play:
-                        (lobby, player) = PlayCard(lobby, player, card);
+                        (lobby, player) = PlayCard(lobby, player, card, boardIndex);
                         break;
                     default:
                         return lobby;
@@ -453,12 +453,19 @@ namespace PokeChess.Server.Services
             return (lobby, player);
         }
 
-        private (Lobby, Player) PlayCard(Lobby lobby, Player player, Card card)
+        private (Lobby, Player) PlayCard(Lobby lobby, Player player, Card card, int boardIndex)
         {
             if (card.CardType == CardType.Minion)
             {
                 player.Hand.Remove(card);
-                player.Board.Add(card);
+                if (boardIndex >= 0 && boardIndex <= player.Board.Count())
+                {
+                    player.Board.Insert(boardIndex, card);
+                }
+                else
+                {
+                    player.Board.Add(card);
+                }
             }
             else
             {
