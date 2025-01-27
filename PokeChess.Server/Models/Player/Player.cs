@@ -22,6 +22,7 @@ namespace PokeChess.Server.Models.Player
             UpgradeCost = _upgradeToTwoCost;
             RefreshCost = refreshCost;
             WinStreak = 0;
+            MaxGold = 10;
             Board = new List<Card>();
             Hand = new List<Card>();
             Shop = new List<Card>();
@@ -44,6 +45,7 @@ namespace PokeChess.Server.Models.Player
         public int WinStreak { get; set; }
         public bool Attacking { get; set; }
         public bool TurnEnded { get; set; }
+        public int MaxGold {  get; set; }
         public List<Card> Board { get; set; }
         public List<Card> Hand { get; set; }
         public List<Card> Shop { get; set; }

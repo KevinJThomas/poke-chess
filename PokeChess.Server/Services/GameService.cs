@@ -91,18 +91,31 @@ namespace PokeChess.Server.Services
             return lobby;
         }
 
-        public (Lobby, Player) GetNewShop(Lobby lobby, Player player)
+        public (Lobby, Player) GetNewShop(Lobby lobby, Player player, bool spendRefreshCost = false)
         {
             if (!Initialized())
             {
                 _logger.LogError("GetNewShop failed because GameService was not initialized");
-                return (lobby, null);
+                return (lobby, player);
             }
 
             if (!IsLobbyValid(lobby))
             {
                 _logger.LogError("GetNewShop received invalid lobby");
-                return (lobby, null);
+                return (lobby, player);
+            }
+
+            if (spendRefreshCost)
+            {
+                if (player.Gold < player.RefreshCost)
+                {
+                    _logger.LogError($"GetNewShop failed because player does not hav enough gold. player.Gold: {player.Gold}, player.RefreshCost: {player.RefreshCost}");
+                    return (lobby, player);
+                }
+                else
+                {
+                    player.Gold -= player.RefreshCost;
+                }
             }
 
             if (player.Shop.Any())
@@ -401,6 +414,12 @@ namespace PokeChess.Server.Services
             lobby.GameState.DamageCap = GetDamageCap(lobby.GameState.RoundNumber);
             for (var i = 0; i < lobby.Players.Count(); i++)
             {
+                if (lobby.Players[i].BaseGold < lobby.Players[i].MaxGold)
+                {
+                    lobby.Players[i].BaseGold += 1;
+                }
+                lobby.Players[i].Gold = lobby.Players[i].BaseGold;
+
                 if (!lobby.Players[i].IsShopFrozen)
                 {
                     (lobby, lobby.Players[i]) = GetNewShop(lobby, lobby.Players[i]);

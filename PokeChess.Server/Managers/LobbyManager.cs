@@ -162,7 +162,7 @@ namespace PokeChess.Server.Managers
                     _gameService.Initialize(_logger);
                 }
 
-                (_lobbies[lobby.Key], var player) = _gameService.GetNewShop(_lobbies[lobby.Key], _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault());
+                (_lobbies[lobby.Key], var player) = _gameService.GetNewShop(_lobbies[lobby.Key], _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault(), true);
 
                 return player;
             }
