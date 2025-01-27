@@ -1,5 +1,6 @@
-﻿using PokeChess.Server.Models.Player;
-using PokeChess.Server.Models;
+﻿using PokeChess.Server.Models;
+using PokeChess.Server.Models.Game;
+using PokeChess.Server.Models.Player;
 
 namespace PokeChess.Server.Managers.Interfaces
 {
@@ -9,5 +10,6 @@ namespace PokeChess.Server.Managers.Interfaces
         bool Initialized();
         Lobby PlayerJoined(Player player);
         Lobby StartGame(string playerId);
+        List<Card> GetNewShop(string playerId);
     }
 }

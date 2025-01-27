@@ -1,6 +1,7 @@
 ﻿using PokeChess.Server.Helpers;
 using PokeChess.Server.Managers.Interfaces;
 using PokeChess.Server.Models;
+using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services;
 using PokeChess.Server.Services.Interfaces;
@@ -114,6 +115,41 @@ namespace PokeChess.Server.Managers
                 _lobbies[lobby.Key] = _gameService.StartGame(lobby.Value);
 
                 return _lobbies[lobby.Key];
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"StartGame exception: {ex.Message}");
+                return null;
+            }
+        }
+
+        public List<Card> GetNewShop(string playerId)
+        {
+            if (!Initialized())
+            {
+                _logger.LogError($"StaGetNewShoprtGame failed because LobbyManager was not initialized");
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(playerId))
+            {
+                _logger.LogError($"GetNewShop received null or empty playerId");
+                return null;
+            }
+
+            try
+            {
+                _logger.LogInformation($"GetNewShop. playerId: {playerId}");
+                var lobby = _lobbies.Where(x => x.Value.Players.Any(y => y.Id == playerId)).FirstOrDefault();
+                if (string.IsNullOrWhiteSpace(lobby.Key) || lobby.Value == null)
+                {
+                    _logger.LogError($"StartGame couldn't find lobby by player id: {playerId}");
+                    return null;
+                }
+
+                (_lobbies[lobby.Key], var list) = _gameService.GetNewShop(_lobbies[lobby.Key], _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault());
+
+                return list;
             }
             catch (Exception ex)
             {

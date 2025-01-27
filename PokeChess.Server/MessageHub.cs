@@ -48,5 +48,21 @@ namespace PokeChess.Server
                 await Clients.Group(lobby.Id).SendAsync("StartGameConfirmed", lobby);
             }
         }
+
+        public async Task GetNewShop()
+        {
+            if (!_lobbyManager.Initialized())
+            {
+                _lobbyManager.Initialize(_logger);
+            }
+
+            var id = Context.ConnectionId;
+            var cards = _lobbyManager.GetNewShop(id);
+
+            if (cards != null)
+            {
+                await Clients.Caller.SendAsync("GetNewShopConfirmed", cards);
+            }
+        }
     }
 }
