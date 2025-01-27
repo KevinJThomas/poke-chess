@@ -14,6 +14,7 @@ namespace PokeChess.Server.Models.Game
         public int Attack { get; set; }
         public int Health { get; set; }
         public int Cost { get; set; }
+        public int SellValue { get; set; }
         public bool CanPlay { get; set; }
         public int PokemonId { get; set; }
         public bool Attacked { get; set; }

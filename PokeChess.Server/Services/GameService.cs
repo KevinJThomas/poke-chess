@@ -156,8 +156,16 @@ namespace PokeChess.Server.Services
                 switch (action)
                 {
                     case MoveCardAction.Buy:
-                        (lobby, player) = BuyCard(lobby, player, card);
-                        break;
+                        if (player.Gold >= card.Cost)
+                        {
+                            (lobby, player) = BuyCard(lobby, player, card);
+                            break;
+                        }
+                        else
+                        {
+                            _logger.LogError($"MoveCard failed because player did not have enough gold. player.Gold: {player.Gold}, card.Cost: {card.Cost}");
+                            return lobby;
+                        }
                     case MoveCardAction.Sell:
                         (lobby, player) = SellMinion(lobby, player, card);
                         break;
@@ -380,6 +388,7 @@ namespace PokeChess.Server.Services
         {
             player.Shop.Remove(card);
             player.Hand.Add(card);
+            player.Gold -= card.Cost;
             return (lobby, player);
         }
 
@@ -387,6 +396,7 @@ namespace PokeChess.Server.Services
         {
             lobby = ReturnCardToPool(lobby, card);
             player.Board.Remove(card);
+            player.Gold += card.SellValue;
             return (lobby, player);
         }
 
@@ -419,6 +429,11 @@ namespace PokeChess.Server.Services
                     lobby.Players[i].BaseGold += 1;
                 }
                 lobby.Players[i].Gold = lobby.Players[i].BaseGold;
+
+                if (lobby.Players[i].UpgradeCost > 0)
+                {
+                    lobby.Players[i].UpgradeCost -= 1;
+                }
 
                 if (!lobby.Players[i].IsShopFrozen)
                 {

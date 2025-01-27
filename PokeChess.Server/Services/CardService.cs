@@ -65,6 +65,7 @@ namespace PokeChess.Server.Services
                                 newCard.Id = Guid.NewGuid().ToString();
                                 newCard.Attack = newCard.BaseAttack;
                                 newCard.Health = newCard.BaseHealth;
+                                newCard.SellValue = 1;
                                 _allCards.Add(newCard);
                                 _allMinions.Add(newCard);
                             }
