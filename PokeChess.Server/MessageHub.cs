@@ -64,7 +64,7 @@ namespace PokeChess.Server
 
             if (player != null)
             {
-                await Clients.Caller.SendAsync("GetNewShopConfirmed", player);
+                await Clients.Caller.SendAsync("PlayerUpdated", player);
             }
         }
 
@@ -80,7 +80,7 @@ namespace PokeChess.Server
 
             if (player != null)
             {
-                await Clients.Caller.SendAsync("MoveCardConfirmed", player);
+                await Clients.Caller.SendAsync("PlayerUpdated", player);
             }
         }
 
@@ -121,7 +121,7 @@ namespace PokeChess.Server
 
             if (player != null)
             {
-                await Clients.Caller.SendAsync("FreezeShopConfirmed", player);
+                await Clients.Caller.SendAsync("PlayerUpdated", player);
             }
         }
 

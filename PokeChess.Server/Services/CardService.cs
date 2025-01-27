@@ -66,6 +66,7 @@ namespace PokeChess.Server.Services
                                 newCard.Attack = newCard.BaseAttack;
                                 newCard.Health = newCard.BaseHealth;
                                 newCard.SellValue = 1;
+                                newCard.Cost = 3;
                                 _allCards.Add(newCard);
                                 _allMinions.Add(newCard);
                             }

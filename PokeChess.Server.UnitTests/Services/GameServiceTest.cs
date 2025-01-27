@@ -109,8 +109,10 @@ namespace PokeChess.Server.UnitTests.Services
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Shop[0].Id;
             var cardPoolCountBeforeBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var playerGoldBeforeBuy = lobby.Players[0].Gold;
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy);
             var cardPoolCountAfterBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var playerGoldAfterBuy = lobby.Players[0].Gold;
 
             // Assert
             Assert.IsFalse(lobby.Players[0].Shop.Any(x => x.Id == cardIdToRemove));
@@ -118,6 +120,7 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(lobby.Players[0].Shop.Count() < shopCount);
             Assert.IsTrue(lobby.Players[0].Hand.Count() > handCount);
             Assert.IsTrue(cardPoolCountBeforeBuy == cardPoolCountAfterBuy);
+            Assert.IsFalse(playerGoldBeforeBuy == playerGoldAfterBuy);
         }
 
         [TestMethod]
@@ -276,6 +279,26 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsNotNull(lobby);
             Assert.IsTrue(lobby.Players[0].IsShopFrozen);
             Assert.IsFalse(lobby.Players[1].IsShopFrozen);
+        }
+
+        [TestMethod]
+        public void TestUpgradeTavern()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Gold = 50;
+            lobby.Players[1].Gold = 0;
+            lobby = instance.UpgradeTavern(lobby, lobby.Players[0]);
+            lobby = instance.UpgradeTavern(lobby, lobby.Players[1]);
+
+            // Assert
+            Assert.IsNotNull(lobby);
+            Assert.IsTrue(lobby.Players[0].Tier > lobby.Players[1].Tier);
         }
     }
 }

@@ -115,6 +115,7 @@ namespace PokeChess.Server.UnitTests.Managers
             }
             var startGame = instance.StartGame(setupLobby.Players[0].Id);
             var playerId = startGame.Players[0].Id;
+            startGame.Players[0].Gold = 9;
             var cardId1 = startGame.Players[0].Shop[0].Id;
             var cardId2 = startGame.Players[0].Shop[1].Id;
             var cardId3 = startGame.Players[0].Shop[2].Id;

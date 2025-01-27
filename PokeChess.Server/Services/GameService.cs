@@ -151,8 +151,10 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
+            var playerIndex = -1;
             if (player != null && card != null)
             {
+                playerIndex = lobby.Players.FindIndex(x => x == player);
                 switch (action)
                 {
                     case MoveCardAction.Buy:
@@ -177,7 +179,6 @@ namespace PokeChess.Server.Services
                 }
             }
 
-            var playerIndex = lobby.Players.FindIndex(x => x == player);
             lobby.Players[playerIndex] = player;
             return lobby;
         }
@@ -233,6 +234,32 @@ namespace PokeChess.Server.Services
 
             var playerIndex = lobby.Players.FindIndex(x => x == player);
             player.IsShopFrozen = !player.IsShopFrozen;
+            lobby.Players[playerIndex] = player;
+            return lobby;
+        }
+
+        public Lobby UpgradeTavern(Lobby lobby, Player player)
+        {
+            if (!Initialized())
+            {
+                _logger.LogError("FreezeShop failed because GameService was not initialized");
+                return lobby;
+            }
+
+            if (!IsLobbyValid(lobby))
+            {
+                _logger.LogError("FreezeShop received invalid lobby");
+                return lobby;
+            }
+
+            if (player == null)
+            {
+                _logger.LogError("FreezeShop received null player");
+                return lobby;
+            }
+
+            var playerIndex = lobby.Players.FindIndex(x => x == player);
+            player = player.UpgradeTavern();
             lobby.Players[playerIndex] = player;
             return lobby;
         }
