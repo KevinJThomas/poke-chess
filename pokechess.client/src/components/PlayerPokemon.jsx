@@ -1,15 +1,17 @@
 import Pokemon from "./Pokemon";
 
-export default function PlayerPokemon() {
+export default function PlayerPokemon({ board }) {
   return (
     <>
-      <Pokemon name="Pikachu" attack={10} health={100} id={1} />
-      <Pokemon name="Pikachu" attack={10} health={100} id={2} />
-      <Pokemon name="Pikachu" attack={10} health={100} id={3} />
-      <Pokemon name="Pikachu" attack={10} health={100} id={4} />
-      <Pokemon name="Pikachu" attack={10} health={100} id={5} />
-      <Pokemon name="Pikachu" attack={10} health={100} id={6} />
-      <Pokemon name="Pikachu" attack={10} health={100} id={7} />
+      {board?.map((pokemon) => (
+        <Pokemon
+          key={pokemon.id}
+          name={pokemon.name}
+          attack={pokemon.attack}
+          health={pokemon.health}
+          id={pokemon.id}
+        />
+      ))}
     </>
   );
 }

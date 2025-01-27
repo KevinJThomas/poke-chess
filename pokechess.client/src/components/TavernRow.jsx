@@ -46,10 +46,10 @@ export default function TavernRow({ tavern, isDragDisabled }) {
           style={getListStyle(snapshot.isDraggingOver, items.length)}
           {...provided.droppableProps}
         >
-          {items.map((item, index) => (
+          {tavern.map((pokemon, index) => (
             <Draggable
-              key={item.id}
-              draggableId={item.id}
+              key={pokemon.id}
+              draggableId={pokemon.id}
               index={index}
               isDragDisabled={isDragDisabled}
             >
@@ -64,10 +64,10 @@ export default function TavernRow({ tavern, isDragDisabled }) {
                   )}
                 >
                   <Pokemon
-                    name="Bulbasaur"
-                    attack={1}
-                    health={1}
-                    id={item.id}
+                    name={pokemon.name}
+                    attack={pokemon.attack}
+                    health={pokemon.health}
+                    id={pokemon.id}
                   />
                 </div>
               )}

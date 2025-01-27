@@ -6,13 +6,34 @@ import Row from "./Row";
 import Shop from "./Shop";
 import TavernRow from "./TavernRow";
 
-export default function ShopBoard() {
+export default function ShopBoard({
+  players,
+  gameState,
+  playerId,
+  connection,
+}) {
+  console.log("players", players);
+  console.log("gameState", gameState);
+
+  const player = players.find((player) => player.id === playerId);
+
   const tavern = [
     { id: "1", name: "Pikachu", attack: 10, health: 100, tier: 1 },
     { id: "2", name: "Charmander", attack: 10, health: 100, tier: 1 },
     { id: "3", name: "Bulbasaur", attack: 10, health: 100, tier: 1 },
   ];
 
+  function upgrade() {
+    connection.invoke("Upgrade");
+  }
+
+  function refresh() {
+    connection.invoke("GetNewShop");
+  }
+
+  function freeze() {
+    connection.invoke("Freeze");
+  }
   // const hand = [
   //   { id: "1", name: "Pikachu", attack: 10, health: 100, tier: 1 },
   //   { id: "2", name: "Pikachu", attack: 10, health: 100, tier: 1 },
@@ -23,14 +44,14 @@ export default function ShopBoard() {
     <div className="flex h-screen flex-col items-center justify-center">
       <Row>
         <div className="w-16"></div>
-        <Button className="">Upgrade (6)</Button>
+        <Button onClick={upgrade}>Upgrade (6)</Button>
         <Shop />
-        <Button className="">Refresh</Button>
-        <Button className="">Freeze</Button>
+        <Button onClick={refresh}>Refresh</Button>
+        <Button onClick={freeze}>Freeze</Button>
       </Row>
-      <TavernRow tavern={tavern} isDragDisabled={false} />
+      <TavernRow tavern={player?.shop ?? []} isDragDisabled={false} />
       <Row>
-        <PlayerPokemon />
+        <PlayerPokemon board={player?.board ?? []} />
       </Row>
       <Row>
         <Hero name="Ash" health={30} armor={10} />

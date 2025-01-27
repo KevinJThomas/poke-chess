@@ -17,9 +17,10 @@ export default function App() {
   const [players, setPlayers] = useState([]);
   const [name, setName] = useState("");
   const [gameState, setGameState] = useState();
+  const [playerId, setPlayerId] = useState();
 
   function onDragEnd(result) {
-    console.log(result);
+    console.log("onDragEnd", result);
   }
 
   useEffect(() => {
@@ -49,7 +50,10 @@ export default function App() {
       return;
     }
 
-    connection.on("LobbyUpdated", (lobby) => {
+    connection.on("LobbyUpdated", (lobby, playerId) => {
+      if (playerId) {
+        setPlayerId(playerId);
+      }
       setGameStatus("lobby");
       setPlayers(lobby.players);
     });
@@ -62,6 +66,7 @@ export default function App() {
     connection.on("StartGameConfirmed", (lobby) => {
       setPlayers(lobby.players);
       setGameState(lobby.gameState);
+      setGameStatus("shop");
     });
 
     return () => {
@@ -94,11 +99,18 @@ export default function App() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="relative h-screen w-screen bg-gray-200">
-        {gameStatus === "shop" && <ShopBoard />}
+        {gameStatus === "shop" && (
+          <ShopBoard
+            connection={connection}
+            players={players}
+            gameState={gameState}
+            playerId={playerId}
+          />
+        )}
         {gameStatus === "battle" && <BattleBoard />}
         <Button className="absolute top-1/2 right-0">End Turn</Button>
         <Gold gold={0} maxGold={5} />
-        <Players />
+        <Players players={players} />
       </div>
     </DragDropContext>
   );
