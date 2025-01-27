@@ -109,18 +109,6 @@ namespace PokeChess.Server
             }
         }
 
-        public override async Task OnDisconnectedAsync(Exception? exception)
-        {
-            var lobby = _lobbyManager.PlayerLeft(Context.ConnectionId);
-
-            if (lobby != null && lobby.IsActive && !string.IsNullOrWhiteSpace(lobby.Id) && lobby.Players != null && lobby.Players.Any())
-            {
-                await Clients.Group(lobby.Id).SendAsync("LobbyUpdated", lobby);
-            }
-
-            await base.OnDisconnectedAsync(exception);
-        }
-
         public async Task SendChat(string message)
         {
             var lobby = _lobbyManager.GetLobbyByPlayerId(Context.ConnectionId);
@@ -141,6 +129,18 @@ namespace PokeChess.Server
                     await Clients.Group(lobby.Id).SendAsync("ChatReceived", newMessage);
                 }
             }
+        }
+
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            var lobby = _lobbyManager.PlayerLeft(Context.ConnectionId);
+
+            if (lobby != null && lobby.IsActive && !string.IsNullOrWhiteSpace(lobby.Id) && lobby.Players != null && lobby.Players.Any())
+            {
+                await Clients.Group(lobby.Id).SendAsync("LobbyUpdated", lobby);
+            }
+
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }
