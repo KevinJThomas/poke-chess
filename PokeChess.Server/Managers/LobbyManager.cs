@@ -12,7 +12,7 @@ namespace PokeChess.Server.Managers
     public sealed class LobbyManager : ILobbyManager
     {
         private static readonly Lazy<LobbyManager> _instance = new Lazy<LobbyManager>(() => new LobbyManager());
-        private readonly IGameService _gameService;
+        private readonly IGameService _gameService = GameService.Instance;
         private bool _initialized = false;
         private ILogger _logger;
         private Dictionary<string, Lobby> _lobbies = new Dictionary<string, Lobby>();
@@ -112,6 +112,11 @@ namespace PokeChess.Server.Managers
                     return null;
                 }
 
+                if (!_gameService.Initialized())
+                {
+                    _gameService.Initialize(_logger);
+                }
+
                 _lobbies[lobby.Key] = _gameService.StartGame(lobby.Value);
 
                 return _lobbies[lobby.Key];
@@ -145,6 +150,11 @@ namespace PokeChess.Server.Managers
                 {
                     _logger.LogError($"StartGame couldn't find lobby by player id: {playerId}");
                     return null;
+                }
+
+                if (!_gameService.Initialized())
+                {
+                    _gameService.Initialize(_logger);
                 }
 
                 (_lobbies[lobby.Key], var list) = _gameService.GetNewShop(_lobbies[lobby.Key], _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault());
