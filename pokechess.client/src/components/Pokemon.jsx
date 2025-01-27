@@ -4,7 +4,9 @@ import Tier from "./Tier";
 import LeaderLine from "react-leader-line";
 import { useState } from "react";
 
-export default function Pokemon({ attack, health, name, tier, id }) {
+export default function Pokemon({ attack, health, name, tier, id, cardType }) {
+  const isMinion = cardType === 0;
+
   const [line, setLine] = useState(null);
   return (
     <div
@@ -33,9 +35,9 @@ export default function Pokemon({ attack, health, name, tier, id }) {
       }}
     >
       <span className="text-xs">{name}</span>
-      <Attack attack={attack} />
-      <Health health={health} />
-      {tier && <Tier tier={tier} />}
+      {isMinion && <Attack attack={attack} />}
+      {isMinion && <Health health={health} />}
+      {!!tier && <Tier tier={tier} />}
     </div>
   );
 }

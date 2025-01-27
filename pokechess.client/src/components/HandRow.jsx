@@ -1,7 +1,7 @@
 import Pokemon from "./Pokemon";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 
-export default function HandRow({ tavern, isDragDisabled }) {
+export default function HandRow({ hand, isDragDisabled }) {
   function getListStyle(isDraggingOver, itemsLength) {
     return {
       // background: isDraggingOver ? "lightblue" : "lightgrey",
@@ -10,14 +10,6 @@ export default function HandRow({ tavern, isDragDisabled }) {
       // width: itemsLength * 68.44 + 16,
     };
   }
-
-  const getItems = (count) =>
-    Array.from({ length: count }, (v, k) => k).map((k) => ({
-      id: `item-${k}-hand`,
-      content: `item ${k}`,
-    }));
-
-  const items = getItems(3);
 
   function getItemStyle(isDragging, draggableStyle) {
     return {
@@ -43,13 +35,13 @@ export default function HandRow({ tavern, isDragDisabled }) {
         <div
           className="flex h-1/5 w-screen items-center justify-center"
           ref={provided.innerRef}
-          style={getListStyle(snapshot.isDraggingOver, items.length)}
+          style={getListStyle(snapshot.isDraggingOver, hand.length)}
           {...provided.droppableProps}
         >
-          {items.map((item, index) => (
+          {hand.map((card, index) => (
             <Draggable
-              key={item.id}
-              draggableId={item.id}
+              key={card.id}
+              draggableId={card.id}
               index={index}
               isDragDisabled={isDragDisabled}
             >
@@ -63,12 +55,7 @@ export default function HandRow({ tavern, isDragDisabled }) {
                     provided.draggableProps.style,
                   )}
                 >
-                  <Pokemon
-                    name={item.content}
-                    attack={1}
-                    health={1}
-                    id={item.id}
-                  />
+                  <Pokemon key={card.id} {...card} />
                 </div>
               )}
             </Draggable>

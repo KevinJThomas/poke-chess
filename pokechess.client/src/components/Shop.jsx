@@ -1,7 +1,7 @@
 import Hero from "./Hero";
 import { Droppable } from "@hello-pangea/dnd";
 
-export default function Shop() {
+export default function Shop({ player }) {
   function getListStyle(isDraggingOver) {
     return {
       // background: isDraggingOver ? "lightblue" : "lightgrey",
@@ -12,14 +12,14 @@ export default function Shop() {
   }
 
   return (
-    <Droppable droppableId="droppable-shop" direction="horizontal">
+    <Droppable droppableId="droppable-sell" direction="horizontal">
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
           style={getListStyle(snapshot.isDraggingOver)}
           {...provided.droppableProps}
         >
-          <Hero name="Shop" tier={1} />
+          <Hero name="Shop" tier={player.tier} />
         </div>
       )}
     </Droppable>
