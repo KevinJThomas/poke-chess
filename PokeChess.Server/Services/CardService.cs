@@ -63,6 +63,8 @@ namespace PokeChess.Server.Services
                             {
                                 var newCard = card.Clone();
                                 newCard.Id = Guid.NewGuid().ToString();
+                                newCard.Attack = newCard.BaseAttack;
+                                newCard.Health = newCard.BaseHealth;
                                 _allCards.Add(newCard);
                                 _allMinions.Add(newCard);
                             }
