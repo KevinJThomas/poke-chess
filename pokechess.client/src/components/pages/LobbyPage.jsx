@@ -2,10 +2,13 @@ import Avatar from "../Avatar";
 import Button from "../ButtonPage";
 import Card from "../Card";
 import Header from "../Header";
+import { useState } from "react";
 
 export default function Lobby({ players, connection }) {
+  const [isLoading, setIsLoading] = useState(false);
   function startGame() {
     connection.invoke("StartGame");
+    setIsLoading(true);
   }
 
   return (
@@ -22,7 +25,12 @@ export default function Lobby({ players, connection }) {
             </li>
           ))}
         </ul>
-        <Button fullWidth disabled={players.length <= 1} onClick={startGame}>
+        <Button
+          fullWidth
+          disabled={players.length <= 1}
+          onClick={startGame}
+          loading={isLoading}
+        >
           Start Game
         </Button>
       </Card>

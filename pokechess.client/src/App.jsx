@@ -11,11 +11,12 @@ import Lobby from "./components/pages/LobbyPage";
 import NamePage from "./components/pages/NamePage";
 
 export default function App() {
-  const [gameStatus, setGameStatus] = useState("shop");
+  const [gameStatus, setGameStatus] = useState("name");
   const [connection, setConnection] = useState();
   const [error, setError] = useState();
   const [players, setPlayers] = useState([]);
   const [name, setName] = useState("");
+  const [gameState, setGameState] = useState();
 
   function onDragEnd(result) {
     console.log(result);
@@ -48,10 +49,8 @@ export default function App() {
       return;
     }
 
-    connection.on("LobbyUpdated", (lobby, playerId) => {
-      if (playerId) {
-        setGameStatus("lobby");
-      }
+    connection.on("LobbyUpdated", (lobby) => {
+      setGameStatus("lobby");
       setPlayers(lobby.players);
     });
 
@@ -60,13 +59,15 @@ export default function App() {
       setGameStatus("error");
     });
 
+    connection.on("StartGameConfirmed", (lobby) => {
+      setPlayers(lobby.players);
+      setGameState(lobby.gameState);
+    });
+
     return () => {
       connection.off("LobbyUpdated");
       connection.off("GameError");
-      connection.off("ConfirmNextRound");
-      connection.off("RoundComplete");
-      connection.off("VoteComplete");
-      connection.off("ChatReceived");
+      connection.off("StartGameConfirmed");
     };
   }, [connection]);
 
