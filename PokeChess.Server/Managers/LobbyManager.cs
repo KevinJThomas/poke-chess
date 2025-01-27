@@ -6,7 +6,6 @@ using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services;
 using PokeChess.Server.Services.Interfaces;
-using System.Numerics;
 
 namespace PokeChess.Server.Managers
 {
@@ -89,6 +88,11 @@ namespace PokeChess.Server.Managers
             return _lobbies[id];
         }
 
+        public Lobby GetLobbyByPlayerId(string playerId)
+        {
+            return _lobbies.Where(x => x.Value.Players.Any(y => y.Id == playerId)).FirstOrDefault().Value;
+        }
+
         public Lobby StartGame(string playerId)
         {
             if (!Initialized())
@@ -169,9 +173,8 @@ namespace PokeChess.Server.Managers
             }
         }
 
-        public GameState MoveCard(string playerId, string cardId, MoveCardAction action)
+        public Player MoveCard(string playerId, string cardId, MoveCardAction action)
         {
-
             if (!Initialized())
             {
                 _logger.LogError($"MoveCard failed because LobbyManager was not initialized");
@@ -215,12 +218,119 @@ namespace PokeChess.Server.Managers
                 }
                 _lobbies[lobby.Key] = _gameService.MoveCard(lobby.Value, player, card, action);
 
-                return _lobbies[lobby.Key].GameState;
+                return _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"MoveCard exception: {ex.Message}");
+                return null;
+            }
+        }
+
+        public Lobby CombatRound(string lobbyId)
+        {
+            if (!Initialized())
+            {
+                _logger.LogError($"CombatRound failed because LobbyManager was not initialized");
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(lobbyId))
+            {
+                _logger.LogError($"CombatRound received null or empty lobbyId");
+                return null;
+            }
+
+            try
+            {
+                _logger.LogInformation($"CombatRound. lobbyId: {lobbyId}");
+
+                if (!_gameService.Initialized())
+                {
+                    _gameService.Initialize(_logger);
+                }
+
+                _lobbies[lobbyId] = _gameService.CombatRound(_lobbies[lobbyId]);
+
+                return _lobbies[lobbyId];
             }
             catch (Exception ex)
             {
                 _logger.LogError($"StartGame exception: {ex.Message}");
                 return null;
+            }
+        }
+
+        public Lobby EndTurn(string playerId)
+        {
+            foreach (var lobby in _lobbies)
+            {
+                if (lobby.Value.Players.Any(p => p.Id == playerId))
+                {
+                    var index = GetPlayerIndexById(lobby.Value, playerId);
+                    lobby.Value.Players[index].TurnEnded = true;
+
+                    return lobby.Value;
+                }
+            }
+
+            return null;
+        }
+
+        public bool ReadyForCombat(string lobbyId)
+        {
+            return _lobbies[lobbyId].Players.All(x => x.TurnEnded);
+        }
+
+        public Lobby PlayerLeft(string id)
+        {
+            foreach (var lobby in _lobbies)
+            {
+                if (lobby.Value.IsActive && lobby.Value.Players.Any(p => p.Id == id))
+                {
+                    if (lobby.Value.IsWaitingToStart)
+                    {
+                        // If the lobby hasn't started yet, remove the player from the lobby
+                        var index = GetPlayerIndexById(lobby.Value, id);
+                        lobby.Value.Players.RemoveAt(index);
+                        if (!lobby.Value.Players.Any(x => x.IsActive))
+                        {
+                            lobby.Value.IsActive = false;
+                            ClearInactiveLobbies();
+                        }
+
+                        _logger.LogInformation($"PlayerLeft lobby not started. id: {id}");
+                        return lobby.Value;
+                    }
+                    else
+                    {
+                        // If the lobby has started, mark the player as inactive
+                        var index = GetPlayerIndexById(lobby.Value, id);
+                        lobby.Value.Players[index].IsActive = false;
+
+                        if (!lobby.Value.Players.Any(x => x.IsActive))
+                        {
+                            lobby.Value.IsActive = false;
+                            ClearInactiveLobbies();
+                        }
+
+                        _logger.LogInformation($"PlayerLeft lobby started. id: {id}");
+                        return lobby.Value;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public void AddNewChatMessage(string lobbyId, Message message)
+        {
+            foreach (var lobby in _lobbies)
+            {
+                if (lobby.Value != null && lobby.Value.Id == lobbyId && lobby.Value.Messages != null)
+                {
+                    lobby.Value.Messages.Add(message);
+                }
             }
         }
 
@@ -266,6 +376,11 @@ namespace PokeChess.Server.Managers
             var lobby = new Lobby(id);
             _lobbies.Add(id, lobby);
             return lobby;
+        }
+
+        private int GetPlayerIndexById(Lobby lobby, string id)
+        {
+            return lobby.Players.FindIndex(x => x.Id == id);
         }
 
         #endregion

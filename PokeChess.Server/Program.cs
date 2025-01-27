@@ -52,6 +52,6 @@ app.UseCors(options =>
 });
 
 ConfigurationHelper.Initialize(app.Configuration);
-CardService.Instance.GetAllCards();
+CardService.Instance.LoadAllCards();
 
 app.Run();

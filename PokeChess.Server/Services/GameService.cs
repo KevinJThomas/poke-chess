@@ -72,6 +72,14 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
+            if (lobby.Players.Count() < _playersPerLobby)
+            {
+                for (var i = lobby.Players.Count(); i < _playersPerLobby; i++)
+                {
+                    lobby.Players.Add(GetNewGhost());
+                }
+            }
+
             if (!IsLobbyValid(lobby))
             {
                 _logger.LogError("StartGame received invalid lobby");
@@ -188,7 +196,7 @@ namespace PokeChess.Server.Services
 
         #region private methods
 
-        private Dictionary<Player, Player> AssignCombatMatchups(List<Player> players)
+        private List<Player[]> AssignCombatMatchups(List<Player> players)
         {
             if (players == null || !players.Any())
             {
@@ -196,7 +204,7 @@ namespace PokeChess.Server.Services
                 return null;
             }
 
-            var playerDictionary = new Dictionary<Player, Player>();
+            var matchupList = new List<Player[]>();
             var indexDictionary = new Dictionary<int, bool>();
             for (var i = 0; i < players.Count(); i++)
             {
@@ -208,10 +216,10 @@ namespace PokeChess.Server.Services
                 (indexDictionary, var index1) = GetUnusedIndex(indexDictionary);
                 (indexDictionary, var index2) = GetUnusedIndex(indexDictionary);
 
-                playerDictionary.Add(players[index1], players[index2]);
+                matchupList.Add([players[index1], players[index2]]);
             }
 
-            return playerDictionary;
+            return matchupList;
         }
 
         private long GetTimeLimitToNextCombat(int roundNumber)
@@ -250,9 +258,7 @@ namespace PokeChess.Server.Services
 
         private bool IsLobbyValid(Lobby lobby)
         {
-            // Foregoing _playersPerLobby check while developing
-            //if (lobby == null || lobby.GameState == null || lobby.Players == null || !lobby.Players.Any() || lobby.Players.Count != _playersPerLobby)
-            if (lobby == null || lobby.GameState == null || lobby.Players == null || !lobby.Players.Any())
+            if (lobby == null || lobby.GameState == null || lobby.Players == null || !lobby.Players.Any() || lobby.Players.Count != _playersPerLobby)
             {
                 return false;
             }
@@ -396,8 +402,8 @@ namespace PokeChess.Server.Services
         {
             foreach (var matchup in lobby.GameState.NextRoundMatchups)
             {
-                var player1 = lobby.Players.Where(x => x.Id == matchup.Key.Id).FirstOrDefault();
-                var player2 = lobby.Players.Where(x => x.Id == matchup.Value.Id).FirstOrDefault();
+                var player1 = lobby.Players.Where(x => x.Id == matchup[0].Id).FirstOrDefault();
+                var player2 = lobby.Players.Where(x => x.Id == matchup[1].Id).FirstOrDefault();
 
                 if (player1 == null || player2 == null)
                 {
@@ -770,6 +776,15 @@ namespace PokeChess.Server.Services
             {
                 return _largeDamageCap;
             }
+        }
+
+        private Player GetNewGhost()
+        {
+            var id = Guid.NewGuid().ToString();
+            var ghost = new Player(id, "Ghost", 0);
+            ghost.Health = 0;
+            ghost.IsActive = false;
+            return ghost;
         }
 
         #endregion

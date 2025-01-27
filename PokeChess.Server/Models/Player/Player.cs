@@ -43,6 +43,7 @@ namespace PokeChess.Server.Models.Player
         public bool IsShopFrozen { get; set; }
         public int WinStreak { get; set; }
         public bool Attacking { get; set; }
+        public bool TurnEnded { get; set; }
         public List<Card> Board { get; set; }
         public List<Card> Hand { get; set; }
         public List<Card> Shop { get; set; }
