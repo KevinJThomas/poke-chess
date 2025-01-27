@@ -4,6 +4,7 @@ using PokeChess.Server.Models;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services;
 using PokeChess.Server.Services.Interfaces;
+using System.Numerics;
 
 namespace PokeChess.Server.Managers
 {
@@ -84,6 +85,41 @@ namespace PokeChess.Server.Managers
         public Lobby GetLobbyById(string id)
         {
             return _lobbies[id];
+        }
+
+        public Lobby StartGame(string playerId)
+        {
+            if (!Initialized())
+            {
+                _logger.LogError($"StartGame failed because LobbyManager was not initialized");
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(playerId))
+            {
+                _logger.LogError($"StartGame received null or empty playerId");
+                return null;
+            }
+
+            try
+            {
+                _logger.LogInformation($"StartGame. playerId: {playerId}");
+                var lobby = _lobbies.Where(x => x.Value.Players.Any(y => y.Id == playerId)).FirstOrDefault();
+                if (string.IsNullOrWhiteSpace(lobby.Key) || lobby.Value == null)
+                {
+                    _logger.LogError($"StartGame couldn't find lobby by player id: {playerId}");
+                    return null;
+                }
+
+                _lobbies[lobby.Key] = _gameService.StartGame(lobby.Value);
+
+                return _lobbies[lobby.Key];
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"StartGame exception: {ex.Message}");
+                return null;
+            }
         }
 
         #endregion

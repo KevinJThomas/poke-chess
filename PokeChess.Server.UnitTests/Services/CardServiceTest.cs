@@ -10,8 +10,7 @@ namespace PokeChess.Server.UnitTests.Services
         public void TestLoadAllCards()
         {
             // Arrange
-            var config = InitConfiguration();
-            ConfigurationHelper.Initialize(config);
+            Configure();
             var instance = CardService.Instance;
 
             // Act
@@ -27,8 +26,7 @@ namespace PokeChess.Server.UnitTests.Services
         public void TestGetAllCards_HeapReferences()
         {
             // Arrange
-            var config = InitConfiguration();
-            ConfigurationHelper.Initialize(config);
+            Configure();
             var instance = CardService.Instance;
 
             // Act
@@ -49,8 +47,7 @@ namespace PokeChess.Server.UnitTests.Services
         public void TestGetAllMinions()
         {
             // Arrange
-            var config = InitConfiguration();
-            ConfigurationHelper.Initialize(config);
+            Configure();
             var instance = CardService.Instance;
 
             // Act
@@ -66,8 +63,7 @@ namespace PokeChess.Server.UnitTests.Services
         public void TestGetAllSpells()
         {
             // Arrange
-            var config = InitConfiguration();
-            ConfigurationHelper.Initialize(config);
+            Configure();
             var instance = CardService.Instance;
 
             // Act

@@ -16,8 +16,23 @@ namespace PokeChess.Server.Models.Game
         public int Cost { get; set; }
         public bool CanPlay { get; set; }
         public int PokemonId { get; set; }
+        public bool Attacked { get; set; }
+        public bool IsStealthed { get; set; }
+        public bool HasDivineShield { get; set; }
+        public bool HasVenomous { get; set; }
+        public bool HasWindfury { get; set; }
+        public bool HasReborn { get; set; }
+        public bool HasTaunt { get; set; }
+        public int CombatHealth { get; set; }
         public MinionType MinionType { get; set; }
         public CardType CardType { get; set; }
         public List<Keyword> Keywords { get; set; } = new List<Keyword>();
+        public bool IsDead
+        {
+            get
+            {
+                return CombatHealth <= 0;
+            }
+        }
     }
 }

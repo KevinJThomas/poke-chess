@@ -90,7 +90,7 @@ namespace PokeChess.Server.Services
                         }
                     }
                 }
-            }            
+            }
         }
 
         public List<Card> GetAllCards()

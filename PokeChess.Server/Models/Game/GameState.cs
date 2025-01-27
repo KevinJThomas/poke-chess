@@ -2,10 +2,11 @@
 {
     public class GameState
     {
-        public int RoundNumber { get; set; }
+        public int RoundNumber { get; set; } = 0;
+        public long TimeLimitToNextCombat { get; set; }
+        public int DamageCap { get; set; } = 5;
         public List<Card> MinionCardPool { get; set; } = new List<Card>();
         public List<Card> SpellCardPool { get; set; } = new List<Card>();
-        public long TimeLimitToNextCombat {  get; set; }
         public Dictionary<Player.Player, Player.Player> NextRoundMatchups { get; set; } = new Dictionary<Player.Player, Player.Player>();
     }
 }

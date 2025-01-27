@@ -1,4 +1,5 @@
-﻿using PokeChess.Server.Models;
+﻿using PokeChess.Server.Enums;
+using PokeChess.Server.Models;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 
@@ -8,6 +9,7 @@ namespace PokeChess.Server.Services.Interfaces
     {
         Lobby StartGame(Lobby lobby);
         (Lobby, List<Card>) GetNewShop(Lobby lobby, Player player);
-        Lobby SellMinion(Lobby lobby, Player player, Card card);
+        Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action);
+        Lobby CombatRound(Lobby lobby);
     }
 }

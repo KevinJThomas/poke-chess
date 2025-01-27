@@ -8,5 +8,6 @@ namespace PokeChess.Server.Managers.Interfaces
         void Initialize(ILogger logger);
         bool Initialized();
         Lobby PlayerJoined(Player player);
+        Lobby StartGame(string playerId);
     }
 }

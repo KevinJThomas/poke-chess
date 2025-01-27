@@ -21,9 +21,12 @@ namespace PokeChess.Server.Models.Player
             Gold = _startingGold;
             UpgradeCost = _upgradeToTwoCost;
             RefreshCost = refreshCost;
+            WinStreak = 0;
             Board = new List<Card>();
             Hand = new List<Card>();
             Shop = new List<Card>();
+            PreviousOpponentIds = new List<string>();
+            CombatActions = new List<CombatAction>();
         }
 
         public string? Id { get; set; }
@@ -38,9 +41,19 @@ namespace PokeChess.Server.Models.Player
         public int UpgradeCost { get; set; }
         public int RefreshCost { get; set; }
         public bool IsShopFrozen { get; set; }
+        public int WinStreak { get; set; }
+        public bool Attacking { get; set; }
         public List<Card> Board { get; set; }
         public List<Card> Hand { get; set; }
         public List<Card> Shop { get; set; }
         public List<string> PreviousOpponentIds { get; set; }
+        public List<CombatAction> CombatActions { get; set; }
+        public bool IsDead
+        {
+            get
+            {
+                return Health <= 0;
+            }
+        }
     }
 }
