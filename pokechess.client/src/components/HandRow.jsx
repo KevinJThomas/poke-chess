@@ -63,7 +63,12 @@ export default function HandRow({ tavern, isDragDisabled }) {
                     provided.draggableProps.style,
                   )}
                 >
-                  <Pokemon name={item.content} attack={1} health={1} />
+                  <Pokemon
+                    name={item.content}
+                    attack={1}
+                    health={1}
+                    id={item.id}
+                  />
                 </div>
               )}
             </Draggable>

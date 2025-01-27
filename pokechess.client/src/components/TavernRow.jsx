@@ -63,7 +63,12 @@ export default function TavernRow({ tavern, isDragDisabled }) {
                     provided.draggableProps.style,
                   )}
                 >
-                  <Pokemon name="Bulbasaur" attack={1} health={1} />
+                  <Pokemon
+                    name="Bulbasaur"
+                    attack={1}
+                    health={1}
+                    id={item.id}
+                  />
                 </div>
               )}
             </Draggable>
