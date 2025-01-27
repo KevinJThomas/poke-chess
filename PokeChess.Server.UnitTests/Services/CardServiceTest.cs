@@ -1,5 +1,4 @@
-﻿using PokeChess.Server.Helpers;
-using PokeChess.Server.Services;
+﻿using PokeChess.Server.Services;
 
 namespace PokeChess.Server.UnitTests.Services
 {

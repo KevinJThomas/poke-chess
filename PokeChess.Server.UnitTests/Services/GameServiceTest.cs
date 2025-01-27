@@ -1,6 +1,4 @@
-﻿using PokeChess.Server.Extensions;
-using PokeChess.Server.Models.Game;
-using PokeChess.Server.Models.Player;
+﻿using PokeChess.Server.Models.Game;
 using PokeChess.Server.Services;
 
 namespace PokeChess.Server.UnitTests.Services
