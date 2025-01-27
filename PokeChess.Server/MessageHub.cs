@@ -60,11 +60,11 @@ namespace PokeChess.Server
             }
 
             var id = Context.ConnectionId;
-            var cards = _lobbyManager.GetNewShop(id);
+            var player = _lobbyManager.GetNewShop(id);
 
-            if (cards != null)
+            if (player != null)
             {
-                await Clients.Caller.SendAsync("GetNewShopConfirmed", cards);
+                await Clients.Caller.SendAsync("GetNewShopConfirmed", player);
             }
         }
 

@@ -13,7 +13,7 @@ namespace PokeChess.Server.Managers.Interfaces
         Lobby GetLobbyByPlayerId(string playerId);
         Lobby PlayerJoined(Player player);
         Lobby StartGame(string playerId);
-        List<Card> GetNewShop(string playerId);
+        Player GetNewShop(string playerId);
         Player MoveCard(string playerId, string cardId, MoveCardAction action);
         Lobby PlayerLeft(string id);
         void AddNewChatMessage(string lobbyId, Message message);

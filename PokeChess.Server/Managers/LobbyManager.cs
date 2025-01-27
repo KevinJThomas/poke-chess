@@ -133,7 +133,7 @@ namespace PokeChess.Server.Managers
             }
         }
 
-        public List<Card> GetNewShop(string playerId)
+        public Player GetNewShop(string playerId)
         {
             if (!Initialized())
             {
@@ -162,9 +162,9 @@ namespace PokeChess.Server.Managers
                     _gameService.Initialize(_logger);
                 }
 
-                (_lobbies[lobby.Key], var list) = _gameService.GetNewShop(_lobbies[lobby.Key], _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault());
+                (_lobbies[lobby.Key], var player) = _gameService.GetNewShop(_lobbies[lobby.Key], _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault());
 
-                return list;
+                return player;
             }
             catch (Exception ex)
             {

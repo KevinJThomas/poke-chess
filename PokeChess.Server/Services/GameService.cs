@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Server.IISIntegration;
-using PokeChess.Server.Enums;
+﻿using PokeChess.Server.Enums;
 using PokeChess.Server.Extensions;
 using PokeChess.Server.Helpers;
 using PokeChess.Server.Models;
@@ -93,7 +91,7 @@ namespace PokeChess.Server.Services
             return lobby;
         }
 
-        public (Lobby, List<Card>) GetNewShop(Lobby lobby, Player player)
+        public (Lobby, Player) GetNewShop(Lobby lobby, Player player)
         {
             if (!Initialized())
             {
@@ -123,7 +121,7 @@ namespace PokeChess.Server.Services
 
             var playerIndex = lobby.Players.FindIndex(x => x == player);
             lobby.Players[playerIndex] = player;
-            return (lobby, player.Shop);
+            return (lobby, player);
         }
 
         public Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action)
@@ -205,18 +203,36 @@ namespace PokeChess.Server.Services
             }
 
             var matchupList = new List<Player[]>();
-            var indexDictionary = new Dictionary<int, bool>();
+            var indexDictionaryActive = new Dictionary<int, bool>();
+            var indexDictionaryNotActive = new Dictionary<int, bool>();
             for (var i = 0; i < players.Count(); i++)
             {
-                indexDictionary.Add(i, false);
+                if (players[i].IsActive && !players[i].IsDead)
+                {
+                    indexDictionaryActive.Add(i, false);
+                }
+                else
+                {
+                    indexDictionaryNotActive.Add(i, false);
+                }
             }
 
-            for (var i = 0; i < players.Count() / 2; i++)
+            for (var i = 0; i < (indexDictionaryActive.Count() + 1) / 2; i++)
             {
-                (indexDictionary, var index1) = GetUnusedIndex(indexDictionary);
-                (indexDictionary, var index2) = GetUnusedIndex(indexDictionary);
+                if (indexDictionaryActive.Count(x => !x.Value) == 1)
+                {
+                    var index1 = indexDictionaryActive.Where(x => !x.Value).FirstOrDefault().Key;
+                    var index2 = indexDictionaryNotActive.Where(x => !x.Value).FirstOrDefault().Key;
 
-                matchupList.Add([players[index1], players[index2]]);
+                    matchupList.Add([players[index1], players[index2]]);
+                }
+                else
+                {
+                    (indexDictionaryActive, var index1) = GetUnusedIndex(indexDictionaryActive);
+                    (indexDictionaryActive, var index2) = GetUnusedIndex(indexDictionaryActive);
+
+                    matchupList.Add([players[index1], players[index2]]);
+                }
             }
 
             return matchupList;
@@ -387,7 +403,7 @@ namespace PokeChess.Server.Services
             {
                 if (!lobby.Players[i].IsShopFrozen)
                 {
-                    (lobby, lobby.Players[i].Shop) = GetNewShop(lobby, lobby.Players[i]);
+                    (lobby, lobby.Players[i]) = GetNewShop(lobby, lobby.Players[i]);
                 }
                 else
                 {

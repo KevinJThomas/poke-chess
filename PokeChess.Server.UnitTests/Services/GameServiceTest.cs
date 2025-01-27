@@ -44,12 +44,13 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             var shop1 = lobby.Players[0].Shop;
-            (lobby, var shop2) = instance.GetNewShop(lobby, lobby.Players[0]);
+            (lobby, var player) = instance.GetNewShop(lobby, lobby.Players[0]);
 
             // Assert
             Assert.IsNotNull(shop1);
-            Assert.IsNotNull(shop2);
-            Assert.AreNotEqual(shop1, shop2);
+            Assert.IsNotNull(player);
+            Assert.IsNotNull(player.Shop);
+            Assert.AreNotEqual(shop1, player.Shop);
         }
 
         [TestMethod]

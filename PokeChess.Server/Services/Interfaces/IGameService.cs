@@ -10,7 +10,7 @@ namespace PokeChess.Server.Services.Interfaces
         void Initialize(ILogger logger);
         bool Initialized();
         Lobby StartGame(Lobby lobby);
-        (Lobby, List<Card>) GetNewShop(Lobby lobby, Player player);
+        (Lobby, Player) GetNewShop(Lobby lobby, Player player);
         Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action);
         Lobby CombatRound(Lobby lobby);
     }

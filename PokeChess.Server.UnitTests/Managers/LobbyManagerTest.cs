@@ -50,12 +50,14 @@ namespace PokeChess.Server.UnitTests.Managers
             // Arrange
             (var setupLobby, var logger) = InitializeSetup();
             var instance = LobbyManager.Instance;
+            //var playerCount = setupLobby.Players.Count();
+            var playerCount = 2;
 
             // Act
             instance.Initialize(logger);
-            foreach (var player in setupLobby.Players)
+            for (var i = 0; i < playerCount; i++)
             {
-                instance.PlayerJoined(player);
+                instance.PlayerJoined(setupLobby.Players[i]);
             }
             var startGame = instance.StartGame(setupLobby.Players[0].Id);
             var lobby = instance.GetLobbyByPlayerId(setupLobby.Players[0].Id);
@@ -90,11 +92,12 @@ namespace PokeChess.Server.UnitTests.Managers
                 instance.PlayerJoined(player);
             }
             var startGame = instance.StartGame(setupLobby.Players[0].Id);
-            var cards = instance.GetNewShop(setupLobby.Players[0].Id);
+            var updatedPlayer = instance.GetNewShop(setupLobby.Players[0].Id);
 
             // Assert
-            Assert.IsNotNull(cards);
-            Assert.IsTrue(cards.Any());
+            Assert.IsNotNull(updatedPlayer);
+            Assert.IsNotNull(updatedPlayer.Shop);
+            Assert.IsTrue(updatedPlayer.Shop.Any());
         }
 
         [TestMethod]
