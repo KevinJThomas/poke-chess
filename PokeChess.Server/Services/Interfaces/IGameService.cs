@@ -13,5 +13,6 @@ namespace PokeChess.Server.Services.Interfaces
         (Lobby, Player) GetNewShop(Lobby lobby, Player player, bool spendRefreshCost = false);
         Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action);
         Lobby CombatRound(Lobby lobby);
+        Lobby FreezeShop(Lobby lobby, Player player);
     }
 }

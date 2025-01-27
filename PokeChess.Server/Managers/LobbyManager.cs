@@ -282,6 +282,47 @@ namespace PokeChess.Server.Managers
             return _lobbies[lobbyId].Players.All(x => x.TurnEnded);
         }
 
+        public Player FreezeShop(string playerId)
+        {
+            if (!Initialized())
+            {
+                _logger.LogError($"StartGame failed because LobbyManager was not initialized");
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(playerId))
+            {
+                _logger.LogError($"StartGame received null or empty playerId");
+                return null;
+            }
+
+            try
+            {
+                _logger.LogInformation($"StartGame. playerId: {playerId}");
+                var lobby = _lobbies.Where(x => x.Value.Players.Any(y => y.Id == playerId)).FirstOrDefault();
+                if (string.IsNullOrWhiteSpace(lobby.Key) || lobby.Value == null)
+                {
+                    _logger.LogError($"StartGame couldn't find lobby by player id: {playerId}");
+                    return null;
+                }
+
+                if (!_gameService.Initialized())
+                {
+                    _gameService.Initialize(_logger);
+                }
+
+                var player = _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                _lobbies[lobby.Key] = _gameService.FreezeShop(lobby.Value, player);
+
+                return _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"StartGame exception: {ex.Message}");
+                return null;
+            }
+        }
+
         public Lobby PlayerLeft(string id)
         {
             foreach (var lobby in _lobbies)

@@ -151,7 +151,7 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
-            if (card != null)
+            if (player != null && card != null)
             {
                 switch (action)
                 {
@@ -208,6 +208,32 @@ namespace PokeChess.Server.Services
                 lobby = NextRound(lobby);
             }
 
+            return lobby;
+        }
+
+        public Lobby FreezeShop(Lobby lobby, Player player)
+        {
+            if (!Initialized())
+            {
+                _logger.LogError("FreezeShop failed because GameService was not initialized");
+                return lobby;
+            }
+
+            if (!IsLobbyValid(lobby))
+            {
+                _logger.LogError("FreezeShop received invalid lobby");
+                return lobby;
+            }
+
+            if (player == null)
+            {
+                _logger.LogError("FreezeShop received null player");
+                return lobby;
+            }
+
+            var playerIndex = lobby.Players.FindIndex(x => x == player);
+            player.IsShopFrozen = !player.IsShopFrozen;
+            lobby.Players[playerIndex] = player;
             return lobby;
         }
 

@@ -192,5 +192,30 @@ namespace PokeChess.Server.UnitTests.Managers
             Assert.IsTrue(lobby.Players.Any(x => x.Id == setupLobby.Players[0].Id));
             Assert.IsTrue(lobby.Players.Where(x => x.Id == setupLobby.Players[0].Id).FirstOrDefault().TurnEnded);
         }
+
+        [TestMethod]
+        public void TestFreezeShop()
+        {
+            // Arrange
+            (var setupLobby, var logger) = InitializeSetup();
+            var instance = LobbyManager.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            foreach (var player in setupLobby.Players)
+            {
+                instance.PlayerJoined(player);
+            }
+            var startGame = instance.StartGame(setupLobby.Players[0].Id);
+            var player1 = instance.FreezeShop(setupLobby.Players[0].Id);
+            var player2 = instance.FreezeShop(setupLobby.Players[1].Id);
+            player2 = instance.FreezeShop(setupLobby.Players[1].Id);
+
+            // Assert
+            Assert.IsNotNull(player1);
+            Assert.IsNotNull(player2);
+            Assert.IsTrue(player1.IsShopFrozen);
+            Assert.IsFalse(player2.IsShopFrozen);
+        }
     }
 }

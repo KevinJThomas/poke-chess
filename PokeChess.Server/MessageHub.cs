@@ -109,6 +109,22 @@ namespace PokeChess.Server
             }
         }
 
+        public async Task FreezeShop()
+        {
+            if (!_lobbyManager.Initialized())
+            {
+                _lobbyManager.Initialize(_logger);
+            }
+
+            var id = Context.ConnectionId;
+            var player = _lobbyManager.FreezeShop(id);
+
+            if (player != null)
+            {
+                await Clients.Caller.SendAsync("FreezeShopConfirmed", player);
+            }
+        }
+
         public async Task SendChat(string message)
         {
             var lobby = _lobbyManager.GetLobbyByPlayerId(Context.ConnectionId);

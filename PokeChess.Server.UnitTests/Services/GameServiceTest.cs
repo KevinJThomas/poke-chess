@@ -257,5 +257,25 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(playerArmorAfterCombat != playerArmorBeforeCombat);
             Assert.IsTrue(playerHealthAfterCombat == playerHealthBeforeCombat);
         }
+
+        [TestMethod]
+        public void TestFreezeShop()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby = instance.FreezeShop(lobby, lobby.Players[0]);
+            lobby = instance.FreezeShop(lobby, lobby.Players[1]);
+            lobby = instance.FreezeShop(lobby, lobby.Players[1]);
+
+            // Assert
+            Assert.IsNotNull(lobby);
+            Assert.IsTrue(lobby.Players[0].IsShopFrozen);
+            Assert.IsFalse(lobby.Players[1].IsShopFrozen);
+        }
     }
 }

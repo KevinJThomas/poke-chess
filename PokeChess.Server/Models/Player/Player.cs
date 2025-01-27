@@ -19,7 +19,7 @@ namespace PokeChess.Server.Models.Player
             TripleCount = 0;
             BaseGold = _startingGold;
             Gold = _startingGold;
-            UpgradeCost = _upgradeToTwoCost;
+            UpgradeCost = _upgradeToTwoCost + 1;
             RefreshCost = refreshCost;
             WinStreak = 0;
             MaxGold = 10;
