@@ -105,11 +105,12 @@ namespace PokeChess.Server.Services
                 return (lobby, player);
             }
 
+            var playerIndex = lobby.Players.FindIndex(x => x == player);
             if (spendRefreshCost)
             {
                 if (player.Gold < player.RefreshCost)
                 {
-                    _logger.LogError($"GetNewShop failed because player does not hav enough gold. player.Gold: {player.Gold}, player.RefreshCost: {player.RefreshCost}");
+                    _logger.LogError($"GetNewShop failed because player does not have enough gold. player.Gold: {player.Gold}, player.RefreshCost: {player.RefreshCost}");
                     return (lobby, player);
                 }
                 else
@@ -132,7 +133,6 @@ namespace PokeChess.Server.Services
 
             (lobby, player.Shop) = PopulatePlayerShop(lobby, player);
 
-            var playerIndex = lobby.Players.FindIndex(x => x == player);
             lobby.Players[playerIndex] = player;
             return (lobby, player);
         }
@@ -277,39 +277,62 @@ namespace PokeChess.Server.Services
             }
 
             var matchupList = new List<Player[]>();
-            var indexDictionaryActive = new Dictionary<int, bool>();
-            var indexDictionaryNotActive = new Dictionary<int, bool>();
+            var indexListActive = new List<int>();
+            var indexListInactive = new List<int>();
             for (var i = 0; i < players.Count(); i++)
             {
                 if (players[i].IsActive && !players[i].IsDead)
                 {
-                    indexDictionaryActive.Add(i, false);
+                    indexListActive.Add(i);
                 }
                 else
                 {
-                    indexDictionaryNotActive.Add(i, false);
+                    indexListInactive.Add(i);
                 }
             }
 
-            for (var i = 0; i < (indexDictionaryActive.Count() + 1) / 2; i++)
-            {
-                if (indexDictionaryActive.Count(x => !x.Value) == 1)
-                {
-                    var index1 = indexDictionaryActive.Where(x => !x.Value).FirstOrDefault().Key;
-                    var index2 = indexDictionaryNotActive.Where(x => !x.Value).FirstOrDefault().Key;
-
-                    matchupList.Add([players[index1], players[index2]]);
-                }
-                else
-                {
-                    (indexDictionaryActive, var index1) = GetUnusedIndex(indexDictionaryActive);
-                    (indexDictionaryActive, var index2) = GetUnusedIndex(indexDictionaryActive);
-
-                    matchupList.Add([players[index1], players[index2]]);
-                }
-            }
-
+            matchupList = RandomizeMatchups(players, indexListActive, indexListInactive);
             return matchupList;
+        }
+
+        private List<Player[]> RandomizeMatchups(List<Player> players, List<int> indexListActive, List<int> indexListInactive)
+        {
+            indexListActive.Shuffle();
+            var matchups = new List<List<Player>>
+            {
+                new List<Player>()
+            };
+            var matchupsReturn = new List<Player[]>();
+            var matchupIndex = 0;
+            foreach (var index in indexListActive)
+            {
+                if (matchups[matchupIndex].Count() >= 2)
+                {
+                    matchupIndex++;
+                    matchups.Add(new List<Player>());
+                }
+                matchups[matchupIndex].Add(players[index]);
+            }
+            if (matchups[matchups.Count() - 1].Count() == 1)
+            {
+                // If there is an odd number of active players, assign the one left out with an inactive player
+                matchups[matchups.Count() - 1].Add(players[indexListInactive.FirstOrDefault()]);
+            }
+
+            foreach (var matchup in matchups)
+            {
+                if (matchup[0].PreviousOpponentIds.Contains(matchup[1].Id) || matchup[1].PreviousOpponentIds.Contains(matchup[0].Id))
+                {
+                    return RandomizeMatchups(players, indexListActive, indexListInactive);
+                }
+            }
+
+            foreach (var matchup in matchups)
+            {
+                matchupsReturn.Add(matchup.ToArray());
+            }
+
+            return matchupsReturn;
         }
 
         private long GetTimeLimitToNextCombat(int roundNumber)
@@ -332,17 +355,18 @@ namespace PokeChess.Server.Services
             return (long)(timeSpan.TotalMilliseconds + 0.5);
         }
 
-        private (Dictionary<int, bool>, int) GetUnusedIndex(Dictionary<int, bool> dictionary)
+        private (Dictionary<int, bool>, int) GetUnusedIndex(Dictionary<int, bool> dictionary, List<string> previousOpponentIds = null, List<Player> players = null)
         {
+            var dictionaryIndexList = dictionary.Select(x => x.Key).ToList();
             var index = _random.Next(dictionary.Count());
-            if (dictionary[index])
+            if (dictionary[dictionaryIndexList[index]] || (previousOpponentIds != null && players != null && previousOpponentIds.Contains(players[dictionaryIndexList[index]].Id)))
             {
-                return GetUnusedIndex(dictionary);
+                return GetUnusedIndex(dictionary, previousOpponentIds, players);
             }
             else
             {
-                dictionary[index] = true;
-                return (dictionary, index);
+                dictionary[dictionaryIndexList[index]] = true;
+                return (dictionary, dictionaryIndexList[index]);
             }
         }
 
@@ -481,7 +505,7 @@ namespace PokeChess.Server.Services
             lobby.GameState.RoundNumber += 1;
             lobby.GameState.NextRoundMatchups = AssignCombatMatchups(lobby.Players);
             lobby.GameState.TimeLimitToNextCombat = GetTimeLimitToNextCombat(lobby.GameState.RoundNumber);
-            lobby.GameState.DamageCap = GetDamageCap(lobby.GameState.RoundNumber);
+            lobby.GameState.DamageCap = GetDamageCap(lobby.GameState.RoundNumber, lobby.Players.Count(x => x.IsActive && !x.IsDead));
             for (var i = 0; i < lobby.Players.Count(); i++)
             {
                 if (lobby.Players[i].BaseGold < lobby.Players[i].MaxGold)
@@ -552,8 +576,18 @@ namespace PokeChess.Server.Services
                     }
                 }
 
+                foreach (var minion in player1.Board)
+                {
+                    minion.CombatHealth = minion.Health;
+                }
+                foreach (var minion in player2.Board)
+                {
+                    minion.CombatHealth = minion.Health;
+                }
                 (player1, player2) = SwingMinions(player1, player2, lobby.GameState.DamageCap);
 
+                player1.AddPreviousOpponent(player2);
+                player2.AddPreviousOpponent(player1);
                 var player1Index = GetPlayerIndexById(player1.Id, lobby);
                 var player2Index = GetPlayerIndexById(player2.Id, lobby);
                 lobby.Players[player1Index] = player1;
@@ -565,15 +599,6 @@ namespace PokeChess.Server.Services
 
         private (Player, Player) SwingMinions(Player player1, Player player2, int damageCap)
         {
-            foreach (var minion in player1.Board)
-            {
-                minion.CombatHealth = minion.Health;
-            }
-            foreach (var minion in player2.Board)
-            {
-                minion.CombatHealth = minion.Health;
-            }
-
             var player1Board = player1.Board;
             var player2Board = player2.Board;
 
@@ -718,33 +743,39 @@ namespace PokeChess.Server.Services
 
         private int GetNextTargetIndex(List<Card> board)
         {
-            var tauntIndeces = new List<int>();
-            var stealthIndeces = new List<int>();
+            var aliveIndexList = new List<int>();
+            var tauntIndexList = new List<int>();
+            var stealthIndexList = new List<int>();
 
             for (var i = 0; i < board.Count; i++)
             {
-                if (board[i].Keywords.Contains(Keyword.Taunt) && !board[i].IsStealthed && !board[i].IsDead)
+                if (!board[i].IsDead)
                 {
-                    tauntIndeces.Add(i);
-                }
+                    aliveIndexList.Add(i);
 
-                if (board[i].IsStealthed && !board[i].IsDead)
-                {
-                    stealthIndeces.Add(i);
+                    if (board[i].Keywords.Contains(Keyword.Taunt) && !board[i].IsStealthed)
+                    {
+                        tauntIndexList.Add(i);
+                    }
+
+                    if (board[i].IsStealthed)
+                    {
+                        stealthIndexList.Add(i);
+                    }
                 }
             }
 
-            if (tauntIndeces.Any())
+            if (tauntIndexList.Any())
             {
                 // If there are one or more taunted minions, return one of them
-                return tauntIndeces[_random.Next(tauntIndeces.Count())];
+                return tauntIndexList[_random.Next(tauntIndexList.Count())];
             }
 
-            var nextTargetIndex = _random.Next(board.Count());
-            while (stealthIndeces.Any() && stealthIndeces.Count() < board.Where(x => !x.IsDead).Count() && stealthIndeces.Contains(nextTargetIndex))
+            var nextTargetIndex = aliveIndexList[_random.Next(aliveIndexList.Count())];
+            while (stealthIndexList.Any() && stealthIndexList.Count() < board.Where(x => !x.IsDead).Count() && stealthIndexList.Contains(nextTargetIndex))
             {
                 // If there are stealthed minions, but not all minions are stealthed, retry until you find a non-stealthed target
-                nextTargetIndex = _random.Next(board.Count());
+                nextTargetIndex = aliveIndexList[_random.Next(aliveIndexList.Count())];
             }
 
             return nextTargetIndex;
@@ -872,19 +903,27 @@ namespace PokeChess.Server.Services
             return (player1, player2);
         }
 
-        private int GetDamageCap(int roundNumber)
+        private int GetDamageCap(int roundNumber, int activePlayerCount)
         {
-            if (roundNumber < 4)
+            if (activePlayerCount > _playersPerLobby / 2)
             {
-                return _smallDamageCap;
-            }
-            else if (roundNumber < 8)
-            {
-                return _mediumDamageCap;
+                if (roundNumber < 4)
+                {
+                    return _smallDamageCap;
+                }
+                else if (roundNumber < 8)
+                {
+                    return _mediumDamageCap;
+                }
+                else
+                {
+                    return _largeDamageCap;
+                }
             }
             else
             {
-                return _largeDamageCap;
+                // If the lobby has lost at least half the players, damage cap is off
+                return 1000;
             }
         }
 

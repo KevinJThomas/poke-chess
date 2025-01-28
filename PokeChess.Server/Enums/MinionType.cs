@@ -2,10 +2,22 @@
 {
     public enum MinionType
     {
-        None,
+        Normal,
         Fire,
         Water,
         Grass,
+        Poison,
+        Flying,
+        Bug,
+        Electric,
+        Ground,
+        Fairy,
+        Fighting,
+        Psychic,
+        Rock,
+        Ice,
+        Ghost,
+        Dragon,
         All
     }
 }

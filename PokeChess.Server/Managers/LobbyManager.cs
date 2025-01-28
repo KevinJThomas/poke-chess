@@ -110,8 +110,8 @@ namespace PokeChess.Server.Managers
             try
             {
                 _logger.LogInformation($"StartGame. playerId: {playerId}");
-                var lobby = _lobbies.Where(x => x.Value.Players.Any(y => y.Id == playerId)).FirstOrDefault();
-                if (string.IsNullOrWhiteSpace(lobby.Key) || lobby.Value == null)
+                var lobby = GetLobbyByPlayerId(playerId);
+                if (lobby == null)
                 {
                     _logger.LogError($"StartGame couldn't find lobby by player id: {playerId}");
                     return null;
@@ -122,9 +122,9 @@ namespace PokeChess.Server.Managers
                     _gameService.Initialize(_logger);
                 }
 
-                _lobbies[lobby.Key] = _gameService.StartGame(lobby.Value);
+                _lobbies[lobby.Id] = _gameService.StartGame(lobby);
 
-                return _lobbies[lobby.Key];
+                return _lobbies[lobby.Id];
             }
             catch (Exception ex)
             {
@@ -150,8 +150,8 @@ namespace PokeChess.Server.Managers
             try
             {
                 _logger.LogInformation($"GetNewShop. playerId: {playerId}");
-                var lobby = _lobbies.Where(x => x.Value.Players.Any(y => y.Id == playerId)).FirstOrDefault();
-                if (string.IsNullOrWhiteSpace(lobby.Key) || lobby.Value == null)
+                var lobby = GetLobbyByPlayerId(playerId);
+                if (lobby == null)
                 {
                     _logger.LogError($"GetNewShop couldn't find lobby by player id: {playerId}");
                     return null;
@@ -162,7 +162,7 @@ namespace PokeChess.Server.Managers
                     _gameService.Initialize(_logger);
                 }
 
-                (_lobbies[lobby.Key], var player) = _gameService.GetNewShop(_lobbies[lobby.Key], _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault(), true);
+                (_lobbies[lobby.Id], var player) = _gameService.GetNewShop(_lobbies[lobby.Id], _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault(), true);
 
                 return player;
             }
@@ -190,8 +190,8 @@ namespace PokeChess.Server.Managers
             try
             {
                 _logger.LogInformation($"MoveCard. playerId: {playerId}");
-                var lobby = _lobbies.Where(x => x.Value.Players.Any(y => y.Id == playerId)).FirstOrDefault();
-                if (string.IsNullOrWhiteSpace(lobby.Key) || lobby.Value == null)
+                var lobby = GetLobbyByPlayerId(playerId);
+                if (lobby == null)
                 {
                     _logger.LogError($"MoveCard couldn't find lobby by player id: {playerId}");
                     return null;
@@ -202,7 +202,7 @@ namespace PokeChess.Server.Managers
                     _gameService.Initialize(_logger);
                 }
 
-                var player  = _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                var player  = _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
                 var card = new Card();
                 switch (action)
                 {
@@ -216,9 +216,9 @@ namespace PokeChess.Server.Managers
                         card = player.Hand.Where(x => x.Id == cardId).FirstOrDefault();
                         break;
                 }
-                _lobbies[lobby.Key] = _gameService.MoveCard(lobby.Value, player, card, action, boardIndex);
+                _lobbies[lobby.Id] = _gameService.MoveCard(lobby, player, card, action, boardIndex);
 
-                return _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                return _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -279,7 +279,7 @@ namespace PokeChess.Server.Managers
 
         public bool ReadyForCombat(string lobbyId)
         {
-            return _lobbies[lobbyId].Players.All(x => x.TurnEnded);
+            return _lobbies[lobbyId].Players.All(x => x.TurnEnded || x.IsDead || !x.IsActive);
         }
 
         public Player FreezeShop(string playerId)
@@ -299,8 +299,8 @@ namespace PokeChess.Server.Managers
             try
             {
                 _logger.LogInformation($"StartGame. playerId: {playerId}");
-                var lobby = _lobbies.Where(x => x.Value.Players.Any(y => y.Id == playerId)).FirstOrDefault();
-                if (string.IsNullOrWhiteSpace(lobby.Key) || lobby.Value == null)
+                var lobby = GetLobbyByPlayerId(playerId);
+                if (lobby == null)
                 {
                     _logger.LogError($"StartGame couldn't find lobby by player id: {playerId}");
                     return null;
@@ -311,10 +311,10 @@ namespace PokeChess.Server.Managers
                     _gameService.Initialize(_logger);
                 }
 
-                var player = _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault();
-                _lobbies[lobby.Key] = _gameService.FreezeShop(lobby.Value, player);
+                var player = _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                _lobbies[lobby.Id] = _gameService.FreezeShop(lobby, player);
 
-                return _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                return _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -327,23 +327,23 @@ namespace PokeChess.Server.Managers
         {
             if (!Initialized())
             {
-                _logger.LogError($"StartGame failed because LobbyManager was not initialized");
+                _logger.LogError($"UpgradeTavern failed because LobbyManager was not initialized");
                 return null;
             }
 
             if (string.IsNullOrWhiteSpace(playerId))
             {
-                _logger.LogError($"StartGame received null or empty playerId");
+                _logger.LogError($"UpgradeTavern received null or empty playerId");
                 return null;
             }
 
             try
             {
-                _logger.LogInformation($"StartGame. playerId: {playerId}");
-                var lobby = _lobbies.Where(x => x.Value.Players.Any(y => y.Id == playerId)).FirstOrDefault();
-                if (string.IsNullOrWhiteSpace(lobby.Key) || lobby.Value == null)
+                _logger.LogInformation($"UpgradeTavern. playerId: {playerId}");
+                var lobby = GetLobbyByPlayerId(playerId);
+                if (lobby == null)
                 {
-                    _logger.LogError($"StartGame couldn't find lobby by player id: {playerId}");
+                    _logger.LogError($"UpgradeTavern couldn't find lobby by player id: {playerId}");
                     return null;
                 }
 
@@ -352,14 +352,14 @@ namespace PokeChess.Server.Managers
                     _gameService.Initialize(_logger);
                 }
 
-                var player = _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault();
-                _lobbies[lobby.Key] = _gameService.UpgradeTavern(lobby.Value, player);
+                var player = _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                _lobbies[lobby.Id] = _gameService.UpgradeTavern(lobby, player);
 
-                return _lobbies[lobby.Key].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                return _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"StartGame exception: {ex.Message}");
+                _logger.LogError($"UpgradeTavern exception: {ex.Message}");
                 return null;
             }
         }

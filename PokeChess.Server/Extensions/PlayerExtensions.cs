@@ -80,5 +80,21 @@ namespace PokeChess.Server.Extensions
 
             return player;
         }
+
+        public static void AddPreviousOpponent(this Player player, Player previousOpponent)
+        {
+            var historyLength = 2;
+
+            player.PreviousOpponentIds.Add(previousOpponent.Id);
+
+            var historyLengthOverflow = player.PreviousOpponentIds.Count() - historyLength;
+            if (historyLengthOverflow > 0)
+            {
+                for (var i = 0; i < historyLengthOverflow; i++)
+                {
+                    player.PreviousOpponentIds.RemoveAt(0);
+                }
+            }
+        }
     }
 }
