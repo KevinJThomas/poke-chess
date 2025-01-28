@@ -319,11 +319,14 @@ namespace PokeChess.Server.Services
                 matchups[matchups.Count() - 1].Add(players[indexListInactive.FirstOrDefault()]);
             }
 
-            foreach (var matchup in matchups)
+            if (indexListActive.Count() > 2)
             {
-                if (matchup[0].PreviousOpponentIds.Contains(matchup[1].Id) || matchup[1].PreviousOpponentIds.Contains(matchup[0].Id))
+                foreach (var matchup in matchups)
                 {
-                    return RandomizeMatchups(players, indexListActive, indexListInactive);
+                    if (matchup[0].PreviousOpponentIds.Contains(matchup[1].Id) || matchup[1].PreviousOpponentIds.Contains(matchup[0].Id))
+                    {
+                        return RandomizeMatchups(players, indexListActive, indexListInactive);
+                    }
                 }
             }
 
@@ -646,7 +649,7 @@ namespace PokeChess.Server.Services
 
                 player2CombatAction.FriendlyEndingBoardState = player2.Board;
                 player2CombatAction.EnemyEndingBoardState = player1.Board;
-                player1.CombatActions.Add(player2CombatAction);
+                player2.CombatActions.Add(player2CombatAction);
 
                 if (!player1.Board.Any(x => !x.IsDead) || !player2.Board.Any(x => !x.IsDead))
                 {
@@ -697,7 +700,7 @@ namespace PokeChess.Server.Services
 
                 player2CombatAction.FriendlyEndingBoardState = player2.Board;
                 player2CombatAction.EnemyEndingBoardState = player1.Board;
-                player1.CombatActions.Add(player2CombatAction);
+                player2.CombatActions.Add(player2CombatAction);
 
                 if (!player1.Board.Any(x => !x.IsDead) || !player2.Board.Any(x => !x.IsDead))
                 {
