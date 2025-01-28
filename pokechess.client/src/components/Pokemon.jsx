@@ -15,6 +15,7 @@ export default function Pokemon({
   cardType,
   cost,
   num,
+  showTier = false,
 }) {
   const isMinion = cardType === 0;
 
@@ -56,7 +57,7 @@ export default function Pokemon({
       {!isMinion && <span className="text-xs">{name}</span>}
       {isMinion && <Attack attack={attack} />}
       {isMinion && <Health health={health} />}
-      {!!tier && <Tier tier={tier} />}
+      {!!tier && showTier && <Tier tier={tier} />}
       {!isMinion && Number.isInteger(cost) && <Cost cost={cost} />}
     </div>
   );
