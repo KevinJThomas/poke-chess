@@ -1,3426 +1,3406 @@
 [
   {
-    "pokemon": [
+    "pokemonId": 1,
+    "num": "001",
+    "tier": 1,
+    "name": "Bulbasaur",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Grass", "Poison"],
+    "height": "0.71 m",
+    "weight": "6.9 kg",
+    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "next_evolution": [
       {
-        "pokemonId": 1,
-        "num": "001",
-        "tier": 1,
-        "name": "Bulbasaur",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Grass", "Poison"],
-        "height": "0.71 m",
-        "weight": "6.9 kg",
-        "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-        "next_evolution": [
-          {
-            "num": "002",
-            "name": "Ivysaur"
-          },
-          {
-            "num": "003",
-            "name": "Venusaur"
-          }
-        ]
-      },
-      {
-        "pokemonId": 2,
         "num": "002",
-        "tier": 1,
-        "name": "Ivysaur",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Grass", "Poison"],
-        "height": "0.99 m",
-        "weight": "13.0 kg",
-        "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "001",
-            "name": "Bulbasaur"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "003",
-            "name": "Venusaur"
-          }
-        ]
+        "name": "Ivysaur"
       },
       {
-        "pokemonId": 3,
         "num": "003",
-        "tier": 1,
-        "name": "Venusaur",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Grass", "Poison"],
-        "height": "2.01 m",
-        "weight": "100.0 kg",
-        "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "001",
-            "name": "Bulbasaur"
-          },
-          {
-            "num": "002",
-            "name": "Ivysaur"
-          }
-        ]
-      },
-      {
-        "pokemonId": 4,
-        "num": "004",
-        "tier": 1,
-        "name": "Charmander",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fire"],
-        "height": "0.61 m",
-        "weight": "8.5 kg",
-        "weaknesses": ["Water", "Ground", "Rock"],
-        "next_evolution": [
-          {
-            "num": "005",
-            "name": "Charmeleon"
-          },
-          {
-            "num": "006",
-            "name": "Charizard"
-          }
-        ]
-      },
-      {
-        "pokemonId": 5,
-        "num": "005",
-        "tier": 1,
-        "name": "Charmeleon",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fire"],
-        "height": "1.09 m",
-        "weight": "19.0 kg",
-        "weaknesses": ["Water", "Ground", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "004",
-            "name": "Charmander"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "006",
-            "name": "Charizard"
-          }
-        ]
-      },
-      {
-        "pokemonId": 6,
-        "num": "006",
-        "tier": 1,
-        "name": "Charizard",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fire", "Flying"],
-        "height": "1.70 m",
-        "weight": "90.5 kg",
-        "weaknesses": ["Water", "Electric", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "004",
-            "name": "Charmander"
-          },
-          {
-            "num": "005",
-            "name": "Charmeleon"
-          }
-        ]
-      },
-      {
-        "pokemonId": 7,
-        "num": "007",
-        "tier": 1,
-        "name": "Squirtle",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "0.51 m",
-        "weight": "9.0 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "next_evolution": [
-          {
-            "num": "008",
-            "name": "Wartortle"
-          },
-          {
-            "num": "009",
-            "name": "Blastoise"
-          }
-        ]
-      },
-      {
-        "pokemonId": 8,
-        "num": "008",
-        "tier": 1,
-        "name": "Wartortle",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "0.99 m",
-        "weight": "22.5 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "prev_evolution": [
-          {
-            "num": "007",
-            "name": "Squirtle"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "009",
-            "name": "Blastoise"
-          }
-        ]
-      },
-      {
-        "pokemonId": 9,
-        "num": "009",
-        "tier": 1,
-        "name": "Blastoise",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "1.60 m",
-        "weight": "85.5 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "prev_evolution": [
-          {
-            "num": "007",
-            "name": "Squirtle"
-          },
-          {
-            "num": "008",
-            "name": "Wartortle"
-          }
-        ]
-      },
-      {
-        "pokemonId": 10,
-        "num": "010",
-        "tier": 1,
-        "name": "Caterpie",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Bug"],
-        "height": "0.30 m",
-        "weight": "2.9 kg",
-        "weaknesses": ["Fire", "Flying", "Rock"],
-        "next_evolution": [
-          {
-            "num": "011",
-            "name": "Metapod"
-          },
-          {
-            "num": "012",
-            "name": "Butterfree"
-          }
-        ]
-      },
-      {
-        "pokemonId": 11,
-        "num": "011",
-        "tier": 1,
-        "name": "Metapod",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Bug"],
-        "height": "0.71 m",
-        "weight": "9.9 kg",
-        "weaknesses": ["Fire", "Flying", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "010",
-            "name": "Caterpie"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "012",
-            "name": "Butterfree"
-          }
-        ]
-      },
-      {
-        "pokemonId": 12,
-        "num": "012",
-        "tier": 1,
-        "name": "Butterfree",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Bug", "Flying"],
-        "height": "1.09 m",
-        "weight": "32.0 kg",
-        "weaknesses": ["Fire", "Electric", "Ice", "Flying", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "010",
-            "name": "Caterpie"
-          },
-          {
-            "num": "011",
-            "name": "Metapod"
-          }
-        ]
-      },
-      {
-        "pokemonId": 13,
-        "num": "013",
-        "tier": 1,
-        "name": "Weedle",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Bug", "Poison"],
-        "height": "0.30 m",
-        "weight": "3.2 kg",
-        "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
-        "next_evolution": [
-          {
-            "num": "014",
-            "name": "Kakuna"
-          },
-          {
-            "num": "015",
-            "name": "Beedrill"
-          }
-        ]
-      },
-      {
-        "pokemonId": 14,
-        "num": "014",
-        "tier": 1,
-        "name": "Kakuna",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Bug", "Poison"],
-        "height": "0.61 m",
-        "weight": "10.0 kg",
-        "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "013",
-            "name": "Weedle"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "015",
-            "name": "Beedrill"
-          }
-        ]
-      },
-      {
-        "pokemonId": 15,
-        "num": "015",
-        "tier": 1,
-        "name": "Beedrill",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Bug", "Poison"],
-        "height": "0.99 m",
-        "weight": "29.5 kg",
-        "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "013",
-            "name": "Weedle"
-          },
-          {
-            "num": "014",
-            "name": "Kakuna"
-          }
-        ]
-      },
-      {
-        "pokemonId": 16,
-        "num": "016",
-        "tier": 1,
-        "name": "Pidgey",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal", "Flying"],
-        "height": "0.30 m",
-        "weight": "1.8 kg",
-        "weaknesses": ["Electric", "Rock"],
-        "next_evolution": [
-          {
-            "num": "017",
-            "name": "Pidgeotto"
-          },
-          {
-            "num": "018",
-            "name": "Pidgeot"
-          }
-        ]
-      },
-      {
-        "pokemonId": 17,
-        "num": "017",
-        "tier": 1,
-        "name": "Pidgeotto",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal", "Flying"],
-        "height": "1.09 m",
-        "weight": "30.0 kg",
-        "weaknesses": ["Electric", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "016",
-            "name": "Pidgey"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "018",
-            "name": "Pidgeot"
-          }
-        ]
-      },
-      {
-        "pokemonId": 18,
-        "num": "018",
-        "tier": 1,
-        "name": "Pidgeot",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal", "Flying"],
-        "height": "1.50 m",
-        "weight": "39.5 kg",
-        "weaknesses": ["Electric", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "016",
-            "name": "Pidgey"
-          },
-          {
-            "num": "017",
-            "name": "Pidgeotto"
-          }
-        ]
-      },
-      {
-        "pokemonId": 19,
-        "num": "019",
-        "tier": 1,
-        "name": "Rattata",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "0.30 m",
-        "weight": "3.5 kg",
-        "weaknesses": ["Fighting"],
-        "next_evolution": [
-          {
-            "num": "020",
-            "name": "Raticate"
-          }
-        ]
-      },
-      {
-        "pokemonId": 20,
-        "num": "020",
-        "tier": 1,
-        "name": "Raticate",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "0.71 m",
-        "weight": "18.5 kg",
-        "weaknesses": ["Fighting"],
-        "prev_evolution": [
-          {
-            "num": "019",
-            "name": "Rattata"
-          }
-        ]
-      },
-      {
-        "pokemonId": 21,
-        "num": "021",
-        "tier": 1,
-        "name": "Spearow",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal", "Flying"],
-        "height": "0.30 m",
-        "weight": "2.0 kg",
-        "weaknesses": ["Electric", "Rock"],
-        "next_evolution": [
-          {
-            "num": "022",
-            "name": "Fearow"
-          }
-        ]
-      },
-      {
-        "pokemonId": 22,
-        "num": "022",
-        "tier": 1,
-        "name": "Fearow",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal", "Flying"],
-        "height": "1.19 m",
-        "weight": "38.0 kg",
-        "weaknesses": ["Electric", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "021",
-            "name": "Spearow"
-          }
-        ]
-      },
-      {
-        "pokemonId": 23,
-        "num": "023",
-        "tier": 1,
-        "name": "Ekans",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison"],
-        "height": "2.01 m",
-        "weight": "6.9 kg",
-        "weaknesses": ["Ground", "Psychic"],
-        "next_evolution": [
-          {
-            "num": "024",
-            "name": "Arbok"
-          }
-        ]
-      },
-      {
-        "pokemonId": 24,
-        "num": "024",
-        "tier": 1,
-        "name": "Arbok",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison"],
-        "height": "3.51 m",
-        "weight": "65.0 kg",
-        "weaknesses": ["Ground", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "023",
-            "name": "Ekans"
-          }
-        ]
-      },
-      {
-        "pokemonId": 25,
-        "num": "025",
-        "tier": 1,
-        "name": "Pikachu",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Electric"],
-        "height": "0.41 m",
-        "weight": "6.0 kg",
-        "weaknesses": ["Ground"],
-        "next_evolution": [
-          {
-            "num": "026",
-            "name": "Raichu"
-          }
-        ]
-      },
-      {
-        "pokemonId": 26,
-        "num": "026",
-        "tier": 1,
-        "name": "Raichu",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Electric"],
-        "height": "0.79 m",
-        "weight": "30.0 kg",
-        "weaknesses": ["Ground"],
-        "prev_evolution": [
-          {
-            "num": "025",
-            "name": "Pikachu"
-          }
-        ]
-      },
-      {
-        "pokemonId": 27,
-        "num": "027",
-        "tier": 1,
-        "name": "Sandshrew",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Ground"],
-        "height": "0.61 m",
-        "weight": "12.0 kg",
-        "weaknesses": ["Water", "Grass", "Ice"],
-        "next_evolution": [
-          {
-            "num": "028",
-            "name": "Sandslash"
-          }
-        ]
-      },
-      {
-        "pokemonId": 28,
-        "num": "028",
-        "tier": 1,
-        "name": "Sandslash",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Ground"],
-        "height": "0.99 m",
-        "weight": "29.5 kg",
-        "weaknesses": ["Water", "Grass", "Ice"],
-        "prev_evolution": [
-          {
-            "num": "027",
-            "name": "Sandshrew"
-          }
-        ]
-      },
-      {
-        "pokemonId": 29,
-        "num": "029",
-        "tier": 1,
-        "name": "Nidoran ♀ (Female)",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison"],
-        "height": "0.41 m",
-        "weight": "7.0 kg",
-        "weaknesses": ["Ground", "Psychic"],
-        "next_evolution": [
-          {
-            "num": "030",
-            "name": "Nidorina"
-          },
-          {
-            "num": "031",
-            "name": "Nidoqueen"
-          }
-        ]
-      },
-      {
-        "pokemonId": 30,
-        "num": "030",
-        "tier": 1,
-        "name": "Nidorina",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison"],
-        "height": "0.79 m",
-        "weight": "20.0 kg",
-        "weaknesses": ["Ground", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "029",
-            "name": "Nidoran(Female)"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "031",
-            "name": "Nidoqueen"
-          }
-        ]
-      },
-      {
-        "pokemonId": 31,
-        "num": "031",
-        "tier": 1,
-        "name": "Nidoqueen",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison", "Ground"],
-        "height": "1.30 m",
-        "weight": "60.0 kg",
-        "weaknesses": ["Water", "Ice", "Ground", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "029",
-            "name": "Nidoran(Female)"
-          },
-          {
-            "num": "030",
-            "name": "Nidorina"
-          }
-        ]
-      },
-      {
-        "pokemonId": 32,
-        "num": "032",
-        "tier": 1,
-        "name": "Nidoran ♂ (Male)",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison"],
-        "height": "0.51 m",
-        "weight": "9.0 kg",
-        "weaknesses": ["Ground", "Psychic"],
-        "next_evolution": [
-          {
-            "num": "033",
-            "name": "Nidorino"
-          },
-          {
-            "num": "034",
-            "name": "Nidoking"
-          }
-        ]
-      },
-      {
-        "pokemonId": 33,
-        "num": "033",
-        "tier": 1,
-        "name": "Nidorino",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison"],
-        "height": "0.89 m",
-        "weight": "19.5 kg",
-        "weaknesses": ["Ground", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "032",
-            "name": "Nidoran(Male)"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "034",
-            "name": "Nidoking"
-          }
-        ]
-      },
-      {
-        "pokemonId": 34,
-        "num": "034",
-        "tier": 1,
-        "name": "Nidoking",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison", "Ground"],
-        "height": "1.40 m",
-        "weight": "62.0 kg",
-        "weaknesses": ["Water", "Ice", "Ground", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "032",
-            "name": "Nidoran(Male)"
-          },
-          {
-            "num": "033",
-            "name": "Nidorino"
-          }
-        ]
-      },
-      {
-        "pokemonId": 35,
-        "num": "035",
-        "tier": 1,
-        "name": "Clefairy",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "0.61 m",
-        "weight": "7.5 kg",
-        "weaknesses": ["Fighting"],
-        "next_evolution": [
-          {
-            "num": "036",
-            "name": "Clefable"
-          }
-        ]
-      },
-      {
-        "pokemonId": 36,
-        "num": "036",
-        "tier": 1,
-        "name": "Clefable",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "1.30 m",
-        "weight": "40.0 kg",
-        "weaknesses": ["Fighting"],
-        "prev_evolution": [
-          {
-            "num": "035",
-            "name": "Clefairy"
-          }
-        ]
-      },
-      {
-        "pokemonId": 37,
-        "num": "037",
-        "tier": 1,
-        "name": "Vulpix",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fire"],
-        "height": "0.61 m",
-        "weight": "9.9 kg",
-        "weaknesses": ["Water", "Ground", "Rock"],
-        "next_evolution": [
-          {
-            "num": "038",
-            "name": "Ninetales"
-          }
-        ]
-      },
-      {
-        "pokemonId": 38,
-        "num": "038",
-        "tier": 1,
-        "name": "Ninetales",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fire"],
-        "height": "1.09 m",
-        "weight": "19.9 kg",
-        "weaknesses": ["Water", "Ground", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "037",
-            "name": "Vulpix"
-          }
-        ]
-      },
-      {
-        "pokemonId": 39,
-        "num": "039",
-        "tier": 1,
-        "name": "Jigglypuff",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "0.51 m",
-        "weight": "5.5 kg",
-        "weaknesses": ["Fighting"],
-        "next_evolution": [
-          {
-            "num": "040",
-            "name": "Wigglytuff"
-          }
-        ]
-      },
-      {
-        "pokemonId": 40,
-        "num": "040",
-        "tier": 1,
-        "name": "Wigglytuff",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "0.99 m",
-        "weight": "12.0 kg",
-        "weaknesses": ["Fighting"],
-        "prev_evolution": [
-          {
-            "num": "039",
-            "name": "Jigglypuff"
-          }
-        ]
-      },
-      {
-        "pokemonId": 41,
-        "num": "041",
-        "tier": 1,
-        "name": "Zubat",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison", "Flying"],
-        "height": "0.79 m",
-        "weight": "7.5 kg",
-        "weaknesses": ["Electric", "Ice", "Psychic", "Rock"],
-        "next_evolution": [
-          {
-            "num": "042",
-            "name": "Golbat"
-          }
-        ]
-      },
-      {
-        "pokemonId": 42,
-        "num": "042",
-        "tier": 1,
-        "name": "Golbat",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison", "Flying"],
-        "height": "1.60 m",
-        "weight": "55.0 kg",
-        "weaknesses": ["Electric", "Ice", "Psychic", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "041",
-            "name": "Zubat"
-          }
-        ]
-      },
-      {
-        "pokemonId": 43,
-        "num": "043",
-        "tier": 1,
-        "name": "Oddish",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Grass", "Poison"],
-        "height": "0.51 m",
-        "weight": "5.4 kg",
-        "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-        "next_evolution": [
-          {
-            "num": "044",
-            "name": "Gloom"
-          },
-          {
-            "num": "045",
-            "name": "Vileplume"
-          }
-        ]
-      },
-      {
-        "pokemonId": 44,
-        "num": "044",
-        "tier": 1,
-        "name": "Gloom",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Grass", "Poison"],
-        "height": "0.79 m",
-        "weight": "8.6 kg",
-        "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "043",
-            "name": "Oddish"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "045",
-            "name": "Vileplume"
-          }
-        ]
-      },
-      {
-        "pokemonId": 45,
-        "num": "045",
-        "tier": 1,
-        "name": "Vileplume",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Grass", "Poison"],
-        "height": "1.19 m",
-        "weight": "18.6 kg",
-        "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "043",
-            "name": "Oddish"
-          },
-          {
-            "num": "044",
-            "name": "Gloom"
-          }
-        ]
-      },
-      {
-        "pokemonId": 46,
-        "num": "046",
-        "tier": 1,
-        "name": "Paras",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Bug", "Grass"],
-        "height": "0.30 m",
-        "weight": "5.4 kg",
-        "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Rock"],
-        "next_evolution": [
-          {
-            "num": "047",
-            "name": "Parasect"
-          }
-        ]
-      },
-      {
-        "pokemonId": 47,
-        "num": "047",
-        "tier": 1,
-        "name": "Parasect",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Bug", "Grass"],
-        "height": "0.99 m",
-        "weight": "29.5 kg",
-        "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "046",
-            "name": "Paras"
-          }
-        ]
-      },
-      {
-        "pokemonId": 48,
-        "num": "048",
-        "tier": 1,
-        "name": "Venonat",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Bug", "Poison"],
-        "height": "0.99 m",
-        "weight": "30.0 kg",
-        "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
-        "next_evolution": [
-          {
-            "num": "049",
-            "name": "Venomoth"
-          }
-        ]
-      },
-      {
-        "pokemonId": 49,
-        "num": "049",
-        "tier": 1,
-        "name": "Venomoth",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Bug", "Poison"],
-        "height": "1.50 m",
-        "weight": "12.5 kg",
-        "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "048",
-            "name": "Venonat"
-          }
-        ]
-      },
-      {
-        "pokemonId": 50,
-        "num": "050",
-        "tier": 1,
-        "name": "Diglett",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Ground"],
-        "height": "0.20 m",
-        "weight": "0.8 kg",
-        "weaknesses": ["Water", "Grass", "Ice"],
-        "next_evolution": [
-          {
-            "num": "051",
-            "name": "Dugtrio"
-          }
-        ]
-      },
-      {
-        "pokemonId": 51,
-        "num": "051",
-        "tier": 1,
-        "name": "Dugtrio",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Ground"],
-        "height": "0.71 m",
-        "weight": "33.3 kg",
-        "weaknesses": ["Water", "Grass", "Ice"],
-        "prev_evolution": [
-          {
-            "num": "050",
-            "name": "Diglett"
-          }
-        ]
-      },
-      {
-        "pokemonId": 52,
-        "num": "052",
-        "tier": 1,
-        "name": "Meowth",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "0.41 m",
-        "weight": "4.2 kg",
-        "weaknesses": ["Fighting"],
-        "next_evolution": [
-          {
-            "num": "053",
-            "name": "Persian"
-          }
-        ]
-      },
-      {
-        "pokemonId": 53,
-        "num": "053",
-        "tier": 1,
-        "name": "Persian",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "0.99 m",
-        "weight": "32.0 kg",
-        "weaknesses": ["Fighting"],
-        "prev_evolution": [
-          {
-            "num": "052",
-            "name": "Meowth"
-          }
-        ]
-      },
-      {
-        "pokemonId": 54,
-        "num": "054",
-        "tier": 1,
-        "name": "Psyduck",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "0.79 m",
-        "weight": "19.6 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "next_evolution": [
-          {
-            "num": "055",
-            "name": "Golduck"
-          }
-        ]
-      },
-      {
-        "pokemonId": 55,
-        "num": "055",
-        "tier": 1,
-        "name": "Golduck",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "1.70 m",
-        "weight": "76.6 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "prev_evolution": [
-          {
-            "num": "054",
-            "name": "Psyduck"
-          }
-        ]
-      },
-      {
-        "pokemonId": 56,
-        "num": "056",
-        "tier": 1,
-        "name": "Mankey",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fighting"],
-        "height": "0.51 m",
-        "weight": "28.0 kg",
-        "weaknesses": ["Flying", "Psychic", "Fairy"],
-        "next_evolution": [
-          {
-            "num": "057",
-            "name": "Primeape"
-          }
-        ]
-      },
-      {
-        "pokemonId": 57,
-        "num": "057",
-        "tier": 1,
-        "name": "Primeape",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fighting"],
-        "height": "0.99 m",
-        "weight": "32.0 kg",
-        "weaknesses": ["Flying", "Psychic", "Fairy"],
-        "prev_evolution": [
-          {
-            "num": "056",
-            "name": "Mankey"
-          }
-        ]
-      },
-      {
-        "pokemonId": 58,
-        "num": "058",
-        "tier": 1,
-        "name": "Growlithe",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fire"],
-        "height": "0.71 m",
-        "weight": "19.0 kg",
-        "weaknesses": ["Water", "Ground", "Rock"],
-        "next_evolution": [
-          {
-            "num": "059",
-            "name": "Arcanine"
-          }
-        ]
-      },
-      {
-        "pokemonId": 59,
-        "num": "059",
-        "tier": 1,
-        "name": "Arcanine",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fire"],
-        "height": "1.91 m",
-        "weight": "155.0 kg",
-        "weaknesses": ["Water", "Ground", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "058",
-            "name": "Growlithe"
-          }
-        ]
-      },
-      {
-        "pokemonId": 60,
-        "num": "060",
-        "tier": 1,
-        "name": "Poliwag",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "0.61 m",
-        "weight": "12.4 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "next_evolution": [
-          {
-            "num": "061",
-            "name": "Poliwhirl"
-          },
-          {
-            "num": "062",
-            "name": "Poliwrath"
-          }
-        ]
-      },
-      {
-        "pokemonId": 61,
-        "num": "061",
-        "tier": 1,
-        "name": "Poliwhirl",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "0.99 m",
-        "weight": "20.0 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "prev_evolution": [
-          {
-            "num": "060",
-            "name": "Poliwag"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "062",
-            "name": "Poliwrath"
-          }
-        ]
-      },
-      {
-        "pokemonId": 62,
-        "num": "062",
-        "tier": 1,
-        "name": "Poliwrath",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water", "Fighting"],
-        "height": "1.30 m",
-        "weight": "54.0 kg",
-        "weaknesses": ["Electric", "Grass", "Flying", "Psychic", "Fairy"],
-        "prev_evolution": [
-          {
-            "num": "060",
-            "name": "Poliwag"
-          },
-          {
-            "num": "061",
-            "name": "Poliwhirl"
-          }
-        ]
-      },
-      {
-        "pokemonId": 63,
-        "num": "063",
-        "tier": 1,
-        "name": "Abra",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Psychic"],
-        "height": "0.89 m",
-        "weight": "19.5 kg",
-        "weaknesses": ["Bug", "Ghost", "Dark"],
-        "next_evolution": [
-          {
-            "num": "064",
-            "name": "Kadabra"
-          },
-          {
-            "num": "065",
-            "name": "Alakazam"
-          }
-        ]
-      },
-      {
-        "pokemonId": 64,
-        "num": "064",
-        "tier": 1,
-        "name": "Kadabra",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Psychic"],
-        "height": "1.30 m",
-        "weight": "56.5 kg",
-        "weaknesses": ["Bug", "Ghost", "Dark"],
-        "prev_evolution": [
-          {
-            "num": "063",
-            "name": "Abra"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "065",
-            "name": "Alakazam"
-          }
-        ]
-      },
-      {
-        "pokemonId": 65,
-        "num": "065",
-        "tier": 1,
-        "name": "Alakazam",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Psychic"],
-        "height": "1.50 m",
-        "weight": "48.0 kg",
-        "weaknesses": ["Bug", "Ghost", "Dark"],
-        "prev_evolution": [
-          {
-            "num": "063",
-            "name": "Abra"
-          },
-          {
-            "num": "064",
-            "name": "Kadabra"
-          }
-        ]
-      },
-      {
-        "pokemonId": 66,
-        "num": "066",
-        "tier": 1,
-        "name": "Machop",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fighting"],
-        "height": "0.79 m",
-        "weight": "19.5 kg",
-        "weaknesses": ["Flying", "Psychic", "Fairy"],
-        "next_evolution": [
-          {
-            "num": "067",
-            "name": "Machoke"
-          },
-          {
-            "num": "068",
-            "name": "Machamp"
-          }
-        ]
-      },
-      {
-        "pokemonId": 67,
-        "num": "067",
-        "tier": 1,
-        "name": "Machoke",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fighting"],
-        "height": "1.50 m",
-        "weight": "70.5 kg",
-        "weaknesses": ["Flying", "Psychic", "Fairy"],
-        "prev_evolution": [
-          {
-            "num": "066",
-            "name": "Machop"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "068",
-            "name": "Machamp"
-          }
-        ]
-      },
-      {
-        "pokemonId": 68,
-        "num": "068",
-        "tier": 1,
-        "name": "Machamp",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fighting"],
-        "height": "1.60 m",
-        "weight": "130.0 kg",
-        "weaknesses": ["Flying", "Psychic", "Fairy"],
-        "prev_evolution": [
-          {
-            "num": "066",
-            "name": "Machop"
-          },
-          {
-            "num": "067",
-            "name": "Machoke"
-          }
-        ]
-      },
-      {
-        "pokemonId": 69,
-        "num": "069",
-        "tier": 1,
-        "name": "Bellsprout",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Grass", "Poison"],
-        "height": "0.71 m",
-        "weight": "4.0 kg",
-        "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-        "next_evolution": [
-          {
-            "num": "070",
-            "name": "Weepinbell"
-          },
-          {
-            "num": "071",
-            "name": "Victreebel"
-          }
-        ]
-      },
-      {
-        "pokemonId": 70,
-        "num": "070",
-        "tier": 1,
-        "name": "Weepinbell",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Grass", "Poison"],
-        "height": "0.99 m",
-        "weight": "6.4 kg",
-        "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "069",
-            "name": "Bellsprout"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "071",
-            "name": "Victreebel"
-          }
-        ]
-      },
-      {
-        "pokemonId": 71,
-        "num": "071",
-        "tier": 1,
-        "name": "Victreebel",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Grass", "Poison"],
-        "height": "1.70 m",
-        "weight": "15.5 kg",
-        "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "069",
-            "name": "Bellsprout"
-          },
-          {
-            "num": "070",
-            "name": "Weepinbell"
-          }
-        ]
-      },
-      {
-        "pokemonId": 72,
-        "num": "072",
-        "tier": 1,
-        "name": "Tentacool",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water", "Poison"],
-        "height": "0.89 m",
-        "weight": "45.5 kg",
-        "weaknesses": ["Electric", "Ground", "Psychic"],
-        "next_evolution": [
-          {
-            "num": "073",
-            "name": "Tentacruel"
-          }
-        ]
-      },
-      {
-        "pokemonId": 73,
-        "num": "073",
-        "tier": 1,
-        "name": "Tentacruel",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water", "Poison"],
-        "height": "1.60 m",
-        "weight": "55.0 kg",
-        "weaknesses": ["Electric", "Ground", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "072",
-            "name": "Tentacool"
-          }
-        ]
-      },
-      {
-        "pokemonId": 74,
-        "num": "074",
-        "tier": 1,
-        "name": "Geodude",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Rock", "Ground"],
-        "height": "0.41 m",
-        "weight": "20.0 kg",
-        "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
-        "next_evolution": [
-          {
-            "num": "075",
-            "name": "Graveler"
-          },
-          {
-            "num": "076",
-            "name": "Golem"
-          }
-        ]
-      },
-      {
-        "pokemonId": 75,
-        "num": "075",
-        "tier": 1,
-        "name": "Graveler",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Rock", "Ground"],
-        "height": "0.99 m",
-        "weight": "105.0 kg",
-        "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
-        "prev_evolution": [
-          {
-            "num": "074",
-            "name": "Geodude"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "076",
-            "name": "Golem"
-          }
-        ]
-      },
-      {
-        "pokemonId": 76,
-        "num": "076",
-        "tier": 1,
-        "name": "Golem",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Rock", "Ground"],
-        "height": "1.40 m",
-        "weight": "300.0 kg",
-        "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
-        "prev_evolution": [
-          {
-            "num": "074",
-            "name": "Geodude"
-          },
-          {
-            "num": "075",
-            "name": "Graveler"
-          }
-        ]
-      },
-      {
-        "pokemonId": 77,
-        "num": "077",
-        "tier": 1,
-        "name": "Ponyta",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fire"],
-        "height": "0.99 m",
-        "weight": "30.0 kg",
-        "weaknesses": ["Water", "Ground", "Rock"],
-        "next_evolution": [
-          {
-            "num": "078",
-            "name": "Rapidash"
-          }
-        ]
-      },
-      {
-        "pokemonId": 78,
-        "num": "078",
-        "tier": 1,
-        "name": "Rapidash",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fire"],
-        "height": "1.70 m",
-        "weight": "95.0 kg",
-        "weaknesses": ["Water", "Ground", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "077",
-            "name": "Ponyta"
-          }
-        ]
-      },
-      {
-        "pokemonId": 79,
-        "num": "079",
-        "tier": 1,
-        "name": "Slowpoke",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water", "Psychic"],
-        "height": "1.19 m",
-        "weight": "36.0 kg",
-        "weaknesses": ["Electric", "Grass", "Bug", "Ghost", "Dark"],
-        "next_evolution": [
-          {
-            "num": "080",
-            "name": "Slowbro"
-          }
-        ]
-      },
-      {
-        "pokemonId": 80,
-        "num": "080",
-        "tier": 1,
-        "name": "Slowbro",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water", "Psychic"],
-        "height": "1.60 m",
-        "weight": "78.5 kg",
-        "weaknesses": ["Electric", "Grass", "Bug", "Ghost", "Dark"],
-        "prev_evolution": [
-          {
-            "num": "079",
-            "name": "Slowpoke"
-          }
-        ]
-      },
-      {
-        "pokemonId": 81,
-        "num": "081",
-        "tier": 1,
-        "name": "Magnemite",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Electric"],
-        "height": "0.30 m",
-        "weight": "6.0 kg",
-        "weaknesses": ["Fire", "Water", "Ground"],
-        "next_evolution": [
-          {
-            "num": "082",
-            "name": "Magneton"
-          }
-        ]
-      },
-      {
-        "pokemonId": 82,
-        "num": "082",
-        "tier": 1,
-        "name": "Magneton",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Electric"],
-        "height": "0.99 m",
-        "weight": "60.0 kg",
-        "weaknesses": ["Fire", "Water", "Ground"],
-        "prev_evolution": [
-          {
-            "num": "081",
-            "name": "Magnemite"
-          }
-        ]
-      },
-      {
-        "pokemonId": 83,
-        "num": "083",
-        "tier": 1,
-        "name": "Farfetch'd",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal", "Flying"],
-        "height": "0.79 m",
-        "weight": "15.0 kg",
-        "weaknesses": ["Electric", "Rock"]
-      },
-      {
-        "pokemonId": 84,
-        "num": "084",
-        "tier": 1,
-        "name": "Doduo",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal", "Flying"],
-        "height": "1.40 m",
-        "weight": "39.2 kg",
-        "weaknesses": ["Electric", "Rock"],
-        "next_evolution": [
-          {
-            "num": "085",
-            "name": "Dodrio"
-          }
-        ]
-      },
-      {
-        "pokemonId": 85,
-        "num": "085",
-        "tier": 1,
-        "name": "Dodrio",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal", "Flying"],
-        "height": "1.80 m",
-        "weight": "85.2 kg",
-        "weaknesses": ["Electric", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "084",
-            "name": "Doduo"
-          }
-        ]
-      },
-      {
-        "pokemonId": 86,
-        "num": "086",
-        "tier": 1,
-        "name": "Seel",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "1.09 m",
-        "weight": "90.0 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "next_evolution": [
-          {
-            "num": "087",
-            "name": "Dewgong"
-          }
-        ]
-      },
-      {
-        "pokemonId": 87,
-        "num": "087",
-        "tier": 1,
-        "name": "Dewgong",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water", "Ice"],
-        "height": "1.70 m",
-        "weight": "120.0 kg",
-        "weaknesses": ["Electric", "Grass", "Fighting", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "086",
-            "name": "Seel"
-          }
-        ]
-      },
-      {
-        "pokemonId": 88,
-        "num": "088",
-        "tier": 1,
-        "name": "Grimer",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison"],
-        "height": "0.89 m",
-        "weight": "30.0 kg",
-        "weaknesses": ["Ground", "Psychic"],
-        "next_evolution": [
-          {
-            "num": "089",
-            "name": "Muk"
-          }
-        ]
-      },
-      {
-        "pokemonId": 89,
-        "num": "089",
-        "tier": 1,
-        "name": "Muk",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison"],
-        "height": "1.19 m",
-        "weight": "30.0 kg",
-        "weaknesses": ["Ground", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "088",
-            "name": "Grimer"
-          }
-        ]
-      },
-      {
-        "pokemonId": 90,
-        "num": "090",
-        "tier": 1,
-        "name": "Shellder",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "0.30 m",
-        "weight": "4.0 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "next_evolution": [
-          {
-            "num": "091",
-            "name": "Cloyster"
-          }
-        ]
-      },
-      {
-        "pokemonId": 91,
-        "num": "091",
-        "tier": 1,
-        "name": "Cloyster",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water", "Ice"],
-        "height": "1.50 m",
-        "weight": "132.5 kg",
-        "weaknesses": ["Electric", "Grass", "Fighting", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "090",
-            "name": "Shellder"
-          }
-        ]
-      },
-      {
-        "pokemonId": 92,
-        "num": "092",
-        "tier": 1,
-        "name": "Gastly",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Ghost", "Poison"],
-        "height": "1.30 m",
-        "weight": "0.1 kg",
-        "weaknesses": ["Ground", "Psychic", "Ghost", "Dark"],
-        "next_evolution": [
-          {
-            "num": "093",
-            "name": "Haunter"
-          },
-          {
-            "num": "094",
-            "name": "Gengar"
-          }
-        ]
-      },
-      {
-        "pokemonId": 93,
-        "num": "093",
-        "tier": 1,
-        "name": "Haunter",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Ghost", "Poison"],
-        "height": "1.60 m",
-        "weight": "0.1 kg",
-        "weaknesses": ["Ground", "Psychic", "Ghost", "Dark"],
-        "prev_evolution": [
-          {
-            "num": "092",
-            "name": "Gastly"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "094",
-            "name": "Gengar"
-          }
-        ]
-      },
-      {
-        "pokemonId": 94,
-        "num": "094",
-        "tier": 1,
-        "name": "Gengar",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Ghost", "Poison"],
-        "height": "1.50 m",
-        "weight": "40.5 kg",
-        "weaknesses": ["Ground", "Psychic", "Ghost", "Dark"],
-        "prev_evolution": [
-          {
-            "num": "092",
-            "name": "Gastly"
-          },
-          {
-            "num": "093",
-            "name": "Haunter"
-          }
-        ]
-      },
-      {
-        "pokemonId": 95,
-        "num": "095",
-        "tier": 1,
-        "name": "Onix",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Rock", "Ground"],
-        "height": "8.79 m",
-        "weight": "210.0 kg",
-        "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"]
-      },
-      {
-        "pokemonId": 96,
-        "num": "096",
-        "tier": 1,
-        "name": "Drowzee",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Psychic"],
-        "height": "0.99 m",
-        "weight": "32.4 kg",
-        "weaknesses": ["Bug", "Ghost", "Dark"],
-        "next_evolution": [
-          {
-            "num": "097",
-            "name": "Hypno"
-          }
-        ]
-      },
-      {
-        "pokemonId": 97,
-        "num": "097",
-        "tier": 1,
-        "name": "Hypno",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Psychic"],
-        "height": "1.60 m",
-        "weight": "75.6 kg",
-        "weaknesses": ["Bug", "Ghost", "Dark"],
-        "prev_evolution": [
-          {
-            "num": "096",
-            "name": "Drowzee"
-          }
-        ]
-      },
-      {
-        "pokemonId": 98,
-        "num": "098",
-        "tier": 1,
-        "name": "Krabby",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "0.41 m",
-        "weight": "6.5 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "next_evolution": [
-          {
-            "num": "099",
-            "name": "Kingler"
-          }
-        ]
-      },
-      {
-        "pokemonId": 99,
-        "num": "099",
-        "tier": 1,
-        "name": "Kingler",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "1.30 m",
-        "weight": "60.0 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "prev_evolution": [
-          {
-            "num": "098",
-            "name": "Krabby"
-          }
-        ]
-      },
-      {
-        "pokemonId": 100,
-        "num": "100",
-        "tier": 1,
-        "name": "Voltorb",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Electric"],
-        "height": "0.51 m",
-        "weight": "10.4 kg",
-        "weaknesses": ["Ground"],
-        "next_evolution": [
-          {
-            "num": "101",
-            "name": "Electrode"
-          }
-        ]
-      },
-      {
-        "pokemonId": 101,
-        "num": "101",
-        "tier": 1,
-        "name": "Electrode",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Electric"],
-        "height": "1.19 m",
-        "weight": "66.6 kg",
-        "weaknesses": ["Ground"],
-        "prev_evolution": [
-          {
-            "num": "100",
-            "name": "Voltorb"
-          }
-        ]
-      },
-      {
-        "pokemonId": 102,
-        "num": "102",
-        "tier": 1,
-        "name": "Exeggcute",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Grass", "Psychic"],
-        "height": "0.41 m",
-        "weight": "2.5 kg",
-        "weaknesses": [
-          "Fire",
-          "Ice",
-          "Poison",
-          "Flying",
-          "Bug",
-          "Ghost",
-          "Dark"
-        ],
-        "next_evolution": [
-          {
-            "num": "103",
-            "name": "Exeggutor"
-          }
-        ]
-      },
-      {
-        "pokemonId": 103,
-        "num": "103",
-        "tier": 1,
-        "name": "Exeggutor",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Grass", "Psychic"],
-        "height": "2.01 m",
-        "weight": "120.0 kg",
-        "weaknesses": [
-          "Fire",
-          "Ice",
-          "Poison",
-          "Flying",
-          "Bug",
-          "Ghost",
-          "Dark"
-        ],
-        "prev_evolution": [
-          {
-            "num": "102",
-            "name": "Exeggcute"
-          }
-        ]
-      },
-      {
-        "pokemonId": 104,
-        "num": "104",
-        "tier": 1,
-        "name": "Cubone",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Ground"],
-        "height": "0.41 m",
-        "weight": "6.5 kg",
-        "weaknesses": ["Water", "Grass", "Ice"],
-        "next_evolution": [
-          {
-            "num": "105",
-            "name": "Marowak"
-          }
-        ]
-      },
-      {
-        "pokemonId": 105,
-        "num": "105",
-        "tier": 1,
-        "name": "Marowak",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Ground"],
-        "height": "0.99 m",
-        "weight": "45.0 kg",
-        "weaknesses": ["Water", "Grass", "Ice"],
-        "prev_evolution": [
-          {
-            "num": "104",
-            "name": "Cubone"
-          }
-        ]
-      },
-      {
-        "pokemonId": 106,
-        "num": "106",
-        "tier": 1,
-        "name": "Hitmonlee",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fighting"],
-        "height": "1.50 m",
-        "weight": "49.8 kg",
-        "weaknesses": ["Flying", "Psychic", "Fairy"]
-      },
-      {
-        "pokemonId": 107,
-        "num": "107",
-        "tier": 1,
-        "name": "Hitmonchan",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fighting"],
-        "height": "1.40 m",
-        "weight": "50.2 kg",
-        "weaknesses": ["Flying", "Psychic", "Fairy"]
-      },
-      {
-        "pokemonId": 108,
-        "num": "108",
-        "tier": 1,
-        "name": "Lickitung",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "1.19 m",
-        "weight": "65.5 kg",
-        "weaknesses": ["Fighting"]
-      },
-      {
-        "pokemonId": 109,
-        "num": "109",
-        "tier": 1,
-        "name": "Koffing",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison"],
-        "height": "0.61 m",
-        "weight": "1.0 kg",
-        "weaknesses": ["Ground", "Psychic"],
-        "next_evolution": [
-          {
-            "num": "110",
-            "name": "Weezing"
-          }
-        ]
-      },
-      {
-        "pokemonId": 110,
-        "num": "110",
-        "tier": 1,
-        "name": "Weezing",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Poison"],
-        "height": "1.19 m",
-        "weight": "9.5 kg",
-        "weaknesses": ["Ground", "Psychic"],
-        "prev_evolution": [
-          {
-            "num": "109",
-            "name": "Koffing"
-          }
-        ]
-      },
-      {
-        "pokemonId": 111,
-        "num": "111",
-        "tier": 1,
-        "name": "Rhyhorn",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Ground", "Rock"],
-        "height": "0.99 m",
-        "weight": "115.0 kg",
-        "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
-        "next_evolution": [
-          {
-            "num": "112",
-            "name": "Rhydon"
-          }
-        ]
-      },
-      {
-        "pokemonId": 112,
-        "num": "112",
-        "tier": 1,
-        "name": "Rhydon",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Ground", "Rock"],
-        "height": "1.91 m",
-        "weight": "120.0 kg",
-        "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
-        "prev_evolution": [
-          {
-            "num": "111",
-            "name": "Rhyhorn"
-          }
-        ]
-      },
-      {
-        "pokemonId": 113,
-        "num": "113",
-        "tier": 1,
-        "name": "Chansey",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "1.09 m",
-        "weight": "34.6 kg",
-        "weaknesses": ["Fighting"]
-      },
-      {
-        "pokemonId": 114,
-        "num": "114",
-        "tier": 1,
-        "name": "Tangela",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Grass"],
-        "height": "0.99 m",
-        "weight": "35.0 kg",
-        "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug"]
-      },
-      {
-        "pokemonId": 115,
-        "num": "115",
-        "tier": 1,
-        "name": "Kangaskhan",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "2.21 m",
-        "weight": "80.0 kg",
-        "weaknesses": ["Fighting"]
-      },
-      {
-        "pokemonId": 116,
-        "num": "116",
-        "tier": 1,
-        "name": "Horsea",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "0.41 m",
-        "weight": "8.0 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "next_evolution": [
-          {
-            "num": "117",
-            "name": "Seadra"
-          }
-        ]
-      },
-      {
-        "pokemonId": 117,
-        "num": "117",
-        "tier": 1,
-        "name": "Seadra",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "1.19 m",
-        "weight": "25.0 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "prev_evolution": [
-          {
-            "num": "116",
-            "name": "Horsea"
-          }
-        ]
-      },
-      {
-        "pokemonId": 118,
-        "num": "118",
-        "tier": 1,
-        "name": "Goldeen",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "0.61 m",
-        "weight": "15.0 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "next_evolution": [
-          {
-            "num": "119",
-            "name": "Seaking"
-          }
-        ]
-      },
-      {
-        "pokemonId": 119,
-        "num": "119",
-        "tier": 1,
-        "name": "Seaking",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "1.30 m",
-        "weight": "39.0 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "prev_evolution": [
-          {
-            "num": "118",
-            "name": "Goldeen"
-          }
-        ]
-      },
-      {
-        "pokemonId": 120,
-        "num": "120",
-        "tier": 1,
-        "name": "Staryu",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "0.79 m",
-        "weight": "34.5 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "next_evolution": [
-          {
-            "num": "121",
-            "name": "Starmie"
-          }
-        ]
-      },
-      {
-        "pokemonId": 121,
-        "num": "121",
-        "tier": 1,
-        "name": "Starmie",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water", "Psychic"],
-        "height": "1.09 m",
-        "weight": "80.0 kg",
-        "weaknesses": ["Electric", "Grass", "Bug", "Ghost", "Dark"],
-        "prev_evolution": [
-          {
-            "num": "120",
-            "name": "Staryu"
-          }
-        ]
-      },
-      {
-        "pokemonId": 122,
-        "num": "122",
-        "tier": 1,
-        "name": "Mr. Mime",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Psychic"],
-        "height": "1.30 m",
-        "weight": "54.5 kg",
-        "weaknesses": ["Bug", "Ghost", "Dark"]
-      },
-      {
-        "pokemonId": 123,
-        "num": "123",
-        "tier": 1,
-        "name": "Scyther",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Bug", "Flying"],
-        "height": "1.50 m",
-        "weight": "56.0 kg",
-        "weaknesses": ["Fire", "Electric", "Ice", "Flying", "Rock"]
-      },
-      {
-        "pokemonId": 124,
-        "num": "124",
-        "tier": 1,
-        "name": "Jynx",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Ice", "Psychic"],
-        "height": "1.40 m",
-        "weight": "40.6 kg",
-        "weaknesses": ["Fire", "Bug", "Rock", "Ghost", "Dark", "Steel"]
-      },
-      {
-        "pokemonId": 125,
-        "num": "125",
-        "tier": 1,
-        "name": "Electabuzz",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Electric"],
-        "height": "1.09 m",
-        "weight": "30.0 kg",
-        "weaknesses": ["Ground"]
-      },
-      {
-        "pokemonId": 126,
-        "num": "126",
-        "tier": 1,
-        "name": "Magmar",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fire"],
-        "height": "1.30 m",
-        "weight": "44.5 kg",
-        "weaknesses": ["Water", "Ground", "Rock"]
-      },
-      {
-        "pokemonId": 127,
-        "num": "127",
-        "tier": 1,
-        "name": "Pinsir",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Bug"],
-        "height": "1.50 m",
-        "weight": "55.0 kg",
-        "weaknesses": ["Fire", "Flying", "Rock"]
-      },
-      {
-        "pokemonId": 128,
-        "num": "128",
-        "tier": 1,
-        "name": "Tauros",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "1.40 m",
-        "weight": "88.4 kg",
-        "weaknesses": ["Fighting"]
-      },
-      {
-        "pokemonId": 129,
-        "num": "129",
-        "tier": 1,
-        "name": "Magikarp",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "0.89 m",
-        "weight": "10.0 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "next_evolution": [
-          {
-            "num": "130",
-            "name": "Gyarados"
-          }
-        ]
-      },
-      {
-        "pokemonId": 130,
-        "num": "130",
-        "tier": 1,
-        "name": "Gyarados",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water", "Flying"],
-        "height": "6.50 m",
-        "weight": "235.0 kg",
-        "weaknesses": ["Electric", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "129",
-            "name": "Magikarp"
-          }
-        ]
-      },
-      {
-        "pokemonId": 131,
-        "num": "131",
-        "tier": 1,
-        "name": "Lapras",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water", "Ice"],
-        "height": "2.49 m",
-        "weight": "220.0 kg",
-        "weaknesses": ["Electric", "Grass", "Fighting", "Rock"]
-      },
-      {
-        "pokemonId": 132,
-        "num": "132",
-        "tier": 1,
-        "name": "Ditto",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "0.30 m",
-        "weight": "4.0 kg",
-        "weaknesses": ["Fighting"]
-      },
-      {
-        "pokemonId": 133,
-        "num": "133",
-        "tier": 1,
-        "name": "Eevee",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "0.30 m",
-        "weight": "6.5 kg",
-        "weaknesses": ["Fighting"],
-        "next_evolution": [
-          {
-            "num": "134",
-            "name": "Vaporeon"
-          },
-          {
-            "num": "135",
-            "name": "Jolteon"
-          },
-          {
-            "num": "136",
-            "name": "Flareon"
-          }
-        ]
-      },
-      {
-        "pokemonId": 134,
-        "num": "134",
-        "tier": 1,
-        "name": "Vaporeon",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Water"],
-        "height": "0.99 m",
-        "weight": "29.0 kg",
-        "weaknesses": ["Electric", "Grass"],
-        "prev_evolution": [
-          {
-            "num": "133",
-            "name": "Eevee"
-          }
-        ]
-      },
-      {
-        "pokemonId": 135,
-        "num": "135",
-        "tier": 1,
-        "name": "Jolteon",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Electric"],
-        "height": "0.79 m",
-        "weight": "24.5 kg",
-        "weaknesses": ["Ground"],
-        "prev_evolution": [
-          {
-            "num": "133",
-            "name": "Eevee"
-          }
-        ]
-      },
-      {
-        "pokemonId": 136,
-        "num": "136",
-        "tier": 1,
-        "name": "Flareon",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fire"],
-        "height": "0.89 m",
-        "weight": "25.0 kg",
-        "weaknesses": ["Water", "Ground", "Rock"],
-        "prev_evolution": [
-          {
-            "num": "133",
-            "name": "Eevee"
-          }
-        ]
-      },
-      {
-        "pokemonId": 137,
-        "num": "137",
-        "tier": 1,
-        "name": "Porygon",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "0.79 m",
-        "weight": "36.5 kg",
-        "weaknesses": ["Fighting"]
-      },
-      {
-        "pokemonId": 138,
-        "num": "138",
-        "tier": 1,
-        "name": "Omanyte",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Rock", "Water"],
-        "height": "0.41 m",
-        "weight": "7.5 kg",
-        "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
-        "next_evolution": [
-          {
-            "num": "139",
-            "name": "Omastar"
-          }
-        ]
-      },
-      {
-        "pokemonId": 139,
-        "num": "139",
-        "tier": 1,
-        "name": "Omastar",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Rock", "Water"],
-        "height": "0.99 m",
-        "weight": "35.0 kg",
-        "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
-        "prev_evolution": [
-          {
-            "num": "138",
-            "name": "Omanyte"
-          }
-        ]
-      },
-      {
-        "pokemonId": 140,
-        "num": "140",
-        "tier": 1,
-        "name": "Kabuto",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Rock", "Water"],
-        "height": "0.51 m",
-        "weight": "11.5 kg",
-        "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
-        "next_evolution": [
-          {
-            "num": "141",
-            "name": "Kabutops"
-          }
-        ]
-      },
-      {
-        "pokemonId": 141,
-        "num": "141",
-        "tier": 1,
-        "name": "Kabutops",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Rock", "Water"],
-        "height": "1.30 m",
-        "weight": "40.5 kg",
-        "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
-        "prev_evolution": [
-          {
-            "num": "140",
-            "name": "Kabuto"
-          }
-        ]
-      },
-      {
-        "pokemonId": 142,
-        "num": "142",
-        "tier": 1,
-        "name": "Aerodactyl",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Rock", "Flying"],
-        "height": "1.80 m",
-        "weight": "59.0 kg",
-        "weaknesses": ["Water", "Electric", "Ice", "Rock", "Steel"]
-      },
-      {
-        "pokemonId": 143,
-        "num": "143",
-        "tier": 1,
-        "name": "Snorlax",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Normal"],
-        "height": "2.11 m",
-        "weight": "460.0 kg",
-        "weaknesses": ["Fighting"]
-      },
-      {
-        "pokemonId": 144,
-        "num": "144",
-        "tier": 1,
-        "name": "Articuno",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Ice", "Flying"],
-        "height": "1.70 m",
-        "weight": "55.4 kg",
-        "weaknesses": ["Fire", "Electric", "Rock", "Steel"]
-      },
-      {
-        "pokemonId": 145,
-        "num": "145",
-        "tier": 1,
-        "name": "Zapdos",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Electric", "Flying"],
-        "height": "1.60 m",
-        "weight": "52.6 kg",
-        "weaknesses": ["Ice", "Rock"]
-      },
-      {
-        "pokemonId": 146,
-        "num": "146",
-        "tier": 1,
-        "name": "Moltres",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Fire", "Flying"],
-        "height": "2.01 m",
-        "weight": "60.0 kg",
-        "weaknesses": ["Water", "Electric", "Rock"]
-      },
-      {
-        "pokemonId": 147,
-        "num": "147",
-        "tier": 1,
-        "name": "Dratini",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Dragon"],
-        "height": "1.80 m",
-        "weight": "3.3 kg",
-        "weaknesses": ["Ice", "Dragon", "Fairy"],
-        "next_evolution": [
-          {
-            "num": "148",
-            "name": "Dragonair"
-          },
-          {
-            "num": "149",
-            "name": "Dragonite"
-          }
-        ]
-      },
-      {
-        "pokemonId": 148,
-        "num": "148",
-        "tier": 1,
-        "name": "Dragonair",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Dragon"],
-        "height": "3.99 m",
-        "weight": "16.5 kg",
-        "weaknesses": ["Ice", "Dragon", "Fairy"],
-        "prev_evolution": [
-          {
-            "num": "147",
-            "name": "Dratini"
-          }
-        ],
-        "next_evolution": [
-          {
-            "num": "149",
-            "name": "Dragonite"
-          }
-        ]
-      },
-      {
-        "pokemonId": 149,
-        "num": "149",
-        "tier": 1,
-        "name": "Dragonite",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Dragon", "Flying"],
-        "height": "2.21 m",
-        "weight": "210.0 kg",
-        "weaknesses": ["Ice", "Rock", "Dragon", "Fairy"],
-        "prev_evolution": [
-          {
-            "num": "147",
-            "name": "Dratini"
-          },
-          {
-            "num": "148",
-            "name": "Dragonair"
-          }
-        ]
-      },
-      {
-        "pokemonId": 150,
-        "num": "150",
-        "tier": 1,
-        "name": "Mewtwo",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Psychic"],
-        "height": "2.01 m",
-        "weight": "122.0 kg",
-        "weaknesses": ["Bug", "Ghost", "Dark"]
-      },
-      {
-        "pokemonId": 151,
-        "num": "151",
-        "tier": 1,
-        "name": "Mew",
-        "baseAttack": 3,
-        "baseHealth": 2,
-        "baseCost": 3,
-        "minionType": 1,
-        "cardType": 0,
-        "keywords": [],
-        "type": ["Psychic"],
-        "height": "0.41 m",
-        "weight": "4.0 kg",
-        "weaknesses": ["Bug", "Ghost", "Dark"]
+        "name": "Venusaur"
       }
     ]
+  },
+  {
+    "pokemonId": 2,
+    "num": "002",
+    "tier": 1,
+    "name": "Ivysaur",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Grass", "Poison"],
+    "height": "0.99 m",
+    "weight": "13.0 kg",
+    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "001",
+        "name": "Bulbasaur"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "003",
+        "name": "Venusaur"
+      }
+    ]
+  },
+  {
+    "pokemonId": 3,
+    "num": "003",
+    "tier": 1,
+    "name": "Venusaur",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Grass", "Poison"],
+    "height": "2.01 m",
+    "weight": "100.0 kg",
+    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "001",
+        "name": "Bulbasaur"
+      },
+      {
+        "num": "002",
+        "name": "Ivysaur"
+      }
+    ]
+  },
+  {
+    "pokemonId": 4,
+    "num": "004",
+    "tier": 1,
+    "name": "Charmander",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fire"],
+    "height": "0.61 m",
+    "weight": "8.5 kg",
+    "weaknesses": ["Water", "Ground", "Rock"],
+    "next_evolution": [
+      {
+        "num": "005",
+        "name": "Charmeleon"
+      },
+      {
+        "num": "006",
+        "name": "Charizard"
+      }
+    ]
+  },
+  {
+    "pokemonId": 5,
+    "num": "005",
+    "tier": 1,
+    "name": "Charmeleon",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fire"],
+    "height": "1.09 m",
+    "weight": "19.0 kg",
+    "weaknesses": ["Water", "Ground", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "004",
+        "name": "Charmander"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "006",
+        "name": "Charizard"
+      }
+    ]
+  },
+  {
+    "pokemonId": 6,
+    "num": "006",
+    "tier": 1,
+    "name": "Charizard",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fire", "Flying"],
+    "height": "1.70 m",
+    "weight": "90.5 kg",
+    "weaknesses": ["Water", "Electric", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "004",
+        "name": "Charmander"
+      },
+      {
+        "num": "005",
+        "name": "Charmeleon"
+      }
+    ]
+  },
+  {
+    "pokemonId": 7,
+    "num": "007",
+    "tier": 1,
+    "name": "Squirtle",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "0.51 m",
+    "weight": "9.0 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "next_evolution": [
+      {
+        "num": "008",
+        "name": "Wartortle"
+      },
+      {
+        "num": "009",
+        "name": "Blastoise"
+      }
+    ]
+  },
+  {
+    "pokemonId": 8,
+    "num": "008",
+    "tier": 1,
+    "name": "Wartortle",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "0.99 m",
+    "weight": "22.5 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "prev_evolution": [
+      {
+        "num": "007",
+        "name": "Squirtle"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "009",
+        "name": "Blastoise"
+      }
+    ]
+  },
+  {
+    "pokemonId": 9,
+    "num": "009",
+    "tier": 1,
+    "name": "Blastoise",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "1.60 m",
+    "weight": "85.5 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "prev_evolution": [
+      {
+        "num": "007",
+        "name": "Squirtle"
+      },
+      {
+        "num": "008",
+        "name": "Wartortle"
+      }
+    ]
+  },
+  {
+    "pokemonId": 10,
+    "num": "010",
+    "tier": 1,
+    "name": "Caterpie",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Bug"],
+    "height": "0.30 m",
+    "weight": "2.9 kg",
+    "weaknesses": ["Fire", "Flying", "Rock"],
+    "next_evolution": [
+      {
+        "num": "011",
+        "name": "Metapod"
+      },
+      {
+        "num": "012",
+        "name": "Butterfree"
+      }
+    ]
+  },
+  {
+    "pokemonId": 11,
+    "num": "011",
+    "tier": 1,
+    "name": "Metapod",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Bug"],
+    "height": "0.71 m",
+    "weight": "9.9 kg",
+    "weaknesses": ["Fire", "Flying", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "010",
+        "name": "Caterpie"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "012",
+        "name": "Butterfree"
+      }
+    ]
+  },
+  {
+    "pokemonId": 12,
+    "num": "012",
+    "tier": 1,
+    "name": "Butterfree",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Bug", "Flying"],
+    "height": "1.09 m",
+    "weight": "32.0 kg",
+    "weaknesses": ["Fire", "Electric", "Ice", "Flying", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "010",
+        "name": "Caterpie"
+      },
+      {
+        "num": "011",
+        "name": "Metapod"
+      }
+    ]
+  },
+  {
+    "pokemonId": 13,
+    "num": "013",
+    "tier": 1,
+    "name": "Weedle",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Bug", "Poison"],
+    "height": "0.30 m",
+    "weight": "3.2 kg",
+    "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
+    "next_evolution": [
+      {
+        "num": "014",
+        "name": "Kakuna"
+      },
+      {
+        "num": "015",
+        "name": "Beedrill"
+      }
+    ]
+  },
+  {
+    "pokemonId": 14,
+    "num": "014",
+    "tier": 1,
+    "name": "Kakuna",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Bug", "Poison"],
+    "height": "0.61 m",
+    "weight": "10.0 kg",
+    "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "013",
+        "name": "Weedle"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "015",
+        "name": "Beedrill"
+      }
+    ]
+  },
+  {
+    "pokemonId": 15,
+    "num": "015",
+    "tier": 1,
+    "name": "Beedrill",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Bug", "Poison"],
+    "height": "0.99 m",
+    "weight": "29.5 kg",
+    "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "013",
+        "name": "Weedle"
+      },
+      {
+        "num": "014",
+        "name": "Kakuna"
+      }
+    ]
+  },
+  {
+    "pokemonId": 16,
+    "num": "016",
+    "tier": 1,
+    "name": "Pidgey",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal", "Flying"],
+    "height": "0.30 m",
+    "weight": "1.8 kg",
+    "weaknesses": ["Electric", "Rock"],
+    "next_evolution": [
+      {
+        "num": "017",
+        "name": "Pidgeotto"
+      },
+      {
+        "num": "018",
+        "name": "Pidgeot"
+      }
+    ]
+  },
+  {
+    "pokemonId": 17,
+    "num": "017",
+    "tier": 1,
+    "name": "Pidgeotto",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal", "Flying"],
+    "height": "1.09 m",
+    "weight": "30.0 kg",
+    "weaknesses": ["Electric", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "016",
+        "name": "Pidgey"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "018",
+        "name": "Pidgeot"
+      }
+    ]
+  },
+  {
+    "pokemonId": 18,
+    "num": "018",
+    "tier": 1,
+    "name": "Pidgeot",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal", "Flying"],
+    "height": "1.50 m",
+    "weight": "39.5 kg",
+    "weaknesses": ["Electric", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "016",
+        "name": "Pidgey"
+      },
+      {
+        "num": "017",
+        "name": "Pidgeotto"
+      }
+    ]
+  },
+  {
+    "pokemonId": 19,
+    "num": "019",
+    "tier": 1,
+    "name": "Rattata",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "0.30 m",
+    "weight": "3.5 kg",
+    "weaknesses": ["Fighting"],
+    "next_evolution": [
+      {
+        "num": "020",
+        "name": "Raticate"
+      }
+    ]
+  },
+  {
+    "pokemonId": 20,
+    "num": "020",
+    "tier": 1,
+    "name": "Raticate",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "0.71 m",
+    "weight": "18.5 kg",
+    "weaknesses": ["Fighting"],
+    "prev_evolution": [
+      {
+        "num": "019",
+        "name": "Rattata"
+      }
+    ]
+  },
+  {
+    "pokemonId": 21,
+    "num": "021",
+    "tier": 1,
+    "name": "Spearow",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal", "Flying"],
+    "height": "0.30 m",
+    "weight": "2.0 kg",
+    "weaknesses": ["Electric", "Rock"],
+    "next_evolution": [
+      {
+        "num": "022",
+        "name": "Fearow"
+      }
+    ]
+  },
+  {
+    "pokemonId": 22,
+    "num": "022",
+    "tier": 1,
+    "name": "Fearow",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal", "Flying"],
+    "height": "1.19 m",
+    "weight": "38.0 kg",
+    "weaknesses": ["Electric", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "021",
+        "name": "Spearow"
+      }
+    ]
+  },
+  {
+    "pokemonId": 23,
+    "num": "023",
+    "tier": 1,
+    "name": "Ekans",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison"],
+    "height": "2.01 m",
+    "weight": "6.9 kg",
+    "weaknesses": ["Ground", "Psychic"],
+    "next_evolution": [
+      {
+        "num": "024",
+        "name": "Arbok"
+      }
+    ]
+  },
+  {
+    "pokemonId": 24,
+    "num": "024",
+    "tier": 1,
+    "name": "Arbok",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison"],
+    "height": "3.51 m",
+    "weight": "65.0 kg",
+    "weaknesses": ["Ground", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "023",
+        "name": "Ekans"
+      }
+    ]
+  },
+  {
+    "pokemonId": 25,
+    "num": "025",
+    "tier": 1,
+    "name": "Pikachu",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Electric"],
+    "height": "0.41 m",
+    "weight": "6.0 kg",
+    "weaknesses": ["Ground"],
+    "next_evolution": [
+      {
+        "num": "026",
+        "name": "Raichu"
+      }
+    ]
+  },
+  {
+    "pokemonId": 26,
+    "num": "026",
+    "tier": 1,
+    "name": "Raichu",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Electric"],
+    "height": "0.79 m",
+    "weight": "30.0 kg",
+    "weaknesses": ["Ground"],
+    "prev_evolution": [
+      {
+        "num": "025",
+        "name": "Pikachu"
+      }
+    ]
+  },
+  {
+    "pokemonId": 27,
+    "num": "027",
+    "tier": 1,
+    "name": "Sandshrew",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Ground"],
+    "height": "0.61 m",
+    "weight": "12.0 kg",
+    "weaknesses": ["Water", "Grass", "Ice"],
+    "next_evolution": [
+      {
+        "num": "028",
+        "name": "Sandslash"
+      }
+    ]
+  },
+  {
+    "pokemonId": 28,
+    "num": "028",
+    "tier": 1,
+    "name": "Sandslash",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Ground"],
+    "height": "0.99 m",
+    "weight": "29.5 kg",
+    "weaknesses": ["Water", "Grass", "Ice"],
+    "prev_evolution": [
+      {
+        "num": "027",
+        "name": "Sandshrew"
+      }
+    ]
+  },
+  {
+    "pokemonId": 29,
+    "num": "029",
+    "tier": 1,
+    "name": "Nidoran ♀ (Female)",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison"],
+    "height": "0.41 m",
+    "weight": "7.0 kg",
+    "weaknesses": ["Ground", "Psychic"],
+    "next_evolution": [
+      {
+        "num": "030",
+        "name": "Nidorina"
+      },
+      {
+        "num": "031",
+        "name": "Nidoqueen"
+      }
+    ]
+  },
+  {
+    "pokemonId": 30,
+    "num": "030",
+    "tier": 1,
+    "name": "Nidorina",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison"],
+    "height": "0.79 m",
+    "weight": "20.0 kg",
+    "weaknesses": ["Ground", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "029",
+        "name": "Nidoran(Female)"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "031",
+        "name": "Nidoqueen"
+      }
+    ]
+  },
+  {
+    "pokemonId": 31,
+    "num": "031",
+    "tier": 1,
+    "name": "Nidoqueen",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison", "Ground"],
+    "height": "1.30 m",
+    "weight": "60.0 kg",
+    "weaknesses": ["Water", "Ice", "Ground", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "029",
+        "name": "Nidoran(Female)"
+      },
+      {
+        "num": "030",
+        "name": "Nidorina"
+      }
+    ]
+  },
+  {
+    "pokemonId": 32,
+    "num": "032",
+    "tier": 1,
+    "name": "Nidoran ♂ (Male)",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison"],
+    "height": "0.51 m",
+    "weight": "9.0 kg",
+    "weaknesses": ["Ground", "Psychic"],
+    "next_evolution": [
+      {
+        "num": "033",
+        "name": "Nidorino"
+      },
+      {
+        "num": "034",
+        "name": "Nidoking"
+      }
+    ]
+  },
+  {
+    "pokemonId": 33,
+    "num": "033",
+    "tier": 1,
+    "name": "Nidorino",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison"],
+    "height": "0.89 m",
+    "weight": "19.5 kg",
+    "weaknesses": ["Ground", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "032",
+        "name": "Nidoran(Male)"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "034",
+        "name": "Nidoking"
+      }
+    ]
+  },
+  {
+    "pokemonId": 34,
+    "num": "034",
+    "tier": 1,
+    "name": "Nidoking",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison", "Ground"],
+    "height": "1.40 m",
+    "weight": "62.0 kg",
+    "weaknesses": ["Water", "Ice", "Ground", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "032",
+        "name": "Nidoran(Male)"
+      },
+      {
+        "num": "033",
+        "name": "Nidorino"
+      }
+    ]
+  },
+  {
+    "pokemonId": 35,
+    "num": "035",
+    "tier": 1,
+    "name": "Clefairy",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "0.61 m",
+    "weight": "7.5 kg",
+    "weaknesses": ["Fighting"],
+    "next_evolution": [
+      {
+        "num": "036",
+        "name": "Clefable"
+      }
+    ]
+  },
+  {
+    "pokemonId": 36,
+    "num": "036",
+    "tier": 1,
+    "name": "Clefable",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "1.30 m",
+    "weight": "40.0 kg",
+    "weaknesses": ["Fighting"],
+    "prev_evolution": [
+      {
+        "num": "035",
+        "name": "Clefairy"
+      }
+    ]
+  },
+  {
+    "pokemonId": 37,
+    "num": "037",
+    "tier": 1,
+    "name": "Vulpix",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fire"],
+    "height": "0.61 m",
+    "weight": "9.9 kg",
+    "weaknesses": ["Water", "Ground", "Rock"],
+    "next_evolution": [
+      {
+        "num": "038",
+        "name": "Ninetales"
+      }
+    ]
+  },
+  {
+    "pokemonId": 38,
+    "num": "038",
+    "tier": 1,
+    "name": "Ninetales",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fire"],
+    "height": "1.09 m",
+    "weight": "19.9 kg",
+    "weaknesses": ["Water", "Ground", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "037",
+        "name": "Vulpix"
+      }
+    ]
+  },
+  {
+    "pokemonId": 39,
+    "num": "039",
+    "tier": 1,
+    "name": "Jigglypuff",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "0.51 m",
+    "weight": "5.5 kg",
+    "weaknesses": ["Fighting"],
+    "next_evolution": [
+      {
+        "num": "040",
+        "name": "Wigglytuff"
+      }
+    ]
+  },
+  {
+    "pokemonId": 40,
+    "num": "040",
+    "tier": 1,
+    "name": "Wigglytuff",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "0.99 m",
+    "weight": "12.0 kg",
+    "weaknesses": ["Fighting"],
+    "prev_evolution": [
+      {
+        "num": "039",
+        "name": "Jigglypuff"
+      }
+    ]
+  },
+  {
+    "pokemonId": 41,
+    "num": "041",
+    "tier": 1,
+    "name": "Zubat",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison", "Flying"],
+    "height": "0.79 m",
+    "weight": "7.5 kg",
+    "weaknesses": ["Electric", "Ice", "Psychic", "Rock"],
+    "next_evolution": [
+      {
+        "num": "042",
+        "name": "Golbat"
+      }
+    ]
+  },
+  {
+    "pokemonId": 42,
+    "num": "042",
+    "tier": 1,
+    "name": "Golbat",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison", "Flying"],
+    "height": "1.60 m",
+    "weight": "55.0 kg",
+    "weaknesses": ["Electric", "Ice", "Psychic", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "041",
+        "name": "Zubat"
+      }
+    ]
+  },
+  {
+    "pokemonId": 43,
+    "num": "043",
+    "tier": 1,
+    "name": "Oddish",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Grass", "Poison"],
+    "height": "0.51 m",
+    "weight": "5.4 kg",
+    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "next_evolution": [
+      {
+        "num": "044",
+        "name": "Gloom"
+      },
+      {
+        "num": "045",
+        "name": "Vileplume"
+      }
+    ]
+  },
+  {
+    "pokemonId": 44,
+    "num": "044",
+    "tier": 1,
+    "name": "Gloom",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Grass", "Poison"],
+    "height": "0.79 m",
+    "weight": "8.6 kg",
+    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "043",
+        "name": "Oddish"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "045",
+        "name": "Vileplume"
+      }
+    ]
+  },
+  {
+    "pokemonId": 45,
+    "num": "045",
+    "tier": 1,
+    "name": "Vileplume",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Grass", "Poison"],
+    "height": "1.19 m",
+    "weight": "18.6 kg",
+    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "043",
+        "name": "Oddish"
+      },
+      {
+        "num": "044",
+        "name": "Gloom"
+      }
+    ]
+  },
+  {
+    "pokemonId": 46,
+    "num": "046",
+    "tier": 1,
+    "name": "Paras",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Bug", "Grass"],
+    "height": "0.30 m",
+    "weight": "5.4 kg",
+    "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Rock"],
+    "next_evolution": [
+      {
+        "num": "047",
+        "name": "Parasect"
+      }
+    ]
+  },
+  {
+    "pokemonId": 47,
+    "num": "047",
+    "tier": 1,
+    "name": "Parasect",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Bug", "Grass"],
+    "height": "0.99 m",
+    "weight": "29.5 kg",
+    "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "046",
+        "name": "Paras"
+      }
+    ]
+  },
+  {
+    "pokemonId": 48,
+    "num": "048",
+    "tier": 1,
+    "name": "Venonat",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Bug", "Poison"],
+    "height": "0.99 m",
+    "weight": "30.0 kg",
+    "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
+    "next_evolution": [
+      {
+        "num": "049",
+        "name": "Venomoth"
+      }
+    ]
+  },
+  {
+    "pokemonId": 49,
+    "num": "049",
+    "tier": 1,
+    "name": "Venomoth",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Bug", "Poison"],
+    "height": "1.50 m",
+    "weight": "12.5 kg",
+    "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "048",
+        "name": "Venonat"
+      }
+    ]
+  },
+  {
+    "pokemonId": 50,
+    "num": "050",
+    "tier": 1,
+    "name": "Diglett",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Ground"],
+    "height": "0.20 m",
+    "weight": "0.8 kg",
+    "weaknesses": ["Water", "Grass", "Ice"],
+    "next_evolution": [
+      {
+        "num": "051",
+        "name": "Dugtrio"
+      }
+    ]
+  },
+  {
+    "pokemonId": 51,
+    "num": "051",
+    "tier": 1,
+    "name": "Dugtrio",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Ground"],
+    "height": "0.71 m",
+    "weight": "33.3 kg",
+    "weaknesses": ["Water", "Grass", "Ice"],
+    "prev_evolution": [
+      {
+        "num": "050",
+        "name": "Diglett"
+      }
+    ]
+  },
+  {
+    "pokemonId": 52,
+    "num": "052",
+    "tier": 1,
+    "name": "Meowth",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "0.41 m",
+    "weight": "4.2 kg",
+    "weaknesses": ["Fighting"],
+    "next_evolution": [
+      {
+        "num": "053",
+        "name": "Persian"
+      }
+    ]
+  },
+  {
+    "pokemonId": 53,
+    "num": "053",
+    "tier": 1,
+    "name": "Persian",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "0.99 m",
+    "weight": "32.0 kg",
+    "weaknesses": ["Fighting"],
+    "prev_evolution": [
+      {
+        "num": "052",
+        "name": "Meowth"
+      }
+    ]
+  },
+  {
+    "pokemonId": 54,
+    "num": "054",
+    "tier": 1,
+    "name": "Psyduck",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "0.79 m",
+    "weight": "19.6 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "next_evolution": [
+      {
+        "num": "055",
+        "name": "Golduck"
+      }
+    ]
+  },
+  {
+    "pokemonId": 55,
+    "num": "055",
+    "tier": 1,
+    "name": "Golduck",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "1.70 m",
+    "weight": "76.6 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "prev_evolution": [
+      {
+        "num": "054",
+        "name": "Psyduck"
+      }
+    ]
+  },
+  {
+    "pokemonId": 56,
+    "num": "056",
+    "tier": 1,
+    "name": "Mankey",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fighting"],
+    "height": "0.51 m",
+    "weight": "28.0 kg",
+    "weaknesses": ["Flying", "Psychic", "Fairy"],
+    "next_evolution": [
+      {
+        "num": "057",
+        "name": "Primeape"
+      }
+    ]
+  },
+  {
+    "pokemonId": 57,
+    "num": "057",
+    "tier": 1,
+    "name": "Primeape",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fighting"],
+    "height": "0.99 m",
+    "weight": "32.0 kg",
+    "weaknesses": ["Flying", "Psychic", "Fairy"],
+    "prev_evolution": [
+      {
+        "num": "056",
+        "name": "Mankey"
+      }
+    ]
+  },
+  {
+    "pokemonId": 58,
+    "num": "058",
+    "tier": 1,
+    "name": "Growlithe",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fire"],
+    "height": "0.71 m",
+    "weight": "19.0 kg",
+    "weaknesses": ["Water", "Ground", "Rock"],
+    "next_evolution": [
+      {
+        "num": "059",
+        "name": "Arcanine"
+      }
+    ]
+  },
+  {
+    "pokemonId": 59,
+    "num": "059",
+    "tier": 1,
+    "name": "Arcanine",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fire"],
+    "height": "1.91 m",
+    "weight": "155.0 kg",
+    "weaknesses": ["Water", "Ground", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "058",
+        "name": "Growlithe"
+      }
+    ]
+  },
+  {
+    "pokemonId": 60,
+    "num": "060",
+    "tier": 1,
+    "name": "Poliwag",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "0.61 m",
+    "weight": "12.4 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "next_evolution": [
+      {
+        "num": "061",
+        "name": "Poliwhirl"
+      },
+      {
+        "num": "062",
+        "name": "Poliwrath"
+      }
+    ]
+  },
+  {
+    "pokemonId": 61,
+    "num": "061",
+    "tier": 1,
+    "name": "Poliwhirl",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "0.99 m",
+    "weight": "20.0 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "prev_evolution": [
+      {
+        "num": "060",
+        "name": "Poliwag"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "062",
+        "name": "Poliwrath"
+      }
+    ]
+  },
+  {
+    "pokemonId": 62,
+    "num": "062",
+    "tier": 1,
+    "name": "Poliwrath",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water", "Fighting"],
+    "height": "1.30 m",
+    "weight": "54.0 kg",
+    "weaknesses": ["Electric", "Grass", "Flying", "Psychic", "Fairy"],
+    "prev_evolution": [
+      {
+        "num": "060",
+        "name": "Poliwag"
+      },
+      {
+        "num": "061",
+        "name": "Poliwhirl"
+      }
+    ]
+  },
+  {
+    "pokemonId": 63,
+    "num": "063",
+    "tier": 1,
+    "name": "Abra",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Psychic"],
+    "height": "0.89 m",
+    "weight": "19.5 kg",
+    "weaknesses": ["Bug", "Ghost", "Dark"],
+    "next_evolution": [
+      {
+        "num": "064",
+        "name": "Kadabra"
+      },
+      {
+        "num": "065",
+        "name": "Alakazam"
+      }
+    ]
+  },
+  {
+    "pokemonId": 64,
+    "num": "064",
+    "tier": 1,
+    "name": "Kadabra",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Psychic"],
+    "height": "1.30 m",
+    "weight": "56.5 kg",
+    "weaknesses": ["Bug", "Ghost", "Dark"],
+    "prev_evolution": [
+      {
+        "num": "063",
+        "name": "Abra"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "065",
+        "name": "Alakazam"
+      }
+    ]
+  },
+  {
+    "pokemonId": 65,
+    "num": "065",
+    "tier": 1,
+    "name": "Alakazam",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Psychic"],
+    "height": "1.50 m",
+    "weight": "48.0 kg",
+    "weaknesses": ["Bug", "Ghost", "Dark"],
+    "prev_evolution": [
+      {
+        "num": "063",
+        "name": "Abra"
+      },
+      {
+        "num": "064",
+        "name": "Kadabra"
+      }
+    ]
+  },
+  {
+    "pokemonId": 66,
+    "num": "066",
+    "tier": 1,
+    "name": "Machop",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fighting"],
+    "height": "0.79 m",
+    "weight": "19.5 kg",
+    "weaknesses": ["Flying", "Psychic", "Fairy"],
+    "next_evolution": [
+      {
+        "num": "067",
+        "name": "Machoke"
+      },
+      {
+        "num": "068",
+        "name": "Machamp"
+      }
+    ]
+  },
+  {
+    "pokemonId": 67,
+    "num": "067",
+    "tier": 1,
+    "name": "Machoke",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fighting"],
+    "height": "1.50 m",
+    "weight": "70.5 kg",
+    "weaknesses": ["Flying", "Psychic", "Fairy"],
+    "prev_evolution": [
+      {
+        "num": "066",
+        "name": "Machop"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "068",
+        "name": "Machamp"
+      }
+    ]
+  },
+  {
+    "pokemonId": 68,
+    "num": "068",
+    "tier": 1,
+    "name": "Machamp",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fighting"],
+    "height": "1.60 m",
+    "weight": "130.0 kg",
+    "weaknesses": ["Flying", "Psychic", "Fairy"],
+    "prev_evolution": [
+      {
+        "num": "066",
+        "name": "Machop"
+      },
+      {
+        "num": "067",
+        "name": "Machoke"
+      }
+    ]
+  },
+  {
+    "pokemonId": 69,
+    "num": "069",
+    "tier": 1,
+    "name": "Bellsprout",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Grass", "Poison"],
+    "height": "0.71 m",
+    "weight": "4.0 kg",
+    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "next_evolution": [
+      {
+        "num": "070",
+        "name": "Weepinbell"
+      },
+      {
+        "num": "071",
+        "name": "Victreebel"
+      }
+    ]
+  },
+  {
+    "pokemonId": 70,
+    "num": "070",
+    "tier": 1,
+    "name": "Weepinbell",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Grass", "Poison"],
+    "height": "0.99 m",
+    "weight": "6.4 kg",
+    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "069",
+        "name": "Bellsprout"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "071",
+        "name": "Victreebel"
+      }
+    ]
+  },
+  {
+    "pokemonId": 71,
+    "num": "071",
+    "tier": 1,
+    "name": "Victreebel",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Grass", "Poison"],
+    "height": "1.70 m",
+    "weight": "15.5 kg",
+    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "069",
+        "name": "Bellsprout"
+      },
+      {
+        "num": "070",
+        "name": "Weepinbell"
+      }
+    ]
+  },
+  {
+    "pokemonId": 72,
+    "num": "072",
+    "tier": 1,
+    "name": "Tentacool",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water", "Poison"],
+    "height": "0.89 m",
+    "weight": "45.5 kg",
+    "weaknesses": ["Electric", "Ground", "Psychic"],
+    "next_evolution": [
+      {
+        "num": "073",
+        "name": "Tentacruel"
+      }
+    ]
+  },
+  {
+    "pokemonId": 73,
+    "num": "073",
+    "tier": 1,
+    "name": "Tentacruel",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water", "Poison"],
+    "height": "1.60 m",
+    "weight": "55.0 kg",
+    "weaknesses": ["Electric", "Ground", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "072",
+        "name": "Tentacool"
+      }
+    ]
+  },
+  {
+    "pokemonId": 74,
+    "num": "074",
+    "tier": 1,
+    "name": "Geodude",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Rock", "Ground"],
+    "height": "0.41 m",
+    "weight": "20.0 kg",
+    "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
+    "next_evolution": [
+      {
+        "num": "075",
+        "name": "Graveler"
+      },
+      {
+        "num": "076",
+        "name": "Golem"
+      }
+    ]
+  },
+  {
+    "pokemonId": 75,
+    "num": "075",
+    "tier": 1,
+    "name": "Graveler",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Rock", "Ground"],
+    "height": "0.99 m",
+    "weight": "105.0 kg",
+    "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
+    "prev_evolution": [
+      {
+        "num": "074",
+        "name": "Geodude"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "076",
+        "name": "Golem"
+      }
+    ]
+  },
+  {
+    "pokemonId": 76,
+    "num": "076",
+    "tier": 1,
+    "name": "Golem",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Rock", "Ground"],
+    "height": "1.40 m",
+    "weight": "300.0 kg",
+    "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
+    "prev_evolution": [
+      {
+        "num": "074",
+        "name": "Geodude"
+      },
+      {
+        "num": "075",
+        "name": "Graveler"
+      }
+    ]
+  },
+  {
+    "pokemonId": 77,
+    "num": "077",
+    "tier": 1,
+    "name": "Ponyta",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fire"],
+    "height": "0.99 m",
+    "weight": "30.0 kg",
+    "weaknesses": ["Water", "Ground", "Rock"],
+    "next_evolution": [
+      {
+        "num": "078",
+        "name": "Rapidash"
+      }
+    ]
+  },
+  {
+    "pokemonId": 78,
+    "num": "078",
+    "tier": 1,
+    "name": "Rapidash",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fire"],
+    "height": "1.70 m",
+    "weight": "95.0 kg",
+    "weaknesses": ["Water", "Ground", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "077",
+        "name": "Ponyta"
+      }
+    ]
+  },
+  {
+    "pokemonId": 79,
+    "num": "079",
+    "tier": 1,
+    "name": "Slowpoke",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water", "Psychic"],
+    "height": "1.19 m",
+    "weight": "36.0 kg",
+    "weaknesses": ["Electric", "Grass", "Bug", "Ghost", "Dark"],
+    "next_evolution": [
+      {
+        "num": "080",
+        "name": "Slowbro"
+      }
+    ]
+  },
+  {
+    "pokemonId": 80,
+    "num": "080",
+    "tier": 1,
+    "name": "Slowbro",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water", "Psychic"],
+    "height": "1.60 m",
+    "weight": "78.5 kg",
+    "weaknesses": ["Electric", "Grass", "Bug", "Ghost", "Dark"],
+    "prev_evolution": [
+      {
+        "num": "079",
+        "name": "Slowpoke"
+      }
+    ]
+  },
+  {
+    "pokemonId": 81,
+    "num": "081",
+    "tier": 1,
+    "name": "Magnemite",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Electric"],
+    "height": "0.30 m",
+    "weight": "6.0 kg",
+    "weaknesses": ["Fire", "Water", "Ground"],
+    "next_evolution": [
+      {
+        "num": "082",
+        "name": "Magneton"
+      }
+    ]
+  },
+  {
+    "pokemonId": 82,
+    "num": "082",
+    "tier": 1,
+    "name": "Magneton",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Electric"],
+    "height": "0.99 m",
+    "weight": "60.0 kg",
+    "weaknesses": ["Fire", "Water", "Ground"],
+    "prev_evolution": [
+      {
+        "num": "081",
+        "name": "Magnemite"
+      }
+    ]
+  },
+  {
+    "pokemonId": 83,
+    "num": "083",
+    "tier": 1,
+    "name": "Farfetch'd",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal", "Flying"],
+    "height": "0.79 m",
+    "weight": "15.0 kg",
+    "weaknesses": ["Electric", "Rock"]
+  },
+  {
+    "pokemonId": 84,
+    "num": "084",
+    "tier": 1,
+    "name": "Doduo",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal", "Flying"],
+    "height": "1.40 m",
+    "weight": "39.2 kg",
+    "weaknesses": ["Electric", "Rock"],
+    "next_evolution": [
+      {
+        "num": "085",
+        "name": "Dodrio"
+      }
+    ]
+  },
+  {
+    "pokemonId": 85,
+    "num": "085",
+    "tier": 1,
+    "name": "Dodrio",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal", "Flying"],
+    "height": "1.80 m",
+    "weight": "85.2 kg",
+    "weaknesses": ["Electric", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "084",
+        "name": "Doduo"
+      }
+    ]
+  },
+  {
+    "pokemonId": 86,
+    "num": "086",
+    "tier": 1,
+    "name": "Seel",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "1.09 m",
+    "weight": "90.0 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "next_evolution": [
+      {
+        "num": "087",
+        "name": "Dewgong"
+      }
+    ]
+  },
+  {
+    "pokemonId": 87,
+    "num": "087",
+    "tier": 1,
+    "name": "Dewgong",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water", "Ice"],
+    "height": "1.70 m",
+    "weight": "120.0 kg",
+    "weaknesses": ["Electric", "Grass", "Fighting", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "086",
+        "name": "Seel"
+      }
+    ]
+  },
+  {
+    "pokemonId": 88,
+    "num": "088",
+    "tier": 1,
+    "name": "Grimer",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison"],
+    "height": "0.89 m",
+    "weight": "30.0 kg",
+    "weaknesses": ["Ground", "Psychic"],
+    "next_evolution": [
+      {
+        "num": "089",
+        "name": "Muk"
+      }
+    ]
+  },
+  {
+    "pokemonId": 89,
+    "num": "089",
+    "tier": 1,
+    "name": "Muk",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison"],
+    "height": "1.19 m",
+    "weight": "30.0 kg",
+    "weaknesses": ["Ground", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "088",
+        "name": "Grimer"
+      }
+    ]
+  },
+  {
+    "pokemonId": 90,
+    "num": "090",
+    "tier": 1,
+    "name": "Shellder",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "0.30 m",
+    "weight": "4.0 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "next_evolution": [
+      {
+        "num": "091",
+        "name": "Cloyster"
+      }
+    ]
+  },
+  {
+    "pokemonId": 91,
+    "num": "091",
+    "tier": 1,
+    "name": "Cloyster",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water", "Ice"],
+    "height": "1.50 m",
+    "weight": "132.5 kg",
+    "weaknesses": ["Electric", "Grass", "Fighting", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "090",
+        "name": "Shellder"
+      }
+    ]
+  },
+  {
+    "pokemonId": 92,
+    "num": "092",
+    "tier": 1,
+    "name": "Gastly",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Ghost", "Poison"],
+    "height": "1.30 m",
+    "weight": "0.1 kg",
+    "weaknesses": ["Ground", "Psychic", "Ghost", "Dark"],
+    "next_evolution": [
+      {
+        "num": "093",
+        "name": "Haunter"
+      },
+      {
+        "num": "094",
+        "name": "Gengar"
+      }
+    ]
+  },
+  {
+    "pokemonId": 93,
+    "num": "093",
+    "tier": 1,
+    "name": "Haunter",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Ghost", "Poison"],
+    "height": "1.60 m",
+    "weight": "0.1 kg",
+    "weaknesses": ["Ground", "Psychic", "Ghost", "Dark"],
+    "prev_evolution": [
+      {
+        "num": "092",
+        "name": "Gastly"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "094",
+        "name": "Gengar"
+      }
+    ]
+  },
+  {
+    "pokemonId": 94,
+    "num": "094",
+    "tier": 1,
+    "name": "Gengar",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Ghost", "Poison"],
+    "height": "1.50 m",
+    "weight": "40.5 kg",
+    "weaknesses": ["Ground", "Psychic", "Ghost", "Dark"],
+    "prev_evolution": [
+      {
+        "num": "092",
+        "name": "Gastly"
+      },
+      {
+        "num": "093",
+        "name": "Haunter"
+      }
+    ]
+  },
+  {
+    "pokemonId": 95,
+    "num": "095",
+    "tier": 1,
+    "name": "Onix",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Rock", "Ground"],
+    "height": "8.79 m",
+    "weight": "210.0 kg",
+    "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"]
+  },
+  {
+    "pokemonId": 96,
+    "num": "096",
+    "tier": 1,
+    "name": "Drowzee",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Psychic"],
+    "height": "0.99 m",
+    "weight": "32.4 kg",
+    "weaknesses": ["Bug", "Ghost", "Dark"],
+    "next_evolution": [
+      {
+        "num": "097",
+        "name": "Hypno"
+      }
+    ]
+  },
+  {
+    "pokemonId": 97,
+    "num": "097",
+    "tier": 1,
+    "name": "Hypno",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Psychic"],
+    "height": "1.60 m",
+    "weight": "75.6 kg",
+    "weaknesses": ["Bug", "Ghost", "Dark"],
+    "prev_evolution": [
+      {
+        "num": "096",
+        "name": "Drowzee"
+      }
+    ]
+  },
+  {
+    "pokemonId": 98,
+    "num": "098",
+    "tier": 1,
+    "name": "Krabby",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "0.41 m",
+    "weight": "6.5 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "next_evolution": [
+      {
+        "num": "099",
+        "name": "Kingler"
+      }
+    ]
+  },
+  {
+    "pokemonId": 99,
+    "num": "099",
+    "tier": 1,
+    "name": "Kingler",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "1.30 m",
+    "weight": "60.0 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "prev_evolution": [
+      {
+        "num": "098",
+        "name": "Krabby"
+      }
+    ]
+  },
+  {
+    "pokemonId": 100,
+    "num": "100",
+    "tier": 1,
+    "name": "Voltorb",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Electric"],
+    "height": "0.51 m",
+    "weight": "10.4 kg",
+    "weaknesses": ["Ground"],
+    "next_evolution": [
+      {
+        "num": "101",
+        "name": "Electrode"
+      }
+    ]
+  },
+  {
+    "pokemonId": 101,
+    "num": "101",
+    "tier": 1,
+    "name": "Electrode",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Electric"],
+    "height": "1.19 m",
+    "weight": "66.6 kg",
+    "weaknesses": ["Ground"],
+    "prev_evolution": [
+      {
+        "num": "100",
+        "name": "Voltorb"
+      }
+    ]
+  },
+  {
+    "pokemonId": 102,
+    "num": "102",
+    "tier": 1,
+    "name": "Exeggcute",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Grass", "Psychic"],
+    "height": "0.41 m",
+    "weight": "2.5 kg",
+    "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Ghost", "Dark"],
+    "next_evolution": [
+      {
+        "num": "103",
+        "name": "Exeggutor"
+      }
+    ]
+  },
+  {
+    "pokemonId": 103,
+    "num": "103",
+    "tier": 1,
+    "name": "Exeggutor",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Grass", "Psychic"],
+    "height": "2.01 m",
+    "weight": "120.0 kg",
+    "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Ghost", "Dark"],
+    "prev_evolution": [
+      {
+        "num": "102",
+        "name": "Exeggcute"
+      }
+    ]
+  },
+  {
+    "pokemonId": 104,
+    "num": "104",
+    "tier": 1,
+    "name": "Cubone",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Ground"],
+    "height": "0.41 m",
+    "weight": "6.5 kg",
+    "weaknesses": ["Water", "Grass", "Ice"],
+    "next_evolution": [
+      {
+        "num": "105",
+        "name": "Marowak"
+      }
+    ]
+  },
+  {
+    "pokemonId": 105,
+    "num": "105",
+    "tier": 1,
+    "name": "Marowak",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Ground"],
+    "height": "0.99 m",
+    "weight": "45.0 kg",
+    "weaknesses": ["Water", "Grass", "Ice"],
+    "prev_evolution": [
+      {
+        "num": "104",
+        "name": "Cubone"
+      }
+    ]
+  },
+  {
+    "pokemonId": 106,
+    "num": "106",
+    "tier": 1,
+    "name": "Hitmonlee",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fighting"],
+    "height": "1.50 m",
+    "weight": "49.8 kg",
+    "weaknesses": ["Flying", "Psychic", "Fairy"]
+  },
+  {
+    "pokemonId": 107,
+    "num": "107",
+    "tier": 1,
+    "name": "Hitmonchan",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fighting"],
+    "height": "1.40 m",
+    "weight": "50.2 kg",
+    "weaknesses": ["Flying", "Psychic", "Fairy"]
+  },
+  {
+    "pokemonId": 108,
+    "num": "108",
+    "tier": 1,
+    "name": "Lickitung",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "1.19 m",
+    "weight": "65.5 kg",
+    "weaknesses": ["Fighting"]
+  },
+  {
+    "pokemonId": 109,
+    "num": "109",
+    "tier": 1,
+    "name": "Koffing",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison"],
+    "height": "0.61 m",
+    "weight": "1.0 kg",
+    "weaknesses": ["Ground", "Psychic"],
+    "next_evolution": [
+      {
+        "num": "110",
+        "name": "Weezing"
+      }
+    ]
+  },
+  {
+    "pokemonId": 110,
+    "num": "110",
+    "tier": 1,
+    "name": "Weezing",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Poison"],
+    "height": "1.19 m",
+    "weight": "9.5 kg",
+    "weaknesses": ["Ground", "Psychic"],
+    "prev_evolution": [
+      {
+        "num": "109",
+        "name": "Koffing"
+      }
+    ]
+  },
+  {
+    "pokemonId": 111,
+    "num": "111",
+    "tier": 1,
+    "name": "Rhyhorn",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Ground", "Rock"],
+    "height": "0.99 m",
+    "weight": "115.0 kg",
+    "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
+    "next_evolution": [
+      {
+        "num": "112",
+        "name": "Rhydon"
+      }
+    ]
+  },
+  {
+    "pokemonId": 112,
+    "num": "112",
+    "tier": 1,
+    "name": "Rhydon",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Ground", "Rock"],
+    "height": "1.91 m",
+    "weight": "120.0 kg",
+    "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
+    "prev_evolution": [
+      {
+        "num": "111",
+        "name": "Rhyhorn"
+      }
+    ]
+  },
+  {
+    "pokemonId": 113,
+    "num": "113",
+    "tier": 1,
+    "name": "Chansey",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "1.09 m",
+    "weight": "34.6 kg",
+    "weaknesses": ["Fighting"]
+  },
+  {
+    "pokemonId": 114,
+    "num": "114",
+    "tier": 1,
+    "name": "Tangela",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Grass"],
+    "height": "0.99 m",
+    "weight": "35.0 kg",
+    "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug"]
+  },
+  {
+    "pokemonId": 115,
+    "num": "115",
+    "tier": 1,
+    "name": "Kangaskhan",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "2.21 m",
+    "weight": "80.0 kg",
+    "weaknesses": ["Fighting"]
+  },
+  {
+    "pokemonId": 116,
+    "num": "116",
+    "tier": 1,
+    "name": "Horsea",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "0.41 m",
+    "weight": "8.0 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "next_evolution": [
+      {
+        "num": "117",
+        "name": "Seadra"
+      }
+    ]
+  },
+  {
+    "pokemonId": 117,
+    "num": "117",
+    "tier": 1,
+    "name": "Seadra",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "1.19 m",
+    "weight": "25.0 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "prev_evolution": [
+      {
+        "num": "116",
+        "name": "Horsea"
+      }
+    ]
+  },
+  {
+    "pokemonId": 118,
+    "num": "118",
+    "tier": 1,
+    "name": "Goldeen",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "0.61 m",
+    "weight": "15.0 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "next_evolution": [
+      {
+        "num": "119",
+        "name": "Seaking"
+      }
+    ]
+  },
+  {
+    "pokemonId": 119,
+    "num": "119",
+    "tier": 1,
+    "name": "Seaking",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "1.30 m",
+    "weight": "39.0 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "prev_evolution": [
+      {
+        "num": "118",
+        "name": "Goldeen"
+      }
+    ]
+  },
+  {
+    "pokemonId": 120,
+    "num": "120",
+    "tier": 1,
+    "name": "Staryu",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "0.79 m",
+    "weight": "34.5 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "next_evolution": [
+      {
+        "num": "121",
+        "name": "Starmie"
+      }
+    ]
+  },
+  {
+    "pokemonId": 121,
+    "num": "121",
+    "tier": 1,
+    "name": "Starmie",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water", "Psychic"],
+    "height": "1.09 m",
+    "weight": "80.0 kg",
+    "weaknesses": ["Electric", "Grass", "Bug", "Ghost", "Dark"],
+    "prev_evolution": [
+      {
+        "num": "120",
+        "name": "Staryu"
+      }
+    ]
+  },
+  {
+    "pokemonId": 122,
+    "num": "122",
+    "tier": 1,
+    "name": "Mr. Mime",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Psychic"],
+    "height": "1.30 m",
+    "weight": "54.5 kg",
+    "weaknesses": ["Bug", "Ghost", "Dark"]
+  },
+  {
+    "pokemonId": 123,
+    "num": "123",
+    "tier": 1,
+    "name": "Scyther",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Bug", "Flying"],
+    "height": "1.50 m",
+    "weight": "56.0 kg",
+    "weaknesses": ["Fire", "Electric", "Ice", "Flying", "Rock"]
+  },
+  {
+    "pokemonId": 124,
+    "num": "124",
+    "tier": 1,
+    "name": "Jynx",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Ice", "Psychic"],
+    "height": "1.40 m",
+    "weight": "40.6 kg",
+    "weaknesses": ["Fire", "Bug", "Rock", "Ghost", "Dark", "Steel"]
+  },
+  {
+    "pokemonId": 125,
+    "num": "125",
+    "tier": 1,
+    "name": "Electabuzz",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Electric"],
+    "height": "1.09 m",
+    "weight": "30.0 kg",
+    "weaknesses": ["Ground"]
+  },
+  {
+    "pokemonId": 126,
+    "num": "126",
+    "tier": 1,
+    "name": "Magmar",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fire"],
+    "height": "1.30 m",
+    "weight": "44.5 kg",
+    "weaknesses": ["Water", "Ground", "Rock"]
+  },
+  {
+    "pokemonId": 127,
+    "num": "127",
+    "tier": 1,
+    "name": "Pinsir",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Bug"],
+    "height": "1.50 m",
+    "weight": "55.0 kg",
+    "weaknesses": ["Fire", "Flying", "Rock"]
+  },
+  {
+    "pokemonId": 128,
+    "num": "128",
+    "tier": 1,
+    "name": "Tauros",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "1.40 m",
+    "weight": "88.4 kg",
+    "weaknesses": ["Fighting"]
+  },
+  {
+    "pokemonId": 129,
+    "num": "129",
+    "tier": 1,
+    "name": "Magikarp",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "0.89 m",
+    "weight": "10.0 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "next_evolution": [
+      {
+        "num": "130",
+        "name": "Gyarados"
+      }
+    ]
+  },
+  {
+    "pokemonId": 130,
+    "num": "130",
+    "tier": 1,
+    "name": "Gyarados",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water", "Flying"],
+    "height": "6.50 m",
+    "weight": "235.0 kg",
+    "weaknesses": ["Electric", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "129",
+        "name": "Magikarp"
+      }
+    ]
+  },
+  {
+    "pokemonId": 131,
+    "num": "131",
+    "tier": 1,
+    "name": "Lapras",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water", "Ice"],
+    "height": "2.49 m",
+    "weight": "220.0 kg",
+    "weaknesses": ["Electric", "Grass", "Fighting", "Rock"]
+  },
+  {
+    "pokemonId": 132,
+    "num": "132",
+    "tier": 1,
+    "name": "Ditto",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "0.30 m",
+    "weight": "4.0 kg",
+    "weaknesses": ["Fighting"]
+  },
+  {
+    "pokemonId": 133,
+    "num": "133",
+    "tier": 1,
+    "name": "Eevee",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "0.30 m",
+    "weight": "6.5 kg",
+    "weaknesses": ["Fighting"],
+    "next_evolution": [
+      {
+        "num": "134",
+        "name": "Vaporeon"
+      },
+      {
+        "num": "135",
+        "name": "Jolteon"
+      },
+      {
+        "num": "136",
+        "name": "Flareon"
+      }
+    ]
+  },
+  {
+    "pokemonId": 134,
+    "num": "134",
+    "tier": 1,
+    "name": "Vaporeon",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Water"],
+    "height": "0.99 m",
+    "weight": "29.0 kg",
+    "weaknesses": ["Electric", "Grass"],
+    "prev_evolution": [
+      {
+        "num": "133",
+        "name": "Eevee"
+      }
+    ]
+  },
+  {
+    "pokemonId": 135,
+    "num": "135",
+    "tier": 1,
+    "name": "Jolteon",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Electric"],
+    "height": "0.79 m",
+    "weight": "24.5 kg",
+    "weaknesses": ["Ground"],
+    "prev_evolution": [
+      {
+        "num": "133",
+        "name": "Eevee"
+      }
+    ]
+  },
+  {
+    "pokemonId": 136,
+    "num": "136",
+    "tier": 1,
+    "name": "Flareon",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fire"],
+    "height": "0.89 m",
+    "weight": "25.0 kg",
+    "weaknesses": ["Water", "Ground", "Rock"],
+    "prev_evolution": [
+      {
+        "num": "133",
+        "name": "Eevee"
+      }
+    ]
+  },
+  {
+    "pokemonId": 137,
+    "num": "137",
+    "tier": 1,
+    "name": "Porygon",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "0.79 m",
+    "weight": "36.5 kg",
+    "weaknesses": ["Fighting"]
+  },
+  {
+    "pokemonId": 138,
+    "num": "138",
+    "tier": 1,
+    "name": "Omanyte",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Rock", "Water"],
+    "height": "0.41 m",
+    "weight": "7.5 kg",
+    "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
+    "next_evolution": [
+      {
+        "num": "139",
+        "name": "Omastar"
+      }
+    ]
+  },
+  {
+    "pokemonId": 139,
+    "num": "139",
+    "tier": 1,
+    "name": "Omastar",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Rock", "Water"],
+    "height": "0.99 m",
+    "weight": "35.0 kg",
+    "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
+    "prev_evolution": [
+      {
+        "num": "138",
+        "name": "Omanyte"
+      }
+    ]
+  },
+  {
+    "pokemonId": 140,
+    "num": "140",
+    "tier": 1,
+    "name": "Kabuto",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Rock", "Water"],
+    "height": "0.51 m",
+    "weight": "11.5 kg",
+    "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
+    "next_evolution": [
+      {
+        "num": "141",
+        "name": "Kabutops"
+      }
+    ]
+  },
+  {
+    "pokemonId": 141,
+    "num": "141",
+    "tier": 1,
+    "name": "Kabutops",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Rock", "Water"],
+    "height": "1.30 m",
+    "weight": "40.5 kg",
+    "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
+    "prev_evolution": [
+      {
+        "num": "140",
+        "name": "Kabuto"
+      }
+    ]
+  },
+  {
+    "pokemonId": 142,
+    "num": "142",
+    "tier": 1,
+    "name": "Aerodactyl",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Rock", "Flying"],
+    "height": "1.80 m",
+    "weight": "59.0 kg",
+    "weaknesses": ["Water", "Electric", "Ice", "Rock", "Steel"]
+  },
+  {
+    "pokemonId": 143,
+    "num": "143",
+    "tier": 1,
+    "name": "Snorlax",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Normal"],
+    "height": "2.11 m",
+    "weight": "460.0 kg",
+    "weaknesses": ["Fighting"]
+  },
+  {
+    "pokemonId": 144,
+    "num": "144",
+    "tier": 1,
+    "name": "Articuno",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Ice", "Flying"],
+    "height": "1.70 m",
+    "weight": "55.4 kg",
+    "weaknesses": ["Fire", "Electric", "Rock", "Steel"]
+  },
+  {
+    "pokemonId": 145,
+    "num": "145",
+    "tier": 1,
+    "name": "Zapdos",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Electric", "Flying"],
+    "height": "1.60 m",
+    "weight": "52.6 kg",
+    "weaknesses": ["Ice", "Rock"]
+  },
+  {
+    "pokemonId": 146,
+    "num": "146",
+    "tier": 1,
+    "name": "Moltres",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Fire", "Flying"],
+    "height": "2.01 m",
+    "weight": "60.0 kg",
+    "weaknesses": ["Water", "Electric", "Rock"]
+  },
+  {
+    "pokemonId": 147,
+    "num": "147",
+    "tier": 1,
+    "name": "Dratini",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Dragon"],
+    "height": "1.80 m",
+    "weight": "3.3 kg",
+    "weaknesses": ["Ice", "Dragon", "Fairy"],
+    "next_evolution": [
+      {
+        "num": "148",
+        "name": "Dragonair"
+      },
+      {
+        "num": "149",
+        "name": "Dragonite"
+      }
+    ]
+  },
+  {
+    "pokemonId": 148,
+    "num": "148",
+    "tier": 1,
+    "name": "Dragonair",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Dragon"],
+    "height": "3.99 m",
+    "weight": "16.5 kg",
+    "weaknesses": ["Ice", "Dragon", "Fairy"],
+    "prev_evolution": [
+      {
+        "num": "147",
+        "name": "Dratini"
+      }
+    ],
+    "next_evolution": [
+      {
+        "num": "149",
+        "name": "Dragonite"
+      }
+    ]
+  },
+  {
+    "pokemonId": 149,
+    "num": "149",
+    "tier": 1,
+    "name": "Dragonite",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Dragon", "Flying"],
+    "height": "2.21 m",
+    "weight": "210.0 kg",
+    "weaknesses": ["Ice", "Rock", "Dragon", "Fairy"],
+    "prev_evolution": [
+      {
+        "num": "147",
+        "name": "Dratini"
+      },
+      {
+        "num": "148",
+        "name": "Dragonair"
+      }
+    ]
+  },
+  {
+    "pokemonId": 150,
+    "num": "150",
+    "tier": 1,
+    "name": "Mewtwo",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Psychic"],
+    "height": "2.01 m",
+    "weight": "122.0 kg",
+    "weaknesses": ["Bug", "Ghost", "Dark"]
+  },
+  {
+    "pokemonId": 151,
+    "num": "151",
+    "tier": 1,
+    "name": "Mew",
+    "baseAttack": 3,
+    "baseHealth": 2,
+    "baseCost": 3,
+    "minionType": 1,
+    "cardType": 0,
+    "keywords": [],
+    "type": ["Psychic"],
+    "height": "0.41 m",
+    "weight": "4.0 kg",
+    "weaknesses": ["Bug", "Ghost", "Dark"]
   }
 ]
