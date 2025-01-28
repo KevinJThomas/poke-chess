@@ -25,6 +25,9 @@ export default function App() {
   const [disableHandDrop, setDisableHandDrop] = useState(false);
   const [hasEndedTurn, setHasEndedTurn] = useState(false);
 
+  console.log("players", players);
+  console.log("gameState", gameState);
+
   const player = players.find((player) => player.id === playerId);
 
   function onDragStart(result) {

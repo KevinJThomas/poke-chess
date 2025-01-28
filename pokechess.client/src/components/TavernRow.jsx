@@ -63,7 +63,7 @@ export default function TavernRow({ isDragDisabled, player, isDropDisabled }) {
                     provided.draggableProps.style,
                   )}
                 >
-                  <Pokemon key={pokemon.id} {...pokemon} />
+                  <Pokemon key={pokemon.id} {...pokemon} showTier />
                 </div>
               )}
             </Draggable>

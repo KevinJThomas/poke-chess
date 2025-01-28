@@ -14,17 +14,23 @@ export default function Pokemon({
   id,
   cardType,
   cost,
+  num,
+  showTier = false,
 }) {
   const isMinion = cardType === 0;
 
   const [line, setLine] = useState(null);
+
   return (
     <div
       id={id}
+      style={{ backgroundImage: `url(/pokemon/${num}.png)` }}
       className={clsx(
         (id === "empty-slot-hand" || id === "empty-slot-board") &&
           "bg-gray-200",
-        "relative flex h-20 w-20 items-center justify-center bg-blue-400",
+        "relative flex h-20 w-20 items-center justify-center",
+        isMinion && `bg-contain bg-center`,
+        !isMinion && "rounded-xl bg-blue-400",
       )}
       onClick={() => {
         const line = new LeaderLine(
@@ -48,10 +54,10 @@ export default function Pokemon({
         setLine(line);
       }}
     >
-      <span className="text-xs">{name}</span>
+      {!isMinion && <span className="text-xs">{name}</span>}
       {isMinion && <Attack attack={attack} />}
       {isMinion && <Health health={health} />}
-      {!!tier && <Tier tier={tier} />}
+      {!!tier && showTier && <Tier tier={tier} />}
       {!isMinion && Number.isInteger(cost) && <Cost cost={cost} />}
     </div>
   );
