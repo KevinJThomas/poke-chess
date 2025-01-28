@@ -53,7 +53,9 @@ export default function PlayerPokemon({
               key={pokemon.id}
               draggableId={pokemon.id}
               index={index}
-              isDragDisabled={isDragDisabled || pokemon.id === "empty-slot"}
+              isDragDisabled={
+                isDragDisabled || pokemon.id === "empty-slot-board"
+              }
             >
               {(provided, snapshot) => (
                 <div

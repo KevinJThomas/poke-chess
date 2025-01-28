@@ -18,13 +18,16 @@ export default function Shop({ player, isDropDisabled }) {
       isDropDisabled={isDropDisabled}
     >
       {(provided, snapshot) => (
-        <div
-          ref={provided.innerRef}
-          style={getListStyle(snapshot.isDraggingOver)}
-          {...provided.droppableProps}
-        >
-          <Hero name="Shop" tier={player.tier} />
-        </div>
+        <>
+          <div
+            ref={provided.innerRef}
+            style={getListStyle(snapshot.isDraggingOver)}
+            {...provided.droppableProps}
+          >
+            <Hero name="Shop" tier={player.tier} />
+          </div>
+          <span className="hidden">{provided.placeholder}</span>
+        </>
       )}
     </Droppable>
   );

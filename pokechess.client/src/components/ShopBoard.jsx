@@ -16,15 +16,11 @@ export default function ShopBoard({
   disableShopDrop,
   disableHandDrop,
 }) {
-  console.log("players", players);
-  console.log("gameState", gameState);
-
   function upgrade() {
-    connection.invoke("Upgrade");
+    connection.invoke("UpgradeTavern");
   }
 
   function refresh() {
-    console.log("get new shop");
     connection.invoke("GetNewShop");
   }
 
@@ -36,7 +32,9 @@ export default function ShopBoard({
     <div className="flex h-screen flex-col items-center justify-center">
       <Row>
         <div className="w-16"></div>
-        <Button onClick={upgrade}>Upgrade ({player.upgradeCost})</Button>
+        <Button onClick={upgrade} disabled={player.upgradeCost > player.gold}>
+          Upgrade ({player.upgradeCost})
+        </Button>
         <Shop player={player} isDropDisabled={disableSellDrop} />
         <Button onClick={refresh} disabled={player.refreshCost > player.gold}>
           Refresh ({player.refreshCost})
@@ -48,20 +46,22 @@ export default function ShopBoard({
         isDragDisabled={false}
         isDropDisabled={disableShopDrop}
       />
-      <Row>
-        <PlayerPokemon
-          board={
-            player.board.length === 0 ? [{ id: "empty-slot" }] : player.board
-          }
-          player={player}
-          isDropDisabled={disableBoardDrop}
-        />
-      </Row>
+      <PlayerPokemon
+        board={
+          player.board.length === 0
+            ? [{ id: "empty-slot-board" }]
+            : player.board
+        }
+        player={player}
+        isDropDisabled={disableBoardDrop}
+      />
       <Row>
         <Hero name={player.name} health={player.health} armor={player.armor} />
       </Row>
       <HandRow
-        hand={player.hand.length === 0 ? [{ id: "empty-slot" }] : player.hand}
+        hand={
+          player.hand.length === 0 ? [{ id: "empty-slot-hand" }] : player.hand
+        }
         isDragDisabled={false}
         isDropDisabled={disableHandDrop}
       />

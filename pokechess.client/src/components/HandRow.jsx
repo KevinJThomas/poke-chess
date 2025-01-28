@@ -48,7 +48,7 @@ export default function HandRow({ hand, isDragDisabled, isDropDisabled }) {
               key={card.id}
               draggableId={card.id}
               index={index}
-              isDragDisabled={isDragDisabled || card.id === "empty-slot"}
+              isDragDisabled={isDragDisabled || card.id === "empty-slot-hand"}
             >
               {(provided, snapshot) => (
                 <div
@@ -60,7 +60,6 @@ export default function HandRow({ hand, isDragDisabled, isDropDisabled }) {
                     snapshot.isDragging,
                     provided.draggableProps.style,
                   )}
-                  // className={clsx(card.id === "empty-slot" && "bg-gray-300")}
                 >
                   <Pokemon {...card} />
                 </div>

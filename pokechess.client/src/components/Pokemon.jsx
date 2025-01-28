@@ -22,7 +22,8 @@ export default function Pokemon({
     <div
       id={id}
       className={clsx(
-        id === "empty-slot" && "bg-gray-200",
+        (id === "empty-slot-hand" || id === "empty-slot-board") &&
+          "bg-gray-200",
         "relative flex h-20 w-20 items-center justify-center bg-blue-400",
       )}
       onClick={() => {

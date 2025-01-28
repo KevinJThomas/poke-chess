@@ -23,6 +23,7 @@ export default function App() {
   const [disableBoardDrop, setDisableBoardDrop] = useState(false);
   const [disableShopDrop, setDisableShopDrop] = useState(false);
   const [disableHandDrop, setDisableHandDrop] = useState(false);
+  const [hasEndedTurn, setHasEndedTurn] = useState(false);
 
   const player = players.find((player) => player.id === playerId);
 
@@ -51,6 +52,26 @@ export default function App() {
     if (!result.destination) return;
 
     const cardId = result.draggableId;
+
+    // Sell
+    if (
+      result.source.droppableId === "droppable-board" &&
+      result.destination.droppableId === "droppable-sell"
+    ) {
+      const clonedPlayers = cloneDeep(players);
+
+      const playerIndex = clonedPlayers.findIndex(
+        (player) => player.id === playerId,
+      );
+
+      clonedPlayers[playerIndex].board = clonedPlayers[
+        playerIndex
+      ].board.filter((card) => card.id !== cardId);
+
+      setPlayers(clonedPlayers);
+
+      connection.invoke("MoveCard", result.draggableId, 1, null);
+    }
 
     // Play
     if (
@@ -110,7 +131,7 @@ export default function App() {
 
       setPlayers(clonedPlayers);
 
-      connection.invoke("MoveCard", result.draggableId, 0);
+      connection.invoke("MoveCard", result.draggableId, 0, null);
     }
   }
 
@@ -161,7 +182,6 @@ export default function App() {
     });
 
     connection.on("PlayerUpdated", (newPlayer) => {
-      console.log("PlayerUpdated", newPlayer);
       setPlayers((prev) =>
         prev.map((player) => {
           if (player.id === playerId) {
@@ -171,6 +191,10 @@ export default function App() {
           return player;
         }),
       );
+    });
+
+    connection.on("CombatComplete", (x) => {
+      console.log("CombatComplete", x);
     });
 
     return () => {
@@ -183,6 +207,7 @@ export default function App() {
 
   function endTurn() {
     connection.invoke("EndTurn");
+    setHasEndedTurn(true);
   }
 
   if (gameStatus === "error") {
@@ -207,6 +232,11 @@ export default function App() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+      {hasEndedTurn && (
+        <div className="absolute top-0 right-0 bottom-0 left-0 z-10 flex items-center justify-center bg-black/50">
+          <span>Waiting for other players</span>
+        </div>
+      )}
       <div className="relative h-screen w-screen bg-gray-200">
         {gameStatus === "shop" && (
           <ShopBoard
@@ -221,7 +251,11 @@ export default function App() {
           />
         )}
         {gameStatus === "battle" && <BattleBoard />}
-        <Button className="absolute top-1/2 right-0" onClick={endTurn}>
+        <Button
+          className="absolute top-1/2 right-0"
+          onClick={endTurn}
+          disabled={hasEndedTurn}
+        >
           End Turn
         </Button>
         <Gold gold={player.gold} maxGold={player.baseGold} />
