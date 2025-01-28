@@ -269,8 +269,10 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsNotNull(lobby);
+            Assert.IsNotNull(lobby.Players);
             Assert.IsTrue(Enumerable.SequenceEqual(playerArmorBeforeCombat, playerArmorAfterCombat));
             Assert.IsTrue(Enumerable.SequenceEqual(playerHealthBeforeCombat, playerHealthAfterCombat));
+            Assert.IsTrue(lobby.Players.All(x => x.CombatActions.Count() == 1));
         }
 
         [TestMethod]
