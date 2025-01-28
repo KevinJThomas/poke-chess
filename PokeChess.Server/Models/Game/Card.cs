@@ -17,6 +17,7 @@ namespace PokeChess.Server.Models.Game
         public int SellValue { get; set; }
         public bool CanPlay { get; set; }
         public int PokemonId { get; set; }
+        public string Num { get; set; }
         public bool Attacked { get; set; }
         public bool IsStealthed { get; set; }
         public bool HasDivineShield { get; set; }
