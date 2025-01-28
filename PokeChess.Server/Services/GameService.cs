@@ -259,7 +259,7 @@ namespace PokeChess.Server.Services
             }
 
             var playerIndex = lobby.Players.FindIndex(x => x == player);
-            player = player.UpgradeTavern();
+            player.UpgradeTavern();
             lobby.Players[playerIndex] = player;
             return lobby;
         }
@@ -496,8 +496,9 @@ namespace PokeChess.Server.Services
             }
             else
             {
+                player.PlaySpell(card);
                 player.Hand.Remove(card);
-                // Add logic to play spells here
+                lobby = ReturnCardToPool(lobby, card);
             }
 
             return (lobby, player);
@@ -548,8 +549,8 @@ namespace PokeChess.Server.Services
                     return lobby;
                 }
 
-                player1 = player1.ApplyKeywords();
-                player2 = player2.ApplyKeywords();
+                player1.ApplyKeywords();
+                player2.ApplyKeywords();
 
                 if (player1.Board.Count() == player2.Board.Count())
                 {

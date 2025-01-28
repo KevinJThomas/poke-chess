@@ -1,5 +1,6 @@
 ﻿using PokeChess.Server.Enums;
 using PokeChess.Server.Helpers;
+using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 
 namespace PokeChess.Server.Extensions
@@ -12,7 +13,7 @@ namespace PokeChess.Server.Extensions
         private static readonly int _upgradeToFiveCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Five");
         private static readonly int _upgradeToSixCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Six");
 
-        public static Player ApplyKeywords(this Player player)
+        public static void ApplyKeywords(this Player player)
         {
             foreach (var minion in player.Board)
             {
@@ -44,11 +45,9 @@ namespace PokeChess.Server.Extensions
                     }
                 }
             }
-
-            return player;
         }
 
-        public static Player UpgradeTavern(this Player player)
+        public static void UpgradeTavern(this Player player)
         {
             if (player.Gold >= player.UpgradeCost)
             {
@@ -77,8 +76,6 @@ namespace PokeChess.Server.Extensions
                         break;
                 }
             }
-
-            return player;
         }
 
         public static void AddPreviousOpponent(this Player player, Player previousOpponent)
@@ -94,6 +91,29 @@ namespace PokeChess.Server.Extensions
                 {
                     player.PreviousOpponentIds.RemoveAt(0);
                 }
+            }
+        }
+
+        public static void PlaySpell(this Player player, Card card)
+        {
+            if (player == null || card == null || card.CardType != CardType.Spell)
+            {
+                return;
+            }
+
+            foreach (var spellType in card.SpellTypes)
+            {
+                player.ExecuteSpell(card, spellType);
+            }
+        }
+
+        private static void ExecuteSpell(this Player player, Card card, SpellType spellType)
+        {
+            switch (spellType)
+            {
+                case SpellType.GainGold:
+                    player.Gold += card.Amount;
+                    break;
             }
         }
     }

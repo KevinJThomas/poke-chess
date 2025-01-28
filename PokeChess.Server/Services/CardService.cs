@@ -88,6 +88,7 @@ namespace PokeChess.Server.Services
                             {
                                 var newCard = card.Clone();
                                 newCard.Id = Guid.NewGuid().ToString();
+                                newCard.Cost = newCard.BaseCost;
                                 _allCards.Add(newCard);
                                 _allSpells.Add(newCard);
                             }

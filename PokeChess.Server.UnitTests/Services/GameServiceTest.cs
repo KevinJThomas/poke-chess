@@ -206,7 +206,7 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
-        public void TestPlaySpell()
+        public void TestPlaySpell_GainGold()
         {
             // Arrange
             (var lobby, var logger) = InitializeSetup();
@@ -215,31 +215,23 @@ namespace PokeChess.Server.UnitTests.Services
             // Act
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
-            lobby.Players[0].Hand.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Card 1",
-                CardType = Enums.CardType.Spell
-            });
-            lobby.Players[0].Hand.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Card 2",
-                CardType = Enums.CardType.Spell
-            });
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells()[0]);
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
-            var cardPoolCountBeforeBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var cardPoolCountBeforePlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var playerGoldBeforePlay = lobby.Players[0].Gold;
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1);
-            var cardPoolCountAfterBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var cardPoolCountAfterPlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var playerGoldAfterPlay = lobby.Players[0].Gold;
 
             // Assert
             Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
             Assert.IsFalse(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
             Assert.IsTrue(lobby.Players[0].Board.Count() == boardCount);
             Assert.IsTrue(lobby.Players[0].Hand.Count() < handCount);
-            Assert.IsTrue(cardPoolCountBeforeBuy == cardPoolCountAfterBuy);
+            Assert.IsTrue(cardPoolCountBeforePlay < cardPoolCountAfterPlay);
+            Assert.IsTrue(playerGoldBeforePlay < playerGoldAfterPlay);
         }
 
         [TestMethod]

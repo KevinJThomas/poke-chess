@@ -26,8 +26,11 @@ namespace PokeChess.Server.Models.Game
         public bool HasReborn { get; set; }
         public bool HasTaunt { get; set; }
         public int CombatHealth { get; set; }
-        public List<MinionType> MinionTypes { get; set; }
+        public int Amount { get; set; }
+        public int Deley { get; set; } = 0;
         public CardType CardType { get; set; }
+        public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();
+        public List<SpellType> SpellTypes { get; set; } = new List<SpellType>();
         public List<Keyword> Keywords { get; set; } = new List<Keyword>();
         public bool IsDead
         {

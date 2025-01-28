@@ -1,8 +1,21 @@
 [
   {
     "tier": 1,
-    "name": "Gold Coin",
+    "name": "Discover Treasure",
     "text": "Gain 1 gold this turn",
-    "cardType": 1
+    "cardType": 1,
+    "baseCost": 1,
+    "spellTypes": [ 0 ],
+    "amount": 1
+  },
+  {
+    "tier": 2,
+    "name": "Discover Treasure Map",
+    "text": "Gain 2 gold next turn",
+    "cardType": 1,
+    "baseCost": 1,
+    "spellTypes": [ 0 ],
+    "amount": 2,
+    "delay": 1
   }
 ]
