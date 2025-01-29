@@ -208,6 +208,7 @@ export default function App() {
       connection.off("GameError");
       connection.off("StartGameConfirmed");
       connection.off("PlayerUpdated");
+      connection.off("CombatComplete");
     };
   }, [connection, playerId]);
 

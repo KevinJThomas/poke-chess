@@ -1,7 +1,6 @@
 import Attack from "./Attack";
 import Health from "./Health";
 import Tier from "./Tier";
-import LeaderLine from "react-leader-line";
 import { useState } from "react";
 import clsx from "clsx";
 import Cost from "./Cost";
