@@ -25,10 +25,8 @@ export default function App() {
   const [disableHandDrop, setDisableHandDrop] = useState(false);
   const [hasEndedTurn, setHasEndedTurn] = useState(false);
 
-  console.log("players", players);
-  console.log("gameState", gameState);
-
   const player = players.find((player) => player.id === playerId);
+  const opponent = players.find((x) => x.id === player?.currentOpponentId);
 
   function onDragStart(result) {
     if (result.source.droppableId === "droppable-shop") {
@@ -199,8 +197,11 @@ export default function App() {
       );
     });
 
-    connection.on("CombatComplete", (x) => {
-      console.log("CombatComplete", x);
+    connection.on("CombatComplete", (lobby) => {
+      setPlayers(lobby.players);
+      setGameState(lobby.gameState);
+      setGameStatus("battle");
+      setHasEndedTurn(false);
     });
 
     return () => {
@@ -259,16 +260,25 @@ export default function App() {
             disableHandDrop={disableHandDrop}
           />
         )}
-        {gameStatus === "battle" && <BattleBoard />}
-        <Button
-          className="absolute top-1/2 right-0"
-          onClick={endTurn}
-          disabled={hasEndedTurn}
-        >
-          End Turn
-        </Button>
+        {gameStatus === "battle" && (
+          <BattleBoard
+            player={player}
+            players={players}
+            gameState={gameState}
+            opponent={opponent}
+          />
+        )}
+        {gameStatus === "shop" && (
+          <Button
+            className="absolute top-1/2 right-0"
+            onClick={endTurn}
+            disabled={hasEndedTurn}
+          >
+            End Turn
+          </Button>
+        )}
         <Gold gold={player.gold} maxGold={player.baseGold} />
-        <Opponents players={players} />
+        <Opponents players={players} opponent={opponent} />
       </div>
     </DragDropContext>
   );
