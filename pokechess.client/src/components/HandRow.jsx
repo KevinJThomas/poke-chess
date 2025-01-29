@@ -1,14 +1,15 @@
 import Pokemon from "./Pokemon";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
-import clsx from "clsx";
+import { MINION_LENGTH } from "../constants";
 
-export default function HandRow({ hand, isDragDisabled, isDropDisabled }) {
+export default function HandRow({ player, isDragDisabled, isDropDisabled }) {
   function getListStyle(isDraggingOver, itemsLength) {
     return {
       // background: isDraggingOver ? "lightblue" : "lightgrey",
       // display: "flex",
       // padding: grid,
       // width: itemsLength * 68.44 + 16,
+      width: Math.max(MINION_LENGTH * itemsLength, MINION_LENGTH),
     };
   }
 
@@ -23,6 +24,8 @@ export default function HandRow({ hand, isDragDisabled, isDropDisabled }) {
       // background: isDragging ? "lightgreen" : "red",
 
       // styles we need to apply on draggables
+      paddingRight: 1,
+      paddingLeft: 1,
       ...draggableStyle,
     };
   }
@@ -31,16 +34,16 @@ export default function HandRow({ hand, isDragDisabled, isDropDisabled }) {
     <Droppable
       droppableId="droppable-hand"
       direction="horizontal"
-      isDropDisabled={isDropDisabled}
+      isDropDisabled={isDropDisabled || player.hand.length >= 10}
     >
       {(provided, snapshot) => (
         <div
-          className="row w-[800px]"
+          className="row"
           ref={provided.innerRef}
-          style={getListStyle(snapshot.isDraggingOver, hand.length)}
+          style={getListStyle(snapshot.isDraggingOver, player.hand.length)}
           {...provided.droppableProps}
         >
-          {hand.map((card, index) => (
+          {player.hand.map((card, index) => (
             <Draggable
               key={card.id}
               draggableId={card.id}

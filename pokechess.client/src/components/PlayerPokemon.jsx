@@ -1,19 +1,20 @@
 import Pokemon from "./Pokemon";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import clsx from "clsx";
+import { MINION_LENGTH } from "../constants";
 
 export default function PlayerPokemon({
   isDragDisabled,
   player,
   isDropDisabled,
-  board,
 }) {
   function getListStyle(isDraggingOver, itemsLength) {
     return {
       // background: isDraggingOver ? "lightblue" : "lightgrey",
       // display: "flex",
       // padding: grid,
-      // width: itemsLength * 68.44 + 16,
+
+      width: Math.max(MINION_LENGTH * itemsLength, MINION_LENGTH),
     };
   }
 
@@ -28,6 +29,8 @@ export default function PlayerPokemon({
       // background: isDragging ? "lightgreen" : "red",
 
       // styles we need to apply on draggables
+      paddingLeft: 1,
+      paddingRight: 1,
       ...draggableStyle,
     };
   }
@@ -36,16 +39,16 @@ export default function PlayerPokemon({
     <Droppable
       droppableId="droppable-board"
       direction="horizontal"
-      isDropDisabled={isDropDisabled}
+      isDropDisabled={isDropDisabled || player.board.length >= 7}
     >
       {(provided, snapshot) => (
         <div
-          className={clsx("row w-[560px]")}
+          className={clsx("row")}
           ref={provided.innerRef}
           style={getListStyle(snapshot.isDraggingOver, player.board.length)}
           {...provided.droppableProps}
         >
-          {board.map((pokemon, index) => (
+          {player.board.map((pokemon, index) => (
             <Draggable
               key={pokemon.id}
               draggableId={pokemon.id}

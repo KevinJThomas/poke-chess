@@ -6,6 +6,6 @@ body {
 
 @layer utilities {
   .row {
-    @apply flex h-[80px] items-start justify-start mt-auto mb-auto
+    @apply flex h-[80px] items-start justify-start mt-auto mb-auto transition-all duration-200 ease-in-out
   }
 }
