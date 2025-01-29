@@ -108,6 +108,7 @@ export default function App() {
         result.draggableId,
         2,
         result.destination.index,
+        null,
       );
     }
 
