@@ -3,3 +3,9 @@
 body {
   overscroll-behavior: none;
 }
+
+@layer utilities {
+  .row {
+    @apply flex h-[80px] items-start justify-start mt-auto mb-auto
+  }
+}

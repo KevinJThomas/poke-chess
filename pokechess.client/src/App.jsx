@@ -108,6 +108,7 @@ export default function App() {
         result.draggableId,
         2,
         result.destination.index,
+        null,
       );
     }
 
@@ -169,7 +170,9 @@ export default function App() {
       if (playerId) {
         setPlayerId(playerId);
       }
-      setGameStatus("lobby");
+      if (lobby.isWaitingToStart) {
+        setGameStatus("lobby");
+      }
       setPlayers(lobby.players);
     });
 
@@ -237,7 +240,9 @@ export default function App() {
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
       {hasEndedTurn && (
         <div className="absolute top-0 right-0 bottom-0 left-0 z-10 flex items-center justify-center bg-black/50">
-          <span>Waiting for other players</span>
+          <span className="rounded-md bg-gray-300 p-2">
+            Waiting for other players
+          </span>
         </div>
       )}
       <div className="relative h-screen w-screen bg-gray-200">

@@ -47,23 +47,17 @@ export default function ShopBoard({
         isDropDisabled={disableShopDrop}
       />
       <PlayerPokemon
-        board={
-          player.board.length === 0
-            ? [{ id: "empty-slot-board" }]
-            : player.board
-        }
+        board={player.board}
         player={player}
-        isDropDisabled={disableBoardDrop}
+        isDropDisabled={disableBoardDrop || player.board.length >= 7}
       />
       <Row>
         <Hero name={player.name} health={player.health} armor={player.armor} />
       </Row>
       <HandRow
-        hand={
-          player.hand.length === 0 ? [{ id: "empty-slot-hand" }] : player.hand
-        }
+        hand={player.hand}
         isDragDisabled={false}
-        isDropDisabled={disableHandDrop}
+        isDropDisabled={disableHandDrop || player.hand >= 10}
       />
     </div>
   );

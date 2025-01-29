@@ -26,8 +26,6 @@ export default function Pokemon({
       id={id}
       style={{ backgroundImage: `url(/pokemon/${num}.png)` }}
       className={clsx(
-        (id === "empty-slot-hand" || id === "empty-slot-board") &&
-          "bg-gray-200",
         "relative flex h-20 w-20 items-center justify-center",
         isMinion && `bg-contain bg-center`,
         !isMinion && "rounded-xl bg-blue-400",
