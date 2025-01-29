@@ -3,7 +3,7 @@ import { Draggable, Droppable } from "@hello-pangea/dnd";
 import clsx from "clsx";
 import { MINION_LENGTH } from "../constants";
 
-export default function PlayerPokemon({
+export default function PlayerBoard({
   isDragDisabled,
   player,
   isDropDisabled,

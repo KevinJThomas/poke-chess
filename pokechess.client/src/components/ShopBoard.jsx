@@ -1,7 +1,7 @@
 import Button from "./Button";
 import HandRow from "./HandRow";
 import Hero from "./Hero";
-import PlayerPokemon from "./PlayerPokemon";
+import PlayerBoard from "./PlayerBoard";
 import Row from "./Row";
 import Shop from "./Shop";
 import TavernRow from "./TavernRow";
@@ -46,7 +46,7 @@ export default function ShopBoard({
         isDragDisabled={false}
         isDropDisabled={disableShopDrop}
       />
-      <PlayerPokemon player={player} isDropDisabled={disableBoardDrop} />
+      <PlayerBoard player={player} isDropDisabled={disableBoardDrop} />
       <Row>
         <Hero name={player.name} health={player.health} armor={player.armor} />
       </Row>
