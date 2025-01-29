@@ -28,6 +28,7 @@ namespace PokeChess.Server.Services
         private static readonly int _smallDamageCap = ConfigurationHelper.config.GetValue<int>("App:Game:DamageCap:Small");
         private static readonly int _mediumDamageCap = ConfigurationHelper.config.GetValue<int>("App:Game:DamageCap:Medium");
         private static readonly int _largeDamageCap = ConfigurationHelper.config.GetValue<int>("App:Game:DamageCap:Large");
+        private static readonly int _boardsSlots = ConfigurationHelper.config.GetValue<int>("App:Game:BoardsSlots");
 
         #region class setup
 
@@ -488,7 +489,7 @@ namespace PokeChess.Server.Services
 
         private (Lobby, Player) PlayCard(Lobby lobby, Player player, Card card, int boardIndex, string? spellTargetId)
         {
-            if (card.CardType == CardType.Minion)
+            if (card.CardType == CardType.Minion && player.Board.Count() < _boardsSlots)
             {
                 player.Hand.Remove(card);
                 if (boardIndex >= 0 && boardIndex <= player.Board.Count())
