@@ -73,7 +73,7 @@ export default function App() {
 
       setPlayers(clonedPlayers);
 
-      connection.invoke("MoveCard", result.draggableId, 1, null);
+      connection.invoke("MoveCard", result.draggableId, 1, null, null);
     }
 
     // Play
@@ -134,7 +134,7 @@ export default function App() {
 
       setPlayers(clonedPlayers);
 
-      connection.invoke("MoveCard", result.draggableId, 0, null);
+      connection.invoke("MoveCard", result.draggableId, 0, null, null);
     }
   }
 
