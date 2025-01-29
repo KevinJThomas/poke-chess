@@ -137,7 +137,7 @@ namespace PokeChess.Server.Services
             return (lobby, player);
         }
 
-        public Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action, int boardIndex)
+        public Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action, int boardIndex, string? spellTargetId)
         {
             if (!Initialized())
             {
@@ -172,7 +172,7 @@ namespace PokeChess.Server.Services
                         (lobby, player) = SellMinion(lobby, player, card);
                         break;
                     case MoveCardAction.Play:
-                        (lobby, player) = PlayCard(lobby, player, card, boardIndex);
+                        (lobby, player) = PlayCard(lobby, player, card, boardIndex, spellTargetId);
                         break;
                     default:
                         return lobby;
@@ -480,7 +480,7 @@ namespace PokeChess.Server.Services
             return (lobby, player);
         }
 
-        private (Lobby, Player) PlayCard(Lobby lobby, Player player, Card card, int boardIndex)
+        private (Lobby, Player) PlayCard(Lobby lobby, Player player, Card card, int boardIndex, string? spellTargetId)
         {
             if (card.CardType == CardType.Minion)
             {
@@ -496,9 +496,12 @@ namespace PokeChess.Server.Services
             }
             else
             {
-                player.PlaySpell(card);
-                player.Hand.Remove(card);
-                lobby = ReturnCardToPool(lobby, card);
+                var success = player.PlaySpell(card, spellTargetId);
+                if (success)
+                {
+                    player.Hand.Remove(card);
+                    lobby = ReturnCardToPool(lobby, card);
+                }
             }
 
             return (lobby, player);
@@ -510,6 +513,8 @@ namespace PokeChess.Server.Services
             lobby.GameState.NextRoundMatchups = AssignCombatMatchups(lobby.Players);
             lobby.GameState.TimeLimitToNextCombat = GetTimeLimitToNextCombat(lobby.GameState.RoundNumber);
             lobby.GameState.DamageCap = GetDamageCap(lobby.GameState.RoundNumber, lobby.Players.Count(x => x.IsActive && !x.IsDead));
+
+            // Start of turn logic
             for (var i = 0; i < lobby.Players.Count(); i++)
             {
                 if (lobby.Players[i].BaseGold < lobby.Players[i].MaxGold)
@@ -530,6 +535,20 @@ namespace PokeChess.Server.Services
                 else
                 {
                     lobby.Players[i].IsShopFrozen = false;
+                }
+
+                if (lobby.Players[i].DelayedSpells.Any())
+                {
+                    foreach (var spell in lobby.Players[i].DelayedSpells)
+                    {
+                        spell.Delay -= 1;
+                        if (spell.Delay <= 0)
+                        {
+                            var success = lobby.Players[i].PlaySpell(spell);
+                        }
+                    }
+
+                    lobby.Players[i].DelayedSpells = lobby.Players[i].DelayedSpells.Where(x => x.Delay > 0).ToList();
                 }
             }
 

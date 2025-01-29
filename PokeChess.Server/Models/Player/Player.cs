@@ -6,6 +6,7 @@ namespace PokeChess.Server.Models.Player
     public class Player
     {
         private readonly int _startingGold = ConfigurationHelper.config.GetValue<int>("App:Player:StartingGold");
+        private readonly int _maxGold = ConfigurationHelper.config.GetValue<int>("App:Player:MaxGold");
         private readonly int _upgradeToTwoCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Two");
 
         public Player(string id, string name, int armor = 5, int refreshCost = 1)
@@ -19,13 +20,14 @@ namespace PokeChess.Server.Models.Player
             TripleCount = 0;
             BaseGold = _startingGold;
             Gold = _startingGold;
-            UpgradeCost = _upgradeToTwoCost + 1;
+            UpgradeCost = _upgradeToTwoCost + 1; // Adding 1 here because it will be decremented by the StartGame function
             RefreshCost = refreshCost;
             WinStreak = 0;
-            MaxGold = 10;
+            MaxGold = _maxGold;
             Board = new List<Card>();
             Hand = new List<Card>();
             Shop = new List<Card>();
+            DelayedSpells = new List<Card>();
             PreviousOpponentIds = new List<string>();
             CombatActions = new List<CombatAction>();
         }
@@ -49,6 +51,7 @@ namespace PokeChess.Server.Models.Player
         public List<Card> Board { get; set; }
         public List<Card> Hand { get; set; }
         public List<Card> Shop { get; set; }
+        public List<Card> DelayedSpells { get; set; }
         public List<string> PreviousOpponentIds { get; set; }
         public List<CombatAction> CombatActions { get; set; }
         public bool IsDead

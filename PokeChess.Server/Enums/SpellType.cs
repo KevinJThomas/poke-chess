@@ -4,8 +4,10 @@
     {
         GainGold,
         GainMaxGold,
-        BuffTarget,
-        BuffFriendlyTarget,
+        BuffTargetAttack,
+        BuffFriendlyTargetAttack,
+        BuffTargetHealth,
+        BuffFriendlyTargetHealth,
         BuffBoard,
         BuffShop,
         Discover,

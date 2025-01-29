@@ -121,7 +121,7 @@ namespace PokeChess.Server.UnitTests.Services
             var cardIdToRemove = lobby.Players[0].Board[0].Id;
             var cardPoolCountBeforeSell = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
             var playerGoldBeforeSell = lobby.Players[0].Gold;
-            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Board[0], Enums.MoveCardAction.Sell, -1);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Board[0], Enums.MoveCardAction.Sell, -1, null);
             var cardPoolCountAfterSell = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
             var playerGoldAfterSell = lobby.Players[0].Gold;
 
@@ -157,7 +157,7 @@ namespace PokeChess.Server.UnitTests.Services
             var cardIdToRemove = lobby.Players[0].Shop[0].Id;
             var cardPoolCountBeforeBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
             var playerGoldBeforeBuy = lobby.Players[0].Gold;
-            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
             var cardPoolCountAfterBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
             var playerGoldAfterBuy = lobby.Players[0].Gold;
 
@@ -194,7 +194,7 @@ namespace PokeChess.Server.UnitTests.Services
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
             var cardPoolCountBeforeBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
-            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, null);
             var cardPoolCountAfterBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
 
             // Assert
@@ -221,7 +221,7 @@ namespace PokeChess.Server.UnitTests.Services
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
             var cardPoolCountBeforePlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
             var playerGoldBeforePlay = lobby.Players[0].Gold;
-            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
             var cardPoolCountAfterPlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
             var playerGoldAfterPlay = lobby.Players[0].Gold;
 
@@ -232,6 +232,113 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(lobby.Players[0].Hand.Count() < handCount);
             Assert.IsTrue(cardPoolCountBeforePlay < cardPoolCountAfterPlay);
             Assert.IsTrue(playerGoldBeforePlay < playerGoldAfterPlay);
+        }
+
+        [TestMethod]
+        public void TestPlaySpell_GainGoldDelay()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.CardType == Enums.CardType.Spell && x.SpellTypes.Contains(Enums.SpellType.GainGold) && x.Delay == 1).FirstOrDefault());
+            var boardCount = lobby.Players[0].Board.Count();
+            var handCount = lobby.Players[0].Hand.Count();
+            var cardIdToRemove = lobby.Players[0].Hand[0].Id;
+            var cardPoolCountBeforePlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var playerGoldBeforePlay = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            var cardPoolCountAfterPlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var playerGoldAfterPlay = lobby.Players[0].Gold;
+            lobby = instance.CombatRound(lobby);
+            var playerGoldNextTurn = lobby.Players[0].Gold;
+            var playerBaseGoldNextTurn = lobby.Players[0].BaseGold;
+
+            // Assert
+            Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
+            Assert.IsFalse(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(lobby.Players[0].Board.Count() == boardCount);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() < handCount);
+            Assert.IsTrue(cardPoolCountBeforePlay < cardPoolCountAfterPlay);
+            Assert.IsTrue(playerGoldBeforePlay == playerGoldAfterPlay);
+            Assert.IsTrue(playerGoldNextTurn > playerGoldAfterPlay);
+            Assert.IsTrue(playerGoldNextTurn > playerBaseGoldNextTurn);
+            Assert.IsFalse(lobby.Players[0].DelayedSpells.Any());
+        }
+
+        [TestMethod]
+        public void TestPlaySpell_GainMaxGold()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.CardType == Enums.CardType.Spell && x.SpellTypes.Contains(Enums.SpellType.GainMaxGold) && x.Delay == 0).FirstOrDefault());
+            var boardCount = lobby.Players[0].Board.Count();
+            var handCount = lobby.Players[0].Hand.Count();
+            var cardIdToRemove = lobby.Players[0].Hand[0].Id;
+            var cardPoolCountBeforePlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var playerMaxGoldBeforePlay = lobby.Players[0].MaxGold;
+            var playerBaseGoldBeforePlay = lobby.Players[0].BaseGold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            var cardPoolCountAfterPlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var playerMaxGoldAfterPlay = lobby.Players[0].MaxGold;
+            var playerBaseGoldAfterPlay = lobby.Players[0].BaseGold;
+
+            // Assert
+            Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
+            Assert.IsFalse(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(lobby.Players[0].Board.Count() == boardCount);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() < handCount);
+            Assert.IsTrue(cardPoolCountBeforePlay < cardPoolCountAfterPlay);
+            Assert.IsTrue(playerMaxGoldBeforePlay < playerMaxGoldAfterPlay);
+            Assert.IsTrue(playerBaseGoldBeforePlay < playerBaseGoldAfterPlay);
+        }
+
+        [TestMethod]
+        public void TestPlaySpell_BuffTargetAttack()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.CardType == Enums.CardType.Spell && x.SpellTypes.Contains(Enums.SpellType.BuffTargetAttack) && x.Delay == 0).FirstOrDefault());
+            var id = Guid.NewGuid().ToString();
+            lobby.Players[0].Shop.Add(new Card
+            {
+                Id = id,
+                Name = "Minion 1",
+                Attack = 3,
+                Health = 3
+            });
+            var boardCount = lobby.Players[0].Board.Count();
+            var handCount = lobby.Players[0].Hand.Count();
+            var cardIdToRemove = lobby.Players[0].Hand[0].Id;
+            var cardPoolCountBeforePlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var shopMinionAttackBeforePlay = lobby.Players[0].Shop.Where(x => x.Id == id).FirstOrDefault().Attack;
+            var shopMinionHealthBeforePlay = lobby.Players[0].Shop.Where(x => x.Id == id).FirstOrDefault().Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, id);
+            var cardPoolCountAfterPlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var shopMinionAttackAfterPlay = lobby.Players[0].Shop.Where(x => x.Id == id).FirstOrDefault().Attack;
+            var shopMinionHealthAfterPlay = lobby.Players[0].Shop.Where(x => x.Id == id).FirstOrDefault().Health;
+
+            // Assert
+            Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
+            Assert.IsFalse(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(lobby.Players[0].Board.Count() == boardCount);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() < handCount);
+            Assert.IsTrue(cardPoolCountBeforePlay < cardPoolCountAfterPlay);
+            Assert.IsTrue(shopMinionAttackBeforePlay < shopMinionAttackAfterPlay);
+            Assert.IsTrue(shopMinionHealthBeforePlay == shopMinionHealthAfterPlay);
         }
 
         [TestMethod]

@@ -94,26 +94,102 @@ namespace PokeChess.Server.Extensions
             }
         }
 
-        public static void PlaySpell(this Player player, Card card)
+        public static bool PlaySpell(this Player player, Card card, string? targetId = null)
         {
             if (player == null || card == null || card.CardType != CardType.Spell)
             {
-                return;
+                return false;
             }
 
-            foreach (var spellType in card.SpellTypes)
+            var success = true;
+            if (card.Delay > 0)
             {
-                player.ExecuteSpell(card, spellType);
+                player.DelayedSpells.Add(card);
             }
+            else
+            {
+                foreach (var spellType in card.SpellTypes)
+                {
+                    success = player.ExecuteSpell(card, spellType, targetId);
+                    if (!success)
+                    {
+                        return success;
+                    }
+                }
+            }
+
+            return success;
         }
 
-        private static void ExecuteSpell(this Player player, Card card, SpellType spellType)
+        private static bool ExecuteSpell(this Player player, Card card, SpellType spellType, string? targetId)
         {
             switch (spellType)
             {
                 case SpellType.GainGold:
                     player.Gold += card.Amount;
-                    break;
+                    return true;
+                case SpellType.GainMaxGold:
+                    player.BaseGold += card.Amount;
+                    player.MaxGold += card.Amount;
+                    return true;
+                case SpellType.BuffTargetAttack:
+                    if (string.IsNullOrWhiteSpace(targetId))
+                    {
+                        return false;
+                    }
+
+                    var targetOnBoardAttack = player.Board.Any(x => x.Id == targetId);
+                    var targetInShopAttack = player.Shop.Any(x => x.Id == targetId);
+                    if (targetOnBoardAttack)
+                    {
+                        var targetIndex = player.Board.FindIndex(x => x.Id == targetId);
+                        if (targetIndex != -1)
+                        {
+                            player.Board[targetIndex].Attack += card.Amount;
+                            return true;
+                        }
+                    }
+                    if (targetInShopAttack)
+                    {
+                        var targetIndex = player.Shop.FindIndex(x => x.Id == targetId);
+                        if (targetIndex != -1)
+                        {
+                            player.Shop[targetIndex].Attack += card.Amount;
+                            return true;
+                        }
+                    }
+
+                    return false;
+                case SpellType.BuffTargetHealth:
+                    if (string.IsNullOrWhiteSpace(targetId))
+                    {
+                        return false;
+                    }
+
+                    var targetOnBoardHealth = player.Board.Any(x => x.Id == targetId);
+                    var targetInShopHealth = player.Shop.Any(x => x.Id == targetId);
+                    if (targetOnBoardHealth)
+                    {
+                        var targetIndex = player.Board.FindIndex(x => x.Id == targetId);
+                        if (targetIndex != -1)
+                        {
+                            player.Board[targetIndex].Health += card.Amount;
+                            return true;
+                        }
+                    }
+                    if (targetInShopHealth)
+                    {
+                        var targetIndex = player.Shop.FindIndex(x => x.Id == targetId);
+                        if (targetIndex != -1)
+                        {
+                            player.Shop[targetIndex].Health += card.Amount;
+                            return true;
+                        }
+                    }
+
+                    return false;
+                default:
+                    return false;
             }
         }
     }

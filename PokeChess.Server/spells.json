@@ -10,12 +10,39 @@
   },
   {
     "tier": 2,
-    "name": "Discover Treasure Map",
+    "name": "Examine Treasure Map",
     "text": "Gain 2 gold next turn",
     "cardType": 1,
     "baseCost": 1,
     "spellTypes": [ 0 ],
     "amount": 2,
     "delay": 1
+  },
+  {
+    "tier": 2,
+    "name": "Gym Fight Prestige",
+    "text": "Gain 1 max gold",
+    "cardType": 1,
+    "baseCost": 3,
+    "spellTypes": [ 1 ],
+    "amount": 1
+  },
+  {
+    "tier": 1,
+    "name": "Poke Water",
+    "text": "Give a minion +4 attack",
+    "cardType": 1,
+    "baseCost": 1,
+    "spellTypes": [ 2 ],
+    "amount": 4
+  },
+  {
+    "tier": 1,
+    "name": "Poke Food",
+    "text": "Give a minion +4 health",
+    "cardType": 1,
+    "baseCost": 1,
+    "spellTypes": [ 4 ],
+    "amount": 4
   }
 ]

@@ -173,7 +173,7 @@ namespace PokeChess.Server.Managers
             }
         }
 
-        public Player MoveCard(string playerId, string cardId, MoveCardAction action, int boardIndex)
+        public Player MoveCard(string playerId, string cardId, MoveCardAction action, int boardIndex, string? spellTargetId)
         {
             if (!Initialized())
             {
@@ -203,20 +203,9 @@ namespace PokeChess.Server.Managers
                 }
 
                 var player  = _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
-                var card = new Card();
-                switch (action)
-                {
-                    case MoveCardAction.Buy:
-                        card = player.Shop.Where(x => x.Id == cardId).FirstOrDefault();
-                        break;
-                    case MoveCardAction.Sell:
-                        card = player.Board.Where(x => x.Id == cardId).FirstOrDefault();
-                        break;
-                    case MoveCardAction.Play:
-                        card = player.Hand.Where(x => x.Id == cardId).FirstOrDefault();
-                        break;
-                }
-                _lobbies[lobby.Id] = _gameService.MoveCard(lobby, player, card, action, boardIndex);
+                var card = FindCard(player, cardId, action);
+                
+                _lobbies[lobby.Id] = _gameService.MoveCard(lobby, player, card, action, boardIndex, spellTargetId);
 
                 return _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
             }
@@ -463,6 +452,21 @@ namespace PokeChess.Server.Managers
         private int GetPlayerIndexById(Lobby lobby, string id)
         {
             return lobby.Players.FindIndex(x => x.Id == id);
+        }
+
+        private Card FindCard(Player player, string cardId, MoveCardAction action)
+        {
+            switch (action)
+            {
+                case MoveCardAction.Buy:
+                    return player.Shop.Where(x => x.Id == cardId).FirstOrDefault();
+                case MoveCardAction.Sell:
+                    return player.Board.Where(x => x.Id == cardId).FirstOrDefault();
+                case MoveCardAction.Play:
+                    return player.Hand.Where(x => x.Id == cardId).FirstOrDefault();
+            }
+
+            return null;
         }
 
         #endregion

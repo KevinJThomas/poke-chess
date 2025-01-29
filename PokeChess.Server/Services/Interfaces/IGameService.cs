@@ -11,7 +11,7 @@ namespace PokeChess.Server.Services.Interfaces
         bool Initialized();
         Lobby StartGame(Lobby lobby);
         (Lobby, Player) GetNewShop(Lobby lobby, Player player, bool spendRefreshCost = false);
-        Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action, int boardIndex);
+        Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action, int boardIndex, string? spellTargetId);
         Lobby CombatRound(Lobby lobby);
         Lobby FreezeShop(Lobby lobby, Player player);
         Lobby UpgradeTavern(Lobby lobby, Player player);

@@ -120,12 +120,12 @@ namespace PokeChess.Server.UnitTests.Managers
             var cardId2 = startGame.Players[0].Shop[1].Id;
             var cardId3 = startGame.Players[0].Shop[2].Id;
             var boardIndex = 0;
-            var player1 = instance.MoveCard(playerId, cardId1, Enums.MoveCardAction.Buy, boardIndex);
-            player1 = instance.MoveCard(playerId, cardId2, Enums.MoveCardAction.Buy, boardIndex);
-            player1 = instance.MoveCard(playerId, cardId3, Enums.MoveCardAction.Buy, boardIndex);
-            player1 = instance.MoveCard(playerId, cardId1, Enums.MoveCardAction.Play, boardIndex);
-            player1 = instance.MoveCard(playerId, cardId2, Enums.MoveCardAction.Play, boardIndex);
-            player1 = instance.MoveCard(playerId, cardId1, Enums.MoveCardAction.Sell, boardIndex);
+            var player1 = instance.MoveCard(playerId, cardId1, Enums.MoveCardAction.Buy, boardIndex, null);
+            player1 = instance.MoveCard(playerId, cardId2, Enums.MoveCardAction.Buy, boardIndex, null);
+            player1 = instance.MoveCard(playerId, cardId3, Enums.MoveCardAction.Buy, boardIndex, null);
+            player1 = instance.MoveCard(playerId, cardId1, Enums.MoveCardAction.Play, boardIndex, null);
+            player1 = instance.MoveCard(playerId, cardId2, Enums.MoveCardAction.Play, boardIndex, null);
+            player1 = instance.MoveCard(playerId, cardId1, Enums.MoveCardAction.Sell, boardIndex, null);
             var lobby = instance.GetLobbyByPlayerId(playerId);
 
             // Assert
