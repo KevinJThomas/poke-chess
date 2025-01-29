@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using PokeChess.Server.Enums;
+using PokeChess.Server.Extensions;
 using PokeChess.Server.Managers;
 using PokeChess.Server.Managers.Interfaces;
 using PokeChess.Server.Models;
+using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 
 namespace PokeChess.Server
@@ -100,7 +102,12 @@ namespace PokeChess.Server
 
                 if (lobbyPostCombat != null)
                 {
-                    await Clients.Group(lobbyPostCombat.Id).SendAsync("CombatComplete", lobbyPostCombat);
+                    foreach (var player in lobbyPostCombat.Players.Where(x => !x.IsDead).ToList())
+                    {
+                        var lobbyReturn = ScrubLobby(lobbyPostCombat, player.Id);
+
+                        await Clients.Client(player.Id).SendAsync("CombatComplete", lobbyReturn);
+                    }
                 }
                 else
                 {
@@ -173,6 +180,31 @@ namespace PokeChess.Server
             }
 
             await base.OnDisconnectedAsync(exception);
+        }
+
+        private Lobby ScrubLobby(Lobby lobby, string playerId)
+        {
+            var scrubbedLobby = lobby.Clone();
+
+            foreach (var player in scrubbedLobby.Players)
+            {
+                if (player.Id != playerId)
+                {
+                    player.BaseGold = 0;
+                    player.MaxGold = 0;
+                    player.Gold = 0;
+                    player.UpgradeCost = 0;
+                    player.RefreshCost = 0;
+                    player.IsShopFrozen = false;
+                    player.Board = new List<Card>();
+                    player.Shop = new List<Card>();
+                    player.Hand = new List<Card>();
+                    player.DelayedSpells = new List<Card>();
+                    player.CombatActions = new List<CombatAction>();
+                }
+            }
+
+            return scrubbedLobby;
         }
     }
 }
