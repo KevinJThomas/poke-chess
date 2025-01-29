@@ -22,9 +22,6 @@ export default function TavernRow({ isDragDisabled, player, isDropDisabled }) {
       // change background colour if dragging
       // background: isDragging ? "lightgreen" : "red",
 
-      paddingLeft: 6,
-      paddingRight: 6,
-
       // styles we need to apply on draggables
       ...draggableStyle,
     };
@@ -39,7 +36,7 @@ export default function TavernRow({ isDragDisabled, player, isDropDisabled }) {
       {(provided, snapshot) => (
         <div
           className={clsx(
-            "flex h-1/5 w-screen items-center justify-center",
+            "row w-[560px]",
             player.isShopFrozen && "bg-blue-200",
           )}
           ref={provided.innerRef}

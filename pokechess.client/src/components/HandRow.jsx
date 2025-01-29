@@ -22,9 +22,6 @@ export default function HandRow({ hand, isDragDisabled, isDropDisabled }) {
       // change background colour if dragging
       // background: isDragging ? "lightgreen" : "red",
 
-      paddingLeft: 6,
-      paddingRight: 6,
-
       // styles we need to apply on draggables
       ...draggableStyle,
     };
@@ -38,7 +35,7 @@ export default function HandRow({ hand, isDragDisabled, isDropDisabled }) {
     >
       {(provided, snapshot) => (
         <div
-          className="flex h-1/5 w-screen items-center justify-center"
+          className="row w-[800px]"
           ref={provided.innerRef}
           style={getListStyle(snapshot.isDraggingOver, hand.length)}
           {...provided.droppableProps}
@@ -48,7 +45,7 @@ export default function HandRow({ hand, isDragDisabled, isDropDisabled }) {
               key={card.id}
               draggableId={card.id}
               index={index}
-              isDragDisabled={isDragDisabled || card.id === "empty-slot-hand"}
+              isDragDisabled={isDragDisabled}
             >
               {(provided, snapshot) => (
                 <div

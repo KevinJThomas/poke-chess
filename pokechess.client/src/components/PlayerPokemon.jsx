@@ -27,9 +27,6 @@ export default function PlayerPokemon({
       // change background colour if dragging
       // background: isDragging ? "lightgreen" : "red",
 
-      paddingLeft: 6,
-      paddingRight: 6,
-
       // styles we need to apply on draggables
       ...draggableStyle,
     };
@@ -43,7 +40,7 @@ export default function PlayerPokemon({
     >
       {(provided, snapshot) => (
         <div
-          className={clsx("flex h-1/5 w-screen items-center justify-center")}
+          className={clsx("row w-[560px]")}
           ref={provided.innerRef}
           style={getListStyle(snapshot.isDraggingOver, player.board.length)}
           {...provided.droppableProps}
@@ -53,9 +50,7 @@ export default function PlayerPokemon({
               key={pokemon.id}
               draggableId={pokemon.id}
               index={index}
-              isDragDisabled={
-                isDragDisabled || pokemon.id === "empty-slot-board"
-              }
+              isDragDisabled={isDragDisabled}
             >
               {(provided, snapshot) => (
                 <div
