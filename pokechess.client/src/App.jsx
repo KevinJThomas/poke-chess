@@ -169,7 +169,9 @@ export default function App() {
       if (playerId) {
         setPlayerId(playerId);
       }
-      setGameStatus("lobby");
+      if (lobby.isWaitingToStart) {
+        setGameStatus("lobby");
+      }
       setPlayers(lobby.players);
     });
 
