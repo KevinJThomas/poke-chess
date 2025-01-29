@@ -94,23 +94,23 @@ namespace PokeChess.Server.Extensions
             }
         }
 
-        public static bool PlaySpell(this Player player, Card card, string? targetId = null)
+        public static bool PlaySpell(this Player player, Card spell, string? targetId = null)
         {
-            if (player == null || card == null || card.CardType != CardType.Spell)
+            if (player == null || spell == null || spell.CardType != CardType.Spell || spell.Amount.Count() < spell.SpellTypes.Count())
             {
                 return false;
             }
 
             var success = true;
-            if (card.Delay > 0)
+            if (spell.Delay > 0)
             {
-                player.DelayedSpells.Add(card);
+                player.DelayedSpells.Add(spell);
             }
             else
             {
-                foreach (var spellType in card.SpellTypes)
+                for (var i = 0; i < spell.SpellTypes.Count(); i++)
                 {
-                    success = player.ExecuteSpell(card, spellType, targetId);
+                    success = player.ExecuteSpell(spell, spell.SpellTypes[i], spell.Amount[i], targetId);
                     if (!success)
                     {
                         return success;
@@ -121,16 +121,16 @@ namespace PokeChess.Server.Extensions
             return success;
         }
 
-        private static bool ExecuteSpell(this Player player, Card card, SpellType spellType, string? targetId)
+        private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
         {
             switch (spellType)
             {
                 case SpellType.GainGold:
-                    player.Gold += card.Amount;
+                    player.Gold += amount;
                     return true;
                 case SpellType.GainMaxGold:
-                    player.BaseGold += card.Amount;
-                    player.MaxGold += card.Amount;
+                    player.BaseGold += amount;
+                    player.MaxGold += amount;
                     return true;
                 case SpellType.BuffTargetAttack:
                     if (string.IsNullOrWhiteSpace(targetId))
@@ -142,21 +142,35 @@ namespace PokeChess.Server.Extensions
                     var targetInShopAttack = player.Shop.Any(x => x.Id == targetId);
                     if (targetOnBoardAttack)
                     {
-                        var targetIndex = player.Board.FindIndex(x => x.Id == targetId);
-                        if (targetIndex != -1)
+                        var targetIndexAttack = player.Board.FindIndex(x => x.Id == targetId);
+                        if (targetIndexAttack >= 0 && targetIndexAttack < player.Board.Count())
                         {
-                            player.Board[targetIndex].Attack += card.Amount;
+                            player.Board[targetIndexAttack].Attack += amount;
                             return true;
                         }
                     }
                     if (targetInShopAttack)
                     {
-                        var targetIndex = player.Shop.FindIndex(x => x.Id == targetId);
-                        if (targetIndex != -1)
+                        var targetIndexAttack = player.Shop.FindIndex(x => x.Id == targetId);
+                        if (targetIndexAttack >= 0 && targetIndexAttack < player.Shop.Count())
                         {
-                            player.Shop[targetIndex].Attack += card.Amount;
+                            player.Shop[targetIndexAttack].Attack += amount;
                             return true;
                         }
+                    }
+
+                    return false;
+                case SpellType.BuffFriendlyTargetAttack:
+                    if (string.IsNullOrWhiteSpace(targetId))
+                    {
+                        return false;
+                    }
+
+                    var targetIndexFriendlyAttack = player.Board.FindIndex(x => x.Id == targetId);
+                    if (targetIndexFriendlyAttack >= 0 && targetIndexFriendlyAttack < player.Board.Count())
+                    {
+                        player.Board[targetIndexFriendlyAttack].Attack += amount;
+                        return true;
                     }
 
                     return false;
@@ -170,19 +184,96 @@ namespace PokeChess.Server.Extensions
                     var targetInShopHealth = player.Shop.Any(x => x.Id == targetId);
                     if (targetOnBoardHealth)
                     {
-                        var targetIndex = player.Board.FindIndex(x => x.Id == targetId);
-                        if (targetIndex != -1)
+                        var targetIndexHealth = player.Board.FindIndex(x => x.Id == targetId);
+                        if (targetIndexHealth >= 0 && targetIndexHealth < player.Board.Count())
                         {
-                            player.Board[targetIndex].Health += card.Amount;
+                            player.Board[targetIndexHealth].Health += amount;
                             return true;
                         }
                     }
                     if (targetInShopHealth)
                     {
-                        var targetIndex = player.Shop.FindIndex(x => x.Id == targetId);
-                        if (targetIndex != -1)
+                        var targetIndexHealth = player.Shop.FindIndex(x => x.Id == targetId);
+                        if (targetIndexHealth >= 0 && targetIndexHealth < player.Shop.Count())
                         {
-                            player.Shop[targetIndex].Health += card.Amount;
+                            player.Shop[targetIndexHealth].Health += amount;
+                            return true;
+                        }
+                    }
+
+                    return false;
+                case SpellType.BuffFriendlyTargetHealth:
+                    if (string.IsNullOrWhiteSpace(targetId))
+                    {
+                        return false;
+                    }
+
+                    var targetIndexFriendlyHealth = player.Board.FindIndex(x => x.Id == targetId);
+                    if (targetIndexFriendlyHealth >= 0 && targetIndexFriendlyHealth < player.Board.Count())
+                    {
+                        player.Board[targetIndexFriendlyHealth].Health += amount;
+                        return true;
+                    }
+
+                    return false;
+                case SpellType.BuffBoardAttack:
+                    foreach (var minion in player.Board)
+                    {
+                        minion.Attack += amount;
+                    }
+
+                    return true;
+                case SpellType.BuffBoardHealth:
+                    foreach (var minion in player.Board)
+                    {
+                        minion.Health += amount;
+                    }
+
+                    return true;
+                case SpellType.BuffCurrentShopAttack:
+                    foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
+                    {
+                        minion.Attack += amount;
+                    }
+
+                    return true;
+                case SpellType.BuffCurrentShopHealth:
+                    foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
+                    {
+                        minion.Health += amount;
+                    }
+
+                    return true;
+                case SpellType.BuffShopAttack:
+                    // Add logic here
+                    return false;
+                case SpellType.BuffShopHealth:
+                    // Add logic here
+                    return false;
+                case SpellType.AddKeywordToTarget:
+                    if (string.IsNullOrWhiteSpace(targetId))
+                    {
+                        return false;
+                    }
+
+                    var targetOnBoardKeyword = player.Board.Any(x => x.Id == targetId);
+                    var targetInShopKeyword = player.Shop.Any(x => x.Id == targetId);
+                    if (targetOnBoardKeyword)
+                    {
+                        var targetIndexKeyword = player.Board.FindIndex(x => x.Id == targetId);
+                        if (targetIndexKeyword >= 0 && targetIndexKeyword < player.Board.Count())
+                        {
+                            player.Board[targetIndexKeyword].Keywords.Add((Keyword)amount);
+                            return true;
+                        }
+                    }
+
+                    if (targetInShopKeyword)
+                    {
+                        var targetIndexKeyword = player.Shop.FindIndex(x => x.Id == targetId);
+                        if (targetIndexKeyword >= 0 && targetIndexKeyword < player.Board.Count())
+                        {
+                            player.Shop[targetIndexKeyword].Keywords.Add((Keyword)amount);
                             return true;
                         }
                     }

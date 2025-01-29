@@ -95,7 +95,7 @@ namespace PokeChess.Server.Services
 
             lobby.IsWaitingToStart = false;
             lobby.GameState.MinionCardPool = _cardService.GetAllMinions();
-            lobby.GameState.SpellCardPool = _cardService.GetAllSpells().Where(x => !x.SpellTypes.Contains(SpellType.BuffTargetAttack) && !x.SpellTypes.Contains(SpellType.BuffTargetHealth)).ToList();
+            lobby.GameState.SpellCardPool = _cardService.GetAllSpells().Where(x => !x.SpellTypes.Contains(SpellType.BuffTargetAttack) && !x.SpellTypes.Contains(SpellType.BuffTargetHealth) && !x.SpellTypes.Contains(SpellType.BuffFriendlyTargetAttack) && !x.SpellTypes.Contains(SpellType.BuffFriendlyTargetHealth)).ToList();
             // Remove Where statement on above line once front end implements spells with targets
             lobby = NextRound(lobby);
             return lobby;
@@ -442,33 +442,13 @@ namespace PokeChess.Server.Services
 
             if (card.CardType == CardType.Minion)
             {
+                card.ScrubModifiers();
                 lobby.GameState.MinionCardPool.Add(card);
             }
 
             if (card.CardType == CardType.Spell)
             {
                 lobby.GameState.SpellCardPool.Add(card);
-            }
-
-            return lobby;
-        }
-
-        private Lobby RemoveCardFromPool(Lobby lobby, Card card)
-        {
-            if (card == null)
-            {
-                _logger.LogError($"RemoveCardFromPool failed because card is null");
-                return lobby;
-            }
-
-            if (card.CardType == CardType.Minion)
-            {
-                lobby.GameState.MinionCardPool.Remove(card);
-            }
-
-            if (card.CardType == CardType.Spell)
-            {
-                lobby.GameState.SpellCardPool.Remove(card);
             }
 
             return lobby;
