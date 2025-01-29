@@ -1,7 +1,6 @@
 import Attack from "./Attack";
 import Health from "./Health";
 import Tier from "./Tier";
-import { useState } from "react";
 import clsx from "clsx";
 import Cost from "./Cost";
 
@@ -18,8 +17,6 @@ export default function Pokemon({
 }) {
   const isMinion = cardType === 0;
 
-  const [line, setLine] = useState(null);
-
   return (
     <div
       id={id}
@@ -30,25 +27,13 @@ export default function Pokemon({
         !isMinion && "rounded-xl bg-blue-400",
       )}
       onClick={() => {
-        const line = new LeaderLine(
-          document.getElementById(id),
-          document.getElementById("item-0-tavern"),
-          {
-            draw: { animation: true, duration: 1000 },
-            path: "fluid",
-            color: "red",
-            size: 8,
-            hide: true,
-          },
-        );
+        const element = document.getElementById(id);
+        const rect = element.getBoundingClientRect();
 
-        line.show({ draw: { duration: 300 } });
+        const x = rect.left + window.scrollX;
+        const y = rect.top + window.scrollY;
 
-        setTimeout(() => {
-          line.remove();
-        }, 1000);
-
-        setLine(line);
+        console.log(x, y);
       }}
     >
       {!isMinion && <span className="text-center text-xs">{name}</span>}
