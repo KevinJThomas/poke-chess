@@ -475,7 +475,7 @@ namespace PokeChess.Server.Services
                 player.Hand.Add(card);
                 player.Gold -= card.Cost;
             }
-            
+
             return (lobby, player);
         }
 
@@ -520,6 +520,19 @@ namespace PokeChess.Server.Services
             lobby.GameState.NextRoundMatchups = AssignCombatMatchups(lobby.Players);
             lobby.GameState.TimeLimitToNextCombat = GetTimeLimitToNextCombat(lobby.GameState.RoundNumber);
             lobby.GameState.DamageCap = GetDamageCap(lobby.GameState.RoundNumber, lobby.Players.Count(x => x.IsActive && !x.IsDead));
+
+            foreach (var matchup in lobby.GameState.NextRoundMatchups)
+            {
+                foreach (var player in matchup)
+                {
+                    var index = lobby.Players.FindIndex(x => x.Id == player.Id);
+                    if (index >= 0)
+                    {
+                        var opponentId = matchup.Where(x => x.Id != player.Id).Select(y => y.Id).FirstOrDefault();
+                        player.CurrentOpponentId = opponentId;
+                    }
+                }
+            }
 
             // Start of turn logic
             for (var i = 0; i < lobby.Players.Count(); i++)

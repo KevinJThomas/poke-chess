@@ -51,6 +51,7 @@ namespace PokeChess.Server.Models.Player
         public bool TurnEnded { get; set; }
         public int MaxGold {  get; set; }
         public int MaxHandSize { get; set; }
+        public string? CurrentOpponentId { get; set; }
         public List<Card> Board { get; set; }
         public List<Card> Hand { get; set; }
         public List<Card> Shop { get; set; }
