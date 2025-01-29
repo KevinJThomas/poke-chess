@@ -30,6 +30,14 @@ namespace PokeChess.Server.Services
         private static readonly int _largeDamageCap = ConfigurationHelper.config.GetValue<int>("App:Game:DamageCap:Large");
         private static readonly int _boardsSlots = ConfigurationHelper.config.GetValue<int>("App:Game:BoardsSlots");
 
+        public int BoardSlots
+        {
+            get
+            {
+                return _boardsSlots;
+            }
+        }
+
         #region class setup
 
         private GameService()
