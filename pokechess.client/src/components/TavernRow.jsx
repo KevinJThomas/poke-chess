@@ -1,6 +1,7 @@
 import Pokemon from "./Pokemon";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import clsx from "clsx";
+import { MINION_LENGTH } from "../constants";
 
 export default function TavernRow({ isDragDisabled, player, isDropDisabled }) {
   function getListStyle(isDraggingOver, itemsLength) {
@@ -9,6 +10,7 @@ export default function TavernRow({ isDragDisabled, player, isDropDisabled }) {
       // display: "flex",
       // padding: grid,
       // width: itemsLength * 68.44 + 16,
+      width: Math.max(MINION_LENGTH * itemsLength, MINION_LENGTH),
     };
   }
 
@@ -23,6 +25,8 @@ export default function TavernRow({ isDragDisabled, player, isDropDisabled }) {
       // background: isDragging ? "lightgreen" : "red",
 
       // styles we need to apply on draggables
+      paddingLeft: 1,
+      paddingRight: 1,
       ...draggableStyle,
     };
   }
@@ -35,10 +39,7 @@ export default function TavernRow({ isDragDisabled, player, isDropDisabled }) {
     >
       {(provided, snapshot) => (
         <div
-          className={clsx(
-            "row w-[560px]",
-            player.isShopFrozen && "bg-blue-200",
-          )}
+          className={clsx("row", player.isShopFrozen && "bg-blue-200")}
           ref={provided.innerRef}
           style={getListStyle(snapshot.isDraggingOver, player.shop.length)}
           {...provided.droppableProps}
