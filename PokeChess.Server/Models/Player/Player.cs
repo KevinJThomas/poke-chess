@@ -7,6 +7,7 @@ namespace PokeChess.Server.Models.Player
     {
         private readonly int _startingGold = ConfigurationHelper.config.GetValue<int>("App:Player:StartingGold");
         private readonly int _maxGold = ConfigurationHelper.config.GetValue<int>("App:Player:MaxGold");
+        private readonly int _maxHandSize = ConfigurationHelper.config.GetValue<int>("App:Player:MaxHandSize");
         private readonly int _upgradeToTwoCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Two");
 
         public Player(string id, string name, int armor = 5, int refreshCost = 1)
@@ -24,6 +25,7 @@ namespace PokeChess.Server.Models.Player
             RefreshCost = refreshCost;
             WinStreak = 0;
             MaxGold = _maxGold;
+            MaxHandSize = _maxHandSize;
             Board = new List<Card>();
             Hand = new List<Card>();
             Shop = new List<Card>();
@@ -48,6 +50,7 @@ namespace PokeChess.Server.Models.Player
         public bool Attacking { get; set; }
         public bool TurnEnded { get; set; }
         public int MaxGold {  get; set; }
+        public int MaxHandSize { get; set; }
         public List<Card> Board { get; set; }
         public List<Card> Hand { get; set; }
         public List<Card> Shop { get; set; }

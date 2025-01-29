@@ -28,7 +28,7 @@ namespace PokeChess.Server.UnitTests
                 new Player(Guid.NewGuid().ToString(), "Player 5"),
                 new Player(Guid.NewGuid().ToString(), "Player 6"),
                 new Player(Guid.NewGuid().ToString(), "Player 7"),
-                new Player(Guid.NewGuid().ToString(), "Player 8"),
+                new Player(Guid.NewGuid().ToString(), "Player 8")
             };
 
             return (lobby, logger);

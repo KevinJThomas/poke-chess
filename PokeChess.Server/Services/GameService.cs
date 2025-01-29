@@ -467,9 +467,14 @@ namespace PokeChess.Server.Services
 
         private (Lobby, Player) BuyCard(Lobby lobby, Player player, Card card)
         {
-            player.Shop.Remove(card);
-            player.Hand.Add(card);
-            player.Gold -= card.Cost;
+            if (player.Hand.Count() < player.MaxHandSize)
+            {
+                // Only buy the card if the player has room in their hand
+                player.Shop.Remove(card);
+                player.Hand.Add(card);
+                player.Gold -= card.Cost;
+            }
+            
             return (lobby, player);
         }
 
@@ -518,6 +523,8 @@ namespace PokeChess.Server.Services
             // Start of turn logic
             for (var i = 0; i < lobby.Players.Count(); i++)
             {
+                lobby.Players[i].TurnEnded = false;
+
                 if (lobby.Players[i].BaseGold < lobby.Players[i].MaxGold)
                 {
                     lobby.Players[i].BaseGold += 1;
