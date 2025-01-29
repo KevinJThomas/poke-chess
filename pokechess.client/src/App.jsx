@@ -1,7 +1,7 @@
 import BattleBoard from "./components/BattleBoard";
 import Button from "./components/Button";
 import Gold from "./components/Gold";
-import Players from "./components/Opponents";
+import Opponents from "./components/Opponents";
 import ShopBoard from "./components/ShopBoard";
 import { DragDropContext } from "@hello-pangea/dnd";
 import { useEffect, useState } from "react";
@@ -262,7 +262,7 @@ export default function App() {
           End Turn
         </Button>
         <Gold gold={player.gold} maxGold={player.baseGold} />
-        <Players players={players} />
+        <Opponents players={players} />
       </div>
     </DragDropContext>
   );

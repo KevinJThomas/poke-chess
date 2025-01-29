@@ -54,7 +54,7 @@ export default function Pokemon({
         setLine(line);
       }}
     >
-      {!isMinion && <span className="text-xs">{name}</span>}
+      {!isMinion && <span className="text-center text-xs">{name}</span>}
       {isMinion && <Attack attack={attack} />}
       {isMinion && <Health health={health} />}
       {!!tier && showTier && <Tier tier={tier} />}
