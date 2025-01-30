@@ -25,6 +25,8 @@ export default function App() {
   const [disableHandDrop, setDisableHandDrop] = useState(false);
   const [hasEndedTurn, setHasEndedTurn] = useState(false);
 
+  console.log("players", players);
+
   const player = players.find((player) => player.id === playerId);
   const opponent = players.find((x) => x.id === player?.currentOpponentId);
 

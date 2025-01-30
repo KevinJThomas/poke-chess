@@ -32,7 +32,7 @@ export default function Pokemon({
   }, [damage]);
 
   useAsyncEffect(async () => {
-    if (health <= 0) {
+    if (health <= 0 && isMinion) {
       await delay(1500);
       setMinionDied(true);
     }
