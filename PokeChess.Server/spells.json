@@ -29,7 +29,7 @@
   },
   {
     "tier": 1,
-    "name": "Poke Water",
+    "name": "Poké Water",
     "text": "Give a minion +4 attack",
     "cardType": 1,
     "baseCost": 1,
@@ -38,7 +38,7 @@
   },
   {
     "tier": 1,
-    "name": "Poke Food",
+    "name": "Poké Food",
     "text": "Give a minion +3 health and taunt",
     "cardType": 1,
     "baseCost": 1,
@@ -47,7 +47,7 @@
   },
   {
     "tier": 1,
-    "name": "Poke Toy",
+    "name": "Poké Toy",
     "text": "Give a friendly minion +2/+2",
     "cardType": 1,
     "baseCost": 1,
@@ -65,7 +65,7 @@
   },
   {
     "tier": 1,
-    "name": "Poke Snacks",
+    "name": "Poké Snacks",
     "text": "Give minions in the shop +1/+2",
     "cardType": 1,
     "baseCost": 1,
@@ -80,5 +80,42 @@
     "baseCost": 2,
     "spellTypes": [ 10, 11 ],
     "amount": [ 1, 2 ]
+  },
+  {
+    "tier": 1,
+    "name": "Poké Ball",
+    "text": "Steal a random minion from the tavern",
+    "cardType": 1,
+    "baseCost": 2,
+    "spellTypes": [ 13 ],
+    "amount": [ 1 ]
+  },
+  {
+    "tier": 4,
+    "name": "Greater Ball",
+    "text": "Steal 2 random minions from the tavern",
+    "cardType": 1,
+    "baseCost": 4,
+    "spellTypes": [ 13 ],
+    "amount": [ 2 ]
+  },
+  {
+    "tier": 6,
+    "name": "Ultra Ball",
+    "text": "Steal 3 random minions from the tavern",
+    "cardType": 1,
+    "baseCost": 6,
+    "spellTypes": [ 13 ],
+    "amount": [ 3 ]
+  },
+  {
+    "tier": 6,
+    "name": "Master Ball",
+    "text": "At the start of next turn, steal the tavern",
+    "cardType": 1,
+    "baseCost": 10,
+    "spellTypes": [ 15 ],
+    "amount": [ -1 ],
+    "delay": 1
   }
 ]

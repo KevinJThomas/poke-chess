@@ -289,6 +289,74 @@ namespace PokeChess.Server.Extensions
                     }
 
                     return false;
+                case SpellType.GetRandomMinionsFromTavern:
+                    if (player.Shop.Any() && player.Shop.Count(x => x.CardType == CardType.Minion) >= amount)
+                    {
+                        var hand = player.Hand.Clone();
+                        var shop = player.Shop.Clone();
+                        for (var i = 0; i < amount; i++)
+                        {
+                            var minionsInTavern = player.Shop.Where(x => x.CardType == CardType.Minion).ToList();
+                            var minionToSteal = minionsInTavern[ThreadSafeRandom.ThisThreadsRandom.Next(minionsInTavern.Count())];
+                            if (minionToSteal != null)
+                            {
+                                player.Hand.Add(minionToSteal);
+                                player.Shop.Remove(minionToSteal);
+                            }
+                            else
+                            {
+                                // If a minion steal fails, revert the hand and shop to their original states and return false
+                                player.Hand = hand;
+                                player.Shop = shop;
+
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    }
+
+                    return false;
+                case SpellType.GetRandomCardsFromTavern:
+                    if (player.Shop.Any() && player.Shop.Count() >= amount)
+                    {
+                        var hand = player.Hand.Clone();
+                        var shop = player.Shop.Clone();
+                        for (var i = 0; i < amount; i++)
+                        {
+                            var cardToSteal = player.Shop[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Count())];
+                            if (cardToSteal != null)
+                            {
+                                player.Hand.Add(cardToSteal);
+                                player.Shop.Remove(cardToSteal);
+                            }
+                            else
+                            {
+                                // If a minion steal fails, revert the hand and shop to their original states and return false
+                                player.Hand = hand;
+                                player.Shop = shop;
+
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    }
+
+                    return false;
+                case SpellType.GetTavern:
+                    if (player.Shop.Any())
+                    {
+                        foreach (var card in player.Shop)
+                        {
+                            player.Hand.Add(card);
+                        }
+                        player.Shop = new List<Card>();
+
+                        return true;
+                    }
+
+                    return false;
                 default:
                     return false;
             }
