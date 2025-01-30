@@ -25,54 +25,8 @@ export default function App() {
   const [disableHandDrop, setDisableHandDrop] = useState(false);
   const [hasEndedTurn, setHasEndedTurn] = useState(false);
 
-  console.log("players", players);
-
   const player = players.find((player) => player.id === playerId);
   const opponent = players.find((x) => x.id === player?.currentOpponentId);
-
-  function setPlayer(values) {
-    setPlayers((prev) =>
-      prev.map((x) => (x.id === playerId ? { ...x, ...values } : x)),
-    );
-  }
-
-  function setPlayerMinion(index, values) {
-    setPlayer({
-      board: player.board.map((minion, i) => {
-        if (index === i) {
-          return {
-            ...minion,
-            ...values,
-          };
-        }
-
-        return minion;
-      }),
-    });
-  }
-
-  function setOpponent(values) {
-    setPlayers((prev) =>
-      prev.map((x) =>
-        x.id === player?.currentOpponentId ? { ...x, ...values } : x,
-      ),
-    );
-  }
-
-  function setOpponentMinion(index, values) {
-    setOpponent({
-      board: opponent.board.map((minion, i) => {
-        if (index === i) {
-          return {
-            ...minion,
-            ...values,
-          };
-        }
-
-        return minion;
-      }),
-    });
-  }
 
   function onDragStart(result) {
     if (result.source.droppableId === "droppable-shop") {
@@ -308,12 +262,9 @@ export default function App() {
         )}
         {gameStatus === "battle" && (
           <BattleBoard
-            player={player}
-            setPlayer={setPlayer}
-            setOpponent={setOpponent}
-            setPlayerMinion={setPlayerMinion}
-            opponent={opponent}
-            setOpponentMinion={setOpponentMinion}
+            initialPlayer={player}
+            initialOpponent={opponent}
+            setGameStatus={setGameStatus}
           />
         )}
         {gameStatus === "shop" && (
@@ -329,18 +280,6 @@ export default function App() {
           <Gold gold={player?.gold} maxGold={player?.baseGold} />
         )}
         <Opponents players={players} opponent={opponent} />
-        {/* <button
-          className="absolute top-0 left-0"
-          onClick={() => setPlayerMinion(0, { damage: 3, health: -3 })}
-        >
-          Set Player Minion
-        </button>
-        <button
-          className="absolute top-12 left-0"
-          onClick={() => setOpponent({ health: 3000 })}
-        >
-          Set Player
-        </button> */}
       </div>
     </DragDropContext>
   );

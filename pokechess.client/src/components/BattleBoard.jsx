@@ -5,6 +5,7 @@ import OpponentPokemon from "./OpponentPokemon";
 import PlayerPokemon from "./PlayerPokemon";
 import Row from "./Row";
 import useAsyncEffect from "use-async-effect";
+import { useState } from "react";
 
 // const combatActions = [
 //   {
@@ -31,13 +32,12 @@ import useAsyncEffect from "use-async-effect";
 // ];
 
 export default function BattleBoard({
-  player,
-  opponent,
-  setPlayer,
-  setOpponent,
-  setPlayerMinion,
-  setOpponentMinion,
+  initialPlayer,
+  initialOpponent,
+  setGameStatus,
 }) {
+  const [player, setPlayer] = useState(initialPlayer);
+  const [opponent, setOpponent] = useState(initialOpponent);
   console.log("opponent", opponent);
   console.log("player", player);
   // const [player, setPlayer] = useState({
@@ -87,6 +87,38 @@ export default function BattleBoard({
   //   hand: [],
   // });
 
+  function updatePlayerMinion(playerMinionIndex, values) {
+    setPlayer((prev) => ({
+      ...prev,
+      board: prev.board.map((minion, i) => {
+        if (playerMinionIndex === i) {
+          return {
+            ...minion,
+            ...values,
+          };
+        }
+
+        return minion;
+      }),
+    }));
+  }
+
+  function updateOpponentMinion(opponentMinionIndex, values) {
+    setOpponent((prev) => ({
+      ...prev,
+      board: prev.board.map((minion, i) => {
+        if (opponentMinionIndex === i) {
+          return {
+            ...minion,
+            ...values,
+          };
+        }
+
+        return minion;
+      }),
+    }));
+  }
+
   async function attackHero(action) {
     const [playerHeroTop, playerHeroLeft] = getElementPosition("player-hero");
     const [opponentHeroTop, opponentHeroLeft] =
@@ -103,38 +135,41 @@ export default function BattleBoard({
       ? [opponentHeroTop + 30, opponentHeroLeft]
       : [playerHeroTop - 30, playerHeroLeft];
 
-    updateHeroFunc({
+    updateHeroFunc((prev) => ({
+      ...prev,
       style: {
         position: "fixed",
         top: startCoords[0],
         left: startCoords[1],
         zIndex: 10,
       },
-    });
+    }));
 
     await delay(1000);
 
-    updateHeroFunc({
+    updateHeroFunc((prev) => ({
+      ...prev,
       style: {
         position: "fixed",
         top: endCoords[0],
         left: endCoords[1],
         zIndex: 10,
       },
-    });
+    }));
 
     await delay(400);
 
-    updateLoserFunc(action.onHitValues);
+    updateLoserFunc((prev) => ({ ...prev, ...action.onHitValues }));
 
-    updateHeroFunc({
+    updateHeroFunc((prev) => ({
+      ...prev,
       style: {
         position: "fixed",
         top: startCoords[0],
         left: startCoords[1],
         zIndex: 10,
       },
-    });
+    }));
   }
   async function attackMinion(action) {
     const [playerMinionTop, playerMinionLeft] = getElementPosition(
@@ -163,11 +198,11 @@ export default function BattleBoard({
       ? playerMinionIndex
       : opponentMinionIndex;
 
-    const setMinionFunc = action.playerIsAttacking
-      ? setPlayerMinion
-      : setOpponentMinion;
+    const updateMinionFunc = action.playerIsAttacking
+      ? updatePlayerMinion
+      : updateOpponentMinion;
 
-    setMinionFunc(attackingMinionIndex, {
+    updateMinionFunc(attackingMinionIndex, {
       style: {
         position: "fixed",
         top: startCoords[0],
@@ -178,7 +213,7 @@ export default function BattleBoard({
 
     await delay(1000);
 
-    setMinionFunc(attackingMinionIndex, {
+    updateMinionFunc(attackingMinionIndex, {
       style: {
         position: "fixed",
         top: endCoords[0],
@@ -189,10 +224,10 @@ export default function BattleBoard({
 
     await delay(200);
 
-    setPlayerMinion(playerMinionIndex, action.playerOnHitValues);
-    setOpponentMinion(opponentMinionIndex, action.opponentOnHitValues);
+    updatePlayerMinion(playerMinionIndex, action.playerOnHitValues);
+    updateOpponentMinion(opponentMinionIndex, action.opponentOnHitValues);
 
-    setMinionFunc(attackingMinionIndex, {
+    updateMinionFunc(attackingMinionIndex, {
       style: {
         position: "fixed",
         top: startCoords[0],
@@ -203,7 +238,7 @@ export default function BattleBoard({
 
     await delay(300);
 
-    setMinionFunc(attackingMinionIndex, {
+    updateMinionFunc(attackingMinionIndex, {
       style: {
         position: "relative",
         top: "",
@@ -229,6 +264,9 @@ export default function BattleBoard({
 
       await delay(1000);
     }
+    await delay(3000);
+
+    setGameStatus("shop");
   }, []);
 
   return (
