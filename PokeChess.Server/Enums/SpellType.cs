@@ -15,9 +15,10 @@
         BuffShopAttack,
         BuffShopHealth,
         AddKeywordToTarget,
-        Discover,
-        GetCards,
+        GetCardsFromTavern,
+        GetRandomCards,
         Consume,
+        Discover,
         Quest,
         Secret
     }

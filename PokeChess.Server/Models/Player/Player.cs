@@ -21,11 +21,13 @@ namespace PokeChess.Server.Models.Player
             TripleCount = 0;
             BaseGold = _startingGold;
             Gold = _startingGold;
-            UpgradeCost = _upgradeToTwoCost + 1; // Adding 1 here because it will be decremented by the StartGame function
+            UpgradeCost = _upgradeToTwoCost + 1; // Adding 1 here because it will be decremented by the StartGame function before the first round
             RefreshCost = refreshCost;
             WinStreak = 0;
             MaxGold = _maxGold;
             MaxHandSize = _maxHandSize;
+            ShopBuffAttack = 0;
+            ShopBuffHealth = 0;
             Board = new List<Card>();
             Hand = new List<Card>();
             Shop = new List<Card>();
@@ -52,6 +54,8 @@ namespace PokeChess.Server.Models.Player
         public int MaxGold {  get; set; }
         public int MaxHandSize { get; set; }
         public string? CurrentOpponentId { get; set; }
+        public int ShopBuffAttack { get; set; }
+        public int ShopBuffHealth { get; set; }
         public List<Card> Board { get; set; }
         public List<Card> Hand { get; set; }
         public List<Card> Shop { get; set; }

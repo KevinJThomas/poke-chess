@@ -39,11 +39,11 @@
   {
     "tier": 1,
     "name": "Poke Food",
-    "text": "Give a minion +4 health",
+    "text": "Give a minion +3 health and taunt",
     "cardType": 1,
     "baseCost": 1,
-    "spellTypes": [ 4 ],
-    "amount": [ 4 ]
+    "spellTypes": [ 4, 12 ],
+    "amount": [ 4, 4 ]
   },
   {
     "tier": 1,
@@ -70,6 +70,15 @@
     "cardType": 1,
     "baseCost": 1,
     "spellTypes": [ 8, 9 ],
+    "amount": [ 1, 2 ]
+  },
+  {
+    "tier": 2,
+    "name": "Inspiring Presence",
+    "text": "Minions in the shop have +1/+2 this game",
+    "cardType": 1,
+    "baseCost": 2,
+    "spellTypes": [ 10, 11 ],
     "amount": [ 1, 2 ]
   }
 ]

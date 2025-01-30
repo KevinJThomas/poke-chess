@@ -429,6 +429,13 @@ namespace PokeChess.Server.Services
             // Add a single spell to the shop
             player.Shop.Add(lobby.GameState.SpellCardPool.DrawCard(player.Tier));
 
+            // Account for player's shop buffs
+            foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion))
+            {
+                minion.Attack += player.ShopBuffAttack;
+                minion.Health += player.ShopBuffHealth;
+            }
+
             return (lobby, player.Shop);
         }
 

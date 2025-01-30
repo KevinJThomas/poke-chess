@@ -245,11 +245,21 @@ namespace PokeChess.Server.Extensions
 
                     return true;
                 case SpellType.BuffShopAttack:
-                    // Add logic here
-                    return false;
+                    foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
+                    {
+                        minion.Attack += amount;
+                    }
+                    player.ShopBuffAttack += amount;
+
+                    return true;
                 case SpellType.BuffShopHealth:
-                    // Add logic here
-                    return false;
+                    foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
+                    {
+                        minion.Health += amount;
+                    }
+                    player.ShopBuffHealth += amount;
+
+                    return true;
                 case SpellType.AddKeywordToTarget:
                     if (string.IsNullOrWhiteSpace(targetId))
                     {
@@ -271,7 +281,7 @@ namespace PokeChess.Server.Extensions
                     if (targetInShopKeyword)
                     {
                         var targetIndexKeyword = player.Shop.FindIndex(x => x.Id == targetId);
-                        if (targetIndexKeyword >= 0 && targetIndexKeyword < player.Board.Count())
+                        if (targetIndexKeyword >= 0 && targetIndexKeyword < player.Shop.Count())
                         {
                             player.Shop[targetIndexKeyword].Keywords.Add((Keyword)amount);
                             return true;
