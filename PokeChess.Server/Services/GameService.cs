@@ -574,6 +574,11 @@ namespace PokeChess.Server.Services
 
         private Lobby CalculateCombat(Lobby lobby)
         {
+            foreach (var player in lobby.Players)
+            {
+                player.CombatActions.Clear();
+            }
+
             foreach (var matchup in lobby.GameState.NextRoundMatchups)
             {
                 var player1 = lobby.Players.Where(x => x.Id == matchup[0].Id).FirstOrDefault();
