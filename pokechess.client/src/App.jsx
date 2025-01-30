@@ -36,12 +36,42 @@ export default function App() {
     );
   }
 
+  function setPlayerMinion(index, values) {
+    setPlayer({
+      board: player.board.map((minion, i) => {
+        if (index === i) {
+          return {
+            ...minion,
+            ...values,
+          };
+        }
+
+        return minion;
+      }),
+    });
+  }
+
   function setOpponent(values) {
     setPlayers((prev) =>
       prev.map((x) =>
         x.id === player?.currentOpponentId ? { ...x, ...values } : x,
       ),
     );
+  }
+
+  function setOpponentMinion(index, values) {
+    setOpponent({
+      board: opponent.board.map((minion, i) => {
+        if (index === i) {
+          return {
+            ...minion,
+            ...values,
+          };
+        }
+
+        return minion;
+      }),
+    });
   }
 
   function onDragStart(result) {
@@ -281,7 +311,9 @@ export default function App() {
             player={player}
             setPlayer={setPlayer}
             setOpponent={setOpponent}
+            setPlayerMinion={setPlayerMinion}
             opponent={opponent}
+            setOpponentMinion={setOpponentMinion}
           />
         )}
         {gameStatus === "shop" && (
@@ -297,6 +329,18 @@ export default function App() {
           <Gold gold={player?.gold} maxGold={player?.baseGold} />
         )}
         <Opponents players={players} opponent={opponent} />
+        {/* <button
+          className="absolute top-0 left-0"
+          onClick={() => setPlayerMinion(0, { damage: 3, health: -3 })}
+        >
+          Set Player Minion
+        </button>
+        <button
+          className="absolute top-12 left-0"
+          onClick={() => setOpponent({ health: 3000 })}
+        >
+          Set Player
+        </button> */}
       </div>
     </DragDropContext>
   );

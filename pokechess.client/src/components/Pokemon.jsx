@@ -54,8 +54,10 @@ export default function Pokemon({
           className,
         )}
       >
-        <div className="relative h-20 w-20">
-          {!isMinion && <span className="text-center text-xs">{name}</span>}
+        <div className="relative flex h-20 w-20 items-center justify-center">
+          {!isMinion && (
+            <span className="w-20 text-center text-xs">{name}</span>
+          )}
           {isMinion && <Attack attack={attack} />}
           {isMinion && <Health health={health} />}
           {!!tier && showTier && <Tier tier={tier} />}

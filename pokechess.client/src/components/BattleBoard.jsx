@@ -30,13 +30,13 @@ import useAsyncEffect from "use-async-effect";
 //   },
 // ];
 
-const combatActions = [];
-
 export default function BattleBoard({
   player,
   opponent,
   setPlayer,
   setOpponent,
+  setPlayerMinion,
+  setOpponentMinion,
 }) {
   console.log("opponent", opponent);
   console.log("player", player);
@@ -87,38 +87,6 @@ export default function BattleBoard({
   //   hand: [],
   // });
 
-  function updatePlayerMinion(playerMinionIndex, values) {
-    setPlayer((prev) => ({
-      ...prev,
-      board: prev.board.map((minion, i) => {
-        if (playerMinionIndex === i) {
-          return {
-            ...minion,
-            ...values,
-          };
-        }
-
-        return minion;
-      }),
-    }));
-  }
-
-  function updateOpponentMinion(opponentMinionIndex, values) {
-    setOpponent((prev) => ({
-      ...prev,
-      board: prev.board.map((minion, i) => {
-        if (opponentMinionIndex === i) {
-          return {
-            ...minion,
-            ...values,
-          };
-        }
-
-        return minion;
-      }),
-    }));
-  }
-
   async function attackHero(action) {
     const [playerHeroTop, playerHeroLeft] = getElementPosition("player-hero");
     const [opponentHeroTop, opponentHeroLeft] =
@@ -135,41 +103,38 @@ export default function BattleBoard({
       ? [opponentHeroTop + 30, opponentHeroLeft]
       : [playerHeroTop - 30, playerHeroLeft];
 
-    updateHeroFunc((prev) => ({
-      ...prev,
+    updateHeroFunc({
       style: {
         position: "fixed",
         top: startCoords[0],
         left: startCoords[1],
         zIndex: 10,
       },
-    }));
+    });
 
     await delay(1000);
 
-    updateHeroFunc((prev) => ({
-      ...prev,
+    updateHeroFunc({
       style: {
         position: "fixed",
         top: endCoords[0],
         left: endCoords[1],
         zIndex: 10,
       },
-    }));
+    });
 
     await delay(400);
 
-    updateLoserFunc((prev) => ({ ...prev, ...action.onHitValues }));
+    updateLoserFunc(action.onHitValues);
 
-    updateHeroFunc((prev) => ({
-      ...prev,
+    updateHeroFunc({
       style: {
         position: "fixed",
         top: startCoords[0],
         left: startCoords[1],
         zIndex: 10,
       },
-    }));
+    });
   }
   async function attackMinion(action) {
     const [playerMinionTop, playerMinionLeft] = getElementPosition(
@@ -198,11 +163,11 @@ export default function BattleBoard({
       ? playerMinionIndex
       : opponentMinionIndex;
 
-    const updateMinionFunc = action.playerIsAttacking
-      ? updatePlayerMinion
-      : updateOpponentMinion;
+    const setMinionFunc = action.playerIsAttacking
+      ? setPlayerMinion
+      : setOpponentMinion;
 
-    updateMinionFunc(attackingMinionIndex, {
+    setMinionFunc(attackingMinionIndex, {
       style: {
         position: "fixed",
         top: startCoords[0],
@@ -213,7 +178,7 @@ export default function BattleBoard({
 
     await delay(1000);
 
-    updateMinionFunc(attackingMinionIndex, {
+    setMinionFunc(attackingMinionIndex, {
       style: {
         position: "fixed",
         top: endCoords[0],
@@ -224,10 +189,10 @@ export default function BattleBoard({
 
     await delay(200);
 
-    updatePlayerMinion(playerMinionIndex, action.playerOnHitValues);
-    updateOpponentMinion(opponentMinionIndex, action.opponentOnHitValues);
+    setPlayerMinion(playerMinionIndex, action.playerOnHitValues);
+    setOpponentMinion(opponentMinionIndex, action.opponentOnHitValues);
 
-    updateMinionFunc(attackingMinionIndex, {
+    setMinionFunc(attackingMinionIndex, {
       style: {
         position: "fixed",
         top: startCoords[0],
@@ -238,7 +203,7 @@ export default function BattleBoard({
 
     await delay(300);
 
-    updateMinionFunc(attackingMinionIndex, {
+    setMinionFunc(attackingMinionIndex, {
       style: {
         position: "relative",
         top: "",
@@ -253,7 +218,7 @@ export default function BattleBoard({
   useAsyncEffect(async () => {
     await delay(1000);
 
-    for (const action of combatActions) {
+    for (const action of player.combatActions) {
       if (action.type === "minion") {
         await attackMinion(action);
       }
