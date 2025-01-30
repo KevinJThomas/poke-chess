@@ -1,9 +1,9 @@
 import Pokemon from "./Pokemon";
 
-export default function OpponentPokemon({ opponent }) {
+export default function OpponentPokemon({ player }) {
   return (
     <div className="row">
-      {opponent.board.map((pokemon) => (
+      {player.board.map((pokemon) => (
         <Pokemon key={pokemon.id} {...pokemon} />
       ))}
     </div>

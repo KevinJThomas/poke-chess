@@ -28,6 +28,20 @@ export default function App() {
   const player = players.find((player) => player.id === playerId);
   const opponent = players.find((x) => x.id === player?.currentOpponentId);
 
+  function setPlayer(values) {
+    setPlayers((prev) =>
+      prev.map((x) => (x.id === playerId ? { ...x, ...values } : x)),
+    );
+  }
+
+  function setOpponent(values) {
+    setPlayers((prev) =>
+      prev.map((x) =>
+        x.id === player?.currentOpponentId ? { ...x, ...values } : x,
+      ),
+    );
+  }
+
   function onDragStart(result) {
     if (result.source.droppableId === "droppable-shop") {
       setDisableSellDrop(true);
@@ -144,7 +158,7 @@ export default function App() {
         : "/messageHub";
 
     const connection = new signalR.HubConnectionBuilder()
-      .configureLogging(signalR.LogLevel.Debug) // add this for diagnostic clues
+      // .configureLogging(signalR.LogLevel.Debug) // add this for diagnostic clues
       .withUrl(url, {
         skipNegotiation: true, // skipNegotiation as we specify WebSockets
         transport: signalR.HttpTransportType.WebSockets, // force WebSocket transport
@@ -263,8 +277,8 @@ export default function App() {
         {gameStatus === "battle" && (
           <BattleBoard
             player={player}
-            players={players}
-            gameState={gameState}
+            setPlayer={setPlayer}
+            setOpponent={setOpponent}
             opponent={opponent}
           />
         )}
@@ -277,7 +291,9 @@ export default function App() {
             End Turn
           </Button>
         )}
-        <Gold gold={player.gold} maxGold={player.baseGold} />
+        {player?.gold && (
+          <Gold gold={player?.gold} maxGold={player?.baseGold} />
+        )}
         <Opponents players={players} opponent={opponent} />
       </div>
     </DragDropContext>
