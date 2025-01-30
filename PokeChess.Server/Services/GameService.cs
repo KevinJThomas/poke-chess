@@ -853,6 +853,7 @@ namespace PokeChess.Server.Services
             {
                 source.CombatHealth -= target.Attack;
             }
+            source.Attacked = true;
 
             return (source, target);
         }
@@ -880,7 +881,7 @@ namespace PokeChess.Server.Services
             {
                 player1.WinStreak += 1;
                 var damage = player1.Tier;
-                foreach (var minion in player1.Board)
+                foreach (var minion in player1.Board.Where(x => !x.IsDead))
                 {
                     damage += minion.Tier;
                 }
@@ -925,7 +926,7 @@ namespace PokeChess.Server.Services
             {
                 player2.WinStreak += 1;
                 var damage = player2.Tier;
-                foreach (var minion in player2.Board)
+                foreach (var minion in player2.Board.Where(x => !x.IsDead))
                 {
                     damage += minion.Tier;
                 }
