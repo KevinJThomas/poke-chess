@@ -662,31 +662,30 @@ namespace PokeChess.Server.Services
 
                 var nextTargetIndex = GetNextTargetIndex(player2.Board);
 
-                var player1CombatAction = new CombatAction
-                {
-                    Type = CombatActionType.Attack,
-                    FriendlyStartingBoardState = player1.Board,
-                    EnemyStartingBoardState = player2.Board,
-                    AttackSource = player1.Board[nextSourceIndex],
-                    AttackTarget = player2.Board[nextTargetIndex]
-                };
-                var player2CombatAction = new CombatAction
-                {
-                    Type = CombatActionType.Attack,
-                    FriendlyStartingBoardState = player2.Board,
-                    EnemyStartingBoardState = player1.Board,
-                    AttackSource = player1.Board[nextSourceIndex],
-                    AttackTarget = player2.Board[nextTargetIndex]
-                };
+                var sourceHealthBeforeAttack = player1.Board[nextSourceIndex].CombatHealth;
+                var targetHealthBeforeAttack = player2.Board[nextTargetIndex].CombatHealth;
                 (player1.Board[nextSourceIndex], player2.Board[nextTargetIndex]) = MinionAttack(player1.Board[nextSourceIndex], player2.Board[nextTargetIndex]);
+                var sourceHealthAfterAttack = player1.Board[nextSourceIndex].CombatHealth;
+                var targetHealthAfterAttack = player2.Board[nextTargetIndex].CombatHealth;
 
-                player1CombatAction.FriendlyEndingBoardState = player1.Board;
-                player1CombatAction.EnemyEndingBoardState = player2.Board;
-                player1.CombatActions.Add(player1CombatAction);
-
-                player2CombatAction.FriendlyEndingBoardState = player2.Board;
-                player2CombatAction.EnemyEndingBoardState = player1.Board;
-                player2.CombatActions.Add(player2CombatAction);
+                player1.CombatActions.Add(new CombatAction
+                {
+                    PlayerMinionId = player1.Board[nextSourceIndex].Id,
+                    OpponentMinionId = player2.Board[nextTargetIndex].Id,
+                    PlayerOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack },
+                    OpponentOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack },
+                    PlayerIsAttacking = true,
+                    Type = CombatActionType.Minion.ToString().ToLower()
+                });
+                player2.CombatActions.Add(new CombatAction
+                {
+                    PlayerMinionId = player2.Board[nextTargetIndex].Id,
+                    OpponentMinionId = player1.Board[nextSourceIndex].Id,
+                    PlayerOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack },
+                    OpponentOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack },
+                    PlayerIsAttacking = false,
+                    Type = CombatActionType.Minion.ToString().ToLower()
+                });
 
                 if (!player1.Board.Any(x => !x.IsDead) || !player2.Board.Any(x => !x.IsDead))
                 {
@@ -713,31 +712,30 @@ namespace PokeChess.Server.Services
 
                 var nextTargetIndex = GetNextTargetIndex(player1.Board);
 
-                var player1CombatAction = new CombatAction
-                {
-                    Type = CombatActionType.Attack,
-                    FriendlyStartingBoardState = player1.Board,
-                    EnemyStartingBoardState = player2.Board,
-                    AttackSource = player2.Board[nextSourceIndex],
-                    AttackTarget = player1.Board[nextTargetIndex]
-                };
-                var player2CombatAction = new CombatAction
-                {
-                    Type = CombatActionType.Attack,
-                    FriendlyStartingBoardState = player2.Board,
-                    EnemyStartingBoardState = player1.Board,
-                    AttackSource = player2.Board[nextSourceIndex],
-                    AttackTarget = player1.Board[nextTargetIndex]
-                };
+                var sourceHealthBeforeAttack = player2.Board[nextSourceIndex].CombatHealth;
+                var targetHealthBeforeAttack = player1.Board[nextTargetIndex].CombatHealth;
                 (player2.Board[nextSourceIndex], player1.Board[nextTargetIndex]) = MinionAttack(player2.Board[nextSourceIndex], player1.Board[nextTargetIndex]);
+                var sourceHealthAfterAttack = player2.Board[nextSourceIndex].CombatHealth;
+                var targetHealthAfterAttack = player1.Board[nextTargetIndex].CombatHealth;
 
-                player1CombatAction.FriendlyEndingBoardState = player1.Board;
-                player1CombatAction.EnemyEndingBoardState = player2.Board;
-                player1.CombatActions.Add(player1CombatAction);
-
-                player2CombatAction.FriendlyEndingBoardState = player2.Board;
-                player2CombatAction.EnemyEndingBoardState = player1.Board;
-                player2.CombatActions.Add(player2CombatAction);
+                player1.CombatActions.Add(new CombatAction
+                {
+                    PlayerMinionId = player1.Board[nextTargetIndex].Id,
+                    OpponentMinionId = player2.Board[nextSourceIndex].Id,
+                    PlayerOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack },
+                    OpponentOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack },
+                    PlayerIsAttacking = false,
+                    Type = CombatActionType.Minion.ToString().ToLower()
+                });
+                player2.CombatActions.Add(new CombatAction
+                {
+                    PlayerMinionId = player2.Board[nextSourceIndex].Id,
+                    OpponentMinionId = player1.Board[nextTargetIndex].Id,
+                    PlayerOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack },
+                    OpponentOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack },
+                    PlayerIsAttacking = true,
+                    Type = CombatActionType.Minion.ToString().ToLower()
+                });
 
                 if (!player1.Board.Any(x => !x.IsDead) || !player2.Board.Any(x => !x.IsDead))
                 {
@@ -753,7 +751,7 @@ namespace PokeChess.Server.Services
             else
             {
                 // If neither player is marked to attack, randomly decide who goes next
-                if (_random.Next(2) == 1)
+                if (ThreadSafeRandom.ThisThreadsRandom.Next(2) == 1)
                 {
                     player1.Attacking = true;
                     player2.Attacking = false;
@@ -904,6 +902,19 @@ namespace PokeChess.Server.Services
                 {
                     player2.Health -= damage;
                 }
+
+                player1.CombatActions.Add(new CombatAction
+                {
+                    PlayerIsAttacking = true,
+                    OnHitValues = new HitValues { Damage = damage, Health = player2.Health, Armor = player2.Armor },
+                    Type = CombatActionType.Hero.ToString().ToLower()
+                });
+                player2.CombatActions.Add(new CombatAction
+                {
+                    PlayerIsAttacking = false,
+                    OnHitValues = new HitValues { Damage = damage, Health = player2.Health, Armor = player2.Armor },
+                    Type = CombatActionType.Hero.ToString().ToLower()
+                });
             }
             else if (player2.Board.Any(x => !x.IsDead))
             {
@@ -936,6 +947,19 @@ namespace PokeChess.Server.Services
                 {
                     player1.Health -= damage;
                 }
+
+                player1.CombatActions.Add(new CombatAction
+                {
+                    PlayerIsAttacking = false,
+                    OnHitValues = new HitValues { Damage = damage, Health = player1.Health, Armor = player1.Armor },
+                    Type = CombatActionType.Hero.ToString().ToLower()
+                });
+                player2.CombatActions.Add(new CombatAction
+                {
+                    PlayerIsAttacking = true,
+                    OnHitValues = new HitValues { Damage = damage, Health = player1.Health, Armor = player1.Armor },
+                    Type = CombatActionType.Hero.ToString().ToLower()
+                });
             }
 
             player1.Attacking = false;

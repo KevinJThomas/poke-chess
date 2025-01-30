@@ -2,9 +2,7 @@
 {
     public enum CombatActionType
     {
-        Attack,
-        StartOfCombat,
-        Triggered,
-        Avenge
+        Minion,
+        Hero
     }
 }

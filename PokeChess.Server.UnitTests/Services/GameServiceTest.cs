@@ -1249,6 +1249,7 @@ namespace PokeChess.Server.UnitTests.Services
                 new Player(Guid.NewGuid().ToString(), "Player 4", zeroArmor),
                 new Player(Guid.NewGuid().ToString(), "Player 5", zeroArmor)
             };
+            lobby.GameState.RoundNumber = 8;
             foreach (var player in lobby.Players)
             {
                 player.Health = 16; // Making sure damage cap keeps everyone alive

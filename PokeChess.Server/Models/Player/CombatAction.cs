@@ -1,16 +1,13 @@
-﻿using PokeChess.Server.Enums;
-using PokeChess.Server.Models.Game;
-
-namespace PokeChess.Server.Models.Player
+﻿namespace PokeChess.Server.Models.Player
 {
     public class CombatAction
     {
-        public CombatActionType Type { get; set; }
-        public List<Card> FriendlyStartingBoardState { get; set; } = new List<Card>();
-        public List<Card> EnemyStartingBoardState { get; set; } = new List<Card>();
-        public List<Card> FriendlyEndingBoardState { get; set; } = new List<Card>();
-        public List<Card> EnemyEndingBoardState { get; set; } = new List<Card>();
-        public Card AttackSource { get; set; } = new Card();
-        public Card AttackTarget { get; set; } = new Card();
+        public string? PlayerMinionId { get; set; }
+        public string? OpponentMinionId { get; set; }
+        public HitValues? PlayerOnHitValues { get; set; }
+        public HitValues? OpponentOnHitValues { get; set; }
+        public HitValues? OnHitValues { get; set; }
+        public bool PlayerIsAttacking { get; set; }
+        public string? Type { get; set; }
     }
 }
