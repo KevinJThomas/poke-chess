@@ -25,8 +25,7 @@ export default function TavernRow({ isDragDisabled, player, isDropDisabled }) {
       // background: isDragging ? "lightgreen" : "red",
 
       // styles we need to apply on draggables
-      paddingLeft: 1,
-      paddingRight: 1,
+
       ...draggableStyle,
     };
   }

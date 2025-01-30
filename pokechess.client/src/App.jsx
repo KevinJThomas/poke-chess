@@ -36,6 +36,11 @@ export default function App() {
 
     if (result.source.droppableId === "droppable-hand") {
       setDisableShopDrop(true);
+
+      const card = player.hand[result.source.index];
+      if (player.board.length >= 7 && card.cardType === 0) {
+        setDisableBoardDrop(true);
+      }
     }
 
     if (result.source.droppableId === "droppable-board") {

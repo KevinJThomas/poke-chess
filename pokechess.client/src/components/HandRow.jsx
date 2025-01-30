@@ -24,8 +24,7 @@ export default function HandRow({ player, isDragDisabled, isDropDisabled }) {
       // background: isDragging ? "lightgreen" : "red",
 
       // styles we need to apply on draggables
-      paddingRight: 1,
-      paddingLeft: 1,
+
       ...draggableStyle,
     };
   }

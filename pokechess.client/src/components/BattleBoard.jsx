@@ -1,5 +1,4 @@
 import { delay, getElementPosition } from "../util";
-import HandRow from "./HandRow";
 import Hero from "./Hero";
 import OpponentPokemon from "./OpponentPokemon";
 import PlayerPokemon from "./PlayerPokemon";
@@ -298,13 +297,7 @@ export default function BattleBoard({
             id="player-hero"
           />
         </Row>
-        <Row>
-          <HandRow
-            player={player}
-            isDragDisabled={true}
-            isDropDisabled={true}
-          />
-        </Row>
+        <Row></Row>
       </div>
     </>
   );

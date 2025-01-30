@@ -43,7 +43,7 @@ export default function Pokemon({
   }
 
   return (
-    <div className="h-20 w-20">
+    <div className="mx-px h-20 w-20">
       <div
         id={id}
         style={{ backgroundImage: `url(/pokemon/${num}.png)`, ...style }}

@@ -13,7 +13,6 @@ export default function PlayerBoard({
       // background: isDraggingOver ? "lightblue" : "lightgrey",
       // display: "flex",
       // padding: grid,
-
       width: Math.max(MINION_LENGTH * itemsLength, MINION_LENGTH),
     };
   }
@@ -29,8 +28,7 @@ export default function PlayerBoard({
       // background: isDragging ? "lightgreen" : "red",
 
       // styles we need to apply on draggables
-      paddingLeft: 1,
-      paddingRight: 1,
+
       ...draggableStyle,
     };
   }
@@ -39,7 +37,7 @@ export default function PlayerBoard({
     <Droppable
       droppableId="droppable-board"
       direction="horizontal"
-      isDropDisabled={isDropDisabled || player.board.length >= 7}
+      isDropDisabled={isDropDisabled}
     >
       {(provided, snapshot) => (
         <div
