@@ -29,6 +29,8 @@ export default function Pokemon({
   damage,
   text,
   keywords,
+  baseHealth,
+  baseAttack,
 }) {
   const isMinion = cardType === 0;
   const [showDamage, setShowDamage] = useState(false);
@@ -74,8 +76,16 @@ export default function Pokemon({
           {!isMinion && (
             <span className="w-20 text-center text-xs">{name}</span>
           )}
-          {isMinion && <Attack attack={attack} />}
-          {isMinion && <Health health={health} />}
+          {isMinion && (
+            <Attack attack={attack} isBuffed={attack > baseAttack} />
+          )}
+          {isMinion && (
+            <Health
+              health={health}
+              animate={health < baseHealth}
+              isBuffed={attack > baseAttack}
+            />
+          )}
           {!!tier && showTier && <Tier tier={tier} />}
           {!isMinion && Number.isInteger(cost) && <Cost cost={cost} />}
           {!!damage && showDamage && <Damage damage={damage} />}
