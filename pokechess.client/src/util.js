@@ -10,10 +10,14 @@ export function delay(ms) {
 }
 
 export function getElementPosition(id) {
-  const element = document.getElementById(id);
-  const rect = element.getBoundingClientRect();
+  const element = document?.getElementById(id);
+  const rect = element?.getBoundingClientRect();
 
-  return [rect.top, rect.left];
+  if (!rect) {
+    console.error("COULD NOT FIND ID", id);
+  }
+
+  return [rect?.top, rect?.left];
 }
 
 export function hideElement(id) {
