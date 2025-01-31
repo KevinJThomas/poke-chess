@@ -7,6 +7,7 @@ import Damage from "./Damage";
 import { useState } from "react";
 import useAsyncEffect from "use-async-effect";
 import Tooltip from "./Tooltip";
+import DivineShield from "./DivineShield";
 
 export default function Pokemon({
   attack,
@@ -22,6 +23,7 @@ export default function Pokemon({
   style,
   damage,
   text,
+  keywords,
 }) {
   const isMinion = cardType === 0;
   const [showDamage, setShowDamage] = useState(false);
@@ -51,7 +53,7 @@ export default function Pokemon({
         id={id}
         style={{ backgroundImage: `url(/pokemon/${num}.png)`, ...style }}
         className={cn(
-          "flex h-20 w-20 items-center justify-center transition-all duration-200 ease-in-out",
+          "-z-5 flex h-20 w-20 items-center justify-center transition-all duration-200 ease-in-out",
           isMinion && `bg-contain bg-center`,
           !isMinion && "rounded-xl bg-blue-400",
           className,
@@ -68,6 +70,7 @@ export default function Pokemon({
           {!!tier && showTier && <Tier tier={tier} />}
           {!isMinion && Number.isInteger(cost) && <Cost cost={cost} />}
           {!!damage && showDamage && <Damage damage={damage} />}
+          {keywords.divineShield && <DivineShield />}
         </div>
       </div>
     </div>
