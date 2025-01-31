@@ -4,7 +4,7 @@
     "num": "001",
     "tier": 1,
     "name": "Bulbasaur",
-    "baseAttack": 3,
+    "baseAttack": 1,
     "baseHealth": 2,
     "baseCost": 3,
     "minionType": 1,
