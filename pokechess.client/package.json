@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@hello-pangea/dnd": "^17.0.0",
+    "@heroicons/react": "^2.2.0",
     "@microsoft/signalr": "^8.0.7",
     "@tailwindcss/vite": "^4.0.0",
     "clsx": "^2.1.1",

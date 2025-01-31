@@ -8,6 +8,7 @@ import { useState } from "react";
 import useAsyncEffect from "use-async-effect";
 import Tooltip from "./Tooltip";
 import DivineShield from "./DivineShield";
+import Venomous from "./Venomous";
 
 export default function Pokemon({
   attack,
@@ -71,6 +72,7 @@ export default function Pokemon({
           {!isMinion && Number.isInteger(cost) && <Cost cost={cost} />}
           {!!damage && showDamage && <Damage damage={damage} />}
           {keywords.divineShield && <DivineShield />}
+          {keywords.venomous && <Venomous />}
         </div>
       </div>
     </div>
