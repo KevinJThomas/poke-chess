@@ -17,33 +17,7 @@ namespace PokeChess.Server.Extensions
         {
             foreach (var minion in player.Board)
             {
-                if (minion.Keywords.Any())
-                {
-                    foreach (var keyword in minion.Keywords)
-                    {
-                        switch (keyword)
-                        {
-                            case Keyword.Windfury:
-                                minion.HasWindfury = true;
-                                break;
-                            case Keyword.Taunt:
-                                minion.HasTaunt = true;
-                                break;
-                            case Keyword.Venomous:
-                                minion.HasVenomous = true;
-                                break;
-                            case Keyword.Stealth:
-                                minion.HasWindfury = true;
-                                break;
-                            case Keyword.DivineShield:
-                                minion.HasDivineShield = true;
-                                break;
-                            case Keyword.Reborn:
-                                minion.HasReborn = true;
-                                break;
-                        }
-                    }
-                }
+                minion.CombatKeywords = minion.Keywords.Clone();
             }
         }
 
@@ -273,7 +247,8 @@ namespace PokeChess.Server.Extensions
                         var targetIndexKeyword = player.Board.FindIndex(x => x.Id == targetId);
                         if (targetIndexKeyword >= 0 && targetIndexKeyword < player.Board.Count())
                         {
-                            player.Board[targetIndexKeyword].Keywords.Add((Keyword)amount);
+                            player.Board[targetIndexKeyword].ApplyKeyword((Keyword)amount);
+
                             return true;
                         }
                     }
@@ -283,7 +258,7 @@ namespace PokeChess.Server.Extensions
                         var targetIndexKeyword = player.Shop.FindIndex(x => x.Id == targetId);
                         if (targetIndexKeyword >= 0 && targetIndexKeyword < player.Shop.Count())
                         {
-                            player.Shop[targetIndexKeyword].Keywords.Add((Keyword)amount);
+                            player.Shop[targetIndexKeyword].ApplyKeyword((Keyword)amount);
                             return true;
                         }
                     }

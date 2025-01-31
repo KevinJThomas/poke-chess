@@ -9,5 +9,6 @@
         public HitValues? OnHitValues { get; set; }
         public bool PlayerIsAttacking { get; set; }
         public string? Type { get; set; }
+        public string? WinnerName { get; set; }
     }
 }

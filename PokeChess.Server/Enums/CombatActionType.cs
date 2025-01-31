@@ -3,6 +3,7 @@
     public enum CombatActionType
     {
         Minion,
-        Hero
+        Hero,
+        GameOver
     }
 }

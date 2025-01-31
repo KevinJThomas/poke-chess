@@ -501,7 +501,7 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(cardPoolCountBeforePlay < cardPoolCountAfterPlay);
             Assert.IsTrue(shopMinionAttackBeforePlay == shopMinionAttackAfterPlay);
             Assert.IsTrue(shopMinionHealthBeforePlay < shopMinionHealthAfterPlay);
-            Assert.IsTrue(shopMinionKeywordsAfterPlay.Contains(Enums.Keyword.Taunt));
+            Assert.IsTrue(shopMinionKeywordsAfterPlay.Taunt);
             Assert.IsTrue(shopMinionKeywordsBeforePlay.Count() < shopMinionKeywordsAfterPlay.Count());
         }
 

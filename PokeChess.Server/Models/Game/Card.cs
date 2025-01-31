@@ -19,21 +19,15 @@ namespace PokeChess.Server.Models.Game
         public int PokemonId { get; set; }
         public string Num { get; set; }
         public bool Attacked { get; set; }
-        public bool IsStealthed { get; set; }
-        public bool HasDivineShield { get; set; }
-        public bool HasVenomous { get; set; }
-        public bool HasWindfury { get; set; }
-        public bool HasReborn { get; set; }
-        public bool HasTaunt { get; set; }
         public int CombatHealth { get; set; }
         public int Delay { get; set; } = 0;
-        public string? SpellTargetId { get; set; }
         public CardType CardType { get; set; }
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();
         public List<SpellType> SpellTypes { get; set; } = new List<SpellType>();
-        public List<Keyword> BaseKeywords { get; set; } = new List<Keyword>();
-        public List<Keyword> Keywords { get; set; } = new List<Keyword>();
+        public Keywords BaseKeywords { get; set; } = new Keywords();
         public List<int> Amount { get; set; } = new List<int>();
+        public Keywords Keywords { get; set; } = new Keywords();
+        public Keywords CombatKeywords { get; set; } = new Keywords();
         public bool IsDead
         {
             get

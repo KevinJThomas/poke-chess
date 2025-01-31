@@ -1,4 +1,5 @@
-﻿using PokeChess.Server.Models.Game;
+﻿using PokeChess.Server.Enums;
+using PokeChess.Server.Models.Game;
 
 namespace PokeChess.Server.Extensions
 {
@@ -13,12 +14,32 @@ namespace PokeChess.Server.Extensions
             card.SellValue = 1;
             card.CanPlay = false;
             card.Attacked = false;
-            card.IsStealthed = false;
-            card.HasDivineShield = false;
-            card.HasVenomous = false;
-            card.HasWindfury = false;
-            card.HasReborn = false;
-            card.HasTaunt = false;
+            card.CombatKeywords = new Keywords();
+        }
+
+        public static void ApplyKeyword(this Card card, Keyword keyword)
+        {
+            switch (keyword)
+            {
+                case Keyword.Windfury:
+                    card.Keywords.Windfury = true;
+                    break;
+                case Keyword.Stealth:
+                    card.Keywords.Stealth = true;
+                    break;
+                case Keyword.DivineShield:
+                    card.Keywords.DivineShield = true;
+                    break;
+                case Keyword.Reborn:
+                    card.Keywords.Reborn = true;
+                    break;
+                case Keyword.Taunt:
+                    card.Keywords.Taunt = true;
+                    break;
+                case Keyword.Venomous:
+                    card.Keywords.Venomous = true;
+                    break;
+            }
         }
     }
 }

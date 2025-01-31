@@ -213,6 +213,19 @@ namespace PokeChess.Server.Services
             {
                 // If there is only one player left alive, the lobby is over
                 lobby.IsActive = false;
+
+                var winnerName = lobby.Players.Where(x => x.Health > 0).FirstOrDefault().Name;
+                foreach (var player in lobby.Players)
+                {
+                    if (player.CombatActions.Any())
+                    {
+                        player.CombatActions.Add(new CombatAction
+                        {
+                            Type = CombatActionType.GameOver.ToString().ToLower(),
+                            WinnerName = winnerName
+                        });
+                    }
+                }
             }
             else
             {
@@ -796,12 +809,12 @@ namespace PokeChess.Server.Services
                 {
                     aliveIndexList.Add(i);
 
-                    if (board[i].Keywords.Contains(Keyword.Taunt) && !board[i].IsStealthed)
+                    if (board[i].CombatKeywords.Taunt && !board[i].CombatKeywords.Stealth)
                     {
                         tauntIndexList.Add(i);
                     }
 
-                    if (board[i].IsStealthed)
+                    if (board[i].CombatKeywords.Stealth)
                     {
                         stealthIndexList.Add(i);
                     }
@@ -827,12 +840,13 @@ namespace PokeChess.Server.Services
         private (Card, Card) MinionAttack(Card source, Card target)
         {
             // Update target's state
-            if (target.HasDivineShield)
+            if (target.CombatKeywords.DivineShield)
             {
-                target.HasDivineShield = false;
+                target.CombatKeywords.DivineShield = false;
             }
-            else if (source.HasVenomous)
+            else if (source.CombatKeywords.Venomous)
             {
+                source.CombatKeywords.Venomous = false;
                 target.CombatHealth = 0;
             }
             else
@@ -841,19 +855,25 @@ namespace PokeChess.Server.Services
             }
 
             // Update source's state
-            if (source.HasDivineShield)
+            if (source.CombatKeywords.DivineShield)
             {
-                source.HasDivineShield = false;
+                source.CombatKeywords.DivineShield = false;
             }
-            else if (target.HasVenomous)
+            else if (target.CombatKeywords.Venomous)
             {
+                target.CombatKeywords.Venomous = false;
                 source.CombatHealth = 0;
             }
             else
             {
                 source.CombatHealth -= target.Attack;
             }
+
             source.Attacked = true;
+            if (source.CombatKeywords.Stealth)
+            {
+                source.CombatKeywords.Stealth = false;
+            }
 
             return (source, target);
         }
