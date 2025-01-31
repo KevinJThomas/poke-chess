@@ -10,6 +10,7 @@ import Tooltip from "./Tooltip";
 import DivineShield from "./DivineShield";
 import Venomous from "./Venomous";
 import Taunt from "./Taunt";
+import Stealth from "./Stealth";
 
 export default function Pokemon({
   attack,
@@ -53,12 +54,16 @@ export default function Pokemon({
     <div className="mx-px h-20 w-20">
       <div
         id={id}
-        style={{ backgroundImage: `url(/pokemon/${num}.png)`, ...style }}
+        style={{
+          backgroundImage: `url(/pokemon/${num}.png)`,
+          ...style,
+        }}
         className={cn(
           "-z-5 flex h-20 w-20 items-center justify-center transition-all duration-200 ease-in-out",
           isMinion && `bg-contain bg-center`,
           !isMinion && "rounded-xl bg-blue-400",
           className,
+          "bg-opacity-25",
         )}
         onMouseEnter={() => !isMinion && setShowToolTip(true)}
         onMouseLeave={() => !isMinion && setShowToolTip(false)}
@@ -75,6 +80,7 @@ export default function Pokemon({
           {keywords.divineShield && <DivineShield />}
           {keywords.venomous && <Venomous />}
           {keywords.taunt && <Taunt />}
+          {keywords.stealth && <Stealth />}
         </div>
       </div>
     </div>
