@@ -12,6 +12,7 @@ import Venomous from "./Venomous";
 import Taunt from "./Taunt";
 import Stealth from "./Stealth";
 import Reborn from "./Reborn";
+import Windfury from "./Windfury";
 
 export default function Pokemon({
   attack,
@@ -82,7 +83,8 @@ export default function Pokemon({
           {keywords.venomous && <Venomous />}
           {keywords.taunt && <Taunt />}
           {keywords.stealth && <Stealth />}
-          {true && <Reborn />}
+          {keywords.reborn && <Reborn />}
+          {keywords.Windfury && <Windfury />}
         </div>
       </div>
     </div>
