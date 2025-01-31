@@ -604,7 +604,7 @@ namespace PokeChess.Server.UnitTests.Services
         public void TestPlaySpell_BuffCurrentShopAttackAndHealth()
         {
             // Arrange
-            (var lobby, var logger) = InitializeSetup();
+            (var lobby, var logger) = InitializeSetup(true);
             var instance = GameService.Instance;
 
             // Act
@@ -647,7 +647,7 @@ namespace PokeChess.Server.UnitTests.Services
         public void TestPlaySpell_BuffShopAttackAndHealth()
         {
             // Arrange
-            (var lobby, var logger) = InitializeSetup();
+            (var lobby, var logger) = InitializeSetup(true);
             var instance = GameService.Instance;
 
             // Act

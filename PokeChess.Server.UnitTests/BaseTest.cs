@@ -12,12 +12,19 @@ namespace PokeChess.Server.UnitTests
     {
         private static readonly Mock<ILogger<MessageHub>> _loggerMock = new();
 
-        protected static (Lobby, ILogger) InitializeSetup()
+        protected static (Lobby, ILogger) InitializeSetup(bool bulbasaursOnly = false)
         {
             var logger = _loggerMock.Object;
             Configure();
             var cardService = CardService.Instance;
-            cardService.LoadAllCards();
+            if (bulbasaursOnly)
+            {
+                cardService.LoadAllCards_BulbasaursOnly();
+            }
+            else
+            {
+                cardService.LoadAllCards();
+            }
             var lobby = new Lobby(Guid.NewGuid().ToString());
             lobby.Players = new List<Player>
             {

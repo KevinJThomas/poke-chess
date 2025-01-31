@@ -1,4 +1,5 @@
-﻿using PokeChess.Server.Extensions;
+﻿using PokeChess.Server.Enums;
+using PokeChess.Server.Extensions;
 using PokeChess.Server.Helpers;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Services.Interfaces;
@@ -68,9 +69,108 @@ namespace PokeChess.Server.Services
                                 newCard.Cost = newCard.BaseCost;
                                 newCard.Keywords = newCard.BaseKeywords.Clone();
                                 newCard.SellValue = 1;
+                                if (newCard.Type != null && newCard.Type.Any())
+                                {
+                                    foreach (var type in newCard.Type)
+                                    {
+                                        var success = Enum.TryParse(type, out MinionType minionType);
+                                        if (success)
+                                        {
+                                            newCard.MinionTypes.Add(minionType);
+                                        }
+                                    }
+                                }
+
+                                if (newCard.Weaknesses != null && newCard.Weaknesses.Any())
+                                {
+                                    foreach (var type in newCard.Weaknesses)
+                                    {
+                                        var success = Enum.TryParse(type, out MinionType minionType);
+                                        if (success)
+                                        {
+                                            newCard.WeaknessTypes.Add(minionType);
+                                        }
+                                    }
+                                }
+
                                 _allCards.Add(newCard);
                                 _allMinions.Add(newCard);
                             }
+                        }
+                    }
+                }
+
+                var spellsJson = File.ReadAllText("spells.json");
+                if (!string.IsNullOrWhiteSpace(spellsJson))
+                {
+                    var spellCards = JsonSerializer.Deserialize<List<Card>>(spellsJson, _options);
+                    if (spellCards != null && spellCards.Any())
+                    {
+                        foreach (var card in spellCards)
+                        {
+                            var count = GetCardCountByTier(card.Tier);
+
+                            for (var i = 0; i < count; i++)
+                            {
+                                var newCard = card.Clone();
+                                newCard.Id = Guid.NewGuid().ToString();
+                                newCard.Cost = newCard.BaseCost;
+                                _allCards.Add(newCard);
+                                _allSpells.Add(newCard);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void LoadAllCards_BulbasaursOnly()
+        {
+            if (_allMinions.Count == 0)
+            {
+                var minionsJson = File.ReadAllText("minions.json");
+                if (!string.IsNullOrWhiteSpace(minionsJson))
+                {
+                    var minionCards = JsonSerializer.Deserialize<List<Card>>(minionsJson, _options);
+                    if (minionCards != null && minionCards.Any(x => x.Name == "Bulbasaur"))
+                    {
+                        var bulbasaur = minionCards.Where(x => x.Name == "Bulbasaur").FirstOrDefault();
+                        for (var i = 0; i < 300; i++)
+                        {
+                            // Add 300 bulbasaurs
+                            var newCard = bulbasaur.Clone();
+                            newCard.Id = Guid.NewGuid().ToString();
+                            newCard.Attack = newCard.BaseAttack;
+                            newCard.Health = newCard.BaseHealth;
+                            newCard.Cost = newCard.BaseCost;
+                            newCard.Keywords = newCard.BaseKeywords.Clone();
+                            newCard.SellValue = 1;
+                            if (newCard.Type != null && newCard.Type.Any())
+                            {
+                                foreach (var type in newCard.Type)
+                                {
+                                    var success = Enum.TryParse(type, out MinionType minionType);
+                                    if (success)
+                                    {
+                                        newCard.MinionTypes.Add(minionType);
+                                    }
+                                }
+                            }
+
+                            if (newCard.Weaknesses != null && newCard.Weaknesses.Any())
+                            {
+                                foreach (var type in newCard.Weaknesses)
+                                {
+                                    var success = Enum.TryParse(type, out MinionType minionType);
+                                    if (success)
+                                    {
+                                        newCard.WeaknessTypes.Add(minionType);
+                                    }
+                                }
+                            }
+
+                            _allCards.Add(newCard);
+                            _allMinions.Add(newCard);
                         }
                     }
                 }

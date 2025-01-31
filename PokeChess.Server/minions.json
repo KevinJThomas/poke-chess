@@ -7,15 +7,15 @@
     "baseAttack": 1,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {
-      "divineShield": true
+      "divineShield": true,
+      "taunt": true
     },
-    "type": ["Grass", "Poison"],
+    "type": [ "Grass", "Poison" ],
     "height": "0.71 m",
     "weight": "6.9 kg",
-    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "weaknesses": [ "Fire", "Ice", "Flying", "Psychic" ],
     "nextEvolutions": [
       {
         "num": "002",
@@ -30,18 +30,21 @@
   {
     "pokemonId": 2,
     "num": "002",
-    "tier": 1,
+    "tier": 4,
     "name": "Ivysaur",
     "baseAttack": 3,
-    "baseHealth": 2,
+    "baseHealth": 6,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
-    "baseKeywords": {},
-    "type": ["Grass", "Poison"],
+    "baseKeywords": {
+      "divineShield": true,
+      "taunt": true,
+      "venomous": true
+    },
+    "type": [ "Grass", "Poison" ],
     "height": "0.99 m",
     "weight": "13.0 kg",
-    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "weaknesses": [ "Fire", "Ice", "Flying", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "001",
@@ -58,18 +61,23 @@
   {
     "pokemonId": 3,
     "num": "003",
-    "tier": 1,
+    "tier": 6,
     "name": "Venusaur",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 18,
+    "baseHealth": 36,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
-    "baseKeywords": {},
-    "type": ["Grass", "Poison"],
+    "baseKeywords": {
+      "divineShield": true,
+      "taunt": true,
+      "venomous": true,
+      "reborn": true
+    },
+
+    "type": [ "Grass", "Poison" ],
     "height": "2.01 m",
     "weight": "100.0 kg",
-    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "weaknesses": [ "Fire", "Ice", "Flying", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "001",
@@ -89,13 +97,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fire"],
+    "type": [ "Fire" ],
     "height": "0.61 m",
     "weight": "8.5 kg",
-    "weaknesses": ["Water", "Ground", "Rock"],
+    "weaknesses": [ "Water", "Ground", "Rock" ],
     "nextEvolutions": [
       {
         "num": "005",
@@ -115,13 +122,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fire"],
+    "type": [ "Fire" ],
     "height": "1.09 m",
     "weight": "19.0 kg",
-    "weaknesses": ["Water", "Ground", "Rock"],
+    "weaknesses": [ "Water", "Ground", "Rock" ],
     "previousEvolutions": [
       {
         "num": "004",
@@ -143,13 +149,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fire", "Flying"],
+    "type": [ "Fire", "Flying" ],
     "height": "1.70 m",
     "weight": "90.5 kg",
-    "weaknesses": ["Water", "Electric", "Rock"],
+    "weaknesses": [ "Water", "Electric", "Rock" ],
     "previousEvolutions": [
       {
         "num": "004",
@@ -169,13 +174,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "0.51 m",
     "weight": "9.0 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "nextEvolutions": [
       {
         "num": "008",
@@ -195,13 +199,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "0.99 m",
     "weight": "22.5 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "previousEvolutions": [
       {
         "num": "007",
@@ -223,13 +226,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "1.60 m",
     "weight": "85.5 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "previousEvolutions": [
       {
         "num": "007",
@@ -249,13 +251,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Bug"],
+    "type": [ "Bug" ],
     "height": "0.30 m",
     "weight": "2.9 kg",
-    "weaknesses": ["Fire", "Flying", "Rock"],
+    "weaknesses": [ "Fire", "Flying", "Rock" ],
     "nextEvolutions": [
       {
         "num": "011",
@@ -275,13 +276,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Bug"],
+    "type": [ "Bug" ],
     "height": "0.71 m",
     "weight": "9.9 kg",
-    "weaknesses": ["Fire", "Flying", "Rock"],
+    "weaknesses": [ "Fire", "Flying", "Rock" ],
     "previousEvolutions": [
       {
         "num": "010",
@@ -303,13 +303,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Bug", "Flying"],
+    "type": [ "Bug", "Flying" ],
     "height": "1.09 m",
     "weight": "32.0 kg",
-    "weaknesses": ["Fire", "Electric", "Ice", "Flying", "Rock"],
+    "weaknesses": [ "Fire", "Electric", "Ice", "Flying", "Rock" ],
     "previousEvolutions": [
       {
         "num": "010",
@@ -329,13 +328,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Bug", "Poison"],
+    "type": [ "Bug", "Poison" ],
     "height": "0.30 m",
     "weight": "3.2 kg",
-    "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
+    "weaknesses": [ "Fire", "Flying", "Psychic", "Rock" ],
     "nextEvolutions": [
       {
         "num": "014",
@@ -355,13 +353,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Bug", "Poison"],
+    "type": [ "Bug", "Poison" ],
     "height": "0.61 m",
     "weight": "10.0 kg",
-    "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
+    "weaknesses": [ "Fire", "Flying", "Psychic", "Rock" ],
     "previousEvolutions": [
       {
         "num": "013",
@@ -383,13 +380,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Bug", "Poison"],
+    "type": [ "Bug", "Poison" ],
     "height": "0.99 m",
     "weight": "29.5 kg",
-    "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
+    "weaknesses": [ "Fire", "Flying", "Psychic", "Rock" ],
     "previousEvolutions": [
       {
         "num": "013",
@@ -409,13 +405,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal", "Flying"],
+    "type": [ "Normal", "Flying" ],
     "height": "0.30 m",
     "weight": "1.8 kg",
-    "weaknesses": ["Electric", "Rock"],
+    "weaknesses": [ "Electric", "Rock" ],
     "nextEvolutions": [
       {
         "num": "017",
@@ -435,13 +430,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal", "Flying"],
+    "type": [ "Normal", "Flying" ],
     "height": "1.09 m",
     "weight": "30.0 kg",
-    "weaknesses": ["Electric", "Rock"],
+    "weaknesses": [ "Electric", "Rock" ],
     "previousEvolutions": [
       {
         "num": "016",
@@ -463,13 +457,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal", "Flying"],
+    "type": [ "Normal", "Flying" ],
     "height": "1.50 m",
     "weight": "39.5 kg",
-    "weaknesses": ["Electric", "Rock"],
+    "weaknesses": [ "Electric", "Rock" ],
     "previousEvolutions": [
       {
         "num": "016",
@@ -489,13 +482,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "0.30 m",
     "weight": "3.5 kg",
-    "weaknesses": ["Fighting"],
+    "weaknesses": [ "Fighting" ],
     "nextEvolutions": [
       {
         "num": "020",
@@ -511,13 +503,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "0.71 m",
     "weight": "18.5 kg",
-    "weaknesses": ["Fighting"],
+    "weaknesses": [ "Fighting" ],
     "previousEvolutions": [
       {
         "num": "019",
@@ -533,13 +524,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal", "Flying"],
+    "type": [ "Normal", "Flying" ],
     "height": "0.30 m",
     "weight": "2.0 kg",
-    "weaknesses": ["Electric", "Rock"],
+    "weaknesses": [ "Electric", "Rock" ],
     "nextEvolutions": [
       {
         "num": "022",
@@ -555,13 +545,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal", "Flying"],
+    "type": [ "Normal", "Flying" ],
     "height": "1.19 m",
     "weight": "38.0 kg",
-    "weaknesses": ["Electric", "Rock"],
+    "weaknesses": [ "Electric", "Rock" ],
     "previousEvolutions": [
       {
         "num": "021",
@@ -577,13 +566,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison"],
+    "type": [ "Poison" ],
     "height": "2.01 m",
     "weight": "6.9 kg",
-    "weaknesses": ["Ground", "Psychic"],
+    "weaknesses": [ "Ground", "Psychic" ],
     "nextEvolutions": [
       {
         "num": "024",
@@ -599,13 +587,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison"],
+    "type": [ "Poison" ],
     "height": "3.51 m",
     "weight": "65.0 kg",
-    "weaknesses": ["Ground", "Psychic"],
+    "weaknesses": [ "Ground", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "023",
@@ -621,13 +608,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Electric"],
+    "type": [ "Electric" ],
     "height": "0.41 m",
     "weight": "6.0 kg",
-    "weaknesses": ["Ground"],
+    "weaknesses": [ "Ground" ],
     "nextEvolutions": [
       {
         "num": "026",
@@ -643,13 +629,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Electric"],
+    "type": [ "Electric" ],
     "height": "0.79 m",
     "weight": "30.0 kg",
-    "weaknesses": ["Ground"],
+    "weaknesses": [ "Ground" ],
     "previousEvolutions": [
       {
         "num": "025",
@@ -665,13 +650,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Ground"],
+    "type": [ "Ground" ],
     "height": "0.61 m",
     "weight": "12.0 kg",
-    "weaknesses": ["Water", "Grass", "Ice"],
+    "weaknesses": [ "Water", "Grass", "Ice" ],
     "nextEvolutions": [
       {
         "num": "028",
@@ -687,13 +671,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Ground"],
+    "type": [ "Ground" ],
     "height": "0.99 m",
     "weight": "29.5 kg",
-    "weaknesses": ["Water", "Grass", "Ice"],
+    "weaknesses": [ "Water", "Grass", "Ice" ],
     "previousEvolutions": [
       {
         "num": "027",
@@ -709,13 +692,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison"],
+    "type": [ "Poison" ],
     "height": "0.41 m",
     "weight": "7.0 kg",
-    "weaknesses": ["Ground", "Psychic"],
+    "weaknesses": [ "Ground", "Psychic" ],
     "nextEvolutions": [
       {
         "num": "030",
@@ -735,13 +717,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison"],
+    "type": [ "Poison" ],
     "height": "0.79 m",
     "weight": "20.0 kg",
-    "weaknesses": ["Ground", "Psychic"],
+    "weaknesses": [ "Ground", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "029",
@@ -763,13 +744,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison", "Ground"],
+    "type": [ "Poison", "Ground" ],
     "height": "1.30 m",
     "weight": "60.0 kg",
-    "weaknesses": ["Water", "Ice", "Ground", "Psychic"],
+    "weaknesses": [ "Water", "Ice", "Ground", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "029",
@@ -789,13 +769,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison"],
+    "type": [ "Poison" ],
     "height": "0.51 m",
     "weight": "9.0 kg",
-    "weaknesses": ["Ground", "Psychic"],
+    "weaknesses": [ "Ground", "Psychic" ],
     "nextEvolutions": [
       {
         "num": "033",
@@ -815,13 +794,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison"],
+    "type": [ "Poison" ],
     "height": "0.89 m",
     "weight": "19.5 kg",
-    "weaknesses": ["Ground", "Psychic"],
+    "weaknesses": [ "Ground", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "032",
@@ -843,13 +821,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison", "Ground"],
+    "type": [ "Poison", "Ground" ],
     "height": "1.40 m",
     "weight": "62.0 kg",
-    "weaknesses": ["Water", "Ice", "Ground", "Psychic"],
+    "weaknesses": [ "Water", "Ice", "Ground", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "032",
@@ -869,13 +846,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "0.61 m",
     "weight": "7.5 kg",
-    "weaknesses": ["Fighting"],
+    "weaknesses": [ "Fighting" ],
     "nextEvolutions": [
       {
         "num": "036",
@@ -891,13 +867,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "1.30 m",
     "weight": "40.0 kg",
-    "weaknesses": ["Fighting"],
+    "weaknesses": [ "Fighting" ],
     "previousEvolutions": [
       {
         "num": "035",
@@ -913,13 +888,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fire"],
+    "type": [ "Fire" ],
     "height": "0.61 m",
     "weight": "9.9 kg",
-    "weaknesses": ["Water", "Ground", "Rock"],
+    "weaknesses": [ "Water", "Ground", "Rock" ],
     "nextEvolutions": [
       {
         "num": "038",
@@ -935,13 +909,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fire"],
+    "type": [ "Fire" ],
     "height": "1.09 m",
     "weight": "19.9 kg",
-    "weaknesses": ["Water", "Ground", "Rock"],
+    "weaknesses": [ "Water", "Ground", "Rock" ],
     "previousEvolutions": [
       {
         "num": "037",
@@ -957,13 +930,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "0.51 m",
     "weight": "5.5 kg",
-    "weaknesses": ["Fighting"],
+    "weaknesses": [ "Fighting" ],
     "nextEvolutions": [
       {
         "num": "040",
@@ -979,13 +951,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "0.99 m",
     "weight": "12.0 kg",
-    "weaknesses": ["Fighting"],
+    "weaknesses": [ "Fighting" ],
     "previousEvolutions": [
       {
         "num": "039",
@@ -1001,13 +972,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison", "Flying"],
+    "type": [ "Poison", "Flying" ],
     "height": "0.79 m",
     "weight": "7.5 kg",
-    "weaknesses": ["Electric", "Ice", "Psychic", "Rock"],
+    "weaknesses": [ "Electric", "Ice", "Psychic", "Rock" ],
     "nextEvolutions": [
       {
         "num": "042",
@@ -1023,13 +993,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison", "Flying"],
+    "type": [ "Poison", "Flying" ],
     "height": "1.60 m",
     "weight": "55.0 kg",
-    "weaknesses": ["Electric", "Ice", "Psychic", "Rock"],
+    "weaknesses": [ "Electric", "Ice", "Psychic", "Rock" ],
     "previousEvolutions": [
       {
         "num": "041",
@@ -1045,13 +1014,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Grass", "Poison"],
+    "type": [ "Grass", "Poison" ],
     "height": "0.51 m",
     "weight": "5.4 kg",
-    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "weaknesses": [ "Fire", "Ice", "Flying", "Psychic" ],
     "nextEvolutions": [
       {
         "num": "044",
@@ -1071,13 +1039,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Grass", "Poison"],
+    "type": [ "Grass", "Poison" ],
     "height": "0.79 m",
     "weight": "8.6 kg",
-    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "weaknesses": [ "Fire", "Ice", "Flying", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "043",
@@ -1099,13 +1066,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Grass", "Poison"],
+    "type": [ "Grass", "Poison" ],
     "height": "1.19 m",
     "weight": "18.6 kg",
-    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "weaknesses": [ "Fire", "Ice", "Flying", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "043",
@@ -1125,13 +1091,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Bug", "Grass"],
+    "type": [ "Bug", "Grass" ],
     "height": "0.30 m",
     "weight": "5.4 kg",
-    "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Rock"],
+    "weaknesses": [ "Fire", "Ice", "Poison", "Flying", "Bug", "Rock" ],
     "nextEvolutions": [
       {
         "num": "047",
@@ -1147,13 +1112,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Bug", "Grass"],
+    "type": [ "Bug", "Grass" ],
     "height": "0.99 m",
     "weight": "29.5 kg",
-    "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Rock"],
+    "weaknesses": [ "Fire", "Ice", "Poison", "Flying", "Bug", "Rock" ],
     "previousEvolutions": [
       {
         "num": "046",
@@ -1169,13 +1133,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Bug", "Poison"],
+    "type": [ "Bug", "Poison" ],
     "height": "0.99 m",
     "weight": "30.0 kg",
-    "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
+    "weaknesses": [ "Fire", "Flying", "Psychic", "Rock" ],
     "nextEvolutions": [
       {
         "num": "049",
@@ -1191,13 +1154,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Bug", "Poison"],
+    "type": [ "Bug", "Poison" ],
     "height": "1.50 m",
     "weight": "12.5 kg",
-    "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
+    "weaknesses": [ "Fire", "Flying", "Psychic", "Rock" ],
     "previousEvolutions": [
       {
         "num": "048",
@@ -1213,13 +1175,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Ground"],
+    "type": [ "Ground" ],
     "height": "0.20 m",
     "weight": "0.8 kg",
-    "weaknesses": ["Water", "Grass", "Ice"],
+    "weaknesses": [ "Water", "Grass", "Ice" ],
     "nextEvolutions": [
       {
         "num": "051",
@@ -1235,13 +1196,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Ground"],
+    "type": [ "Ground" ],
     "height": "0.71 m",
     "weight": "33.3 kg",
-    "weaknesses": ["Water", "Grass", "Ice"],
+    "weaknesses": [ "Water", "Grass", "Ice" ],
     "previousEvolutions": [
       {
         "num": "050",
@@ -1257,13 +1217,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "0.41 m",
     "weight": "4.2 kg",
-    "weaknesses": ["Fighting"],
+    "weaknesses": [ "Fighting" ],
     "nextEvolutions": [
       {
         "num": "053",
@@ -1279,13 +1238,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "0.99 m",
     "weight": "32.0 kg",
-    "weaknesses": ["Fighting"],
+    "weaknesses": [ "Fighting" ],
     "previousEvolutions": [
       {
         "num": "052",
@@ -1301,13 +1259,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "0.79 m",
     "weight": "19.6 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "nextEvolutions": [
       {
         "num": "055",
@@ -1323,13 +1280,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "1.70 m",
     "weight": "76.6 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "previousEvolutions": [
       {
         "num": "054",
@@ -1345,13 +1301,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fighting"],
+    "type": [ "Fighting" ],
     "height": "0.51 m",
     "weight": "28.0 kg",
-    "weaknesses": ["Flying", "Psychic", "Fairy"],
+    "weaknesses": [ "Flying", "Psychic", "Fairy" ],
     "nextEvolutions": [
       {
         "num": "057",
@@ -1367,13 +1322,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fighting"],
+    "type": [ "Fighting" ],
     "height": "0.99 m",
     "weight": "32.0 kg",
-    "weaknesses": ["Flying", "Psychic", "Fairy"],
+    "weaknesses": [ "Flying", "Psychic", "Fairy" ],
     "previousEvolutions": [
       {
         "num": "056",
@@ -1389,13 +1343,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fire"],
+    "type": [ "Fire" ],
     "height": "0.71 m",
     "weight": "19.0 kg",
-    "weaknesses": ["Water", "Ground", "Rock"],
+    "weaknesses": [ "Water", "Ground", "Rock" ],
     "nextEvolutions": [
       {
         "num": "059",
@@ -1411,13 +1364,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fire"],
+    "type": [ "Fire" ],
     "height": "1.91 m",
     "weight": "155.0 kg",
-    "weaknesses": ["Water", "Ground", "Rock"],
+    "weaknesses": [ "Water", "Ground", "Rock" ],
     "previousEvolutions": [
       {
         "num": "058",
@@ -1433,13 +1385,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "0.61 m",
     "weight": "12.4 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "nextEvolutions": [
       {
         "num": "061",
@@ -1459,13 +1410,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "0.99 m",
     "weight": "20.0 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "previousEvolutions": [
       {
         "num": "060",
@@ -1487,13 +1437,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water", "Fighting"],
+    "type": [ "Water", "Fighting" ],
     "height": "1.30 m",
     "weight": "54.0 kg",
-    "weaknesses": ["Electric", "Grass", "Flying", "Psychic", "Fairy"],
+    "weaknesses": [ "Electric", "Grass", "Flying", "Psychic", "Fairy" ],
     "previousEvolutions": [
       {
         "num": "060",
@@ -1513,13 +1462,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Psychic"],
+    "type": [ "Psychic" ],
     "height": "0.89 m",
     "weight": "19.5 kg",
-    "weaknesses": ["Bug", "Ghost", "Dark"],
+    "weaknesses": [ "Bug", "Ghost", "Dark" ],
     "nextEvolutions": [
       {
         "num": "064",
@@ -1539,13 +1487,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Psychic"],
+    "type": [ "Psychic" ],
     "height": "1.30 m",
     "weight": "56.5 kg",
-    "weaknesses": ["Bug", "Ghost", "Dark"],
+    "weaknesses": [ "Bug", "Ghost", "Dark" ],
     "previousEvolutions": [
       {
         "num": "063",
@@ -1567,13 +1514,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Psychic"],
+    "type": [ "Psychic" ],
     "height": "1.50 m",
     "weight": "48.0 kg",
-    "weaknesses": ["Bug", "Ghost", "Dark"],
+    "weaknesses": [ "Bug", "Ghost", "Dark" ],
     "previousEvolutions": [
       {
         "num": "063",
@@ -1593,13 +1539,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fighting"],
+    "type": [ "Fighting" ],
     "height": "0.79 m",
     "weight": "19.5 kg",
-    "weaknesses": ["Flying", "Psychic", "Fairy"],
+    "weaknesses": [ "Flying", "Psychic", "Fairy" ],
     "nextEvolutions": [
       {
         "num": "067",
@@ -1619,13 +1564,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fighting"],
+    "type": [ "Fighting" ],
     "height": "1.50 m",
     "weight": "70.5 kg",
-    "weaknesses": ["Flying", "Psychic", "Fairy"],
+    "weaknesses": [ "Flying", "Psychic", "Fairy" ],
     "previousEvolutions": [
       {
         "num": "066",
@@ -1647,13 +1591,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fighting"],
+    "type": [ "Fighting" ],
     "height": "1.60 m",
     "weight": "130.0 kg",
-    "weaknesses": ["Flying", "Psychic", "Fairy"],
+    "weaknesses": [ "Flying", "Psychic", "Fairy" ],
     "previousEvolutions": [
       {
         "num": "066",
@@ -1673,13 +1616,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Grass", "Poison"],
+    "type": [ "Grass", "Poison" ],
     "height": "0.71 m",
     "weight": "4.0 kg",
-    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "weaknesses": [ "Fire", "Ice", "Flying", "Psychic" ],
     "nextEvolutions": [
       {
         "num": "070",
@@ -1699,13 +1641,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Grass", "Poison"],
+    "type": [ "Grass", "Poison" ],
     "height": "0.99 m",
     "weight": "6.4 kg",
-    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "weaknesses": [ "Fire", "Ice", "Flying", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "069",
@@ -1727,13 +1668,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Grass", "Poison"],
+    "type": [ "Grass", "Poison" ],
     "height": "1.70 m",
     "weight": "15.5 kg",
-    "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
+    "weaknesses": [ "Fire", "Ice", "Flying", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "069",
@@ -1753,13 +1693,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water", "Poison"],
+    "type": [ "Water", "Poison" ],
     "height": "0.89 m",
     "weight": "45.5 kg",
-    "weaknesses": ["Electric", "Ground", "Psychic"],
+    "weaknesses": [ "Electric", "Ground", "Psychic" ],
     "nextEvolutions": [
       {
         "num": "073",
@@ -1775,13 +1714,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water", "Poison"],
+    "type": [ "Water", "Poison" ],
     "height": "1.60 m",
     "weight": "55.0 kg",
-    "weaknesses": ["Electric", "Ground", "Psychic"],
+    "weaknesses": [ "Electric", "Ground", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "072",
@@ -1797,13 +1735,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Rock", "Ground"],
+    "type": [ "Rock", "Ground" ],
     "height": "0.41 m",
     "weight": "20.0 kg",
-    "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
+    "weaknesses": [ "Water", "Grass", "Ice", "Fighting", "Ground", "Steel" ],
     "nextEvolutions": [
       {
         "num": "075",
@@ -1823,13 +1760,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Rock", "Ground"],
+    "type": [ "Rock", "Ground" ],
     "height": "0.99 m",
     "weight": "105.0 kg",
-    "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
+    "weaknesses": [ "Water", "Grass", "Ice", "Fighting", "Ground", "Steel" ],
     "previousEvolutions": [
       {
         "num": "074",
@@ -1851,13 +1787,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Rock", "Ground"],
+    "type": [ "Rock", "Ground" ],
     "height": "1.40 m",
     "weight": "300.0 kg",
-    "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
+    "weaknesses": [ "Water", "Grass", "Ice", "Fighting", "Ground", "Steel" ],
     "previousEvolutions": [
       {
         "num": "074",
@@ -1877,13 +1812,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fire"],
+    "type": [ "Fire" ],
     "height": "0.99 m",
     "weight": "30.0 kg",
-    "weaknesses": ["Water", "Ground", "Rock"],
+    "weaknesses": [ "Water", "Ground", "Rock" ],
     "nextEvolutions": [
       {
         "num": "078",
@@ -1899,13 +1833,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fire"],
+    "type": [ "Fire" ],
     "height": "1.70 m",
     "weight": "95.0 kg",
-    "weaknesses": ["Water", "Ground", "Rock"],
+    "weaknesses": [ "Water", "Ground", "Rock" ],
     "previousEvolutions": [
       {
         "num": "077",
@@ -1921,13 +1854,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water", "Psychic"],
+    "type": [ "Water", "Psychic" ],
     "height": "1.19 m",
     "weight": "36.0 kg",
-    "weaknesses": ["Electric", "Grass", "Bug", "Ghost", "Dark"],
+    "weaknesses": [ "Electric", "Grass", "Bug", "Ghost", "Dark" ],
     "nextEvolutions": [
       {
         "num": "080",
@@ -1943,13 +1875,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water", "Psychic"],
+    "type": [ "Water", "Psychic" ],
     "height": "1.60 m",
     "weight": "78.5 kg",
-    "weaknesses": ["Electric", "Grass", "Bug", "Ghost", "Dark"],
+    "weaknesses": [ "Electric", "Grass", "Bug", "Ghost", "Dark" ],
     "previousEvolutions": [
       {
         "num": "079",
@@ -1965,13 +1896,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Electric"],
+    "type": [ "Electric" ],
     "height": "0.30 m",
     "weight": "6.0 kg",
-    "weaknesses": ["Fire", "Water", "Ground"],
+    "weaknesses": [ "Fire", "Water", "Ground" ],
     "nextEvolutions": [
       {
         "num": "082",
@@ -1987,13 +1917,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Electric"],
+    "type": [ "Electric" ],
     "height": "0.99 m",
     "weight": "60.0 kg",
-    "weaknesses": ["Fire", "Water", "Ground"],
+    "weaknesses": [ "Fire", "Water", "Ground" ],
     "previousEvolutions": [
       {
         "num": "081",
@@ -2009,13 +1938,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal", "Flying"],
+    "type": [ "Normal", "Flying" ],
     "height": "0.79 m",
     "weight": "15.0 kg",
-    "weaknesses": ["Electric", "Rock"]
+    "weaknesses": [ "Electric", "Rock" ]
   },
   {
     "pokemonId": 84,
@@ -2025,13 +1953,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal", "Flying"],
+    "type": [ "Normal", "Flying" ],
     "height": "1.40 m",
     "weight": "39.2 kg",
-    "weaknesses": ["Electric", "Rock"],
+    "weaknesses": [ "Electric", "Rock" ],
     "nextEvolutions": [
       {
         "num": "085",
@@ -2047,13 +1974,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal", "Flying"],
+    "type": [ "Normal", "Flying" ],
     "height": "1.80 m",
     "weight": "85.2 kg",
-    "weaknesses": ["Electric", "Rock"],
+    "weaknesses": [ "Electric", "Rock" ],
     "previousEvolutions": [
       {
         "num": "084",
@@ -2069,13 +1995,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "1.09 m",
     "weight": "90.0 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "nextEvolutions": [
       {
         "num": "087",
@@ -2091,13 +2016,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water", "Ice"],
+    "type": [ "Water", "Ice" ],
     "height": "1.70 m",
     "weight": "120.0 kg",
-    "weaknesses": ["Electric", "Grass", "Fighting", "Rock"],
+    "weaknesses": [ "Electric", "Grass", "Fighting", "Rock" ],
     "previousEvolutions": [
       {
         "num": "086",
@@ -2113,13 +2037,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison"],
+    "type": [ "Poison" ],
     "height": "0.89 m",
     "weight": "30.0 kg",
-    "weaknesses": ["Ground", "Psychic"],
+    "weaknesses": [ "Ground", "Psychic" ],
     "nextEvolutions": [
       {
         "num": "089",
@@ -2135,13 +2058,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison"],
+    "type": [ "Poison" ],
     "height": "1.19 m",
     "weight": "30.0 kg",
-    "weaknesses": ["Ground", "Psychic"],
+    "weaknesses": [ "Ground", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "088",
@@ -2157,13 +2079,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "0.30 m",
     "weight": "4.0 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "nextEvolutions": [
       {
         "num": "091",
@@ -2179,13 +2100,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water", "Ice"],
+    "type": [ "Water", "Ice" ],
     "height": "1.50 m",
     "weight": "132.5 kg",
-    "weaknesses": ["Electric", "Grass", "Fighting", "Rock"],
+    "weaknesses": [ "Electric", "Grass", "Fighting", "Rock" ],
     "previousEvolutions": [
       {
         "num": "090",
@@ -2201,13 +2121,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Ghost", "Poison"],
+    "type": [ "Ghost", "Poison" ],
     "height": "1.30 m",
     "weight": "0.1 kg",
-    "weaknesses": ["Ground", "Psychic", "Ghost", "Dark"],
+    "weaknesses": [ "Ground", "Psychic", "Ghost", "Dark" ],
     "nextEvolutions": [
       {
         "num": "093",
@@ -2227,13 +2146,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Ghost", "Poison"],
+    "type": [ "Ghost", "Poison" ],
     "height": "1.60 m",
     "weight": "0.1 kg",
-    "weaknesses": ["Ground", "Psychic", "Ghost", "Dark"],
+    "weaknesses": [ "Ground", "Psychic", "Ghost", "Dark" ],
     "previousEvolutions": [
       {
         "num": "092",
@@ -2255,13 +2173,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Ghost", "Poison"],
+    "type": [ "Ghost", "Poison" ],
     "height": "1.50 m",
     "weight": "40.5 kg",
-    "weaknesses": ["Ground", "Psychic", "Ghost", "Dark"],
+    "weaknesses": [ "Ground", "Psychic", "Ghost", "Dark" ],
     "previousEvolutions": [
       {
         "num": "092",
@@ -2281,13 +2198,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Rock", "Ground"],
+    "type": [ "Rock", "Ground" ],
     "height": "8.79 m",
     "weight": "210.0 kg",
-    "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"]
+    "weaknesses": [ "Water", "Grass", "Ice", "Fighting", "Ground", "Steel" ]
   },
   {
     "pokemonId": 96,
@@ -2297,13 +2213,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Psychic"],
+    "type": [ "Psychic" ],
     "height": "0.99 m",
     "weight": "32.4 kg",
-    "weaknesses": ["Bug", "Ghost", "Dark"],
+    "weaknesses": [ "Bug", "Ghost", "Dark" ],
     "nextEvolutions": [
       {
         "num": "097",
@@ -2319,13 +2234,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Psychic"],
+    "type": [ "Psychic" ],
     "height": "1.60 m",
     "weight": "75.6 kg",
-    "weaknesses": ["Bug", "Ghost", "Dark"],
+    "weaknesses": [ "Bug", "Ghost", "Dark" ],
     "previousEvolutions": [
       {
         "num": "096",
@@ -2341,13 +2255,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "0.41 m",
     "weight": "6.5 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "nextEvolutions": [
       {
         "num": "099",
@@ -2363,13 +2276,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "1.30 m",
     "weight": "60.0 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "previousEvolutions": [
       {
         "num": "098",
@@ -2385,13 +2297,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Electric"],
+    "type": [ "Electric" ],
     "height": "0.51 m",
     "weight": "10.4 kg",
-    "weaknesses": ["Ground"],
+    "weaknesses": [ "Ground" ],
     "nextEvolutions": [
       {
         "num": "101",
@@ -2407,13 +2318,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Electric"],
+    "type": [ "Electric" ],
     "height": "1.19 m",
     "weight": "66.6 kg",
-    "weaknesses": ["Ground"],
+    "weaknesses": [ "Ground" ],
     "previousEvolutions": [
       {
         "num": "100",
@@ -2429,13 +2339,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Grass", "Psychic"],
+    "type": [ "Grass", "Psychic" ],
     "height": "0.41 m",
     "weight": "2.5 kg",
-    "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Ghost", "Dark"],
+    "weaknesses": [ "Fire", "Ice", "Poison", "Flying", "Bug", "Ghost", "Dark" ],
     "nextEvolutions": [
       {
         "num": "103",
@@ -2451,13 +2360,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Grass", "Psychic"],
+    "type": [ "Grass", "Psychic" ],
     "height": "2.01 m",
     "weight": "120.0 kg",
-    "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Ghost", "Dark"],
+    "weaknesses": [ "Fire", "Ice", "Poison", "Flying", "Bug", "Ghost", "Dark" ],
     "previousEvolutions": [
       {
         "num": "102",
@@ -2473,13 +2381,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Ground"],
+    "type": [ "Ground" ],
     "height": "0.41 m",
     "weight": "6.5 kg",
-    "weaknesses": ["Water", "Grass", "Ice"],
+    "weaknesses": [ "Water", "Grass", "Ice" ],
     "nextEvolutions": [
       {
         "num": "105",
@@ -2495,13 +2402,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Ground"],
+    "type": [ "Ground" ],
     "height": "0.99 m",
     "weight": "45.0 kg",
-    "weaknesses": ["Water", "Grass", "Ice"],
+    "weaknesses": [ "Water", "Grass", "Ice" ],
     "previousEvolutions": [
       {
         "num": "104",
@@ -2517,13 +2423,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fighting"],
+    "type": [ "Fighting" ],
     "height": "1.50 m",
     "weight": "49.8 kg",
-    "weaknesses": ["Flying", "Psychic", "Fairy"]
+    "weaknesses": [ "Flying", "Psychic", "Fairy" ]
   },
   {
     "pokemonId": 107,
@@ -2533,13 +2438,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fighting"],
+    "type": [ "Fighting" ],
     "height": "1.40 m",
     "weight": "50.2 kg",
-    "weaknesses": ["Flying", "Psychic", "Fairy"]
+    "weaknesses": [ "Flying", "Psychic", "Fairy" ]
   },
   {
     "pokemonId": 108,
@@ -2549,13 +2453,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "1.19 m",
     "weight": "65.5 kg",
-    "weaknesses": ["Fighting"]
+    "weaknesses": [ "Fighting" ]
   },
   {
     "pokemonId": 109,
@@ -2565,13 +2468,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison"],
+    "type": [ "Poison" ],
     "height": "0.61 m",
     "weight": "1.0 kg",
-    "weaknesses": ["Ground", "Psychic"],
+    "weaknesses": [ "Ground", "Psychic" ],
     "nextEvolutions": [
       {
         "num": "110",
@@ -2587,13 +2489,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Poison"],
+    "type": [ "Poison" ],
     "height": "1.19 m",
     "weight": "9.5 kg",
-    "weaknesses": ["Ground", "Psychic"],
+    "weaknesses": [ "Ground", "Psychic" ],
     "previousEvolutions": [
       {
         "num": "109",
@@ -2609,13 +2510,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Ground", "Rock"],
+    "type": [ "Ground", "Rock" ],
     "height": "0.99 m",
     "weight": "115.0 kg",
-    "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
+    "weaknesses": [ "Water", "Grass", "Ice", "Fighting", "Ground", "Steel" ],
     "nextEvolutions": [
       {
         "num": "112",
@@ -2631,13 +2531,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Ground", "Rock"],
+    "type": [ "Ground", "Rock" ],
     "height": "1.91 m",
     "weight": "120.0 kg",
-    "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
+    "weaknesses": [ "Water", "Grass", "Ice", "Fighting", "Ground", "Steel" ],
     "previousEvolutions": [
       {
         "num": "111",
@@ -2653,13 +2552,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "1.09 m",
     "weight": "34.6 kg",
-    "weaknesses": ["Fighting"]
+    "weaknesses": [ "Fighting" ]
   },
   {
     "pokemonId": 114,
@@ -2669,13 +2567,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Grass"],
+    "type": [ "Grass" ],
     "height": "0.99 m",
     "weight": "35.0 kg",
-    "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug"]
+    "weaknesses": [ "Fire", "Ice", "Poison", "Flying", "Bug" ]
   },
   {
     "pokemonId": 115,
@@ -2685,13 +2582,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "2.21 m",
     "weight": "80.0 kg",
-    "weaknesses": ["Fighting"]
+    "weaknesses": [ "Fighting" ]
   },
   {
     "pokemonId": 116,
@@ -2701,13 +2597,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "0.41 m",
     "weight": "8.0 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "nextEvolutions": [
       {
         "num": "117",
@@ -2723,13 +2618,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "1.19 m",
     "weight": "25.0 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "previousEvolutions": [
       {
         "num": "116",
@@ -2745,13 +2639,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "0.61 m",
     "weight": "15.0 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "nextEvolutions": [
       {
         "num": "119",
@@ -2767,13 +2660,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "1.30 m",
     "weight": "39.0 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "previousEvolutions": [
       {
         "num": "118",
@@ -2789,13 +2681,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "0.79 m",
     "weight": "34.5 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "nextEvolutions": [
       {
         "num": "121",
@@ -2811,13 +2702,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water", "Psychic"],
+    "type": [ "Water", "Psychic" ],
     "height": "1.09 m",
     "weight": "80.0 kg",
-    "weaknesses": ["Electric", "Grass", "Bug", "Ghost", "Dark"],
+    "weaknesses": [ "Electric", "Grass", "Bug", "Ghost", "Dark" ],
     "previousEvolutions": [
       {
         "num": "120",
@@ -2833,13 +2723,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Psychic"],
+    "type": [ "Psychic" ],
     "height": "1.30 m",
     "weight": "54.5 kg",
-    "weaknesses": ["Bug", "Ghost", "Dark"]
+    "weaknesses": [ "Bug", "Ghost", "Dark" ]
   },
   {
     "pokemonId": 123,
@@ -2849,13 +2738,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Bug", "Flying"],
+    "type": [ "Bug", "Flying" ],
     "height": "1.50 m",
     "weight": "56.0 kg",
-    "weaknesses": ["Fire", "Electric", "Ice", "Flying", "Rock"]
+    "weaknesses": [ "Fire", "Electric", "Ice", "Flying", "Rock" ]
   },
   {
     "pokemonId": 124,
@@ -2865,13 +2753,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Ice", "Psychic"],
+    "type": [ "Ice", "Psychic" ],
     "height": "1.40 m",
     "weight": "40.6 kg",
-    "weaknesses": ["Fire", "Bug", "Rock", "Ghost", "Dark", "Steel"]
+    "weaknesses": [ "Fire", "Bug", "Rock", "Ghost", "Dark", "Steel" ]
   },
   {
     "pokemonId": 125,
@@ -2881,13 +2768,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Electric"],
+    "type": [ "Electric" ],
     "height": "1.09 m",
     "weight": "30.0 kg",
-    "weaknesses": ["Ground"]
+    "weaknesses": [ "Ground" ]
   },
   {
     "pokemonId": 126,
@@ -2897,13 +2783,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fire"],
+    "type": [ "Fire" ],
     "height": "1.30 m",
     "weight": "44.5 kg",
-    "weaknesses": ["Water", "Ground", "Rock"]
+    "weaknesses": [ "Water", "Ground", "Rock" ]
   },
   {
     "pokemonId": 127,
@@ -2913,13 +2798,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Bug"],
+    "type": [ "Bug" ],
     "height": "1.50 m",
     "weight": "55.0 kg",
-    "weaknesses": ["Fire", "Flying", "Rock"]
+    "weaknesses": [ "Fire", "Flying", "Rock" ]
   },
   {
     "pokemonId": 128,
@@ -2929,13 +2813,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "1.40 m",
     "weight": "88.4 kg",
-    "weaknesses": ["Fighting"]
+    "weaknesses": [ "Fighting" ]
   },
   {
     "pokemonId": 129,
@@ -2945,13 +2828,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "0.89 m",
     "weight": "10.0 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "nextEvolutions": [
       {
         "num": "130",
@@ -2967,13 +2849,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water", "Flying"],
+    "type": [ "Water", "Flying" ],
     "height": "6.50 m",
     "weight": "235.0 kg",
-    "weaknesses": ["Electric", "Rock"],
+    "weaknesses": [ "Electric", "Rock" ],
     "previousEvolutions": [
       {
         "num": "129",
@@ -2989,13 +2870,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water", "Ice"],
+    "type": [ "Water", "Ice" ],
     "height": "2.49 m",
     "weight": "220.0 kg",
-    "weaknesses": ["Electric", "Grass", "Fighting", "Rock"]
+    "weaknesses": [ "Electric", "Grass", "Fighting", "Rock" ]
   },
   {
     "pokemonId": 132,
@@ -3005,13 +2885,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "0.30 m",
     "weight": "4.0 kg",
-    "weaknesses": ["Fighting"]
+    "weaknesses": [ "Fighting" ]
   },
   {
     "pokemonId": 133,
@@ -3021,13 +2900,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "0.30 m",
     "weight": "6.5 kg",
-    "weaknesses": ["Fighting"],
+    "weaknesses": [ "Fighting" ],
     "nextEvolutions": [
       {
         "num": "134",
@@ -3051,13 +2929,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Water"],
+    "type": [ "Water" ],
     "height": "0.99 m",
     "weight": "29.0 kg",
-    "weaknesses": ["Electric", "Grass"],
+    "weaknesses": [ "Electric", "Grass" ],
     "previousEvolutions": [
       {
         "num": "133",
@@ -3073,13 +2950,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Electric"],
+    "type": [ "Electric" ],
     "height": "0.79 m",
     "weight": "24.5 kg",
-    "weaknesses": ["Ground"],
+    "weaknesses": [ "Ground" ],
     "previousEvolutions": [
       {
         "num": "133",
@@ -3095,13 +2971,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fire"],
+    "type": [ "Fire" ],
     "height": "0.89 m",
     "weight": "25.0 kg",
-    "weaknesses": ["Water", "Ground", "Rock"],
+    "weaknesses": [ "Water", "Ground", "Rock" ],
     "previousEvolutions": [
       {
         "num": "133",
@@ -3117,13 +2992,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "0.79 m",
     "weight": "36.5 kg",
-    "weaknesses": ["Fighting"]
+    "weaknesses": [ "Fighting" ]
   },
   {
     "pokemonId": 138,
@@ -3133,13 +3007,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Rock", "Water"],
+    "type": [ "Rock", "Water" ],
     "height": "0.41 m",
     "weight": "7.5 kg",
-    "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
+    "weaknesses": [ "Electric", "Grass", "Fighting", "Ground" ],
     "nextEvolutions": [
       {
         "num": "139",
@@ -3155,13 +3028,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Rock", "Water"],
+    "type": [ "Rock", "Water" ],
     "height": "0.99 m",
     "weight": "35.0 kg",
-    "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
+    "weaknesses": [ "Electric", "Grass", "Fighting", "Ground" ],
     "previousEvolutions": [
       {
         "num": "138",
@@ -3177,13 +3049,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Rock", "Water"],
+    "type": [ "Rock", "Water" ],
     "height": "0.51 m",
     "weight": "11.5 kg",
-    "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
+    "weaknesses": [ "Electric", "Grass", "Fighting", "Ground" ],
     "nextEvolutions": [
       {
         "num": "141",
@@ -3199,13 +3070,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Rock", "Water"],
+    "type": [ "Rock", "Water" ],
     "height": "1.30 m",
     "weight": "40.5 kg",
-    "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
+    "weaknesses": [ "Electric", "Grass", "Fighting", "Ground" ],
     "previousEvolutions": [
       {
         "num": "140",
@@ -3221,13 +3091,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Rock", "Flying"],
+    "type": [ "Rock", "Flying" ],
     "height": "1.80 m",
     "weight": "59.0 kg",
-    "weaknesses": ["Water", "Electric", "Ice", "Rock", "Steel"]
+    "weaknesses": [ "Water", "Electric", "Ice", "Rock", "Steel" ]
   },
   {
     "pokemonId": 143,
@@ -3237,13 +3106,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Normal"],
+    "type": [ "Normal" ],
     "height": "2.11 m",
     "weight": "460.0 kg",
-    "weaknesses": ["Fighting"]
+    "weaknesses": [ "Fighting" ]
   },
   {
     "pokemonId": 144,
@@ -3253,13 +3121,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Ice", "Flying"],
+    "type": [ "Ice", "Flying" ],
     "height": "1.70 m",
     "weight": "55.4 kg",
-    "weaknesses": ["Fire", "Electric", "Rock", "Steel"]
+    "weaknesses": [ "Fire", "Electric", "Rock", "Steel" ]
   },
   {
     "pokemonId": 145,
@@ -3269,13 +3136,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Electric", "Flying"],
+    "type": [ "Electric", "Flying" ],
     "height": "1.60 m",
     "weight": "52.6 kg",
-    "weaknesses": ["Ice", "Rock"]
+    "weaknesses": [ "Ice", "Rock" ]
   },
   {
     "pokemonId": 146,
@@ -3285,13 +3151,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Fire", "Flying"],
+    "type": [ "Fire", "Flying" ],
     "height": "2.01 m",
     "weight": "60.0 kg",
-    "weaknesses": ["Water", "Electric", "Rock"]
+    "weaknesses": [ "Water", "Electric", "Rock" ]
   },
   {
     "pokemonId": 147,
@@ -3301,13 +3166,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Dragon"],
+    "type": [ "Dragon" ],
     "height": "1.80 m",
     "weight": "3.3 kg",
-    "weaknesses": ["Ice", "Dragon", "Fairy"],
+    "weaknesses": [ "Ice", "Dragon", "Fairy" ],
     "nextEvolutions": [
       {
         "num": "148",
@@ -3327,13 +3191,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Dragon"],
+    "type": [ "Dragon" ],
     "height": "3.99 m",
     "weight": "16.5 kg",
-    "weaknesses": ["Ice", "Dragon", "Fairy"],
+    "weaknesses": [ "Ice", "Dragon", "Fairy" ],
     "previousEvolutions": [
       {
         "num": "147",
@@ -3355,13 +3218,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Dragon", "Flying"],
+    "type": [ "Dragon", "Flying" ],
     "height": "2.21 m",
     "weight": "210.0 kg",
-    "weaknesses": ["Ice", "Rock", "Dragon", "Fairy"],
+    "weaknesses": [ "Ice", "Rock", "Dragon", "Fairy" ],
     "previousEvolutions": [
       {
         "num": "147",
@@ -3381,13 +3243,12 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Psychic"],
+    "type": [ "Psychic" ],
     "height": "2.01 m",
     "weight": "122.0 kg",
-    "weaknesses": ["Bug", "Ghost", "Dark"]
+    "weaknesses": [ "Bug", "Ghost", "Dark" ]
   },
   {
     "pokemonId": 151,
@@ -3397,12 +3258,11 @@
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
-    "minionType": 1,
     "cardType": 0,
     "baseKeywords": {},
-    "type": ["Psychic"],
+    "type": [ "Psychic" ],
     "height": "0.41 m",
     "weight": "4.0 kg",
-    "weaknesses": ["Bug", "Ghost", "Dark"]
+    "weaknesses": [ "Bug", "Ghost", "Dark" ]
   }
 ]
