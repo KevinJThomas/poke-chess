@@ -222,7 +222,7 @@ namespace PokeChess.Server.Services
         public Card GetMinionCopyByNum(string num)
         {
             var minion = _allMinions.Where(x => x.Num == num).FirstOrDefault().Clone();
-            minion.Id += "_copy";
+            minion.Id = Guid.NewGuid().ToString() + "_copy";
             return minion;
         }
 

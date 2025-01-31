@@ -697,8 +697,8 @@ namespace PokeChess.Server.Services
                 {
                     PlayerMinionId = player1.Board[nextSourceIndex].Id,
                     OpponentMinionId = player2.Board[nextTargetIndex].Id,
-                    PlayerOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack },
-                    OpponentOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack },
+                    PlayerOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player1.Board[nextSourceIndex].CombatKeywords },
+                    OpponentOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player2.Board[nextTargetIndex].CombatKeywords },
                     PlayerIsAttacking = true,
                     Type = CombatActionType.Minion.ToString().ToLower()
                 });
@@ -706,8 +706,8 @@ namespace PokeChess.Server.Services
                 {
                     PlayerMinionId = player2.Board[nextTargetIndex].Id,
                     OpponentMinionId = player1.Board[nextSourceIndex].Id,
-                    PlayerOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack },
-                    OpponentOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack },
+                    PlayerOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player2.Board[nextTargetIndex].CombatKeywords },
+                    OpponentOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player1.Board[nextSourceIndex].CombatKeywords },
                     PlayerIsAttacking = false,
                     Type = CombatActionType.Minion.ToString().ToLower()
                 });
@@ -747,8 +747,8 @@ namespace PokeChess.Server.Services
                 {
                     PlayerMinionId = player1.Board[nextTargetIndex].Id,
                     OpponentMinionId = player2.Board[nextSourceIndex].Id,
-                    PlayerOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack },
-                    OpponentOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack },
+                    PlayerOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player1.Board[nextTargetIndex].CombatKeywords },
+                    OpponentOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player2.Board[nextSourceIndex].CombatKeywords },
                     PlayerIsAttacking = false,
                     Type = CombatActionType.Minion.ToString().ToLower()
                 });
@@ -756,8 +756,8 @@ namespace PokeChess.Server.Services
                 {
                     PlayerMinionId = player2.Board[nextSourceIndex].Id,
                     OpponentMinionId = player1.Board[nextTargetIndex].Id,
-                    PlayerOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack },
-                    OpponentOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack },
+                    PlayerOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player2.Board[nextSourceIndex].CombatKeywords },
+                    OpponentOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player1.Board[nextTargetIndex].CombatKeywords },
                     PlayerIsAttacking = true,
                     Type = CombatActionType.Minion.ToString().ToLower()
                 });
