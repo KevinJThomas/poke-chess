@@ -94,7 +94,7 @@ namespace PokeChess.Server.Services
             }
 
             lobby.IsWaitingToStart = false;
-            lobby.GameState.MinionCardPool = _cardService.GetAllMinions();
+            lobby.GameState.MinionCardPool = _cardService.GetAllMinionsAtBaseEvolution();
             lobby.GameState.SpellCardPool = _cardService.GetAllSpells().Where(x => !x.SpellTypes.Contains(SpellType.BuffTargetAttack) && !x.SpellTypes.Contains(SpellType.BuffTargetHealth) && !x.SpellTypes.Contains(SpellType.BuffFriendlyTargetAttack) && !x.SpellTypes.Contains(SpellType.BuffFriendlyTargetHealth)).ToList();
             // Remove Where statement on above line once front end implements spells with targets
             lobby = NextRound(lobby);
@@ -460,6 +460,12 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
+            if (card.Id.Contains("_copy"))
+            {
+                // Don't return the card to a pool if it's marked as a copy
+                return lobby;
+            }
+
             if (card.CardType == CardType.Minion)
             {
                 card.ScrubModifiers();
@@ -481,6 +487,7 @@ namespace PokeChess.Server.Services
                 // Only buy the card if the player has room in their hand
                 player.Shop.Remove(card);
                 player.Hand.Add(card);
+                player.EvolveCheck();
                 player.Gold -= card.Cost;
             }
 

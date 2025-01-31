@@ -2,11 +2,14 @@
 using PokeChess.Server.Helpers;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
+using PokeChess.Server.Services.Interfaces;
+using PokeChess.Server.Services;
 
 namespace PokeChess.Server.Extensions
 {
     public static class PlayerExtensions
     {
+        private static readonly ICardService _cardService = CardService.Instance;
         private static readonly int _upgradeToTwoCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Two");
         private static readonly int _upgradeToThreeCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Three");
         private static readonly int _upgradeToFourCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Four");
@@ -93,6 +96,71 @@ namespace PokeChess.Server.Extensions
             }
 
             return success;
+        }
+
+        public static void EvolveCheck(this Player player)
+        {
+            if (player == null || (!player.Board.Any() && !player.Hand.Any()))
+            {
+                return;
+            }
+
+            var fallback = player.Clone();
+            var pokemonIdList = new List<int>();
+            pokemonIdList.AddRange(player.Hand.Select(x => x.PokemonId));
+            pokemonIdList.AddRange(player.Board.Select(x => x.PokemonId));
+            var evolveList = pokemonIdList.GroupBy(x => x).Where(y => y.Count() >= 3).Select(z => z.Key).ToList();
+
+            if (evolveList != null && evolveList.Any())
+            {
+                foreach (var pokemonId in evolveList)
+                {
+                    var minionToEvolve = new Card();
+                    if (player.Hand != null && player.Hand.Any())
+                    {
+                        minionToEvolve = player.Hand.Where(x => x.PokemonId == pokemonId).FirstOrDefault();
+                    }
+
+                    if (minionToEvolve == null || string.IsNullOrWhiteSpace(minionToEvolve.Id))
+                    {
+                        minionToEvolve = player.Board.Where(x => x.PokemonId == pokemonId).FirstOrDefault();
+                    }
+
+                    if (minionToEvolve != null && minionToEvolve.NextEvolutions.Any())
+                    {
+                        var minionsRemoved = 0;
+                        var evolvedMinion = _cardService.GetMinionCopyByNum(minionToEvolve.NextEvolutions.FirstOrDefault().Num);
+                        if (evolvedMinion != null)
+                        {
+                            while (minionsRemoved < 3)
+                            {
+                                if (player.Board.Any(x => x.PokemonId == pokemonId))
+                                {
+                                    var id = player.Board.Where(x => x.PokemonId == pokemonId).FirstOrDefault().Id;
+                                    player.Board = player.Board.Where(x => x.Id != id).ToList();
+                                    minionsRemoved++;
+                                }
+                                else if (player.Hand.Any(x => x.PokemonId == pokemonId))
+                                {
+                                    var id = player.Hand.Where(x => x.PokemonId == pokemonId).FirstOrDefault().Id;
+                                    player.Hand = player.Hand.Where(x => x.Id != id).ToList();
+                                    minionsRemoved++;
+                                }
+                                else
+                                {
+                                    player = fallback;
+                                    return;
+                                }
+                            }
+
+                            player.Hand.Add(evolvedMinion);
+                        }
+                    }
+                }
+
+                // Keep trying to evolve until there are no more triples in play
+                player.EvolveCheck();
+            }
         }
 
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
@@ -287,6 +355,7 @@ namespace PokeChess.Server.Extensions
                                 return false;
                             }
                         }
+                        player.EvolveCheck();
 
                         return true;
                     }
@@ -314,6 +383,7 @@ namespace PokeChess.Server.Extensions
                                 return false;
                             }
                         }
+                        player.EvolveCheck();
 
                         return true;
                     }
@@ -326,6 +396,7 @@ namespace PokeChess.Server.Extensions
                         {
                             player.Hand.Add(card);
                         }
+                        player.EvolveCheck();
                         player.Shop = new List<Card>();
 
                         return true;

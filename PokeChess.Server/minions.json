@@ -16,7 +16,7 @@
     "height": "0.71 m",
     "weight": "6.9 kg",
     "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "002",
         "name": "Ivysaur"
@@ -42,13 +42,13 @@
     "height": "0.99 m",
     "weight": "13.0 kg",
     "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "001",
         "name": "Bulbasaur"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "003",
         "name": "Venusaur"
@@ -70,7 +70,7 @@
     "height": "2.01 m",
     "weight": "100.0 kg",
     "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "001",
         "name": "Bulbasaur"
@@ -96,7 +96,7 @@
     "height": "0.61 m",
     "weight": "8.5 kg",
     "weaknesses": ["Water", "Ground", "Rock"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "005",
         "name": "Charmeleon"
@@ -122,13 +122,13 @@
     "height": "1.09 m",
     "weight": "19.0 kg",
     "weaknesses": ["Water", "Ground", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "004",
         "name": "Charmander"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "006",
         "name": "Charizard"
@@ -150,7 +150,7 @@
     "height": "1.70 m",
     "weight": "90.5 kg",
     "weaknesses": ["Water", "Electric", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "004",
         "name": "Charmander"
@@ -176,7 +176,7 @@
     "height": "0.51 m",
     "weight": "9.0 kg",
     "weaknesses": ["Electric", "Grass"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "008",
         "name": "Wartortle"
@@ -202,13 +202,13 @@
     "height": "0.99 m",
     "weight": "22.5 kg",
     "weaknesses": ["Electric", "Grass"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "007",
         "name": "Squirtle"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "009",
         "name": "Blastoise"
@@ -230,7 +230,7 @@
     "height": "1.60 m",
     "weight": "85.5 kg",
     "weaknesses": ["Electric", "Grass"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "007",
         "name": "Squirtle"
@@ -256,7 +256,7 @@
     "height": "0.30 m",
     "weight": "2.9 kg",
     "weaknesses": ["Fire", "Flying", "Rock"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "011",
         "name": "Metapod"
@@ -282,13 +282,13 @@
     "height": "0.71 m",
     "weight": "9.9 kg",
     "weaknesses": ["Fire", "Flying", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "010",
         "name": "Caterpie"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "012",
         "name": "Butterfree"
@@ -310,7 +310,7 @@
     "height": "1.09 m",
     "weight": "32.0 kg",
     "weaknesses": ["Fire", "Electric", "Ice", "Flying", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "010",
         "name": "Caterpie"
@@ -336,7 +336,7 @@
     "height": "0.30 m",
     "weight": "3.2 kg",
     "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "014",
         "name": "Kakuna"
@@ -362,13 +362,13 @@
     "height": "0.61 m",
     "weight": "10.0 kg",
     "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "013",
         "name": "Weedle"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "015",
         "name": "Beedrill"
@@ -390,7 +390,7 @@
     "height": "0.99 m",
     "weight": "29.5 kg",
     "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "013",
         "name": "Weedle"
@@ -416,7 +416,7 @@
     "height": "0.30 m",
     "weight": "1.8 kg",
     "weaknesses": ["Electric", "Rock"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "017",
         "name": "Pidgeotto"
@@ -442,13 +442,13 @@
     "height": "1.09 m",
     "weight": "30.0 kg",
     "weaknesses": ["Electric", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "016",
         "name": "Pidgey"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "018",
         "name": "Pidgeot"
@@ -470,7 +470,7 @@
     "height": "1.50 m",
     "weight": "39.5 kg",
     "weaknesses": ["Electric", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "016",
         "name": "Pidgey"
@@ -496,7 +496,7 @@
     "height": "0.30 m",
     "weight": "3.5 kg",
     "weaknesses": ["Fighting"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "020",
         "name": "Raticate"
@@ -518,7 +518,7 @@
     "height": "0.71 m",
     "weight": "18.5 kg",
     "weaknesses": ["Fighting"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "019",
         "name": "Rattata"
@@ -540,7 +540,7 @@
     "height": "0.30 m",
     "weight": "2.0 kg",
     "weaknesses": ["Electric", "Rock"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "022",
         "name": "Fearow"
@@ -562,7 +562,7 @@
     "height": "1.19 m",
     "weight": "38.0 kg",
     "weaknesses": ["Electric", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "021",
         "name": "Spearow"
@@ -584,7 +584,7 @@
     "height": "2.01 m",
     "weight": "6.9 kg",
     "weaknesses": ["Ground", "Psychic"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "024",
         "name": "Arbok"
@@ -606,7 +606,7 @@
     "height": "3.51 m",
     "weight": "65.0 kg",
     "weaknesses": ["Ground", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "023",
         "name": "Ekans"
@@ -628,7 +628,7 @@
     "height": "0.41 m",
     "weight": "6.0 kg",
     "weaknesses": ["Ground"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "026",
         "name": "Raichu"
@@ -650,7 +650,7 @@
     "height": "0.79 m",
     "weight": "30.0 kg",
     "weaknesses": ["Ground"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "025",
         "name": "Pikachu"
@@ -672,7 +672,7 @@
     "height": "0.61 m",
     "weight": "12.0 kg",
     "weaknesses": ["Water", "Grass", "Ice"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "028",
         "name": "Sandslash"
@@ -694,7 +694,7 @@
     "height": "0.99 m",
     "weight": "29.5 kg",
     "weaknesses": ["Water", "Grass", "Ice"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "027",
         "name": "Sandshrew"
@@ -716,7 +716,7 @@
     "height": "0.41 m",
     "weight": "7.0 kg",
     "weaknesses": ["Ground", "Psychic"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "030",
         "name": "Nidorina"
@@ -742,13 +742,13 @@
     "height": "0.79 m",
     "weight": "20.0 kg",
     "weaknesses": ["Ground", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "029",
         "name": "Nidoran(Female)"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "031",
         "name": "Nidoqueen"
@@ -770,7 +770,7 @@
     "height": "1.30 m",
     "weight": "60.0 kg",
     "weaknesses": ["Water", "Ice", "Ground", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "029",
         "name": "Nidoran(Female)"
@@ -796,7 +796,7 @@
     "height": "0.51 m",
     "weight": "9.0 kg",
     "weaknesses": ["Ground", "Psychic"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "033",
         "name": "Nidorino"
@@ -822,13 +822,13 @@
     "height": "0.89 m",
     "weight": "19.5 kg",
     "weaknesses": ["Ground", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "032",
         "name": "Nidoran(Male)"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "034",
         "name": "Nidoking"
@@ -850,7 +850,7 @@
     "height": "1.40 m",
     "weight": "62.0 kg",
     "weaknesses": ["Water", "Ice", "Ground", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "032",
         "name": "Nidoran(Male)"
@@ -876,7 +876,7 @@
     "height": "0.61 m",
     "weight": "7.5 kg",
     "weaknesses": ["Fighting"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "036",
         "name": "Clefable"
@@ -898,7 +898,7 @@
     "height": "1.30 m",
     "weight": "40.0 kg",
     "weaknesses": ["Fighting"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "035",
         "name": "Clefairy"
@@ -920,7 +920,7 @@
     "height": "0.61 m",
     "weight": "9.9 kg",
     "weaknesses": ["Water", "Ground", "Rock"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "038",
         "name": "Ninetales"
@@ -942,7 +942,7 @@
     "height": "1.09 m",
     "weight": "19.9 kg",
     "weaknesses": ["Water", "Ground", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "037",
         "name": "Vulpix"
@@ -964,7 +964,7 @@
     "height": "0.51 m",
     "weight": "5.5 kg",
     "weaknesses": ["Fighting"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "040",
         "name": "Wigglytuff"
@@ -986,7 +986,7 @@
     "height": "0.99 m",
     "weight": "12.0 kg",
     "weaknesses": ["Fighting"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "039",
         "name": "Jigglypuff"
@@ -1008,7 +1008,7 @@
     "height": "0.79 m",
     "weight": "7.5 kg",
     "weaknesses": ["Electric", "Ice", "Psychic", "Rock"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "042",
         "name": "Golbat"
@@ -1030,7 +1030,7 @@
     "height": "1.60 m",
     "weight": "55.0 kg",
     "weaknesses": ["Electric", "Ice", "Psychic", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "041",
         "name": "Zubat"
@@ -1052,7 +1052,7 @@
     "height": "0.51 m",
     "weight": "5.4 kg",
     "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "044",
         "name": "Gloom"
@@ -1078,13 +1078,13 @@
     "height": "0.79 m",
     "weight": "8.6 kg",
     "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "043",
         "name": "Oddish"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "045",
         "name": "Vileplume"
@@ -1106,7 +1106,7 @@
     "height": "1.19 m",
     "weight": "18.6 kg",
     "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "043",
         "name": "Oddish"
@@ -1132,7 +1132,7 @@
     "height": "0.30 m",
     "weight": "5.4 kg",
     "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Rock"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "047",
         "name": "Parasect"
@@ -1154,7 +1154,7 @@
     "height": "0.99 m",
     "weight": "29.5 kg",
     "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "046",
         "name": "Paras"
@@ -1176,7 +1176,7 @@
     "height": "0.99 m",
     "weight": "30.0 kg",
     "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "049",
         "name": "Venomoth"
@@ -1198,7 +1198,7 @@
     "height": "1.50 m",
     "weight": "12.5 kg",
     "weaknesses": ["Fire", "Flying", "Psychic", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "048",
         "name": "Venonat"
@@ -1220,7 +1220,7 @@
     "height": "0.20 m",
     "weight": "0.8 kg",
     "weaknesses": ["Water", "Grass", "Ice"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "051",
         "name": "Dugtrio"
@@ -1242,7 +1242,7 @@
     "height": "0.71 m",
     "weight": "33.3 kg",
     "weaknesses": ["Water", "Grass", "Ice"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "050",
         "name": "Diglett"
@@ -1264,7 +1264,7 @@
     "height": "0.41 m",
     "weight": "4.2 kg",
     "weaknesses": ["Fighting"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "053",
         "name": "Persian"
@@ -1286,7 +1286,7 @@
     "height": "0.99 m",
     "weight": "32.0 kg",
     "weaknesses": ["Fighting"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "052",
         "name": "Meowth"
@@ -1308,7 +1308,7 @@
     "height": "0.79 m",
     "weight": "19.6 kg",
     "weaknesses": ["Electric", "Grass"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "055",
         "name": "Golduck"
@@ -1330,7 +1330,7 @@
     "height": "1.70 m",
     "weight": "76.6 kg",
     "weaknesses": ["Electric", "Grass"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "054",
         "name": "Psyduck"
@@ -1352,7 +1352,7 @@
     "height": "0.51 m",
     "weight": "28.0 kg",
     "weaknesses": ["Flying", "Psychic", "Fairy"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "057",
         "name": "Primeape"
@@ -1374,7 +1374,7 @@
     "height": "0.99 m",
     "weight": "32.0 kg",
     "weaknesses": ["Flying", "Psychic", "Fairy"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "056",
         "name": "Mankey"
@@ -1396,7 +1396,7 @@
     "height": "0.71 m",
     "weight": "19.0 kg",
     "weaknesses": ["Water", "Ground", "Rock"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "059",
         "name": "Arcanine"
@@ -1418,7 +1418,7 @@
     "height": "1.91 m",
     "weight": "155.0 kg",
     "weaknesses": ["Water", "Ground", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "058",
         "name": "Growlithe"
@@ -1440,7 +1440,7 @@
     "height": "0.61 m",
     "weight": "12.4 kg",
     "weaknesses": ["Electric", "Grass"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "061",
         "name": "Poliwhirl"
@@ -1466,13 +1466,13 @@
     "height": "0.99 m",
     "weight": "20.0 kg",
     "weaknesses": ["Electric", "Grass"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "060",
         "name": "Poliwag"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "062",
         "name": "Poliwrath"
@@ -1494,7 +1494,7 @@
     "height": "1.30 m",
     "weight": "54.0 kg",
     "weaknesses": ["Electric", "Grass", "Flying", "Psychic", "Fairy"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "060",
         "name": "Poliwag"
@@ -1520,7 +1520,7 @@
     "height": "0.89 m",
     "weight": "19.5 kg",
     "weaknesses": ["Bug", "Ghost", "Dark"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "064",
         "name": "Kadabra"
@@ -1546,13 +1546,13 @@
     "height": "1.30 m",
     "weight": "56.5 kg",
     "weaknesses": ["Bug", "Ghost", "Dark"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "063",
         "name": "Abra"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "065",
         "name": "Alakazam"
@@ -1574,7 +1574,7 @@
     "height": "1.50 m",
     "weight": "48.0 kg",
     "weaknesses": ["Bug", "Ghost", "Dark"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "063",
         "name": "Abra"
@@ -1600,7 +1600,7 @@
     "height": "0.79 m",
     "weight": "19.5 kg",
     "weaknesses": ["Flying", "Psychic", "Fairy"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "067",
         "name": "Machoke"
@@ -1626,13 +1626,13 @@
     "height": "1.50 m",
     "weight": "70.5 kg",
     "weaknesses": ["Flying", "Psychic", "Fairy"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "066",
         "name": "Machop"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "068",
         "name": "Machamp"
@@ -1654,7 +1654,7 @@
     "height": "1.60 m",
     "weight": "130.0 kg",
     "weaknesses": ["Flying", "Psychic", "Fairy"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "066",
         "name": "Machop"
@@ -1680,7 +1680,7 @@
     "height": "0.71 m",
     "weight": "4.0 kg",
     "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "070",
         "name": "Weepinbell"
@@ -1706,13 +1706,13 @@
     "height": "0.99 m",
     "weight": "6.4 kg",
     "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "069",
         "name": "Bellsprout"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "071",
         "name": "Victreebel"
@@ -1734,7 +1734,7 @@
     "height": "1.70 m",
     "weight": "15.5 kg",
     "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "069",
         "name": "Bellsprout"
@@ -1760,7 +1760,7 @@
     "height": "0.89 m",
     "weight": "45.5 kg",
     "weaknesses": ["Electric", "Ground", "Psychic"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "073",
         "name": "Tentacruel"
@@ -1782,7 +1782,7 @@
     "height": "1.60 m",
     "weight": "55.0 kg",
     "weaknesses": ["Electric", "Ground", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "072",
         "name": "Tentacool"
@@ -1804,7 +1804,7 @@
     "height": "0.41 m",
     "weight": "20.0 kg",
     "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "075",
         "name": "Graveler"
@@ -1830,13 +1830,13 @@
     "height": "0.99 m",
     "weight": "105.0 kg",
     "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "074",
         "name": "Geodude"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "076",
         "name": "Golem"
@@ -1858,7 +1858,7 @@
     "height": "1.40 m",
     "weight": "300.0 kg",
     "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "074",
         "name": "Geodude"
@@ -1884,7 +1884,7 @@
     "height": "0.99 m",
     "weight": "30.0 kg",
     "weaknesses": ["Water", "Ground", "Rock"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "078",
         "name": "Rapidash"
@@ -1906,7 +1906,7 @@
     "height": "1.70 m",
     "weight": "95.0 kg",
     "weaknesses": ["Water", "Ground", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "077",
         "name": "Ponyta"
@@ -1928,7 +1928,7 @@
     "height": "1.19 m",
     "weight": "36.0 kg",
     "weaknesses": ["Electric", "Grass", "Bug", "Ghost", "Dark"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "080",
         "name": "Slowbro"
@@ -1950,7 +1950,7 @@
     "height": "1.60 m",
     "weight": "78.5 kg",
     "weaknesses": ["Electric", "Grass", "Bug", "Ghost", "Dark"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "079",
         "name": "Slowpoke"
@@ -1972,7 +1972,7 @@
     "height": "0.30 m",
     "weight": "6.0 kg",
     "weaknesses": ["Fire", "Water", "Ground"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "082",
         "name": "Magneton"
@@ -1994,7 +1994,7 @@
     "height": "0.99 m",
     "weight": "60.0 kg",
     "weaknesses": ["Fire", "Water", "Ground"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "081",
         "name": "Magnemite"
@@ -2032,7 +2032,7 @@
     "height": "1.40 m",
     "weight": "39.2 kg",
     "weaknesses": ["Electric", "Rock"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "085",
         "name": "Dodrio"
@@ -2054,7 +2054,7 @@
     "height": "1.80 m",
     "weight": "85.2 kg",
     "weaknesses": ["Electric", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "084",
         "name": "Doduo"
@@ -2076,7 +2076,7 @@
     "height": "1.09 m",
     "weight": "90.0 kg",
     "weaknesses": ["Electric", "Grass"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "087",
         "name": "Dewgong"
@@ -2098,7 +2098,7 @@
     "height": "1.70 m",
     "weight": "120.0 kg",
     "weaknesses": ["Electric", "Grass", "Fighting", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "086",
         "name": "Seel"
@@ -2120,7 +2120,7 @@
     "height": "0.89 m",
     "weight": "30.0 kg",
     "weaknesses": ["Ground", "Psychic"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "089",
         "name": "Muk"
@@ -2142,7 +2142,7 @@
     "height": "1.19 m",
     "weight": "30.0 kg",
     "weaknesses": ["Ground", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "088",
         "name": "Grimer"
@@ -2164,7 +2164,7 @@
     "height": "0.30 m",
     "weight": "4.0 kg",
     "weaknesses": ["Electric", "Grass"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "091",
         "name": "Cloyster"
@@ -2186,7 +2186,7 @@
     "height": "1.50 m",
     "weight": "132.5 kg",
     "weaknesses": ["Electric", "Grass", "Fighting", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "090",
         "name": "Shellder"
@@ -2208,7 +2208,7 @@
     "height": "1.30 m",
     "weight": "0.1 kg",
     "weaknesses": ["Ground", "Psychic", "Ghost", "Dark"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "093",
         "name": "Haunter"
@@ -2234,13 +2234,13 @@
     "height": "1.60 m",
     "weight": "0.1 kg",
     "weaknesses": ["Ground", "Psychic", "Ghost", "Dark"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "092",
         "name": "Gastly"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "094",
         "name": "Gengar"
@@ -2262,7 +2262,7 @@
     "height": "1.50 m",
     "weight": "40.5 kg",
     "weaknesses": ["Ground", "Psychic", "Ghost", "Dark"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "092",
         "name": "Gastly"
@@ -2304,7 +2304,7 @@
     "height": "0.99 m",
     "weight": "32.4 kg",
     "weaknesses": ["Bug", "Ghost", "Dark"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "097",
         "name": "Hypno"
@@ -2326,7 +2326,7 @@
     "height": "1.60 m",
     "weight": "75.6 kg",
     "weaknesses": ["Bug", "Ghost", "Dark"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "096",
         "name": "Drowzee"
@@ -2348,7 +2348,7 @@
     "height": "0.41 m",
     "weight": "6.5 kg",
     "weaknesses": ["Electric", "Grass"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "099",
         "name": "Kingler"
@@ -2370,7 +2370,7 @@
     "height": "1.30 m",
     "weight": "60.0 kg",
     "weaknesses": ["Electric", "Grass"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "098",
         "name": "Krabby"
@@ -2392,7 +2392,7 @@
     "height": "0.51 m",
     "weight": "10.4 kg",
     "weaknesses": ["Ground"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "101",
         "name": "Electrode"
@@ -2414,7 +2414,7 @@
     "height": "1.19 m",
     "weight": "66.6 kg",
     "weaknesses": ["Ground"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "100",
         "name": "Voltorb"
@@ -2436,7 +2436,7 @@
     "height": "0.41 m",
     "weight": "2.5 kg",
     "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Ghost", "Dark"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "103",
         "name": "Exeggutor"
@@ -2458,7 +2458,7 @@
     "height": "2.01 m",
     "weight": "120.0 kg",
     "weaknesses": ["Fire", "Ice", "Poison", "Flying", "Bug", "Ghost", "Dark"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "102",
         "name": "Exeggcute"
@@ -2480,7 +2480,7 @@
     "height": "0.41 m",
     "weight": "6.5 kg",
     "weaknesses": ["Water", "Grass", "Ice"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "105",
         "name": "Marowak"
@@ -2502,7 +2502,7 @@
     "height": "0.99 m",
     "weight": "45.0 kg",
     "weaknesses": ["Water", "Grass", "Ice"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "104",
         "name": "Cubone"
@@ -2572,7 +2572,7 @@
     "height": "0.61 m",
     "weight": "1.0 kg",
     "weaknesses": ["Ground", "Psychic"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "110",
         "name": "Weezing"
@@ -2594,7 +2594,7 @@
     "height": "1.19 m",
     "weight": "9.5 kg",
     "weaknesses": ["Ground", "Psychic"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "109",
         "name": "Koffing"
@@ -2616,7 +2616,7 @@
     "height": "0.99 m",
     "weight": "115.0 kg",
     "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "112",
         "name": "Rhydon"
@@ -2638,7 +2638,7 @@
     "height": "1.91 m",
     "weight": "120.0 kg",
     "weaknesses": ["Water", "Grass", "Ice", "Fighting", "Ground", "Steel"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "111",
         "name": "Rhyhorn"
@@ -2708,7 +2708,7 @@
     "height": "0.41 m",
     "weight": "8.0 kg",
     "weaknesses": ["Electric", "Grass"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "117",
         "name": "Seadra"
@@ -2730,7 +2730,7 @@
     "height": "1.19 m",
     "weight": "25.0 kg",
     "weaknesses": ["Electric", "Grass"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "116",
         "name": "Horsea"
@@ -2752,7 +2752,7 @@
     "height": "0.61 m",
     "weight": "15.0 kg",
     "weaknesses": ["Electric", "Grass"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "119",
         "name": "Seaking"
@@ -2774,7 +2774,7 @@
     "height": "1.30 m",
     "weight": "39.0 kg",
     "weaknesses": ["Electric", "Grass"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "118",
         "name": "Goldeen"
@@ -2796,7 +2796,7 @@
     "height": "0.79 m",
     "weight": "34.5 kg",
     "weaknesses": ["Electric", "Grass"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "121",
         "name": "Starmie"
@@ -2818,7 +2818,7 @@
     "height": "1.09 m",
     "weight": "80.0 kg",
     "weaknesses": ["Electric", "Grass", "Bug", "Ghost", "Dark"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "120",
         "name": "Staryu"
@@ -2952,7 +2952,7 @@
     "height": "0.89 m",
     "weight": "10.0 kg",
     "weaknesses": ["Electric", "Grass"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "130",
         "name": "Gyarados"
@@ -2974,7 +2974,7 @@
     "height": "6.50 m",
     "weight": "235.0 kg",
     "weaknesses": ["Electric", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "129",
         "name": "Magikarp"
@@ -3028,7 +3028,7 @@
     "height": "0.30 m",
     "weight": "6.5 kg",
     "weaknesses": ["Fighting"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "134",
         "name": "Vaporeon"
@@ -3058,7 +3058,7 @@
     "height": "0.99 m",
     "weight": "29.0 kg",
     "weaknesses": ["Electric", "Grass"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "133",
         "name": "Eevee"
@@ -3080,7 +3080,7 @@
     "height": "0.79 m",
     "weight": "24.5 kg",
     "weaknesses": ["Ground"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "133",
         "name": "Eevee"
@@ -3102,7 +3102,7 @@
     "height": "0.89 m",
     "weight": "25.0 kg",
     "weaknesses": ["Water", "Ground", "Rock"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "133",
         "name": "Eevee"
@@ -3140,7 +3140,7 @@
     "height": "0.41 m",
     "weight": "7.5 kg",
     "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "139",
         "name": "Omastar"
@@ -3162,7 +3162,7 @@
     "height": "0.99 m",
     "weight": "35.0 kg",
     "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "138",
         "name": "Omanyte"
@@ -3184,7 +3184,7 @@
     "height": "0.51 m",
     "weight": "11.5 kg",
     "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "141",
         "name": "Kabutops"
@@ -3206,7 +3206,7 @@
     "height": "1.30 m",
     "weight": "40.5 kg",
     "weaknesses": ["Electric", "Grass", "Fighting", "Ground"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "140",
         "name": "Kabuto"
@@ -3308,7 +3308,7 @@
     "height": "1.80 m",
     "weight": "3.3 kg",
     "weaknesses": ["Ice", "Dragon", "Fairy"],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "148",
         "name": "Dragonair"
@@ -3334,13 +3334,13 @@
     "height": "3.99 m",
     "weight": "16.5 kg",
     "weaknesses": ["Ice", "Dragon", "Fairy"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "147",
         "name": "Dratini"
       }
     ],
-    "next_evolution": [
+    "nextEvolutions": [
       {
         "num": "149",
         "name": "Dragonite"
@@ -3362,7 +3362,7 @@
     "height": "2.21 m",
     "weight": "210.0 kg",
     "weaknesses": ["Ice", "Rock", "Dragon", "Fairy"],
-    "prev_evolution": [
+    "previousEvolutions": [
       {
         "num": "147",
         "name": "Dratini"

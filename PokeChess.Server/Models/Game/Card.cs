@@ -24,10 +24,12 @@ namespace PokeChess.Server.Models.Game
         public CardType CardType { get; set; }
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();
         public List<SpellType> SpellTypes { get; set; } = new List<SpellType>();
-        public Keywords BaseKeywords { get; set; } = new Keywords();
         public List<int> Amount { get; set; } = new List<int>();
+        public Keywords BaseKeywords { get; set; } = new Keywords();
         public Keywords Keywords { get; set; } = new Keywords();
         public Keywords CombatKeywords { get; set; } = new Keywords();
+        public List<Evolution> NextEvolutions { get; set; } = new List<Evolution>();
+        public List<Evolution> PreviousEvolutions { get; set; } = new List<Evolution>();
         public bool IsDead
         {
             get

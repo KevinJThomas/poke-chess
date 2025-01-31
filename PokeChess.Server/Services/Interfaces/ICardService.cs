@@ -8,5 +8,7 @@ namespace PokeChess.Server.Services.Interfaces
         List<Card> GetAllCards();
         List<Card> GetAllMinions();
         List<Card> GetAllSpells();
+        Card GetMinionCopyByNum(string num);
+        List<Card> GetAllMinionsAtBaseEvolution();
     }
 }

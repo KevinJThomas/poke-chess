@@ -4,7 +4,7 @@ using PokeChess.Server.Models.Game;
 namespace PokeChess.Server.UnitTests.Extensions
 {
     [TestClass]
-    public class ListExtensionsTest
+    public class ListExtensionsTest : BaseTest
     {
         [TestMethod]
         public void TestDrawCard()

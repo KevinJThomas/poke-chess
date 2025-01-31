@@ -114,6 +114,18 @@ namespace PokeChess.Server.Services
             return _allSpells.Select(x => x.Clone()).ToList();
         }
 
+        public List<Card> GetAllMinionsAtBaseEvolution()
+        {
+            return _allMinions.Where(x => (x.PreviousEvolutions == null || !x.PreviousEvolutions.Any()) && (x.NextEvolutions != null && x.NextEvolutions.Any())).Select(x => x.Clone()).ToList();
+        }
+
+        public Card GetMinionCopyByNum(string num)
+        {
+            var minion = _allMinions.Where(x => x.Num == num).FirstOrDefault().Clone();
+            minion.Id += "_copy";
+            return minion;
+        }
+
         #endregion
 
         #region private methods
