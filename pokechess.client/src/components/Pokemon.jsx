@@ -6,6 +6,13 @@ import { cn, delay } from "../util";
 import Damage from "./Damage";
 import { useState } from "react";
 import useAsyncEffect from "use-async-effect";
+import Tooltip from "./Tooltip";
+import DivineShield from "./DivineShield";
+import Venomous from "./Venomous";
+import Taunt from "./Taunt";
+import Stealth from "./Stealth";
+import Reborn from "./Reborn";
+import Windfury from "./Windfury";
 
 export default function Pokemon({
   attack,
@@ -20,10 +27,13 @@ export default function Pokemon({
   className,
   style,
   damage,
+  text,
+  keywords,
 }) {
   const isMinion = cardType === 0;
   const [showDamage, setShowDamage] = useState(false);
   const [minionDied, setMinionDied] = useState(false);
+  const [showToolTip, setShowToolTip] = useState(false);
 
   useAsyncEffect(async () => {
     setShowDamage(true);
@@ -42,19 +52,25 @@ export default function Pokemon({
     return;
   }
 
-  return (
+  const pokemon = (
     <div className="mx-px h-20 w-20">
       <div
         id={id}
-        style={{ backgroundImage: `url(/pokemon/${num}.png)`, ...style }}
+        style={{
+          backgroundImage: `url(/pokemon/${num}.png)`,
+          ...style,
+        }}
         className={cn(
-          "flex h-20 w-20 items-center justify-center transition-all duration-200 ease-in-out",
+          "-z-5 flex h-20 w-20 items-center justify-center transition-all duration-200 ease-in-out",
           isMinion && `bg-contain bg-center`,
           !isMinion && "rounded-xl bg-blue-400",
           className,
+          "bg-opacity-25",
         )}
+        onMouseEnter={() => !isMinion && setShowToolTip(true)}
+        onMouseLeave={() => !isMinion && setShowToolTip(false)}
       >
-        <div className="relative flex h-20 w-20 items-center justify-center">
+        <div className="relative flex h-20 w-20 flex-col items-center justify-center">
           {!isMinion && (
             <span className="w-20 text-center text-xs">{name}</span>
           )}
@@ -63,8 +79,24 @@ export default function Pokemon({
           {!!tier && showTier && <Tier tier={tier} />}
           {!isMinion && Number.isInteger(cost) && <Cost cost={cost} />}
           {!!damage && showDamage && <Damage damage={damage} />}
+          {keywords.divineShield && <DivineShield />}
+          {keywords.venomous && <Venomous />}
+          {keywords.taunt && <Taunt />}
+          {keywords.stealth && <Stealth />}
+          {keywords.reborn && <Reborn />}
+          {keywords.Windfury && <Windfury />}
         </div>
       </div>
     </div>
+  );
+
+  if (isMinion) {
+    return pokemon;
+  }
+
+  return (
+    <Tooltip showToolTip={showToolTip} text={text}>
+      {pokemon}
+    </Tooltip>
   );
 }
