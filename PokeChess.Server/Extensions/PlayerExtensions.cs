@@ -130,6 +130,8 @@ namespace PokeChess.Server.Extensions
                     {
                         var minionsRemoved = 0;
                         var evolvedMinion = _cardService.GetMinionCopyByNum(minionToEvolve.NextEvolutions.FirstOrDefault().Num);
+                        var extraAttack = 0;
+                        var extraHealth = 0;
                         if (evolvedMinion != null)
                         {
                             while (minionsRemoved < 3)
@@ -137,12 +139,16 @@ namespace PokeChess.Server.Extensions
                                 if (player.Board.Any(x => x.PokemonId == pokemonId))
                                 {
                                     var id = player.Board.Where(x => x.PokemonId == pokemonId).FirstOrDefault().Id;
+                                    extraAttack += player.Board.Where(x => x.Id == id).FirstOrDefault().Attack - player.Board.Where(x => x.Id == id).FirstOrDefault().BaseAttack;
+                                    extraHealth += player.Board.Where(x => x.Id == id).FirstOrDefault().Health - player.Board.Where(x => x.Id == id).FirstOrDefault().BaseHealth;
                                     player.Board = player.Board.Where(x => x.Id != id).ToList();
                                     minionsRemoved++;
                                 }
                                 else if (player.Hand.Any(x => x.PokemonId == pokemonId))
                                 {
                                     var id = player.Hand.Where(x => x.PokemonId == pokemonId).FirstOrDefault().Id;
+                                    extraAttack += player.Hand.Where(x => x.Id == id).FirstOrDefault().Attack - player.Hand.Where(x => x.Id == id).FirstOrDefault().BaseAttack;
+                                    extraHealth += player.Hand.Where(x => x.Id == id).FirstOrDefault().Health - player.Hand.Where(x => x.Id == id).FirstOrDefault().BaseHealth;
                                     player.Hand = player.Hand.Where(x => x.Id != id).ToList();
                                     minionsRemoved++;
                                 }
@@ -153,6 +159,8 @@ namespace PokeChess.Server.Extensions
                                 }
                             }
 
+                            evolvedMinion.Attack += extraAttack;
+                            evolvedMinion.Health += extraHealth;
                             player.Hand.Add(evolvedMinion);
                         }
                     }
