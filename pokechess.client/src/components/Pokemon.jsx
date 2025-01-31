@@ -65,7 +65,7 @@ export default function Pokemon({
         className={cn(
           "flex h-20 w-20 items-center justify-center transition-all duration-200 ease-in-out",
           isMinion && `bg-contain bg-center`,
-          !isMinion && "rounded-xl bg-blue-400",
+          !isMinion && "rounded-xl border-2 border-red-900 bg-red-300",
           className,
         )}
         onMouseEnter={() => !isMinion && setShowToolTip(true)}

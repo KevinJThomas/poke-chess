@@ -252,7 +252,7 @@ export default function App() {
           </span>
         </div>
       )}
-      <div className="relative h-screen w-screen bg-gray-200">
+      <div className="relative h-screen w-screen bg-[url(/sky.jpg)] bg-cover">
         {gameStatus === "shop" && (
           <ShopBoard
             connection={connection}
