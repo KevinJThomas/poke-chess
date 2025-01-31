@@ -17,6 +17,7 @@
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-tiny-popover": "^8.1.4",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^4.0.0",
     "uniqolor": "^1.1.1",

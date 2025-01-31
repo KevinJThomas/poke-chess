@@ -6,6 +6,7 @@ import { cn, delay } from "../util";
 import Damage from "./Damage";
 import { useState } from "react";
 import useAsyncEffect from "use-async-effect";
+import Tooltip from "./Tooltip";
 
 export default function Pokemon({
   attack,
@@ -20,10 +21,12 @@ export default function Pokemon({
   className,
   style,
   damage,
+  text,
 }) {
   const isMinion = cardType === 0;
   const [showDamage, setShowDamage] = useState(false);
   const [minionDied, setMinionDied] = useState(false);
+  const [showToolTip, setShowToolTip] = useState(false);
 
   useAsyncEffect(async () => {
     setShowDamage(true);
@@ -42,7 +45,7 @@ export default function Pokemon({
     return;
   }
 
-  return (
+  const pokemon = (
     <div className="mx-px h-20 w-20">
       <div
         id={id}
@@ -53,8 +56,10 @@ export default function Pokemon({
           !isMinion && "rounded-xl bg-blue-400",
           className,
         )}
+        onMouseEnter={() => !isMinion && setShowToolTip(true)}
+        onMouseLeave={() => !isMinion && setShowToolTip(false)}
       >
-        <div className="relative flex h-20 w-20 items-center justify-center">
+        <div className="relative flex h-20 w-20 flex-col items-center justify-center">
           {!isMinion && (
             <span className="w-20 text-center text-xs">{name}</span>
           )}
@@ -66,5 +71,15 @@ export default function Pokemon({
         </div>
       </div>
     </div>
+  );
+
+  if (isMinion) {
+    return pokemon;
+  }
+
+  return (
+    <Tooltip showToolTip={showToolTip} text={text}>
+      {pokemon}
+    </Tooltip>
   );
 }
