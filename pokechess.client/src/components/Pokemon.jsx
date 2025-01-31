@@ -9,6 +9,7 @@ import useAsyncEffect from "use-async-effect";
 import Tooltip from "./Tooltip";
 import DivineShield from "./DivineShield";
 import Venomous from "./Venomous";
+import Taunt from "./Taunt";
 
 export default function Pokemon({
   attack,
@@ -73,6 +74,7 @@ export default function Pokemon({
           {!!damage && showDamage && <Damage damage={damage} />}
           {keywords.divineShield && <DivineShield />}
           {keywords.venomous && <Venomous />}
+          {keywords.taunt && <Taunt />}
         </div>
       </div>
     </div>
