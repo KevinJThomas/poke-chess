@@ -3,6 +3,7 @@
     "pokemonId": 1,
     "num": "001",
     "tier": 1,
+    "text": "\bDivine Shield.\b \bTaunt.\b",
     "name": "Bulbasaur",
     "baseAttack": 1,
     "baseHealth": 2,
@@ -30,7 +31,8 @@
   {
     "pokemonId": 2,
     "num": "002",
-    "tier": 4,
+    "tier": 3,
+    "text": "",
     "name": "Ivysaur",
     "baseAttack": 3,
     "baseHealth": 6,
@@ -62,6 +64,7 @@
     "pokemonId": 3,
     "num": "003",
     "tier": 6,
+    "text": "",
     "name": "Venusaur",
     "baseAttack": 18,
     "baseHealth": 36,
@@ -93,12 +96,15 @@
     "pokemonId": 4,
     "num": "004",
     "tier": 1,
+    "text": "",
     "name": "Charmander",
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "burning": true
+    },
     "type": [ "Fire" ],
     "height": "0.61 m",
     "weight": "8.5 kg",
@@ -117,14 +123,15 @@
   {
     "pokemonId": 5,
     "num": "005",
-    "tier": 4,
+    "tier": 3,
+    "text": "",
     "name": "Charmeleon",
     "baseAttack": 9,
     "baseHealth": 6,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {
-      "stealth": true
+      "burning": true
     },
     "type": [ "Fire" ],
     "height": "1.09 m",
@@ -147,13 +154,14 @@
     "pokemonId": 6,
     "num": "006",
     "tier": 6,
+    "text": "",
     "name": "Charizard",
     "baseAttack": 27,
     "baseHealth": 18,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {
-      "stealth": true,
+      "burning": true,
       "windfury": true
     },
     "type": [ "Fire", "Flying" ],
@@ -175,9 +183,10 @@
     "pokemonId": 7,
     "num": "007",
     "tier": 1,
+    "text": "Battlecry: Get a Discover Treasure",
     "name": "Squirtle",
     "baseAttack": 2,
-    "baseHealth": 3,
+    "baseHealth": 1,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -200,9 +209,10 @@
     "pokemonId": 8,
     "num": "008",
     "tier": 1,
+    "text": "Add the end of your turn, get a random tavern spell.",
     "name": "Wartortle",
     "baseAttack": 6,
-    "baseHealth": 9,
+    "baseHealth": 3,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -227,9 +237,10 @@
     "pokemonId": 9,
     "num": "009",
     "tier": 1,
+    "text": "Whenever you play a spell, give friendly water minions +1/+2",
     "name": "Blastoise",
     "baseAttack": 18,
-    "baseHealth": 27,
+    "baseHealth": 9,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -252,9 +263,10 @@
     "pokemonId": 10,
     "num": "010",
     "tier": 1,
+    "text": "Battlecry: Consume a random minion in the tavern to gain its stats",
     "name": "Caterpie",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 1,
+    "baseHealth": 1,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -276,10 +288,11 @@
   {
     "pokemonId": 11,
     "num": "011",
-    "tier": 1,
+    "tier": 2,
+    "text": "Battlecry: Consume a random minion in the tavern to gain twice its stats",
     "name": "Metapod",
     "baseAttack": 3,
-    "baseHealth": 2,
+    "baseHealth": 3,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -303,10 +316,11 @@
   {
     "pokemonId": 12,
     "num": "012",
-    "tier": 1,
+    "tier": 5,
+    "text": "Battlecry: Your other bugs each consume a random minion in the tavern to gain its stats",
     "name": "Butterfree",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 9,
+    "baseHealth": 9,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -329,9 +343,10 @@
     "pokemonId": 13,
     "num": "013",
     "tier": 1,
+    "text": "Minions in the tavern have +1/+1",
     "name": "Weedle",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 1,
+    "baseHealth": 3,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -353,10 +368,11 @@
   {
     "pokemonId": 14,
     "num": "014",
-    "tier": 1,
+    "tier": 2,
+    "text": "Battlecry: Minions in the tavern have +2/+2 this game.",
     "name": "Kakuna",
     "baseAttack": 3,
-    "baseHealth": 2,
+    "baseHealth": 9,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -380,13 +396,16 @@
   {
     "pokemonId": 15,
     "num": "015",
-    "tier": 1,
+    "tier": 5,
+    "text": "Battlecry: Minions in the tavern have +5/+5 this game.",
     "name": "Beedrill",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 9,
+    "baseHealth": 27,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "venomous": true
+    },
     "type": [ "Bug", "Poison" ],
     "height": "0.99 m",
     "weight": "29.5 kg",
@@ -394,10 +413,12 @@
     "previousEvolutions": [
       {
         "num": "013",
+        "text": "",
         "name": "Weedle"
       },
       {
         "num": "014",
+        "text": "",
         "name": "Kakuna"
       }
     ]
@@ -406,9 +427,10 @@
     "pokemonId": 16,
     "num": "016",
     "tier": 1,
+    "text": "",
     "name": "Pidgey",
     "baseAttack": 3,
-    "baseHealth": 2,
+    "baseHealth": 4,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -419,10 +441,12 @@
     "nextEvolutions": [
       {
         "num": "017",
+        "text": "",
         "name": "Pidgeotto"
       },
       {
         "num": "018",
+        "text": "",
         "name": "Pidgeot"
       }
     ]
@@ -430,10 +454,11 @@
   {
     "pokemonId": 17,
     "num": "017",
-    "tier": 1,
+    "tier": 4,
+    "text": "",
     "name": "Pidgeotto",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 9,
+    "baseHealth": 12,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -444,12 +469,14 @@
     "previousEvolutions": [
       {
         "num": "016",
+        "text": "",
         "name": "Pidgey"
       }
     ],
     "nextEvolutions": [
       {
         "num": "018",
+        "text": "",
         "name": "Pidgeot"
       }
     ]
@@ -457,10 +484,11 @@
   {
     "pokemonId": 18,
     "num": "018",
-    "tier": 1,
+    "tier": 6,
+    "text": "",
     "name": "Pidgeot",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 27,
+    "baseHealth": 36,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -471,10 +499,12 @@
     "previousEvolutions": [
       {
         "num": "016",
+        "text": "",
         "name": "Pidgey"
       },
       {
         "num": "017",
+        "text": "",
         "name": "Pidgeotto"
       }
     ]
@@ -482,10 +512,11 @@
   {
     "pokemonId": 19,
     "num": "019",
-    "tier": 1,
+    "tier": 3,
+    "text": "",
     "name": "Rattata",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 5,
+    "baseHealth": 4,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -496,6 +527,7 @@
     "nextEvolutions": [
       {
         "num": "020",
+        "text": "",
         "name": "Raticate"
       }
     ]
@@ -503,10 +535,11 @@
   {
     "pokemonId": 20,
     "num": "020",
-    "tier": 1,
+    "tier": 5,
+    "text": "",
     "name": "Raticate",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 15,
+    "baseHealth": 12,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -517,6 +550,7 @@
     "previousEvolutions": [
       {
         "num": "019",
+        "text": "",
         "name": "Rattata"
       }
     ]
@@ -524,13 +558,16 @@
   {
     "pokemonId": 21,
     "num": "021",
-    "tier": 1,
+    "tier": 3,
+    "text": "",
     "name": "Spearow",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 2,
+    "baseHealth": 5,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "divineShield": true
+    },
     "type": [ "Normal", "Flying" ],
     "height": "0.30 m",
     "weight": "2.0 kg",
@@ -538,6 +575,7 @@
     "nextEvolutions": [
       {
         "num": "022",
+        "text": "",
         "name": "Fearow"
       }
     ]
@@ -545,13 +583,16 @@
   {
     "pokemonId": 22,
     "num": "022",
-    "tier": 1,
+    "tier": 5,
+    "text": "",
     "name": "Fearow",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 6,
+    "baseHealth": 15,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "divineShield": true
+    },
     "type": [ "Normal", "Flying" ],
     "height": "1.19 m",
     "weight": "38.0 kg",
@@ -559,6 +600,7 @@
     "previousEvolutions": [
       {
         "num": "021",
+        "text": "",
         "name": "Spearow"
       }
     ]
@@ -567,6 +609,7 @@
     "pokemonId": 23,
     "num": "023",
     "tier": 1,
+    "text": "",
     "name": "Ekans",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -580,6 +623,7 @@
     "nextEvolutions": [
       {
         "num": "024",
+        "text": "",
         "name": "Arbok"
       }
     ]
@@ -588,6 +632,7 @@
     "pokemonId": 24,
     "num": "024",
     "tier": 1,
+    "text": "",
     "name": "Arbok",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -601,6 +646,7 @@
     "previousEvolutions": [
       {
         "num": "023",
+        "text": "",
         "name": "Ekans"
       }
     ]
@@ -609,6 +655,7 @@
     "pokemonId": 25,
     "num": "025",
     "tier": 1,
+    "text": "",
     "name": "Pikachu",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -622,6 +669,7 @@
     "nextEvolutions": [
       {
         "num": "026",
+        "text": "",
         "name": "Raichu"
       }
     ]
@@ -630,6 +678,7 @@
     "pokemonId": 26,
     "num": "026",
     "tier": 1,
+    "text": "",
     "name": "Raichu",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -643,6 +692,7 @@
     "previousEvolutions": [
       {
         "num": "025",
+        "text": "",
         "name": "Pikachu"
       }
     ]
@@ -651,6 +701,7 @@
     "pokemonId": 27,
     "num": "027",
     "tier": 1,
+    "text": "",
     "name": "Sandshrew",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -664,6 +715,7 @@
     "nextEvolutions": [
       {
         "num": "028",
+        "text": "",
         "name": "Sandslash"
       }
     ]
@@ -672,6 +724,7 @@
     "pokemonId": 28,
     "num": "028",
     "tier": 1,
+    "text": "",
     "name": "Sandslash",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -685,6 +738,7 @@
     "previousEvolutions": [
       {
         "num": "027",
+        "text": "",
         "name": "Sandshrew"
       }
     ]
@@ -692,10 +746,11 @@
   {
     "pokemonId": 29,
     "num": "029",
-    "tier": 1,
+    "tier": 2,
+    "text": "",
     "name": "Nidoran ♀ (Female)",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 4,
+    "baseHealth": 3,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -706,10 +761,12 @@
     "nextEvolutions": [
       {
         "num": "030",
+        "text": "",
         "name": "Nidorina"
       },
       {
         "num": "031",
+        "text": "",
         "name": "Nidoqueen"
       }
     ]
@@ -717,10 +774,11 @@
   {
     "pokemonId": 30,
     "num": "030",
-    "tier": 1,
+    "tier": 4,
+    "text": "",
     "name": "Nidorina",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 12,
+    "baseHealth": 9,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -731,12 +789,14 @@
     "previousEvolutions": [
       {
         "num": "029",
+        "text": "",
         "name": "Nidoran(Female)"
       }
     ],
     "nextEvolutions": [
       {
         "num": "031",
+        "text": "",
         "name": "Nidoqueen"
       }
     ]
@@ -744,13 +804,16 @@
   {
     "pokemonId": 31,
     "num": "031",
-    "tier": 1,
+    "tier": 6,
+    "text": "",
     "name": "Nidoqueen",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 36,
+    "baseHealth": 27,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "venomous": true
+    },
     "type": [ "Poison", "Ground" ],
     "height": "1.30 m",
     "weight": "60.0 kg",
@@ -758,10 +821,12 @@
     "previousEvolutions": [
       {
         "num": "029",
+        "text": "",
         "name": "Nidoran(Female)"
       },
       {
         "num": "030",
+        "text": "",
         "name": "Nidorina"
       }
     ]
@@ -769,13 +834,16 @@
   {
     "pokemonId": 32,
     "num": "032",
-    "tier": 1,
+    "tier": 2,
+    "text": "",
     "name": "Nidoran ♂ (Male)",
     "baseAttack": 3,
     "baseHealth": 2,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "divineShield": true
+    },
     "type": [ "Poison" ],
     "height": "0.51 m",
     "weight": "9.0 kg",
@@ -783,10 +851,12 @@
     "nextEvolutions": [
       {
         "num": "033",
+        "text": "",
         "name": "Nidorino"
       },
       {
         "num": "034",
+        "text": "",
         "name": "Nidoking"
       }
     ]
@@ -794,13 +864,16 @@
   {
     "pokemonId": 33,
     "num": "033",
-    "tier": 1,
+    "tier": 4,
+    "text": "",
     "name": "Nidorino",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 9,
+    "baseHealth": 6,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "divineShield": true
+    },
     "type": [ "Poison" ],
     "height": "0.89 m",
     "weight": "19.5 kg",
@@ -808,12 +881,14 @@
     "previousEvolutions": [
       {
         "num": "032",
+        "text": "",
         "name": "Nidoran(Male)"
       }
     ],
     "nextEvolutions": [
       {
         "num": "034",
+        "text": "",
         "name": "Nidoking"
       }
     ]
@@ -822,12 +897,16 @@
     "pokemonId": 34,
     "num": "034",
     "tier": 1,
+    "text": "",
     "name": "Nidoking",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 27,
+    "baseHealth": 18,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "divineShield": true,
+      "venomous": true
+    },
     "type": [ "Poison", "Ground" ],
     "height": "1.40 m",
     "weight": "62.0 kg",
@@ -835,10 +914,12 @@
     "previousEvolutions": [
       {
         "num": "032",
+        "text": "",
         "name": "Nidoran(Male)"
       },
       {
         "num": "033",
+        "text": "",
         "name": "Nidorino"
       }
     ]
@@ -847,6 +928,7 @@
     "pokemonId": 35,
     "num": "035",
     "tier": 1,
+    "text": "",
     "name": "Clefairy",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -860,6 +942,7 @@
     "nextEvolutions": [
       {
         "num": "036",
+        "text": "",
         "name": "Clefable"
       }
     ]
@@ -868,6 +951,7 @@
     "pokemonId": 36,
     "num": "036",
     "tier": 1,
+    "text": "",
     "name": "Clefable",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -881,6 +965,7 @@
     "previousEvolutions": [
       {
         "num": "035",
+        "text": "",
         "name": "Clefairy"
       }
     ]
@@ -889,6 +974,7 @@
     "pokemonId": 37,
     "num": "037",
     "tier": 1,
+    "text": "",
     "name": "Vulpix",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -902,6 +988,7 @@
     "nextEvolutions": [
       {
         "num": "038",
+        "text": "",
         "name": "Ninetales"
       }
     ]
@@ -910,6 +997,7 @@
     "pokemonId": 38,
     "num": "038",
     "tier": 1,
+    "text": "",
     "name": "Ninetales",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -923,6 +1011,7 @@
     "previousEvolutions": [
       {
         "num": "037",
+        "text": "",
         "name": "Vulpix"
       }
     ]
@@ -931,6 +1020,7 @@
     "pokemonId": 39,
     "num": "039",
     "tier": 1,
+    "text": "",
     "name": "Jigglypuff",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -944,6 +1034,7 @@
     "nextEvolutions": [
       {
         "num": "040",
+        "text": "",
         "name": "Wigglytuff"
       }
     ]
@@ -952,6 +1043,7 @@
     "pokemonId": 40,
     "num": "040",
     "tier": 1,
+    "text": "",
     "name": "Wigglytuff",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -965,6 +1057,7 @@
     "previousEvolutions": [
       {
         "num": "039",
+        "text": "",
         "name": "Jigglypuff"
       }
     ]
@@ -973,6 +1066,7 @@
     "pokemonId": 41,
     "num": "041",
     "tier": 1,
+    "text": "",
     "name": "Zubat",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -986,6 +1080,7 @@
     "nextEvolutions": [
       {
         "num": "042",
+        "text": "",
         "name": "Golbat"
       }
     ]
@@ -994,6 +1089,7 @@
     "pokemonId": 42,
     "num": "042",
     "tier": 1,
+    "text": "",
     "name": "Golbat",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1007,6 +1103,7 @@
     "previousEvolutions": [
       {
         "num": "041",
+        "text": "",
         "name": "Zubat"
       }
     ]
@@ -1014,10 +1111,11 @@
   {
     "pokemonId": 43,
     "num": "043",
-    "tier": 1,
+    "tier": 2,
+    "text": "",
     "name": "Oddish",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 1,
+    "baseHealth": 8,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1028,10 +1126,12 @@
     "nextEvolutions": [
       {
         "num": "044",
+        "text": "",
         "name": "Gloom"
       },
       {
         "num": "045",
+        "text": "",
         "name": "Vileplume"
       }
     ]
@@ -1039,10 +1139,11 @@
   {
     "pokemonId": 44,
     "num": "044",
-    "tier": 1,
+    "tier": 4,
+    "text": "",
     "name": "Gloom",
     "baseAttack": 3,
-    "baseHealth": 2,
+    "baseHealth": 24,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1053,12 +1154,14 @@
     "previousEvolutions": [
       {
         "num": "043",
+        "text": "",
         "name": "Oddish"
       }
     ],
     "nextEvolutions": [
       {
         "num": "045",
+        "text": "",
         "name": "Vileplume"
       }
     ]
@@ -1066,10 +1169,11 @@
   {
     "pokemonId": 45,
     "num": "045",
-    "tier": 1,
+    "tier": 6,
+    "text": "",
     "name": "Vileplume",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 9,
+    "baseHealth": 72,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1080,10 +1184,12 @@
     "previousEvolutions": [
       {
         "num": "043",
+        "text": "",
         "name": "Oddish"
       },
       {
         "num": "044",
+        "text": "",
         "name": "Gloom"
       }
     ]
@@ -1092,6 +1198,7 @@
     "pokemonId": 46,
     "num": "046",
     "tier": 1,
+    "text": "",
     "name": "Paras",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1105,6 +1212,7 @@
     "nextEvolutions": [
       {
         "num": "047",
+        "text": "",
         "name": "Parasect"
       }
     ]
@@ -1113,6 +1221,7 @@
     "pokemonId": 47,
     "num": "047",
     "tier": 1,
+    "text": "",
     "name": "Parasect",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1126,6 +1235,7 @@
     "previousEvolutions": [
       {
         "num": "046",
+        "text": "",
         "name": "Paras"
       }
     ]
@@ -1134,6 +1244,7 @@
     "pokemonId": 48,
     "num": "048",
     "tier": 1,
+    "text": "",
     "name": "Venonat",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1147,6 +1258,7 @@
     "nextEvolutions": [
       {
         "num": "049",
+        "text": "",
         "name": "Venomoth"
       }
     ]
@@ -1155,6 +1267,7 @@
     "pokemonId": 49,
     "num": "049",
     "tier": 1,
+    "text": "",
     "name": "Venomoth",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1168,6 +1281,7 @@
     "previousEvolutions": [
       {
         "num": "048",
+        "text": "",
         "name": "Venonat"
       }
     ]
@@ -1176,6 +1290,7 @@
     "pokemonId": 50,
     "num": "050",
     "tier": 1,
+    "text": "",
     "name": "Diglett",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1189,6 +1304,7 @@
     "nextEvolutions": [
       {
         "num": "051",
+        "text": "",
         "name": "Dugtrio"
       }
     ]
@@ -1197,6 +1313,7 @@
     "pokemonId": 51,
     "num": "051",
     "tier": 1,
+    "text": "",
     "name": "Dugtrio",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1210,6 +1327,7 @@
     "previousEvolutions": [
       {
         "num": "050",
+        "text": "",
         "name": "Diglett"
       }
     ]
@@ -1218,6 +1336,7 @@
     "pokemonId": 52,
     "num": "052",
     "tier": 1,
+    "text": "",
     "name": "Meowth",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1231,6 +1350,7 @@
     "nextEvolutions": [
       {
         "num": "053",
+        "text": "",
         "name": "Persian"
       }
     ]
@@ -1239,6 +1359,7 @@
     "pokemonId": 53,
     "num": "053",
     "tier": 1,
+    "text": "",
     "name": "Persian",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1252,6 +1373,7 @@
     "previousEvolutions": [
       {
         "num": "052",
+        "text": "",
         "name": "Meowth"
       }
     ]
@@ -1260,6 +1382,7 @@
     "pokemonId": 54,
     "num": "054",
     "tier": 1,
+    "text": "",
     "name": "Psyduck",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1273,6 +1396,7 @@
     "nextEvolutions": [
       {
         "num": "055",
+        "text": "",
         "name": "Golduck"
       }
     ]
@@ -1281,6 +1405,7 @@
     "pokemonId": 55,
     "num": "055",
     "tier": 1,
+    "text": "",
     "name": "Golduck",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1294,6 +1419,7 @@
     "previousEvolutions": [
       {
         "num": "054",
+        "text": "",
         "name": "Psyduck"
       }
     ]
@@ -1302,6 +1428,7 @@
     "pokemonId": 56,
     "num": "056",
     "tier": 1,
+    "text": "",
     "name": "Mankey",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1315,6 +1442,7 @@
     "nextEvolutions": [
       {
         "num": "057",
+        "text": "",
         "name": "Primeape"
       }
     ]
@@ -1323,6 +1451,7 @@
     "pokemonId": 57,
     "num": "057",
     "tier": 1,
+    "text": "",
     "name": "Primeape",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1336,6 +1465,7 @@
     "previousEvolutions": [
       {
         "num": "056",
+        "text": "",
         "name": "Mankey"
       }
     ]
@@ -1344,6 +1474,7 @@
     "pokemonId": 58,
     "num": "058",
     "tier": 1,
+    "text": "",
     "name": "Growlithe",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1357,6 +1488,7 @@
     "nextEvolutions": [
       {
         "num": "059",
+        "text": "",
         "name": "Arcanine"
       }
     ]
@@ -1365,6 +1497,7 @@
     "pokemonId": 59,
     "num": "059",
     "tier": 1,
+    "text": "",
     "name": "Arcanine",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1378,6 +1511,7 @@
     "previousEvolutions": [
       {
         "num": "058",
+        "text": "",
         "name": "Growlithe"
       }
     ]
@@ -1386,6 +1520,7 @@
     "pokemonId": 60,
     "num": "060",
     "tier": 1,
+    "text": "",
     "name": "Poliwag",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1399,10 +1534,12 @@
     "nextEvolutions": [
       {
         "num": "061",
+        "text": "",
         "name": "Poliwhirl"
       },
       {
         "num": "062",
+        "text": "",
         "name": "Poliwrath"
       }
     ]
@@ -1411,6 +1548,7 @@
     "pokemonId": 61,
     "num": "061",
     "tier": 1,
+    "text": "",
     "name": "Poliwhirl",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1424,12 +1562,14 @@
     "previousEvolutions": [
       {
         "num": "060",
+        "text": "",
         "name": "Poliwag"
       }
     ],
     "nextEvolutions": [
       {
         "num": "062",
+        "text": "",
         "name": "Poliwrath"
       }
     ]
@@ -1438,6 +1578,7 @@
     "pokemonId": 62,
     "num": "062",
     "tier": 1,
+    "text": "",
     "name": "Poliwrath",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1451,10 +1592,12 @@
     "previousEvolutions": [
       {
         "num": "060",
+        "text": "",
         "name": "Poliwag"
       },
       {
         "num": "061",
+        "text": "",
         "name": "Poliwhirl"
       }
     ]
@@ -1463,6 +1606,7 @@
     "pokemonId": 63,
     "num": "063",
     "tier": 1,
+    "text": "",
     "name": "Abra",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1476,10 +1620,12 @@
     "nextEvolutions": [
       {
         "num": "064",
+        "text": "",
         "name": "Kadabra"
       },
       {
         "num": "065",
+        "text": "",
         "name": "Alakazam"
       }
     ]
@@ -1488,6 +1634,7 @@
     "pokemonId": 64,
     "num": "064",
     "tier": 1,
+    "text": "",
     "name": "Kadabra",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1501,12 +1648,14 @@
     "previousEvolutions": [
       {
         "num": "063",
+        "text": "",
         "name": "Abra"
       }
     ],
     "nextEvolutions": [
       {
         "num": "065",
+        "text": "",
         "name": "Alakazam"
       }
     ]
@@ -1515,6 +1664,7 @@
     "pokemonId": 65,
     "num": "065",
     "tier": 1,
+    "text": "",
     "name": "Alakazam",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1528,10 +1678,12 @@
     "previousEvolutions": [
       {
         "num": "063",
+        "text": "",
         "name": "Abra"
       },
       {
         "num": "064",
+        "text": "",
         "name": "Kadabra"
       }
     ]
@@ -1540,6 +1692,7 @@
     "pokemonId": 66,
     "num": "066",
     "tier": 1,
+    "text": "",
     "name": "Machop",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1553,10 +1706,12 @@
     "nextEvolutions": [
       {
         "num": "067",
+        "text": "",
         "name": "Machoke"
       },
       {
         "num": "068",
+        "text": "",
         "name": "Machamp"
       }
     ]
@@ -1565,6 +1720,7 @@
     "pokemonId": 67,
     "num": "067",
     "tier": 1,
+    "text": "",
     "name": "Machoke",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1578,12 +1734,14 @@
     "previousEvolutions": [
       {
         "num": "066",
+        "text": "",
         "name": "Machop"
       }
     ],
     "nextEvolutions": [
       {
         "num": "068",
+        "text": "",
         "name": "Machamp"
       }
     ]
@@ -1592,6 +1750,7 @@
     "pokemonId": 68,
     "num": "068",
     "tier": 1,
+    "text": "",
     "name": "Machamp",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1605,10 +1764,12 @@
     "previousEvolutions": [
       {
         "num": "066",
+        "text": "",
         "name": "Machop"
       },
       {
         "num": "067",
+        "text": "",
         "name": "Machoke"
       }
     ]
@@ -1617,6 +1778,7 @@
     "pokemonId": 69,
     "num": "069",
     "tier": 1,
+    "text": "",
     "name": "Bellsprout",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1630,10 +1792,12 @@
     "nextEvolutions": [
       {
         "num": "070",
+        "text": "",
         "name": "Weepinbell"
       },
       {
         "num": "071",
+        "text": "",
         "name": "Victreebel"
       }
     ]
@@ -1642,6 +1806,7 @@
     "pokemonId": 70,
     "num": "070",
     "tier": 1,
+    "text": "",
     "name": "Weepinbell",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1655,12 +1820,14 @@
     "previousEvolutions": [
       {
         "num": "069",
+        "text": "",
         "name": "Bellsprout"
       }
     ],
     "nextEvolutions": [
       {
         "num": "071",
+        "text": "",
         "name": "Victreebel"
       }
     ]
@@ -1669,6 +1836,7 @@
     "pokemonId": 71,
     "num": "071",
     "tier": 1,
+    "text": "",
     "name": "Victreebel",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1682,10 +1850,12 @@
     "previousEvolutions": [
       {
         "num": "069",
+        "text": "",
         "name": "Bellsprout"
       },
       {
         "num": "070",
+        "text": "",
         "name": "Weepinbell"
       }
     ]
@@ -1694,6 +1864,7 @@
     "pokemonId": 72,
     "num": "072",
     "tier": 1,
+    "text": "",
     "name": "Tentacool",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1707,6 +1878,7 @@
     "nextEvolutions": [
       {
         "num": "073",
+        "text": "",
         "name": "Tentacruel"
       }
     ]
@@ -1715,6 +1887,7 @@
     "pokemonId": 73,
     "num": "073",
     "tier": 1,
+    "text": "",
     "name": "Tentacruel",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1728,6 +1901,7 @@
     "previousEvolutions": [
       {
         "num": "072",
+        "text": "",
         "name": "Tentacool"
       }
     ]
@@ -1736,6 +1910,7 @@
     "pokemonId": 74,
     "num": "074",
     "tier": 1,
+    "text": "",
     "name": "Geodude",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1749,10 +1924,12 @@
     "nextEvolutions": [
       {
         "num": "075",
+        "text": "",
         "name": "Graveler"
       },
       {
         "num": "076",
+        "text": "",
         "name": "Golem"
       }
     ]
@@ -1761,6 +1938,7 @@
     "pokemonId": 75,
     "num": "075",
     "tier": 1,
+    "text": "",
     "name": "Graveler",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1774,12 +1952,14 @@
     "previousEvolutions": [
       {
         "num": "074",
+        "text": "",
         "name": "Geodude"
       }
     ],
     "nextEvolutions": [
       {
         "num": "076",
+        "text": "",
         "name": "Golem"
       }
     ]
@@ -1788,6 +1968,7 @@
     "pokemonId": 76,
     "num": "076",
     "tier": 1,
+    "text": "",
     "name": "Golem",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1801,10 +1982,12 @@
     "previousEvolutions": [
       {
         "num": "074",
+        "text": "",
         "name": "Geodude"
       },
       {
         "num": "075",
+        "text": "",
         "name": "Graveler"
       }
     ]
@@ -1813,6 +1996,7 @@
     "pokemonId": 77,
     "num": "077",
     "tier": 1,
+    "text": "",
     "name": "Ponyta",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1826,6 +2010,7 @@
     "nextEvolutions": [
       {
         "num": "078",
+        "text": "",
         "name": "Rapidash"
       }
     ]
@@ -1834,6 +2019,7 @@
     "pokemonId": 78,
     "num": "078",
     "tier": 1,
+    "text": "",
     "name": "Rapidash",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1847,6 +2033,7 @@
     "previousEvolutions": [
       {
         "num": "077",
+        "text": "",
         "name": "Ponyta"
       }
     ]
@@ -1855,6 +2042,7 @@
     "pokemonId": 79,
     "num": "079",
     "tier": 1,
+    "text": "",
     "name": "Slowpoke",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1868,6 +2056,7 @@
     "nextEvolutions": [
       {
         "num": "080",
+        "text": "",
         "name": "Slowbro"
       }
     ]
@@ -1876,6 +2065,7 @@
     "pokemonId": 80,
     "num": "080",
     "tier": 1,
+    "text": "",
     "name": "Slowbro",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1889,6 +2079,7 @@
     "previousEvolutions": [
       {
         "num": "079",
+        "text": "",
         "name": "Slowpoke"
       }
     ]
@@ -1897,6 +2088,7 @@
     "pokemonId": 81,
     "num": "081",
     "tier": 1,
+    "text": "",
     "name": "Magnemite",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1910,6 +2102,7 @@
     "nextEvolutions": [
       {
         "num": "082",
+        "text": "",
         "name": "Magneton"
       }
     ]
@@ -1918,6 +2111,7 @@
     "pokemonId": 82,
     "num": "082",
     "tier": 1,
+    "text": "",
     "name": "Magneton",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1931,6 +2125,7 @@
     "previousEvolutions": [
       {
         "num": "081",
+        "text": "",
         "name": "Magnemite"
       }
     ]
@@ -1939,6 +2134,7 @@
     "pokemonId": 83,
     "num": "083",
     "tier": 1,
+    "text": "",
     "name": "Farfetch'd",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1954,6 +2150,7 @@
     "pokemonId": 84,
     "num": "084",
     "tier": 1,
+    "text": "",
     "name": "Doduo",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1967,6 +2164,7 @@
     "nextEvolutions": [
       {
         "num": "085",
+        "text": "",
         "name": "Dodrio"
       }
     ]
@@ -1975,6 +2173,7 @@
     "pokemonId": 85,
     "num": "085",
     "tier": 1,
+    "text": "",
     "name": "Dodrio",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1988,6 +2187,7 @@
     "previousEvolutions": [
       {
         "num": "084",
+        "text": "",
         "name": "Doduo"
       }
     ]
@@ -1996,6 +2196,7 @@
     "pokemonId": 86,
     "num": "086",
     "tier": 1,
+    "text": "",
     "name": "Seel",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2009,6 +2210,7 @@
     "nextEvolutions": [
       {
         "num": "087",
+        "text": "",
         "name": "Dewgong"
       }
     ]
@@ -2017,6 +2219,7 @@
     "pokemonId": 87,
     "num": "087",
     "tier": 1,
+    "text": "",
     "name": "Dewgong",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2030,6 +2233,7 @@
     "previousEvolutions": [
       {
         "num": "086",
+        "text": "",
         "name": "Seel"
       }
     ]
@@ -2038,6 +2242,7 @@
     "pokemonId": 88,
     "num": "088",
     "tier": 1,
+    "text": "",
     "name": "Grimer",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2051,6 +2256,7 @@
     "nextEvolutions": [
       {
         "num": "089",
+        "text": "",
         "name": "Muk"
       }
     ]
@@ -2059,6 +2265,7 @@
     "pokemonId": 89,
     "num": "089",
     "tier": 1,
+    "text": "",
     "name": "Muk",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2072,6 +2279,7 @@
     "previousEvolutions": [
       {
         "num": "088",
+        "text": "",
         "name": "Grimer"
       }
     ]
@@ -2080,6 +2288,7 @@
     "pokemonId": 90,
     "num": "090",
     "tier": 1,
+    "text": "",
     "name": "Shellder",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2093,6 +2302,7 @@
     "nextEvolutions": [
       {
         "num": "091",
+        "text": "",
         "name": "Cloyster"
       }
     ]
@@ -2101,6 +2311,7 @@
     "pokemonId": 91,
     "num": "091",
     "tier": 1,
+    "text": "",
     "name": "Cloyster",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2114,6 +2325,7 @@
     "previousEvolutions": [
       {
         "num": "090",
+        "text": "",
         "name": "Shellder"
       }
     ]
@@ -2122,6 +2334,7 @@
     "pokemonId": 92,
     "num": "092",
     "tier": 1,
+    "text": "",
     "name": "Gastly",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2135,10 +2348,12 @@
     "nextEvolutions": [
       {
         "num": "093",
+        "text": "",
         "name": "Haunter"
       },
       {
         "num": "094",
+        "text": "",
         "name": "Gengar"
       }
     ]
@@ -2147,6 +2362,7 @@
     "pokemonId": 93,
     "num": "093",
     "tier": 1,
+    "text": "",
     "name": "Haunter",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2160,12 +2376,14 @@
     "previousEvolutions": [
       {
         "num": "092",
+        "text": "",
         "name": "Gastly"
       }
     ],
     "nextEvolutions": [
       {
         "num": "094",
+        "text": "",
         "name": "Gengar"
       }
     ]
@@ -2174,6 +2392,7 @@
     "pokemonId": 94,
     "num": "094",
     "tier": 1,
+    "text": "",
     "name": "Gengar",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2187,10 +2406,12 @@
     "previousEvolutions": [
       {
         "num": "092",
+        "text": "",
         "name": "Gastly"
       },
       {
         "num": "093",
+        "text": "",
         "name": "Haunter"
       }
     ]
@@ -2199,6 +2420,7 @@
     "pokemonId": 95,
     "num": "095",
     "tier": 1,
+    "text": "",
     "name": "Onix",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2214,6 +2436,7 @@
     "pokemonId": 96,
     "num": "096",
     "tier": 1,
+    "text": "",
     "name": "Drowzee",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2227,6 +2450,7 @@
     "nextEvolutions": [
       {
         "num": "097",
+        "text": "",
         "name": "Hypno"
       }
     ]
@@ -2235,6 +2459,7 @@
     "pokemonId": 97,
     "num": "097",
     "tier": 1,
+    "text": "",
     "name": "Hypno",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2248,6 +2473,7 @@
     "previousEvolutions": [
       {
         "num": "096",
+        "text": "",
         "name": "Drowzee"
       }
     ]
@@ -2256,6 +2482,7 @@
     "pokemonId": 98,
     "num": "098",
     "tier": 1,
+    "text": "",
     "name": "Krabby",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2269,6 +2496,7 @@
     "nextEvolutions": [
       {
         "num": "099",
+        "text": "",
         "name": "Kingler"
       }
     ]
@@ -2277,6 +2505,7 @@
     "pokemonId": 99,
     "num": "099",
     "tier": 1,
+    "text": "",
     "name": "Kingler",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2290,6 +2519,7 @@
     "previousEvolutions": [
       {
         "num": "098",
+        "text": "",
         "name": "Krabby"
       }
     ]
@@ -2298,6 +2528,7 @@
     "pokemonId": 100,
     "num": "100",
     "tier": 1,
+    "text": "",
     "name": "Voltorb",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2311,6 +2542,7 @@
     "nextEvolutions": [
       {
         "num": "101",
+        "text": "",
         "name": "Electrode"
       }
     ]
@@ -2319,6 +2551,7 @@
     "pokemonId": 101,
     "num": "101",
     "tier": 1,
+    "text": "",
     "name": "Electrode",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2332,6 +2565,7 @@
     "previousEvolutions": [
       {
         "num": "100",
+        "text": "",
         "name": "Voltorb"
       }
     ]
@@ -2340,6 +2574,7 @@
     "pokemonId": 102,
     "num": "102",
     "tier": 1,
+    "text": "",
     "name": "Exeggcute",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2353,6 +2588,7 @@
     "nextEvolutions": [
       {
         "num": "103",
+        "text": "",
         "name": "Exeggutor"
       }
     ]
@@ -2361,6 +2597,7 @@
     "pokemonId": 103,
     "num": "103",
     "tier": 1,
+    "text": "",
     "name": "Exeggutor",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2374,6 +2611,7 @@
     "previousEvolutions": [
       {
         "num": "102",
+        "text": "",
         "name": "Exeggcute"
       }
     ]
@@ -2382,6 +2620,7 @@
     "pokemonId": 104,
     "num": "104",
     "tier": 1,
+    "text": "",
     "name": "Cubone",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2395,6 +2634,7 @@
     "nextEvolutions": [
       {
         "num": "105",
+        "text": "",
         "name": "Marowak"
       }
     ]
@@ -2403,6 +2643,7 @@
     "pokemonId": 105,
     "num": "105",
     "tier": 1,
+    "text": "",
     "name": "Marowak",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2416,6 +2657,7 @@
     "previousEvolutions": [
       {
         "num": "104",
+        "text": "",
         "name": "Cubone"
       }
     ]
@@ -2424,6 +2666,7 @@
     "pokemonId": 106,
     "num": "106",
     "tier": 1,
+    "text": "",
     "name": "Hitmonlee",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2439,6 +2682,7 @@
     "pokemonId": 107,
     "num": "107",
     "tier": 1,
+    "text": "",
     "name": "Hitmonchan",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2454,6 +2698,7 @@
     "pokemonId": 108,
     "num": "108",
     "tier": 1,
+    "text": "",
     "name": "Lickitung",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2469,6 +2714,7 @@
     "pokemonId": 109,
     "num": "109",
     "tier": 1,
+    "text": "",
     "name": "Koffing",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2482,6 +2728,7 @@
     "nextEvolutions": [
       {
         "num": "110",
+        "text": "",
         "name": "Weezing"
       }
     ]
@@ -2490,6 +2737,7 @@
     "pokemonId": 110,
     "num": "110",
     "tier": 1,
+    "text": "",
     "name": "Weezing",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2503,6 +2751,7 @@
     "previousEvolutions": [
       {
         "num": "109",
+        "text": "",
         "name": "Koffing"
       }
     ]
@@ -2511,6 +2760,7 @@
     "pokemonId": 111,
     "num": "111",
     "tier": 1,
+    "text": "",
     "name": "Rhyhorn",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2524,6 +2774,7 @@
     "nextEvolutions": [
       {
         "num": "112",
+        "text": "",
         "name": "Rhydon"
       }
     ]
@@ -2532,6 +2783,7 @@
     "pokemonId": 112,
     "num": "112",
     "tier": 1,
+    "text": "",
     "name": "Rhydon",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2545,6 +2797,7 @@
     "previousEvolutions": [
       {
         "num": "111",
+        "text": "",
         "name": "Rhyhorn"
       }
     ]
@@ -2553,6 +2806,7 @@
     "pokemonId": 113,
     "num": "113",
     "tier": 1,
+    "text": "",
     "name": "Chansey",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2568,6 +2822,7 @@
     "pokemonId": 114,
     "num": "114",
     "tier": 1,
+    "text": "",
     "name": "Tangela",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2583,6 +2838,7 @@
     "pokemonId": 115,
     "num": "115",
     "tier": 1,
+    "text": "",
     "name": "Kangaskhan",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2598,6 +2854,7 @@
     "pokemonId": 116,
     "num": "116",
     "tier": 1,
+    "text": "",
     "name": "Horsea",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2611,6 +2868,7 @@
     "nextEvolutions": [
       {
         "num": "117",
+        "text": "",
         "name": "Seadra"
       }
     ]
@@ -2619,6 +2877,7 @@
     "pokemonId": 117,
     "num": "117",
     "tier": 1,
+    "text": "",
     "name": "Seadra",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2632,6 +2891,7 @@
     "previousEvolutions": [
       {
         "num": "116",
+        "text": "",
         "name": "Horsea"
       }
     ]
@@ -2640,6 +2900,7 @@
     "pokemonId": 118,
     "num": "118",
     "tier": 1,
+    "text": "",
     "name": "Goldeen",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2653,6 +2914,7 @@
     "nextEvolutions": [
       {
         "num": "119",
+        "text": "",
         "name": "Seaking"
       }
     ]
@@ -2661,6 +2923,7 @@
     "pokemonId": 119,
     "num": "119",
     "tier": 1,
+    "text": "",
     "name": "Seaking",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2674,6 +2937,7 @@
     "previousEvolutions": [
       {
         "num": "118",
+        "text": "",
         "name": "Goldeen"
       }
     ]
@@ -2682,6 +2946,7 @@
     "pokemonId": 120,
     "num": "120",
     "tier": 1,
+    "text": "",
     "name": "Staryu",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2695,6 +2960,7 @@
     "nextEvolutions": [
       {
         "num": "121",
+        "text": "",
         "name": "Starmie"
       }
     ]
@@ -2703,6 +2969,7 @@
     "pokemonId": 121,
     "num": "121",
     "tier": 1,
+    "text": "",
     "name": "Starmie",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2716,6 +2983,7 @@
     "previousEvolutions": [
       {
         "num": "120",
+        "text": "",
         "name": "Staryu"
       }
     ]
@@ -2724,6 +2992,7 @@
     "pokemonId": 122,
     "num": "122",
     "tier": 1,
+    "text": "",
     "name": "Mr. Mime",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2739,6 +3008,7 @@
     "pokemonId": 123,
     "num": "123",
     "tier": 1,
+    "text": "",
     "name": "Scyther",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2754,6 +3024,7 @@
     "pokemonId": 124,
     "num": "124",
     "tier": 1,
+    "text": "",
     "name": "Jynx",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2769,6 +3040,7 @@
     "pokemonId": 125,
     "num": "125",
     "tier": 1,
+    "text": "",
     "name": "Electabuzz",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2784,6 +3056,7 @@
     "pokemonId": 126,
     "num": "126",
     "tier": 1,
+    "text": "",
     "name": "Magmar",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2799,6 +3072,7 @@
     "pokemonId": 127,
     "num": "127",
     "tier": 1,
+    "text": "",
     "name": "Pinsir",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2814,6 +3088,7 @@
     "pokemonId": 128,
     "num": "128",
     "tier": 1,
+    "text": "",
     "name": "Tauros",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2829,6 +3104,7 @@
     "pokemonId": 129,
     "num": "129",
     "tier": 1,
+    "text": "",
     "name": "Magikarp",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2842,6 +3118,7 @@
     "nextEvolutions": [
       {
         "num": "130",
+        "text": "",
         "name": "Gyarados"
       }
     ]
@@ -2850,6 +3127,7 @@
     "pokemonId": 130,
     "num": "130",
     "tier": 1,
+    "text": "",
     "name": "Gyarados",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2863,6 +3141,7 @@
     "previousEvolutions": [
       {
         "num": "129",
+        "text": "",
         "name": "Magikarp"
       }
     ]
@@ -2871,6 +3150,7 @@
     "pokemonId": 131,
     "num": "131",
     "tier": 1,
+    "text": "",
     "name": "Lapras",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2886,6 +3166,7 @@
     "pokemonId": 132,
     "num": "132",
     "tier": 1,
+    "text": "",
     "name": "Ditto",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2901,6 +3182,7 @@
     "pokemonId": 133,
     "num": "133",
     "tier": 1,
+    "text": "",
     "name": "Eevee",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2914,14 +3196,17 @@
     "nextEvolutions": [
       {
         "num": "134",
+        "text": "",
         "name": "Vaporeon"
       },
       {
         "num": "135",
+        "text": "",
         "name": "Jolteon"
       },
       {
         "num": "136",
+        "text": "",
         "name": "Flareon"
       }
     ]
@@ -2930,6 +3215,7 @@
     "pokemonId": 134,
     "num": "134",
     "tier": 1,
+    "text": "",
     "name": "Vaporeon",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2943,6 +3229,7 @@
     "previousEvolutions": [
       {
         "num": "133",
+        "text": "",
         "name": "Eevee"
       }
     ]
@@ -2951,6 +3238,7 @@
     "pokemonId": 135,
     "num": "135",
     "tier": 1,
+    "text": "",
     "name": "Jolteon",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2964,6 +3252,7 @@
     "previousEvolutions": [
       {
         "num": "133",
+        "text": "",
         "name": "Eevee"
       }
     ]
@@ -2972,6 +3261,7 @@
     "pokemonId": 136,
     "num": "136",
     "tier": 1,
+    "text": "",
     "name": "Flareon",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2985,6 +3275,7 @@
     "previousEvolutions": [
       {
         "num": "133",
+        "text": "",
         "name": "Eevee"
       }
     ]
@@ -2993,6 +3284,7 @@
     "pokemonId": 137,
     "num": "137",
     "tier": 1,
+    "text": "",
     "name": "Porygon",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3008,6 +3300,7 @@
     "pokemonId": 138,
     "num": "138",
     "tier": 1,
+    "text": "",
     "name": "Omanyte",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3021,6 +3314,7 @@
     "nextEvolutions": [
       {
         "num": "139",
+        "text": "",
         "name": "Omastar"
       }
     ]
@@ -3029,6 +3323,7 @@
     "pokemonId": 139,
     "num": "139",
     "tier": 1,
+    "text": "",
     "name": "Omastar",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3042,6 +3337,7 @@
     "previousEvolutions": [
       {
         "num": "138",
+        "text": "",
         "name": "Omanyte"
       }
     ]
@@ -3050,6 +3346,7 @@
     "pokemonId": 140,
     "num": "140",
     "tier": 1,
+    "text": "",
     "name": "Kabuto",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3063,6 +3360,7 @@
     "nextEvolutions": [
       {
         "num": "141",
+        "text": "",
         "name": "Kabutops"
       }
     ]
@@ -3071,6 +3369,7 @@
     "pokemonId": 141,
     "num": "141",
     "tier": 1,
+    "text": "",
     "name": "Kabutops",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3084,6 +3383,7 @@
     "previousEvolutions": [
       {
         "num": "140",
+        "text": "",
         "name": "Kabuto"
       }
     ]
@@ -3092,6 +3392,7 @@
     "pokemonId": 142,
     "num": "142",
     "tier": 1,
+    "text": "",
     "name": "Aerodactyl",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3107,6 +3408,7 @@
     "pokemonId": 143,
     "num": "143",
     "tier": 1,
+    "text": "",
     "name": "Snorlax",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3122,6 +3424,7 @@
     "pokemonId": 144,
     "num": "144",
     "tier": 1,
+    "text": "",
     "name": "Articuno",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3137,6 +3440,7 @@
     "pokemonId": 145,
     "num": "145",
     "tier": 1,
+    "text": "",
     "name": "Zapdos",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3152,6 +3456,7 @@
     "pokemonId": 146,
     "num": "146",
     "tier": 1,
+    "text": "",
     "name": "Moltres",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3167,6 +3472,7 @@
     "pokemonId": 147,
     "num": "147",
     "tier": 1,
+    "text": "",
     "name": "Dratini",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3180,10 +3486,12 @@
     "nextEvolutions": [
       {
         "num": "148",
+        "text": "",
         "name": "Dragonair"
       },
       {
         "num": "149",
+        "text": "",
         "name": "Dragonite"
       }
     ]
@@ -3192,6 +3500,7 @@
     "pokemonId": 148,
     "num": "148",
     "tier": 1,
+    "text": "",
     "name": "Dragonair",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3205,12 +3514,14 @@
     "previousEvolutions": [
       {
         "num": "147",
+        "text": "",
         "name": "Dratini"
       }
     ],
     "nextEvolutions": [
       {
         "num": "149",
+        "text": "",
         "name": "Dragonite"
       }
     ]
@@ -3219,6 +3530,7 @@
     "pokemonId": 149,
     "num": "149",
     "tier": 1,
+    "text": "",
     "name": "Dragonite",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3232,10 +3544,12 @@
     "previousEvolutions": [
       {
         "num": "147",
+        "text": "",
         "name": "Dratini"
       },
       {
         "num": "148",
+        "text": "",
         "name": "Dragonair"
       }
     ]
@@ -3244,6 +3558,7 @@
     "pokemonId": 150,
     "num": "150",
     "tier": 1,
+    "text": "",
     "name": "Mewtwo",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -3259,6 +3574,7 @@
     "pokemonId": 151,
     "num": "151",
     "tier": 1,
+    "text": "",
     "name": "Mew",
     "baseAttack": 3,
     "baseHealth": 2,

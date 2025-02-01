@@ -34,6 +34,7 @@ namespace PokeChess.Server.Models.Player
             DelayedSpells = new List<Card>();
             PreviousOpponentIds = new List<string>();
             CombatActions = new List<CombatAction>();
+            CardsToReturnToPool = new List<Card>();
         }
 
         public string? Id { get; set; }
@@ -60,6 +61,7 @@ namespace PokeChess.Server.Models.Player
         public List<Card> Hand { get; set; }
         public List<Card> Shop { get; set; }
         public List<Card> DelayedSpells { get; set; }
+        public List<Card> CardsToReturnToPool { get; set; }
         public List<string> PreviousOpponentIds { get; set; }
         public List<CombatAction> CombatActions { get; set; }
         public bool IsDead

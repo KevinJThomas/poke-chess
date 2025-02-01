@@ -141,6 +141,7 @@ namespace PokeChess.Server.Extensions
                                     var id = player.Board.Where(x => x.PokemonId == pokemonId).FirstOrDefault().Id;
                                     extraAttack += player.Board.Where(x => x.Id == id).FirstOrDefault().Attack - player.Board.Where(x => x.Id == id).FirstOrDefault().BaseAttack;
                                     extraHealth += player.Board.Where(x => x.Id == id).FirstOrDefault().Health - player.Board.Where(x => x.Id == id).FirstOrDefault().BaseHealth;
+                                    player.CardsToReturnToPool.Add(player.Board.Where(x => x.Id == id).FirstOrDefault());
                                     player.Board = player.Board.Where(x => x.Id != id).ToList();
                                     minionsRemoved++;
                                 }
@@ -149,6 +150,7 @@ namespace PokeChess.Server.Extensions
                                     var id = player.Hand.Where(x => x.PokemonId == pokemonId).FirstOrDefault().Id;
                                     extraAttack += player.Hand.Where(x => x.Id == id).FirstOrDefault().Attack - player.Hand.Where(x => x.Id == id).FirstOrDefault().BaseAttack;
                                     extraHealth += player.Hand.Where(x => x.Id == id).FirstOrDefault().Health - player.Hand.Where(x => x.Id == id).FirstOrDefault().BaseHealth;
+                                    player.CardsToReturnToPool.Add(player.Hand.Where(x => x.Id == id).FirstOrDefault());
                                     player.Hand = player.Hand.Where(x => x.Id != id).ToList();
                                     minionsRemoved++;
                                 }
