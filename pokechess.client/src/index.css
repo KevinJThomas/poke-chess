@@ -4,6 +4,11 @@ body {
   overscroll-behavior: none;
 }
 
+.non-translatable {
+  -webkit-transform: unset !important;
+  transform: unset !important;
+}
+
 @layer utilities {
   .row {
     @apply flex h-[80px] items-start justify-start mt-auto mb-auto transition-all duration-200 ease-in-out
