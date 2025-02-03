@@ -14,7 +14,7 @@ export function getElementPosition(id) {
   const rect = element?.getBoundingClientRect();
 
   if (!rect) {
-    throw new Error("Could not find ID:", id);
+    throw new Error("Could not find ID: " + id);
   }
 
   return [rect?.top, rect?.left];

@@ -35,7 +35,7 @@ export default function Pokemon({
 }) {
   const isMinion = cardType === 0;
   const [showDamage, setShowDamage] = useState(false);
-  const [minionDied, setMinionDied] = useState(false);
+  const [minionStatus, setMinionStatus] = useState("alive");
   const [showToolTip, setShowToolTip] = useState(false);
 
   useAsyncEffect(async () => {
@@ -46,12 +46,14 @@ export default function Pokemon({
 
   useAsyncEffect(async () => {
     if (health <= 0 && isMinion) {
-      await delay(1500);
-      setMinionDied(true);
+      await delay(750);
+      setMinionStatus("dying");
+      await delay(750);
+      setMinionStatus("dead");
     }
   }, [health]);
 
-  if (minionDied) {
+  if (minionStatus === "dead") {
     return;
   }
 
@@ -67,6 +69,7 @@ export default function Pokemon({
           "flex h-20 w-20 items-center justify-center transition-all duration-200 ease-in-out",
           isMinion && `bg-contain bg-center`,
           !isMinion && "rounded-xl border-2 border-red-900 bg-red-300",
+          minionStatus === "dying" && "opacity-0 duration-750",
           className,
         )}
         onMouseEnter={() => setShowToolTip(true)}

@@ -31,6 +31,8 @@ export default function App() {
   const player = players.find((player) => player.id === playerId);
   const opponent = players.find((x) => x.id === player?.currentOpponentId);
 
+  console.log(players);
+
   function onDragStart(result) {
     if (result.source.droppableId === "droppable-shop") {
       setDisableSellDrop(true);
