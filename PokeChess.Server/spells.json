@@ -120,5 +120,15 @@
     "spellTypes": [ 15 ],
     "amount": [ -1 ],
     "delay": 1
+  },
+  {
+    "tier": 2,
+    "name": "Poké Lunch",
+    "text": "Give a minion stats equal to your tier",
+    "cardType": 1,
+    "baseCost": 1,
+    "spellTypes": [ 3, 5 ],
+    "amount": [ -1, -1 ],
+    "hasTarget": true
   }
 ]

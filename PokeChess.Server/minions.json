@@ -183,7 +183,7 @@
     "pokemonId": 7,
     "num": "007",
     "tier": 1,
-    "text": "__Battlecry:__ Get a Discover Treasure",
+    "text": "__Battlecry:__ Get a __Discover Treasure__",
     "name": "Squirtle",
     "baseAttack": 2,
     "baseHealth": 1,
@@ -1078,11 +1078,11 @@
   {
     "pokemonId": 43,
     "num": "043",
-    "tier": 2,
-    "text": "",
+    "tier": 1,
+    "text": "When you sell this, gain 2 __Fertilizers__",
     "name": "Oddish",
-    "baseAttack": 1,
-    "baseHealth": 8,
+    "baseAttack": 2,
+    "baseHealth": 3,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1093,12 +1093,10 @@
     "nextEvolutions": [
       {
         "num": "044",
-        "text": "",
         "name": "Gloom"
       },
       {
         "num": "045",
-        "text": "",
         "name": "Vileplume"
       }
     ]
@@ -1106,14 +1104,16 @@
   {
     "pokemonId": 44,
     "num": "044",
-    "tier": 4,
-    "text": "",
+    "tier": 3,
+    "text": "__Deathrattle:__ Your __Fertilizers__ give +1 attack this game",
     "name": "Gloom",
-    "baseAttack": 3,
-    "baseHealth": 24,
+    "baseAttack": 6,
+    "baseHealth": 9,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "taunt": true
+    },
     "type": [ "Grass", "Poison" ],
     "height": "0.79 m",
     "weight": "8.6 kg",
@@ -1121,14 +1121,12 @@
     "previousEvolutions": [
       {
         "num": "043",
-        "text": "",
         "name": "Oddish"
       }
     ],
     "nextEvolutions": [
       {
         "num": "045",
-        "text": "",
         "name": "Vileplume"
       }
     ]
@@ -1136,14 +1134,16 @@
   {
     "pokemonId": 45,
     "num": "045",
-    "tier": 6,
-    "text": "",
+    "tier": 5,
+    "text": "At the end of your turn, give a __Fertilizer__ to other friendly minions.",
     "name": "Vileplume",
-    "baseAttack": 9,
-    "baseHealth": 72,
+    "baseAttack": 18,
+    "baseHealth": 27,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "taunt": true
+    },
     "type": [ "Grass", "Poison" ],
     "height": "1.19 m",
     "weight": "18.6 kg",
@@ -1151,12 +1151,10 @@
     "previousEvolutions": [
       {
         "num": "043",
-        "text": "",
         "name": "Oddish"
       },
       {
         "num": "044",
-        "text": "",
         "name": "Gloom"
       }
     ]
@@ -1165,10 +1163,10 @@
     "pokemonId": 46,
     "num": "046",
     "tier": 1,
-    "text": "",
+    "text": "__Battlecry:__ Get a __Fertilizer__",
     "name": "Paras",
     "baseAttack": 3,
-    "baseHealth": 2,
+    "baseHealth": 1,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1179,7 +1177,6 @@
     "nextEvolutions": [
       {
         "num": "047",
-        "text": "",
         "name": "Parasect"
       }
     ]
@@ -1188,10 +1185,10 @@
     "pokemonId": 47,
     "num": "047",
     "tier": 1,
-    "text": "",
+    "text": "At the end of your turn, player a __Fertilizer__ on adjacent minions",
     "name": "Parasect",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 9,
+    "baseHealth": 3,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1202,7 +1199,6 @@
     "previousEvolutions": [
       {
         "num": "046",
-        "text": "",
         "name": "Paras"
       }
     ]
@@ -1211,10 +1207,10 @@
     "pokemonId": 48,
     "num": "048",
     "tier": 1,
-    "text": "",
+    "text": "__Batllecry:__ Deal 1 damage to your hero",
     "name": "Venonat",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 4,
+    "baseHealth": 4,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1225,7 +1221,6 @@
     "nextEvolutions": [
       {
         "num": "049",
-        "text": "",
         "name": "Venomoth"
       }
     ]
@@ -1233,11 +1228,11 @@
   {
     "pokemonId": 49,
     "num": "049",
-    "tier": 1,
-    "text": "",
+    "tier": 3,
+    "text": "At the end of your turn, consume a minion in the tavern to gain its stats",
     "name": "Venomoth",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 12,
+    "baseHealth": 12,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1248,7 +1243,6 @@
     "previousEvolutions": [
       {
         "num": "048",
-        "text": "",
         "name": "Venonat"
       }
     ]
@@ -1257,10 +1251,10 @@
     "pokemonId": 50,
     "num": "050",
     "tier": 1,
-    "text": "",
+    "text": "After you play 2 minions, add a __Discover Treasure__ to your hand",
     "name": "Diglett",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 1,
+    "baseHealth": 1,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1271,7 +1265,6 @@
     "nextEvolutions": [
       {
         "num": "051",
-        "text": "",
         "name": "Dugtrio"
       }
     ]
@@ -1279,8 +1272,8 @@
   {
     "pokemonId": 51,
     "num": "051",
-    "tier": 1,
-    "text": "",
+    "tier": 3,
+    "text": "__Battlecry:__ Gain 4 gold in two turns",
     "name": "Dugtrio",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1294,7 +1287,6 @@
     "previousEvolutions": [
       {
         "num": "050",
-        "text": "",
         "name": "Diglett"
       }
     ]
@@ -1302,11 +1294,11 @@
   {
     "pokemonId": 52,
     "num": "052",
-    "tier": 1,
-    "text": "",
+    "tier": 2,
+    "text": "__Battlecry:__ Gain +1/+1 for each type on your board",
     "name": "Meowth",
     "baseAttack": 3,
-    "baseHealth": 2,
+    "baseHealth": 3,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1317,7 +1309,6 @@
     "nextEvolutions": [
       {
         "num": "053",
-        "text": "",
         "name": "Persian"
       }
     ]
@@ -1325,11 +1316,11 @@
   {
     "pokemonId": 53,
     "num": "053",
-    "tier": 1,
-    "text": "",
+    "tier": 4,
+    "text": "__Battlecry:__ Double this minion's stats",
     "name": "Persian",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 9,
+    "baseHealth": 9,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1340,7 +1331,6 @@
     "previousEvolutions": [
       {
         "num": "052",
-        "text": "",
         "name": "Meowth"
       }
     ]
@@ -1348,11 +1338,11 @@
   {
     "pokemonId": 54,
     "num": "054",
-    "tier": 1,
-    "text": "",
+    "tier": 2,
+    "text": "__Battlecry:__ Get a __Discover Treasure__",
     "name": "Psyduck",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 6,
+    "baseHealth": 3,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1363,7 +1353,6 @@
     "nextEvolutions": [
       {
         "num": "055",
-        "text": "",
         "name": "Golduck"
       }
     ]
@@ -1371,11 +1360,11 @@
   {
     "pokemonId": 55,
     "num": "055",
-    "tier": 1,
-    "text": "",
+    "tier": 4,
+    "text": "Whenever you play a spell, give a friendly minion +4/+2",
     "name": "Golduck",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 18,
+    "baseHealth": 9,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1386,7 +1375,6 @@
     "previousEvolutions": [
       {
         "num": "054",
-        "text": "",
         "name": "Psyduck"
       }
     ]
@@ -1394,11 +1382,11 @@
   {
     "pokemonId": 56,
     "num": "056",
-    "tier": 1,
+    "tier": 2,
     "text": "",
     "name": "Mankey",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 9,
+    "baseHealth": 9,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1409,7 +1397,6 @@
     "nextEvolutions": [
       {
         "num": "057",
-        "text": "",
         "name": "Primeape"
       }
     ]
@@ -1417,14 +1404,16 @@
   {
     "pokemonId": 57,
     "num": "057",
-    "tier": 1,
-    "text": "",
+    "tier": 4,
+    "text": "__Stealth.__",
     "name": "Primeape",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 27,
+    "baseHealth": 27,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "stealth": true
+    },
     "type": [ "Fighting" ],
     "height": "0.99 m",
     "weight": "32.0 kg",
@@ -1432,7 +1421,6 @@
     "previousEvolutions": [
       {
         "num": "056",
-        "text": "",
         "name": "Mankey"
       }
     ]
@@ -1440,10 +1428,10 @@
   {
     "pokemonId": 58,
     "num": "058",
-    "tier": 1,
-    "text": "",
+    "tier": 2,
+    "text": "__Battlecry:__ Give friendly __Burning__ minions +2/+1",
     "name": "Growlithe",
-    "baseAttack": 3,
+    "baseAttack": 2,
     "baseHealth": 2,
     "baseCost": 3,
     "cardType": 0,
@@ -1455,7 +1443,6 @@
     "nextEvolutions": [
       {
         "num": "059",
-        "text": "",
         "name": "Arcanine"
       }
     ]
@@ -1463,11 +1450,11 @@
   {
     "pokemonId": 59,
     "num": "059",
-    "tier": 1,
-    "text": "",
+    "tier": 5,
+    "text": "__Start of Combat:__ Gain a bonus keyword for each friendly Fire type",
     "name": "Arcanine",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 6,
+    "baseHealth": 6,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1478,7 +1465,6 @@
     "previousEvolutions": [
       {
         "num": "058",
-        "text": "",
         "name": "Growlithe"
       }
     ]
@@ -1486,11 +1472,11 @@
   {
     "pokemonId": 60,
     "num": "060",
-    "tier": 1,
-    "text": "",
+    "tier": 2,
+    "text": "__Battlecry:__ Add a __Poké Lunch__ to your hand",
     "name": "Poliwag",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 6,
+    "baseHealth": 6,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1501,12 +1487,10 @@
     "nextEvolutions": [
       {
         "num": "061",
-        "text": "",
         "name": "Poliwhirl"
       },
       {
         "num": "062",
-        "text": "",
         "name": "Poliwrath"
       }
     ]
@@ -1514,11 +1498,11 @@
   {
     "pokemonId": 61,
     "num": "061",
-    "tier": 1,
-    "text": "",
+    "tier": 4,
+    "text": "At the end of your turn, add a __Poké Lunch__ to your hand",
     "name": "Poliwhirl",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 18,
+    "baseHealth": 18,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1529,14 +1513,12 @@
     "previousEvolutions": [
       {
         "num": "060",
-        "text": "",
         "name": "Poliwag"
       }
     ],
     "nextEvolutions": [
       {
         "num": "062",
-        "text": "",
         "name": "Poliwrath"
       }
     ]
@@ -1544,11 +1526,11 @@
   {
     "pokemonId": 62,
     "num": "062",
-    "tier": 1,
-    "text": "",
+    "tier": 6,
+    "text": "__Start of Combat:__ Double this minion's stats",
     "name": "Poliwrath",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 54,
+    "baseHealth": 54,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1559,12 +1541,10 @@
     "previousEvolutions": [
       {
         "num": "060",
-        "text": "",
         "name": "Poliwag"
       },
       {
         "num": "061",
-        "text": "",
         "name": "Poliwhirl"
       }
     ]
@@ -1572,10 +1552,10 @@
   {
     "pokemonId": 63,
     "num": "063",
-    "tier": 1,
-    "text": "",
+    "tier": 3,
+    "text": "The first __Battlecry__ card you buy each turn is free",
     "name": "Abra",
-    "baseAttack": 3,
+    "baseAttack": 1,
     "baseHealth": 2,
     "baseCost": 3,
     "cardType": 0,
@@ -1587,12 +1567,10 @@
     "nextEvolutions": [
       {
         "num": "064",
-        "text": "",
         "name": "Kadabra"
       },
       {
         "num": "065",
-        "text": "",
         "name": "Alakazam"
       }
     ]
@@ -1600,11 +1578,11 @@
   {
     "pokemonId": 64,
     "num": "064",
-    "tier": 1,
-    "text": "",
+    "tier": 5,
+    "text": "Your _Battlecries__ trigger an extra time",
     "name": "Kadabra",
     "baseAttack": 3,
-    "baseHealth": 2,
+    "baseHealth": 6,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1615,14 +1593,12 @@
     "previousEvolutions": [
       {
         "num": "063",
-        "text": "",
         "name": "Abra"
       }
     ],
     "nextEvolutions": [
       {
         "num": "065",
-        "text": "",
         "name": "Alakazam"
       }
     ]
@@ -1630,11 +1606,11 @@
   {
     "pokemonId": 65,
     "num": "065",
-    "tier": 1,
-    "text": "",
+    "tier": 6,
+    "text": "__Battlecry__ minions costs 1 less",
     "name": "Alakazam",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 9,
+    "baseHealth": 18,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1645,12 +1621,10 @@
     "previousEvolutions": [
       {
         "num": "063",
-        "text": "",
         "name": "Abra"
       },
       {
         "num": "064",
-        "text": "",
         "name": "Kadabra"
       }
     ]
@@ -1658,11 +1632,11 @@
   {
     "pokemonId": 66,
     "num": "066",
-    "tier": 1,
-    "text": "",
+    "tier": 2,
+    "text": "Whenever a friendly spell targets this minion, gain +1/+1",
     "name": "Machop",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 1,
+    "baseHealth": 3,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1673,12 +1647,10 @@
     "nextEvolutions": [
       {
         "num": "067",
-        "text": "",
         "name": "Machoke"
       },
       {
         "num": "068",
-        "text": "",
         "name": "Machamp"
       }
     ]
@@ -1686,11 +1658,11 @@
   {
     "pokemonId": 67,
     "num": "067",
-    "tier": 1,
-    "text": "",
+    "tier": 4,
+    "text": "Whenever this minion gains stats, gain an additional +3/+3",
     "name": "Machoke",
     "baseAttack": 3,
-    "baseHealth": 2,
+    "baseHealth": 9,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1701,14 +1673,12 @@
     "previousEvolutions": [
       {
         "num": "066",
-        "text": "",
         "name": "Machop"
       }
     ],
     "nextEvolutions": [
       {
         "num": "068",
-        "text": "",
         "name": "Machamp"
       }
     ]
@@ -1716,11 +1686,11 @@
   {
     "pokemonId": 68,
     "num": "068",
-    "tier": 1,
-    "text": "",
+    "tier": 6,
+    "text": "Whenever you buy a minion, gain its stats",
     "name": "Machamp",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 9,
+    "baseHealth": 27,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1731,12 +1701,10 @@
     "previousEvolutions": [
       {
         "num": "066",
-        "text": "",
         "name": "Machop"
       },
       {
         "num": "067",
-        "text": "",
         "name": "Machoke"
       }
     ]
@@ -1744,11 +1712,11 @@
   {
     "pokemonId": 69,
     "num": "069",
-    "tier": 1,
-    "text": "",
+    "tier": 2,
+    "text": "At the end of your turn, get a __Fertilizer__",
     "name": "Bellsprout",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 2,
+    "baseHealth": 10,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1759,12 +1727,10 @@
     "nextEvolutions": [
       {
         "num": "070",
-        "text": "",
         "name": "Weepinbell"
       },
       {
         "num": "071",
-        "text": "",
         "name": "Victreebel"
       }
     ]
@@ -1772,11 +1738,11 @@
   {
     "pokemonId": 70,
     "num": "070",
-    "tier": 1,
-    "text": "",
+    "tier": 4,
+    "text": "__Battlecry:__ Play a __Fertilizer__ on other friendly minions",
     "name": "Weepinbell",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 6,
+    "baseHealth": 30,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1787,14 +1753,12 @@
     "previousEvolutions": [
       {
         "num": "069",
-        "text": "",
         "name": "Bellsprout"
       }
     ],
     "nextEvolutions": [
       {
         "num": "071",
-        "text": "",
         "name": "Victreebel"
       }
     ]
@@ -1802,14 +1766,18 @@
   {
     "pokemonId": 71,
     "num": "071",
-    "tier": 1,
+    "tier": 6,
     "text": "",
     "name": "Victreebel",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 18,
+    "baseHealth": 90,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "venomous": true,
+      "divineShield": true,
+      "taunt": true
+    },
     "type": [ "Grass", "Poison" ],
     "height": "1.70 m",
     "weight": "15.5 kg",
@@ -1817,12 +1785,10 @@
     "previousEvolutions": [
       {
         "num": "069",
-        "text": "",
         "name": "Bellsprout"
       },
       {
         "num": "070",
-        "text": "",
         "name": "Weepinbell"
       }
     ]
