@@ -96,7 +96,7 @@
     "pokemonId": 4,
     "num": "004",
     "tier": 1,
-    "text": "",
+    "text": "__Burning.__",
     "name": "Charmander",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -124,7 +124,7 @@
     "pokemonId": 5,
     "num": "005",
     "tier": 4,
-    "text": "",
+    "text": "__Burning.__",
     "name": "Charmeleon",
     "baseAttack": 9,
     "baseHealth": 6,
@@ -154,7 +154,7 @@
     "pokemonId": 6,
     "num": "006",
     "tier": 6,
-    "text": "",
+    "text": "__Burning.__",
     "name": "Charizard",
     "baseAttack": 27,
     "baseHealth": 18,
@@ -900,7 +900,7 @@
     "text": "",
     "name": "Clefairy",
     "baseAttack": 3,
-    "baseHealth": 2,
+    "baseHealth": 4,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -911,7 +911,6 @@
     "nextEvolutions": [
       {
         "num": "036",
-        "text": "",
         "name": "Clefable"
       }
     ]
@@ -919,11 +918,11 @@
   {
     "pokemonId": 36,
     "num": "036",
-    "tier": 1,
-    "text": "",
+    "tier": 3,
+    "text": "__Battlecry:__ Double this minion's health",
     "name": "Clefable",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 9,
+    "baseHealth": 12,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -934,7 +933,6 @@
     "previousEvolutions": [
       {
         "num": "035",
-        "text": "",
         "name": "Clefairy"
       }
     ]
@@ -943,13 +941,15 @@
     "pokemonId": 37,
     "num": "037",
     "tier": 1,
-    "text": "",
+    "text": "__Burning.__",
     "name": "Vulpix",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 2,
+    "baseHealth": 3,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "burning": true
+    },
     "type": [ "Fire" ],
     "height": "0.61 m",
     "weight": "9.9 kg",
@@ -957,7 +957,6 @@
     "nextEvolutions": [
       {
         "num": "038",
-        "text": "",
         "name": "Ninetales"
       }
     ]
@@ -965,14 +964,16 @@
   {
     "pokemonId": 38,
     "num": "038",
-    "tier": 1,
-    "text": "",
+    "tier": 3,
+    "text": "__Burning.__",
     "name": "Ninetales",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 6,
+    "baseHealth": 9,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "burning": true
+    },
     "type": [ "Fire" ],
     "height": "1.09 m",
     "weight": "19.9 kg",
@@ -980,7 +981,6 @@
     "previousEvolutions": [
       {
         "num": "037",
-        "text": "",
         "name": "Vulpix"
       }
     ]
@@ -989,9 +989,9 @@
     "pokemonId": 39,
     "num": "039",
     "tier": 1,
-    "text": "",
+    "text": "Whenever you play a type that's not on your board, gain +1/+1",
     "name": "Jigglypuff",
-    "baseAttack": 3,
+    "baseAttack": 2,
     "baseHealth": 2,
     "baseCost": 3,
     "cardType": 0,
@@ -1003,7 +1003,6 @@
     "nextEvolutions": [
       {
         "num": "040",
-        "text": "",
         "name": "Wigglytuff"
       }
     ]
@@ -1011,11 +1010,11 @@
   {
     "pokemonId": 40,
     "num": "040",
-    "tier": 1,
-    "text": "",
+    "tier": 3,
+    "text": "__Battlecry:__ Give a friendly minion of each type +2/+1",
     "name": "Wigglytuff",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 6,
+    "baseHealth": 6,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1026,7 +1025,6 @@
     "previousEvolutions": [
       {
         "num": "039",
-        "text": "",
         "name": "Jigglypuff"
       }
     ]
@@ -1035,10 +1033,10 @@
     "pokemonId": 41,
     "num": "041",
     "tier": 1,
-    "text": "",
+    "text": "After you play a minion, gain +1 attack",
     "name": "Zubat",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 1,
+    "baseHealth": 4,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1049,7 +1047,6 @@
     "nextEvolutions": [
       {
         "num": "042",
-        "text": "",
         "name": "Golbat"
       }
     ]
@@ -1057,14 +1054,16 @@
   {
     "pokemonId": 42,
     "num": "042",
-    "tier": 1,
-    "text": "",
+    "tier": 3,
+    "text": "After you play a minion, gain +3 attack",
     "name": "Golbat",
     "baseAttack": 3,
-    "baseHealth": 2,
+    "baseHealth": 12,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "divineShield": true
+    },
     "type": [ "Poison", "Flying" ],
     "height": "1.60 m",
     "weight": "55.0 kg",
@@ -1072,7 +1071,6 @@
     "previousEvolutions": [
       {
         "num": "041",
-        "text": "",
         "name": "Zubat"
       }
     ]

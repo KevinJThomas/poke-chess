@@ -689,7 +689,7 @@ namespace PokeChess.Server.Services
 
                 var sourceHealthBeforeAttack = player1.Board[nextSourceIndex].CombatHealth;
                 var targetHealthBeforeAttack = player2.Board[nextTargetIndex].CombatHealth;
-                (player1.Board[nextSourceIndex], player2.Board[nextTargetIndex]) = MinionAttack(player1.Board[nextSourceIndex], player2.Board[nextTargetIndex]);
+                (player1.Board[nextSourceIndex], player2.Board[nextTargetIndex], var weaknessValues) = MinionAttack(player1.Board[nextSourceIndex], player2.Board[nextTargetIndex]);
                 var sourceHealthAfterAttack = player1.Board[nextSourceIndex].CombatHealth;
                 var targetHealthAfterAttack = player2.Board[nextTargetIndex].CombatHealth;
 
@@ -700,6 +700,7 @@ namespace PokeChess.Server.Services
                     PlayerOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player1.Board[nextSourceIndex].CombatKeywords },
                     OpponentOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player2.Board[nextTargetIndex].CombatKeywords },
                     PlayerIsAttacking = true,
+                    DamageType = GetDamageType(weaknessValues, true).ToString().ToLower(),
                     Type = CombatActionType.Minion.ToString().ToLower()
                 });
                 player2.CombatActions.Add(new CombatAction
@@ -709,6 +710,7 @@ namespace PokeChess.Server.Services
                     PlayerOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player2.Board[nextTargetIndex].CombatKeywords },
                     OpponentOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player1.Board[nextSourceIndex].CombatKeywords },
                     PlayerIsAttacking = false,
+                    DamageType = GetDamageType(weaknessValues, false).ToString().ToLower(),
                     Type = CombatActionType.Minion.ToString().ToLower()
                 });
 
@@ -739,7 +741,7 @@ namespace PokeChess.Server.Services
 
                 var sourceHealthBeforeAttack = player2.Board[nextSourceIndex].CombatHealth;
                 var targetHealthBeforeAttack = player1.Board[nextTargetIndex].CombatHealth;
-                (player2.Board[nextSourceIndex], player1.Board[nextTargetIndex]) = MinionAttack(player2.Board[nextSourceIndex], player1.Board[nextTargetIndex]);
+                (player2.Board[nextSourceIndex], player1.Board[nextTargetIndex], var weaknessValues) = MinionAttack(player2.Board[nextSourceIndex], player1.Board[nextTargetIndex]);
                 var sourceHealthAfterAttack = player2.Board[nextSourceIndex].CombatHealth;
                 var targetHealthAfterAttack = player1.Board[nextTargetIndex].CombatHealth;
 
@@ -750,6 +752,7 @@ namespace PokeChess.Server.Services
                     PlayerOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player1.Board[nextTargetIndex].CombatKeywords },
                     OpponentOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player2.Board[nextSourceIndex].CombatKeywords },
                     PlayerIsAttacking = false,
+                    DamageType = GetDamageType(weaknessValues, false).ToString().ToLower(),
                     Type = CombatActionType.Minion.ToString().ToLower()
                 });
                 player2.CombatActions.Add(new CombatAction
@@ -759,6 +762,7 @@ namespace PokeChess.Server.Services
                     PlayerOnHitValues = new HitValues { Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player2.Board[nextSourceIndex].CombatKeywords },
                     OpponentOnHitValues = new HitValues { Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player1.Board[nextTargetIndex].CombatKeywords },
                     PlayerIsAttacking = true,
+                    DamageType = GetDamageType(weaknessValues, true).ToString().ToLower(),
                     Type = CombatActionType.Minion.ToString().ToLower()
                 });
 
@@ -844,8 +848,11 @@ namespace PokeChess.Server.Services
             return nextTargetIndex;
         }
 
-        private (Card, Card) MinionAttack(Card source, Card target)
+        private (Card, Card, KeyValuePair<bool, bool>) MinionAttack(Card source, Card target)
         {
+            var sourceWeakToTarget = source.IsWeakTo(target);
+            var targetWeakToSource = target.IsWeakTo(source);
+
             // Update target's state
             if (target.CombatKeywords.DivineShield)
             {
@@ -855,8 +862,6 @@ namespace PokeChess.Server.Services
             {
                 var damage = source.Attack;
                 var halfDamage = damage / 2;
-                var sourceWeakToTarget = source.IsWeakTo(target);
-                var targetWeakToSource = target.IsWeakTo(source);
 
                 if (sourceWeakToTarget && !targetWeakToSource)
                 {
@@ -889,8 +894,6 @@ namespace PokeChess.Server.Services
             {
                 var damage = target.Attack;
                 var halfDamage = damage / 2;
-                var sourceWeakToTarget = source.IsWeakTo(target);
-                var targetWeakToSource = target.IsWeakTo(source);
 
                 if (sourceWeakToTarget && !targetWeakToSource)
                 {
@@ -920,7 +923,7 @@ namespace PokeChess.Server.Services
                 source.CombatKeywords.Stealth = false;
             }
 
-            return (source, target);
+            return (source, target, new KeyValuePair<bool, bool>(sourceWeakToTarget, targetWeakToSource));
         }
 
         private static int GetPlayerIndexById(string id, Lobby lobby)
@@ -1069,6 +1072,30 @@ namespace PokeChess.Server.Services
             ghost.Health = 0;
             ghost.IsActive = false;
             return ghost;
+        }
+
+        private DamageType GetDamageType(KeyValuePair<bool, bool> weaknessValues, bool isSource)
+        {
+            if (weaknessValues.Key && !weaknessValues.Value)
+            {
+                if (isSource)
+                {
+                    return DamageType.Weak;
+                }
+
+                return DamageType.Critical;
+            }
+            if (!weaknessValues.Key && weaknessValues.Value)
+            {
+                if (isSource)
+                {
+                    return DamageType.Critical;
+                }
+
+                return DamageType.Weak;
+            }
+
+            return DamageType.Normal;
         }
 
         #endregion
