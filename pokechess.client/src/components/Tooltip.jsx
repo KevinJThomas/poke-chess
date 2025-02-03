@@ -11,6 +11,7 @@ export default function Tooltip({
 }) {
   return (
     <Popover
+      containerStyle={{ zIndex: 10 }}
       isOpen={showToolTip}
       positions={positions} // preferred positions by priority
       content={({ position, childRect, popoverRect }) => (
