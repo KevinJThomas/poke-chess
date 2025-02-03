@@ -1,4 +1,5 @@
 import { Popover, ArrowContainer } from "react-tiny-popover";
+import Markdown from "react-markdown";
 
 export default function Tooltip({ children, showToolTip, text }) {
   return (
@@ -18,7 +19,7 @@ export default function Tooltip({ children, showToolTip, text }) {
           arrowClassName="popover-arrow"
         >
           <div className="rounded-md bg-gray-800 p-2 text-sm text-white">
-            {text}
+            <Markdown>{text}</Markdown>
           </div>
         </ArrowContainer>
       )}
