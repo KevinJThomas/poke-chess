@@ -1080,19 +1080,19 @@ namespace PokeChess.Server.Services
             {
                 if (isSource)
                 {
-                    return DamageType.Weak;
+                    return DamageType.Critical;
                 }
 
-                return DamageType.Critical;
+                return DamageType.Weak;
             }
             if (!weaknessValues.Key && weaknessValues.Value)
             {
                 if (isSource)
                 {
-                    return DamageType.Critical;
+                    return DamageType.Weak;
                 }
 
-                return DamageType.Weak;
+                return DamageType.Critical;
             }
 
             return DamageType.Normal;
