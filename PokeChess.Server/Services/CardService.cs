@@ -48,6 +48,10 @@ namespace PokeChess.Server.Services
 
         public void LoadAllCards()
         {
+            _allCards = new List<Card>();
+            _allMinions = new List<Card>();
+            _allSpells = new List<Card>();
+
             if (_allMinions.Count == 0)
             {
                 var minionsJson = File.ReadAllText("minions.json");
@@ -126,6 +130,8 @@ namespace PokeChess.Server.Services
 
         public void LoadAllCards_BulbasaursOnly()
         {
+            _allMinions = new List<Card>();
+            _allCards = _allCards.Where(x => x.CardType != CardType.Minion).ToList();
             if (_allMinions.Count == 0)
             {
                 var minionsJson = File.ReadAllText("minions.json");
