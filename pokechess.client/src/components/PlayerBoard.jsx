@@ -65,7 +65,7 @@ export default function PlayerBoard({
                     provided.draggableProps.style,
                   )}
                 >
-                  <Pokemon key={pokemon.id} {...pokemon} />
+                  <Pokemon key={pokemon.id} {...pokemon} location="board" />
                 </div>
               )}
             </Draggable>

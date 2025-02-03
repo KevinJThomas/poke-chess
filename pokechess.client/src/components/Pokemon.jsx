@@ -32,6 +32,8 @@ export default function Pokemon({
   keywords,
   baseHealth,
   baseAttack,
+  type,
+  location,
 }) {
   const isMinion = cardType === 0;
   const [showDamage, setShowDamage] = useState(false);
@@ -106,7 +108,12 @@ export default function Pokemon({
   );
 
   return (
-    <Tooltip showToolTip={showToolTip && text} text={text}>
+    <Tooltip
+      showToolTip={showToolTip}
+      text={text}
+      types={type}
+      positions={location === "board" ? ["bottom"] : ["top"]}
+    >
       {pokemon}
     </Tooltip>
   );

@@ -29,7 +29,7 @@ export default function Hero({
     <div
       id={id}
       className={clsx(
-        "relative flex h-24 w-24 items-center justify-center rounded-xl border-2 border-red-900 bg-red-300 transition-all duration-400 ease-in-out",
+        "relative flex h-24 w-24 items-center justify-center rounded-xl bg-red-300 outline-2 outline-red-900 transition-all duration-400 ease-in-out",
         className,
       )}
       style={style}
