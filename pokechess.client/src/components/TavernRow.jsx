@@ -44,7 +44,11 @@ export default function TavernRow({
     >
       {(provided, snapshot) => (
         <div
-          className={clsx("row", player.isShopFrozen && "bg-blue-200")}
+          className={clsx(
+            "row rounded-xl",
+            player.isShopFrozen && "bg-blue-200 outline-20 outline-blue-200",
+            !player.isShopFrozen && "bg-white/50",
+          )}
           ref={provided.innerRef}
           style={getListStyle(snapshot.isDraggingOver, player.shop.length)}
           {...provided.droppableProps}
