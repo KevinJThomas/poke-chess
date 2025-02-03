@@ -17,7 +17,10 @@ export default function Players({ players, opponent }) {
           armor={player.armor}
           health={player.health}
           tier={player.tier}
-          className={clsx(opponent?.id === player.id && "ml-16")}
+          className={clsx(
+            opponent?.id === player.id && "ml-16",
+            player.isDead && "opacity-60",
+          )}
         />
       ))}
     </div>
