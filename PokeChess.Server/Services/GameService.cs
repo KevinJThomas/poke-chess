@@ -95,7 +95,7 @@ namespace PokeChess.Server.Services
 
             lobby.IsWaitingToStart = false;
             lobby.GameState.MinionCardPool = _cardService.GetAllMinionsForPool();
-            lobby.GameState.SpellCardPool = _cardService.GetAllSpells().Where(x => !x.SpellTypes.Contains(SpellType.BuffTargetAttack) && !x.SpellTypes.Contains(SpellType.BuffTargetHealth) && !x.SpellTypes.Contains(SpellType.BuffFriendlyTargetAttack) && !x.SpellTypes.Contains(SpellType.BuffFriendlyTargetHealth)).ToList();
+            lobby.GameState.SpellCardPool = _cardService.GetAllSpells().ToList();
             // Remove Where statement on above line once front end implements spells with targets
             lobby = NextRound(lobby);
             return lobby;
