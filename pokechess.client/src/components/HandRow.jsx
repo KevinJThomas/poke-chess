@@ -60,7 +60,7 @@ export default function HandRow({ player, isDragDisabled, isDropDisabled }) {
                     provided.draggableProps.style,
                   )}
                 >
-                  <Pokemon {...card} />
+                  <Pokemon {...card} location="hand" />
                 </div>
               )}
             </Draggable>
