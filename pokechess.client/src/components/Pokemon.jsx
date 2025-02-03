@@ -27,6 +27,7 @@ export default function Pokemon({
   className,
   style,
   damage,
+  damageType,
   text,
   keywords,
   baseHealth,
@@ -87,7 +88,9 @@ export default function Pokemon({
           )}
           {!!tier && showTier && <Tier tier={tier} />}
           {!isMinion && Number.isInteger(cost) && <Cost cost={cost} />}
-          {!!damage && showDamage && <Damage damage={damage} />}
+          {!!damage && showDamage && (
+            <Damage damage={damage} damageType={damageType} />
+          )}
           {keywords.divineShield && <DivineShield />}
           {keywords.venomous && <Venomous />}
           {keywords.taunt && <Taunt />}

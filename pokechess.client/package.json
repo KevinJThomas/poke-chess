@@ -22,6 +22,7 @@
     "react-tiny-popover": "^8.1.4",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^4.0.0",
+    "tailwindcss-animated": "^2.0.0",
     "uniqolor": "^1.1.1",
     "use-async-effect": "^2.2.7"
   },
