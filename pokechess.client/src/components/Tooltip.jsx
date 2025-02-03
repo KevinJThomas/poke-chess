@@ -1,7 +1,8 @@
 import { Popover, ArrowContainer } from "react-tiny-popover";
 import Markdown from "react-markdown";
+import TypeTooltip from "./TypeTooltip";
 
-export default function Tooltip({ children, showToolTip, text }) {
+export default function Tooltip({ children, showToolTip, text, types }) {
   return (
     <Popover
       isOpen={showToolTip}
@@ -18,8 +19,9 @@ export default function Tooltip({ children, showToolTip, text }) {
           className="popover-arrow-container"
           arrowClassName="popover-arrow"
         >
-          <div className="rounded-md bg-gray-800 p-2 text-sm text-white">
+          <div className="flex flex-col items-center gap-2 rounded-md bg-gray-800 p-2 text-sm text-white">
             <Markdown>{text}</Markdown>
+            {types && <TypeTooltip types={types} />}
           </div>
         </ArrowContainer>
       )}
