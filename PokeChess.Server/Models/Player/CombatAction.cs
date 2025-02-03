@@ -10,6 +10,5 @@
         public bool PlayerIsAttacking { get; set; }
         public string? Type { get; set; }
         public string? WinnerName { get; set; }
-        public string? DamageType { get; set; }
     }
 }
