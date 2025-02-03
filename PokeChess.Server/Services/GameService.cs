@@ -468,9 +468,10 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
+            card.ScrubModifiers();
+
             if (card.CardType == CardType.Minion)
             {
-                card.ScrubModifiers();
                 lobby.GameState.MinionCardPool.Add(card);
             }
 
@@ -498,9 +499,9 @@ namespace PokeChess.Server.Services
 
         private (Lobby, Player) SellMinion(Lobby lobby, Player player, Card card)
         {
+            player.Gold += card.SellValue;
             lobby = ReturnCardToPool(lobby, card);
             player.Board.Remove(card);
-            player.Gold += card.SellValue;
             return (lobby, player);
         }
 
@@ -517,6 +518,7 @@ namespace PokeChess.Server.Services
                 {
                     player.Board.Add(card);
                 }
+                player = card.TriggerBattlecry(player);
             }
             else
             {

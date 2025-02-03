@@ -16,7 +16,7 @@
     "baseCost": 1,
     "spellTypes": [ 0 ],
     "amount": [ 2 ],
-    "delay": 1
+    "baseDelay": 1
   },
   {
     "tier": 2,
@@ -34,8 +34,7 @@
     "cardType": 1,
     "baseCost": 1,
     "spellTypes": [ 2 ],
-    "amount": [ 4 ],
-    "hasTarget": true
+    "amount": [ 4 ]
   },
   {
     "tier": 1,
@@ -44,8 +43,7 @@
     "cardType": 1,
     "baseCost": 1,
     "spellTypes": [ 4, 12 ],
-    "amount": [ 4, 4 ],
-    "hasTarget": true
+    "amount": [ 4, 4 ]
   },
   {
     "tier": 1,
@@ -54,8 +52,7 @@
     "cardType": 1,
     "baseCost": 1,
     "spellTypes": [ 3, 5 ],
-    "amount": [ 2, 2 ],
-    "hasTarget": true
+    "amount": [ 2, 2 ]
   },
   {
     "tier": 2,
@@ -119,7 +116,7 @@
     "baseCost": 10,
     "spellTypes": [ 15 ],
     "amount": [ -1 ],
-    "delay": 1
+    "baseDelay": 1
   },
   {
     "tier": 2,
@@ -128,7 +125,6 @@
     "cardType": 1,
     "baseCost": 1,
     "spellTypes": [ 3, 5 ],
-    "amount": [ -1, -1 ],
-    "hasTarget": true
+    "amount": [ -1, -1 ]
   }
 ]

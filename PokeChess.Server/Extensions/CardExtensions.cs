@@ -1,5 +1,7 @@
 ﻿using PokeChess.Server.Enums;
 using PokeChess.Server.Models.Game;
+using PokeChess.Server.Models.Player;
+using PokeChess.Server.Services;
 
 namespace PokeChess.Server.Extensions
 {
@@ -7,14 +9,23 @@ namespace PokeChess.Server.Extensions
     {
         public static void ScrubModifiers(this Card card)
         {
-            card.Attack = card.BaseAttack;
-            card.Health = card.BaseHealth;
+            if (card.CardType == CardType.Minion)
+            {
+                card.Attack = card.BaseAttack;
+                card.Health = card.BaseHealth;
+                card.Keywords = card.BaseKeywords;
+                card.SellValue = card.BaseSellValue;
+                card.Attacked = false;
+                card.CombatKeywords = new Keywords();
+            }
+
+            if (card.CardType == CardType.Spell)
+            {
+                card.Delay = card.BaseDelay;
+            }
+
             card.Cost = card.BaseCost;
-            card.Keywords = card.BaseKeywords;
-            card.SellValue = 1;
             card.CanPlay = false;
-            card.Attacked = false;
-            card.CombatKeywords = new Keywords();
         }
 
         public static void ApplyKeyword(this Card card, Keyword keyword)
@@ -53,6 +64,25 @@ namespace PokeChess.Server.Extensions
             }
 
             return false;
+        }
+
+        public static Player TriggerBattlecry(this Card card, Player player)
+        {
+            if (!card.HasBattlecry || player == null)
+            {
+                return player;
+            }
+
+            switch (card.PokemonId)
+            {
+                case 7:
+                    var discoverTreasure = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault();
+                    discoverTreasure.Id += "_copy";
+                    player.Hand.Add(discoverTreasure);
+                    return player;
+                default:
+                    return player;
+            }
         }
     }
 }

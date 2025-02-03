@@ -203,7 +203,8 @@
         "num": "009",
         "name": "Blastoise"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 8,

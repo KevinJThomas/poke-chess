@@ -1,4 +1,5 @@
 ﻿using PokeChess.Server.Enums;
+using PokeChess.Server.Extensions;
 
 namespace PokeChess.Server.Models.Game
 {
@@ -11,6 +12,8 @@ namespace PokeChess.Server.Models.Game
         public int BaseAttack { get; set; }
         public int BaseHealth { get; set; }
         public int BaseCost { get; set; }
+        public int BaseDelay { get; set; }
+        public int BaseSellValue { get; set; }
         public int Attack { get; set; }
         public int Health { get; set; }
         public int Cost { get; set; }
@@ -20,10 +23,12 @@ namespace PokeChess.Server.Models.Game
         public string Num { get; set; }
         public bool Attacked { get; set; }
         public int CombatHealth { get; set; }
-        public int Delay { get; set; } = 0;
+        public int Delay { get; set; }
         public string? Height { get; set; }
         public string? Weight { get; set; }
-        public bool HasTarget { get; set; }
+        public bool HasBattlecry { get; set; }
+        public bool IsBattlecryTargetted { get; set; }
+        public bool IsBattlecryTargetFriendlyOnly { get; set; }
         public CardType CardType { get; set; }
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();
         public List<MinionType> WeaknessTypes { get; set; } = new List<MinionType>();
@@ -47,19 +52,29 @@ namespace PokeChess.Server.Models.Game
         {
             get
             {
-                if (!SpellTypes.Any())
+                if (CardType == CardType.Spell && SpellTypes.Any())
                 {
-                    return TargetType.None.ToString().ToLower();
-                }
-                
-                if (SpellTypes.Contains(SpellType.BuffTargetAttack) || SpellTypes.Contains(SpellType.BuffTargetHealth) || SpellTypes.Contains(SpellType.AddKeywordToTarget))
-                {
-                    return TargetType.Any.ToString().ToLower();
+                    if (SpellTypes.Contains(SpellType.BuffTargetAttack) || SpellTypes.Contains(SpellType.BuffTargetHealth) || SpellTypes.Contains(SpellType.AddKeywordToTarget))
+                    {
+                        return TargetType.Any.ToString().ToLower();
+                    }
+
+                    if (SpellTypes.Contains(SpellType.BuffFriendlyTargetAttack) || SpellTypes.Contains(SpellType.BuffFriendlyTargetHealth))
+                    {
+                        return TargetType.Friendly.ToString().ToLower();
+                    }
                 }
 
-                if (SpellTypes.Contains(SpellType.BuffFriendlyTargetAttack) || SpellTypes.Contains(SpellType.BuffFriendlyTargetHealth))
+                if (CardType == CardType.Minion && HasBattlecry && IsBattlecryTargetted)
                 {
-                    return TargetType.Friendly.ToString().ToLower();
+                    if (IsBattlecryTargetFriendlyOnly)
+                    {
+                        return TargetType.Friendly.ToString().ToLower();
+                    }
+                    else
+                    {
+                        return TargetType.Any.ToString().ToLower();
+                    }
                 }
 
                 return TargetType.None.ToString().ToLower();
