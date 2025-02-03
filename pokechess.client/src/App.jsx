@@ -58,15 +58,42 @@ export default function App() {
   }
 
   function onDragEnd(result) {
+    console.log("result", result);
     setCardBeingPlayed(null);
     setDisableSellDrop(false);
     setDisableBoardDrop(false);
     setDisableShopDrop(false);
     setDisableHandDrop(false);
-    // Check if the drag was canceled
-    if (!result.destination) return;
 
     const cardId = result.draggableId;
+
+    // Play card with target
+    if (result?.combine?.draggableId) {
+      const clonedPlayers = cloneDeep(players);
+
+      const playerIndex = clonedPlayers.findIndex(
+        (player) => player.id === playerId,
+      );
+
+      clonedPlayers[playerIndex].board = clonedPlayers[
+        playerIndex
+      ].board.filter((card) => card.id !== cardId);
+
+      setPlayers(clonedPlayers);
+
+      connection.invoke(
+        "MoveCard",
+        result.draggableId,
+        2,
+        null,
+        result.combine.draggableId,
+      );
+      console.log("play card", result.draggableId, result.combine.draggableId);
+      return;
+    }
+
+    // Check if the drag was canceled
+    if (!result.destination) return;
 
     // Sell
     if (
@@ -86,6 +113,7 @@ export default function App() {
       setPlayers(clonedPlayers);
 
       connection.invoke("MoveCard", result.draggableId, 1, null, null);
+      return;
     }
 
     // Play
@@ -122,6 +150,7 @@ export default function App() {
         result.destination.index,
         null,
       );
+      return;
     }
 
     // Buy
@@ -148,6 +177,7 @@ export default function App() {
       setPlayers(clonedPlayers);
 
       connection.invoke("MoveCard", result.draggableId, 0, null, null);
+      return;
     }
   }
 
@@ -200,6 +230,7 @@ export default function App() {
     });
 
     connection.on("PlayerUpdated", (newPlayer) => {
+      console.log("Player Updated", newPlayer);
       setPlayers((prev) =>
         prev.map((player) => {
           if (player.id === playerId) {
