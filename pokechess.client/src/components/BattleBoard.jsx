@@ -34,6 +34,7 @@ export default function BattleBoard({
   initialPlayer,
   initialOpponent,
   setGameStatus,
+  setWinner,
 }) {
   const [player, setPlayer] = useState(initialPlayer);
   const [opponent, setOpponent] = useState(initialOpponent);
@@ -259,6 +260,11 @@ export default function BattleBoard({
 
       if (action.type === "hero") {
         await attackHero(action);
+      }
+
+      if (action.type === "gameover") {
+        setGameStatus("gameover");
+        setWinner(action.winnerName);
       }
 
       await delay(1000);

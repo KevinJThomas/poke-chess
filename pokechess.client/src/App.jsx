@@ -10,6 +10,7 @@ import Error from "./components/Error";
 import Lobby from "./components/pages/LobbyPage";
 import NamePage from "./components/pages/NamePage";
 import cloneDeep from "lodash/cloneDeep";
+import GameOverPage from "./components/pages/GameOverPage";
 
 export default function App() {
   const [gameStatus, setGameStatus] = useState("name");
@@ -24,6 +25,7 @@ export default function App() {
   const [disableShopDrop, setDisableShopDrop] = useState(false);
   const [disableHandDrop, setDisableHandDrop] = useState(false);
   const [hasEndedTurn, setHasEndedTurn] = useState(false);
+  const [winner, setWinner] = useState("");
 
   const player = players.find((player) => player.id === playerId);
   const opponent = players.find((x) => x.id === player?.currentOpponentId);
@@ -243,6 +245,10 @@ export default function App() {
     );
   }
 
+  if (gameStatus === "gameover") {
+    return <GameOverPage winner={winner} />;
+  }
+
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
       {hasEndedTurn && (
@@ -270,6 +276,7 @@ export default function App() {
             initialPlayer={player}
             initialOpponent={opponent}
             setGameStatus={setGameStatus}
+            setWinner={setWinner}
           />
         )}
         {gameStatus === "shop" && (
