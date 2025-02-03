@@ -43,5 +43,27 @@ namespace PokeChess.Server.Models.Game
                 return CombatHealth <= 0;
             }
         }
+        public string TargetOptions
+        {
+            get
+            {
+                if (!SpellTypes.Any())
+                {
+                    return TargetType.None.ToString().ToLower();
+                }
+                
+                if (SpellTypes.Contains(SpellType.BuffTargetAttack) || SpellTypes.Contains(SpellType.BuffTargetHealth) || SpellTypes.Contains(SpellType.AddKeywordToTarget))
+                {
+                    return TargetType.Any.ToString().ToLower();
+                }
+
+                if (SpellTypes.Contains(SpellType.BuffFriendlyTargetAttack) || SpellTypes.Contains(SpellType.BuffFriendlyTargetHealth))
+                {
+                    return TargetType.Friendly.ToString().ToLower();
+                }
+
+                return TargetType.None.ToString().ToLower();
+            }
+        }
     }
 }
