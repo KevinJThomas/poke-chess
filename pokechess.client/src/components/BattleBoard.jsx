@@ -265,6 +265,7 @@ export default function BattleBoard({
       if (action.type === "gameover") {
         setGameStatus("gameover");
         setWinner(action.winnerName);
+        return;
       }
 
       await delay(1000);
