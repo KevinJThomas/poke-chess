@@ -31,7 +31,10 @@ export default function ShopBoard({
     <div className="flex h-screen flex-col items-center justify-center">
       <Row>
         <div className="w-16"></div>
-        <Button onClick={upgrade} disabled={player.upgradeCost > player.gold}>
+        <Button
+          onClick={upgrade}
+          disabled={player.upgradeCost > player.gold || player.tier >= 6}
+        >
           Upgrade ({player.upgradeCost})
         </Button>
         <Shop player={player} isDropDisabled={disableSellDrop} />

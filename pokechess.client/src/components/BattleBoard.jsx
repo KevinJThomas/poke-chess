@@ -169,7 +169,7 @@ export default function BattleBoard({
       },
     }));
   }
-  async function attackMinion(action) {
+  async function attackMinion(action, index) {
     try {
       const [playerMinionTop, playerMinionLeft] = getElementPosition(
         action.playerMinionId,
@@ -249,7 +249,7 @@ export default function BattleBoard({
       await delay(1000);
     } catch (error) {
       console.error(error);
-      console.error("Action that failed:", action);
+      console.error("Action index that failed:", index);
       console.error("All combat actions", player.combatActions);
     }
   }
@@ -259,9 +259,9 @@ export default function BattleBoard({
 
     console.log(player.combatActions);
 
-    for (const action of player.combatActions) {
+    for (const [index, action] of player.combatActions.entries()) {
       if (action.type === "minion") {
-        await attackMinion(action);
+        await attackMinion(action, index);
       }
 
       if (action.type === "hero") {
@@ -274,7 +274,7 @@ export default function BattleBoard({
         return;
       }
 
-      await delay(1000);
+      await delay(250);
     }
     await delay(3000);
 
