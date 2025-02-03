@@ -170,86 +170,94 @@ export default function BattleBoard({
     }));
   }
   async function attackMinion(action) {
-    const [playerMinionTop, playerMinionLeft] = getElementPosition(
-      action.playerMinionId,
-    );
-    const [opponentMinionTop, opponentMinionLeft] = getElementPosition(
-      action.opponentMinionId,
-    );
+    try {
+      const [playerMinionTop, playerMinionLeft] = getElementPosition(
+        action.playerMinionId,
+      );
+      const [opponentMinionTop, opponentMinionLeft] = getElementPosition(
+        action.opponentMinionId,
+      );
 
-    const playerMinionIndex = player.board.findIndex(
-      (minion) => minion.id === action.playerMinionId,
-    );
-    const opponentMinionIndex = opponent.board.findIndex(
-      (minion) => minion.id === action.opponentMinionId,
-    );
+      const playerMinionIndex = player.board.findIndex(
+        (minion) => minion.id === action.playerMinionId,
+      );
+      const opponentMinionIndex = opponent.board.findIndex(
+        (minion) => minion.id === action.opponentMinionId,
+      );
 
-    const startCoords = action.playerIsAttacking
-      ? [playerMinionTop, playerMinionLeft]
-      : [opponentMinionTop, opponentMinionLeft];
+      const startCoords = action.playerIsAttacking
+        ? [playerMinionTop, playerMinionLeft]
+        : [opponentMinionTop, opponentMinionLeft];
 
-    const endCoords = action.playerIsAttacking
-      ? [opponentMinionTop + 30, opponentMinionLeft]
-      : [playerMinionTop - 30, playerMinionLeft];
+      const endCoords = action.playerIsAttacking
+        ? [opponentMinionTop + 30, opponentMinionLeft]
+        : [playerMinionTop - 30, playerMinionLeft];
 
-    const attackingMinionIndex = action.playerIsAttacking
-      ? playerMinionIndex
-      : opponentMinionIndex;
+      const attackingMinionIndex = action.playerIsAttacking
+        ? playerMinionIndex
+        : opponentMinionIndex;
 
-    const updateMinionFunc = action.playerIsAttacking
-      ? updatePlayerMinion
-      : updateOpponentMinion;
+      const updateMinionFunc = action.playerIsAttacking
+        ? updatePlayerMinion
+        : updateOpponentMinion;
 
-    updateMinionFunc(attackingMinionIndex, {
-      style: {
-        position: "fixed",
-        top: startCoords[0],
-        left: startCoords[1],
-        zIndex: 10,
-      },
-    });
+      updateMinionFunc(attackingMinionIndex, {
+        style: {
+          position: "fixed",
+          top: startCoords[0],
+          left: startCoords[1],
+          zIndex: 10,
+        },
+      });
 
-    await delay(1000);
+      await delay(1000);
 
-    updateMinionFunc(attackingMinionIndex, {
-      style: {
-        position: "fixed",
-        top: endCoords[0],
-        left: endCoords[1],
-        zIndex: 10,
-      },
-    });
+      updateMinionFunc(attackingMinionIndex, {
+        style: {
+          position: "fixed",
+          top: endCoords[0],
+          left: endCoords[1],
+          zIndex: 10,
+        },
+      });
 
-    await delay(200);
+      await delay(200);
 
-    updatePlayerMinion(playerMinionIndex, action.playerOnHitValues);
-    updateOpponentMinion(opponentMinionIndex, action.opponentOnHitValues);
+      updatePlayerMinion(playerMinionIndex, action.playerOnHitValues);
+      updateOpponentMinion(opponentMinionIndex, action.opponentOnHitValues);
 
-    updateMinionFunc(attackingMinionIndex, {
-      style: {
-        position: "fixed",
-        top: startCoords[0],
-        left: startCoords[1],
-        zIndex: 10,
-      },
-    });
+      updateMinionFunc(attackingMinionIndex, {
+        style: {
+          position: "fixed",
+          top: startCoords[0],
+          left: startCoords[1],
+          zIndex: 10,
+        },
+      });
 
-    await delay(300);
+      await delay(300);
 
-    updateMinionFunc(attackingMinionIndex, {
-      style: {
-        position: "relative",
-        top: "",
-        left: "",
-        zIndex: "auto",
-      },
-    });
+      updateMinionFunc(attackingMinionIndex, {
+        style: {
+          position: "relative",
+          top: "",
+          left: "",
+          zIndex: "auto",
+        },
+      });
 
-    await delay(1000);
+      await delay(1000);
+    } catch (error) {
+      console.error(error);
+      console.error("Action that failed:", action);
+      console.error("All combat actions", player.combatActions);
+    }
   }
 
   useAsyncEffect(async () => {
     await delay(1000);
+
+    console.log(player.combatActions);
 
     for (const action of player.combatActions) {
       if (action.type === "minion") {

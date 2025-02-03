@@ -48,7 +48,7 @@ export default function ShopBoard({
       <PlayerBoard
         player={player}
         isDropDisabled={disableBoardDrop}
-        isCombineEnabled={cardBeingPlayed?.cardType === 1}
+        isCombineEnabled={cardBeingPlayed?.hasTarget}
       />
       <Row>
         <Hero name={player.name} health={player.health} armor={player.armor} />
