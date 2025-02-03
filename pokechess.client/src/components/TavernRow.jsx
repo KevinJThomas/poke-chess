@@ -3,7 +3,12 @@ import { Draggable, Droppable } from "@hello-pangea/dnd";
 import clsx from "clsx";
 import { MINION_LENGTH } from "../constants";
 
-export default function TavernRow({ isDragDisabled, player, isDropDisabled }) {
+export default function TavernRow({
+  isDragDisabled,
+  player,
+  isDropDisabled,
+  isCombineEnabled,
+}) {
   function getListStyle(isDraggingOver, itemsLength) {
     return {
       // background: isDraggingOver ? "lightblue" : "lightgrey",
@@ -35,6 +40,7 @@ export default function TavernRow({ isDragDisabled, player, isDropDisabled }) {
       droppableId="droppable-shop"
       direction="horizontal"
       isDropDisabled={isDropDisabled}
+      isCombineEnabled={isCombineEnabled}
     >
       {(provided, snapshot) => (
         <div
