@@ -9,5 +9,6 @@
         public bool Venomous { get; set; }
         public bool Windfury { get; set; }
         public bool Burning { get; set; }
+        public bool Shock { get; set; }
     }
 }

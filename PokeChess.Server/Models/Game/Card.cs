@@ -23,6 +23,7 @@ namespace PokeChess.Server.Models.Game
         public int Delay { get; set; } = 0;
         public string? Height { get; set; }
         public string? Weight { get; set; }
+        public bool HasTarget { get; set; }
         public CardType CardType { get; set; }
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();
         public List<MinionType> WeaknessTypes { get; set; } = new List<MinionType>();

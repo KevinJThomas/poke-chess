@@ -587,7 +587,6 @@
     "previousEvolutions": [
       {
         "num": "021",
-        "text": "",
         "name": "Spearow"
       }
     ]
@@ -598,8 +597,8 @@
     "tier": 1,
     "text": "",
     "name": "Ekans",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 4,
+    "baseHealth": 3,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -610,7 +609,6 @@
     "nextEvolutions": [
       {
         "num": "024",
-        "text": "",
         "name": "Arbok"
       }
     ]
@@ -621,8 +619,8 @@
     "tier": 1,
     "text": "",
     "name": "Arbok",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 12,
+    "baseHealth": 9,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -633,7 +631,6 @@
     "previousEvolutions": [
       {
         "num": "023",
-        "text": "",
         "name": "Ekans"
       }
     ]
@@ -642,10 +639,10 @@
     "pokemonId": 25,
     "num": "025",
     "tier": 1,
-    "text": "",
+    "text": "When you play an Electric type, give a random friendly Electric type +1 attack",
     "name": "Pikachu",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 2,
+    "baseHealth": 3,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -656,7 +653,6 @@
     "nextEvolutions": [
       {
         "num": "026",
-        "text": "",
         "name": "Raichu"
       }
     ]
@@ -664,14 +660,16 @@
   {
     "pokemonId": 26,
     "num": "026",
-    "tier": 1,
-    "text": "",
+    "tier": 5,
+    "text": "__Shock__\\When you play an Electric type, gain +3 attack",
     "name": "Raichu",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 6,
+    "baseHealth": 9,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "shock": true
+    },
     "type": [ "Electric" ],
     "height": "0.79 m",
     "weight": "30.0 kg",
@@ -679,7 +677,6 @@
     "previousEvolutions": [
       {
         "num": "025",
-        "text": "",
         "name": "Pikachu"
       }
     ]
@@ -688,10 +685,10 @@
     "pokemonId": 27,
     "num": "027",
     "tier": 1,
-    "text": "",
+    "text": "__Battlecry:__ Gain 1 gold next turn",
     "name": "Sandshrew",
     "baseAttack": 3,
-    "baseHealth": 2,
+    "baseHealth": 1,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -702,7 +699,6 @@
     "nextEvolutions": [
       {
         "num": "028",
-        "text": "",
         "name": "Sandslash"
       }
     ]
@@ -710,11 +706,11 @@
   {
     "pokemonId": 28,
     "num": "028",
-    "tier": 1,
-    "text": "",
+    "tier": 3,
+    "text": "__Deathrattle:__ Reduce the cost to upgrade the tavern by 1",
     "name": "Sandslash",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 9,
+    "baseHealth": 6,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -725,7 +721,6 @@
     "previousEvolutions": [
       {
         "num": "027",
-        "text": "",
         "name": "Sandshrew"
       }
     ]
@@ -733,11 +728,11 @@
   {
     "pokemonId": 29,
     "num": "029",
-    "tier": 2,
-    "text": "",
+    "tier": 1,
+    "text": "__Battlecry:__  Reduce the cost to upgrade the tavern by 1",
     "name": "Nidoran ♀ (Female)",
-    "baseAttack": 4,
-    "baseHealth": 3,
+    "baseAttack": 2,
+    "baseHealth": 2,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -748,12 +743,10 @@
     "nextEvolutions": [
       {
         "num": "030",
-        "text": "",
         "name": "Nidorina"
       },
       {
         "num": "031",
-        "text": "",
         "name": "Nidoqueen"
       }
     ]
@@ -761,14 +754,16 @@
   {
     "pokemonId": 30,
     "num": "030",
-    "tier": 4,
+    "tier": 3,
     "text": "",
     "name": "Nidorina",
-    "baseAttack": 12,
-    "baseHealth": 9,
+    "baseAttack": 6,
+    "baseHealth": 6,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "venomous": true
+    },
     "type": [ "Poison" ],
     "height": "0.79 m",
     "weight": "20.0 kg",
@@ -776,14 +771,12 @@
     "previousEvolutions": [
       {
         "num": "029",
-        "text": "",
         "name": "Nidoran(Female)"
       }
     ],
     "nextEvolutions": [
       {
         "num": "031",
-        "text": "",
         "name": "Nidoqueen"
       }
     ]
@@ -791,11 +784,11 @@
   {
     "pokemonId": 31,
     "num": "031",
-    "tier": 6,
-    "text": "",
+    "tier": 5,
+    "text": "Whenever you spend gold, give a random friendly minion +1/+1",
     "name": "Nidoqueen",
-    "baseAttack": 36,
-    "baseHealth": 27,
+    "baseAttack": 18,
+    "baseHealth": 18,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {
@@ -808,12 +801,10 @@
     "previousEvolutions": [
       {
         "num": "029",
-        "text": "",
         "name": "Nidoran(Female)"
       },
       {
         "num": "030",
-        "text": "",
         "name": "Nidorina"
       }
     ]
@@ -821,16 +812,14 @@
   {
     "pokemonId": 32,
     "num": "032",
-    "tier": 2,
-    "text": "",
+    "tier": 1,
+    "text": "Battlecry: Reduce the cost of your next spell by 1",
     "name": "Nidoran ♂ (Male)",
-    "baseAttack": 3,
+    "baseAttack": 2,
     "baseHealth": 2,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {
-      "divineShield": true
-    },
+    "baseKeywords": {},
     "type": [ "Poison" ],
     "height": "0.51 m",
     "weight": "9.0 kg",
@@ -838,12 +827,10 @@
     "nextEvolutions": [
       {
         "num": "033",
-        "text": "",
         "name": "Nidorino"
       },
       {
         "num": "034",
-        "text": "",
         "name": "Nidoking"
       }
     ]
@@ -851,15 +838,15 @@
   {
     "pokemonId": 33,
     "num": "033",
-    "tier": 4,
+    "tier": 3,
     "text": "",
     "name": "Nidorino",
-    "baseAttack": 9,
+    "baseAttack": 6,
     "baseHealth": 6,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {
-      "divineShield": true
+      "venomous": true
     },
     "type": [ "Poison" ],
     "height": "0.89 m",
@@ -868,14 +855,12 @@
     "previousEvolutions": [
       {
         "num": "032",
-        "text": "",
         "name": "Nidoran(Male)"
       }
     ],
     "nextEvolutions": [
       {
         "num": "034",
-        "text": "",
         "name": "Nidoking"
       }
     ]
@@ -884,14 +869,13 @@
     "pokemonId": 34,
     "num": "034",
     "tier": 1,
-    "text": "",
+    "text": "Whenever you add 3 cards to your hand, give friendly minions +1/+1",
     "name": "Nidoking",
     "baseAttack": 27,
     "baseHealth": 18,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {
-      "divineShield": true,
       "venomous": true
     },
     "type": [ "Poison", "Ground" ],
@@ -901,12 +885,10 @@
     "previousEvolutions": [
       {
         "num": "032",
-        "text": "",
         "name": "Nidoran(Male)"
       },
       {
         "num": "033",
-        "text": "",
         "name": "Nidorino"
       }
     ]

@@ -34,7 +34,8 @@
     "cardType": 1,
     "baseCost": 1,
     "spellTypes": [ 2 ],
-    "amount": [ 4 ]
+    "amount": [ 4 ],
+    "hasTarget": true
   },
   {
     "tier": 1,
@@ -43,7 +44,8 @@
     "cardType": 1,
     "baseCost": 1,
     "spellTypes": [ 4, 12 ],
-    "amount": [ 4, 4 ]
+    "amount": [ 4, 4 ],
+    "hasTarget": true
   },
   {
     "tier": 1,
@@ -52,7 +54,8 @@
     "cardType": 1,
     "baseCost": 1,
     "spellTypes": [ 3, 5 ],
-    "amount": [ 2, 2 ]
+    "amount": [ 2, 2 ],
+    "hasTarget": true
   },
   {
     "tier": 2,
