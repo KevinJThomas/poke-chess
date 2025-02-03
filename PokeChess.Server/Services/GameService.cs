@@ -851,14 +851,33 @@ namespace PokeChess.Server.Services
             {
                 target.CombatKeywords.DivineShield = false;
             }
-            else if (source.CombatKeywords.Venomous)
-            {
-                source.CombatKeywords.Venomous = false;
-                target.CombatHealth = 0;
-            }
             else
             {
-                target.CombatHealth -= source.Attack;
+                var damage = source.Attack;
+                var halfDamage = damage / 2;
+                var sourceWeakToTarget = source.IsWeakTo(target);
+                var targetWeakToSource = target.IsWeakTo(source);
+
+                if (sourceWeakToTarget && !targetWeakToSource)
+                {
+                    damage = halfDamage;
+                }
+                if (!sourceWeakToTarget && targetWeakToSource)
+                {
+                    damage = damage + halfDamage;
+                }
+
+                target.CombatHealth -= damage;
+
+                if (source.CombatKeywords.Venomous)
+                {
+                    source.CombatKeywords.Venomous = false;
+
+                    if (target.CombatHealth > 0)
+                    {
+                        target.CombatHealth = 0;
+                    }
+                }
             }
 
             // Update source's state
@@ -866,14 +885,33 @@ namespace PokeChess.Server.Services
             {
                 source.CombatKeywords.DivineShield = false;
             }
-            else if (target.CombatKeywords.Venomous)
-            {
-                target.CombatKeywords.Venomous = false;
-                source.CombatHealth = 0;
-            }
             else
             {
-                source.CombatHealth -= target.Attack;
+                var damage = target.Attack;
+                var halfDamage = damage / 2;
+                var sourceWeakToTarget = source.IsWeakTo(target);
+                var targetWeakToSource = target.IsWeakTo(source);
+
+                if (sourceWeakToTarget && !targetWeakToSource)
+                {
+                    damage = damage + halfDamage;
+                }
+                if (!sourceWeakToTarget && targetWeakToSource)
+                {
+                    damage = halfDamage;
+                }
+
+                source.CombatHealth -= damage;
+
+                if (target.CombatKeywords.Venomous)
+                {
+                    target.CombatKeywords.Venomous = false;
+
+                    if (source.CombatHealth > 0)
+                    {
+                        source.CombatHealth = 0;
+                    }
+                }
             }
 
             source.Attacked = true;

@@ -41,5 +41,18 @@ namespace PokeChess.Server.Extensions
                     break;
             }
         }
+
+        public static bool IsWeakTo(this Card card, Card enemy)
+        {
+            foreach (var weakness in card.WeaknessTypes)
+            {
+                if (enemy.MinionTypes.Contains(weakness))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
