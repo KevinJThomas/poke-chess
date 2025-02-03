@@ -94,7 +94,7 @@ namespace PokeChess.Server.Services
             }
 
             lobby.IsWaitingToStart = false;
-            lobby.GameState.MinionCardPool = _cardService.GetAllMinionsAtBaseEvolution();
+            lobby.GameState.MinionCardPool = _cardService.GetAllMinionsForPool();
             lobby.GameState.SpellCardPool = _cardService.GetAllSpells().Where(x => !x.SpellTypes.Contains(SpellType.BuffTargetAttack) && !x.SpellTypes.Contains(SpellType.BuffTargetHealth) && !x.SpellTypes.Contains(SpellType.BuffFriendlyTargetAttack) && !x.SpellTypes.Contains(SpellType.BuffFriendlyTargetHealth)).ToList();
             // Remove Where statement on above line once front end implements spells with targets
             lobby = NextRound(lobby);
@@ -437,7 +437,8 @@ namespace PokeChess.Server.Services
             for (var i = 0; i < shopSize; i++)
             {
                 // Add appropriate number of minions to shop
-                player.Shop.Add(lobby.GameState.MinionCardPool.DrawCard(player.Tier));
+                var minion = lobby.GameState.MinionCardPool.DrawCard(player.Tier);
+                player.Shop.Add(minion);
             }
             // Add a single spell to the shop
             player.Shop.Add(lobby.GameState.SpellCardPool.DrawCard(player.Tier));
@@ -448,6 +449,7 @@ namespace PokeChess.Server.Services
                 minion.Attack += player.ShopBuffAttack;
                 minion.Health += player.ShopBuffHealth;
             }
+
 
             return (lobby, player.Shop);
         }

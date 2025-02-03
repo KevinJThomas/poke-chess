@@ -23,6 +23,7 @@ namespace PokeChess.Server.Services
         private static readonly int _cardCountTierFour = ConfigurationHelper.config.GetValue<int>("App:Game:CardCountPerTier:Four");
         private static readonly int _cardCountTierFive = ConfigurationHelper.config.GetValue<int>("App:Game:CardCountPerTier:Five");
         private static readonly int _cardCountTierSix = ConfigurationHelper.config.GetValue<int>("App:Game:CardCountPerTier:Six");
+        private static readonly int _playerMaxTier = ConfigurationHelper.config.GetValue<int>("App:Player:MaxTier");
 
         #region class setup
 
@@ -213,6 +214,11 @@ namespace PokeChess.Server.Services
         public List<Card> GetAllMinions()
         {
             return _allMinions.Select(x => x.Clone()).ToList();
+        }
+
+        public List<Card> GetAllMinionsForPool()
+        {
+            return _allMinions.Where(x => x.Tier >= 1 && x.Tier <= _playerMaxTier).Select(x => x.Clone()).ToList();
         }
 
         public List<Card> GetAllSpells()

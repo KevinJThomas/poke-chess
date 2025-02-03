@@ -102,7 +102,7 @@ namespace PokeChess.Server
 
                 if (lobbyPostCombat != null)
                 {
-                    foreach (var player in lobbyPostCombat.Players.Where(x => !x.IsDead).ToList())
+                    foreach (var player in lobbyPostCombat.Players.Where(x => x.IsActive).ToList())
                     {
                         var lobbyReturn = ScrubLobby(lobbyPostCombat, player.Id, player.CurrentOpponentId);
 
