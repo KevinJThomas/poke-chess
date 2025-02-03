@@ -38,8 +38,6 @@ export default function BattleBoard({
 }) {
   const [player, setPlayer] = useState(initialPlayer);
   const [opponent, setOpponent] = useState(initialOpponent);
-  console.log("opponent", opponent);
-  console.log("player", player);
   // const [player, setPlayer] = useState({
   //   name: "p1",
   //   health: 30,

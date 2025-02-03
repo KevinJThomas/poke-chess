@@ -7,6 +7,7 @@ export default function PlayerBoard({
   isDragDisabled,
   player,
   isDropDisabled,
+  isCombineEnabled,
 }) {
   function getListStyle(isDraggingOver, itemsLength) {
     return {
@@ -38,6 +39,7 @@ export default function PlayerBoard({
       droppableId="droppable-board"
       direction="horizontal"
       isDropDisabled={isDropDisabled}
+      isCombineEnabled={isCombineEnabled}
     >
       {(provided, snapshot) => (
         <div

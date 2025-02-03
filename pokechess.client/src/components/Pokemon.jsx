@@ -68,8 +68,8 @@ export default function Pokemon({
           !isMinion && "rounded-xl border-2 border-red-900 bg-red-300",
           className,
         )}
-        onMouseEnter={() => !isMinion && setShowToolTip(true)}
-        onMouseLeave={() => !isMinion && setShowToolTip(false)}
+        onMouseEnter={() => setShowToolTip(true)}
+        onMouseLeave={() => setShowToolTip(false)}
       >
         <div className="relative flex h-20 w-20 flex-col items-center justify-center">
           {!isMinion && (
@@ -99,12 +99,8 @@ export default function Pokemon({
     </div>
   );
 
-  if (isMinion) {
-    return pokemon;
-  }
-
   return (
-    <Tooltip showToolTip={showToolTip} text={text}>
+    <Tooltip showToolTip={showToolTip && text} text={text}>
       {pokemon}
     </Tooltip>
   );

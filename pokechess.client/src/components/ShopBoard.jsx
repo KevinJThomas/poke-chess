@@ -7,14 +7,13 @@ import Shop from "./Shop";
 import TavernRow from "./TavernRow";
 
 export default function ShopBoard({
-  players,
-  gameState,
   connection,
   player,
   disableSellDrop,
   disableBoardDrop,
   disableShopDrop,
   disableHandDrop,
+  cardBeingPlayed,
 }) {
   function upgrade() {
     connection.invoke("UpgradeTavern");
@@ -46,7 +45,11 @@ export default function ShopBoard({
         isDragDisabled={false}
         isDropDisabled={disableShopDrop}
       />
-      <PlayerBoard player={player} isDropDisabled={disableBoardDrop} />
+      <PlayerBoard
+        player={player}
+        isDropDisabled={disableBoardDrop}
+        isCombineEnabled={cardBeingPlayed?.cardType === 1}
+      />
       <Row>
         <Hero name={player.name} health={player.health} armor={player.armor} />
       </Row>

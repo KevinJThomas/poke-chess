@@ -26,6 +26,7 @@ export default function App() {
   const [disableHandDrop, setDisableHandDrop] = useState(false);
   const [hasEndedTurn, setHasEndedTurn] = useState(false);
   const [winner, setWinner] = useState("");
+  const [cardBeingPlayed, setCardBeingPlayed] = useState(null);
 
   const player = players.find((player) => player.id === playerId);
   const opponent = players.find((x) => x.id === player?.currentOpponentId);
@@ -40,6 +41,9 @@ export default function App() {
       setDisableShopDrop(true);
 
       const card = player.hand[result.source.index];
+
+      setCardBeingPlayed(card);
+
       if (player.board.length >= 7 && card.cardType === 0) {
         setDisableBoardDrop(true);
       }
@@ -52,6 +56,7 @@ export default function App() {
   }
 
   function onDragEnd(result) {
+    setCardBeingPlayed(null);
     setDisableSellDrop(false);
     setDisableBoardDrop(false);
     setDisableShopDrop(false);
@@ -262,13 +267,12 @@ export default function App() {
         {gameStatus === "shop" && (
           <ShopBoard
             connection={connection}
-            players={players}
-            gameState={gameState}
             player={player}
             disableSellDrop={disableSellDrop}
             disableBoardDrop={disableBoardDrop}
             disableShopDrop={disableShopDrop}
             disableHandDrop={disableHandDrop}
+            cardBeingPlayed={cardBeingPlayed}
           />
         )}
         {gameStatus === "battle" && (
