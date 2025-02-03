@@ -25,12 +25,9 @@ export default function Tooltip({
           className="popover-arrow-container"
           arrowClassName="popover-arrow"
         >
-          <div
-            style={{ zIndex: 1000 }}
-            className="flex flex-col items-center gap-2 rounded-md bg-gray-800 p-2 text-sm text-white"
-          >
+          <div className="flex flex-col items-center gap-2 rounded-md bg-gray-800 p-2 text-sm text-white">
             <Markdown>{text}</Markdown>
-            {types && <TypeTooltip types={types} />}
+            {!!types.length && <TypeTooltip types={types} />}
           </div>
         </ArrowContainer>
       )}
