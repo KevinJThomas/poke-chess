@@ -5,6 +5,7 @@ using PokeChess.Server.Models;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services.Interfaces;
+using System.Numerics;
 
 namespace PokeChess.Server.Services
 {
@@ -156,7 +157,7 @@ namespace PokeChess.Server.Services
             return (lobby, player);
         }
 
-        public Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action, int boardIndex, string? spellTargetId)
+        public Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action, int boardIndex, string? targetId)
         {
             if (!Initialized())
             {
@@ -191,7 +192,7 @@ namespace PokeChess.Server.Services
                         (lobby, player) = SellMinion(lobby, player, card);
                         break;
                     case MoveCardAction.Play:
-                        (lobby, player) = PlayCard(lobby, player, card, boardIndex, spellTargetId);
+                        (lobby, player) = PlayCard(lobby, player, card, boardIndex, targetId);
                         break;
                     case MoveCardAction.RepositionBoard:
                         (lobby, player) = RepositionBoard(lobby, player, card, boardIndex);
@@ -507,6 +508,16 @@ namespace PokeChess.Server.Services
                 player.EvolveCheck();
                 player.Gold -= card.Cost;
                 player.ConsumeShopDiscounts(card);
+
+                if (player.CardsToReturnToPool.Any())
+                {
+                    foreach (var cardToReturn in player.CardsToReturnToPool)
+                    {
+                        lobby = ReturnCardToPool(lobby, cardToReturn);
+                    }
+
+                    player.CardsToReturnToPool = new List<Card>();
+                }
             }
 
             return (lobby, player);
@@ -520,7 +531,7 @@ namespace PokeChess.Server.Services
             return (lobby, player);
         }
 
-        private (Lobby, Player) PlayCard(Lobby lobby, Player player, Card card, int boardIndex, string? spellTargetId)
+        private (Lobby, Player) PlayCard(Lobby lobby, Player player, Card card, int boardIndex, string? targetId)
         {
             if (card.CardType == CardType.Minion && player.Board.Count() < _boardsSlots)
             {
@@ -533,15 +544,25 @@ namespace PokeChess.Server.Services
                 {
                     player.Board.Add(card);
                 }
-                player = card.TriggerBattlecry(player);
+                player = card.TriggerBattlecry(player, targetId);
             }
             else
             {
-                var success = player.PlaySpell(card, spellTargetId);
+                var success = player.PlaySpell(card, targetId);
                 if (success)
                 {
                     player.Hand.Remove(card);
                     lobby = ReturnCardToPool(lobby, card);
+
+                    if (player.CardsToReturnToPool.Any())
+                    {
+                        foreach (var cardToReturn in player.CardsToReturnToPool)
+                        {
+                            lobby = ReturnCardToPool(lobby, cardToReturn);
+                        }
+
+                        player.CardsToReturnToPool = new List<Card>();
+                    }
                 }
             }
 
@@ -626,6 +647,16 @@ namespace PokeChess.Server.Services
                     }
 
                     lobby.Players[i].DelayedSpells = lobby.Players[i].DelayedSpells.Where(x => x.Delay > 0).ToList();
+
+                    if (lobby.Players[i].CardsToReturnToPool.Any())
+                    {
+                        foreach (var cardToReturn in lobby.Players[i].CardsToReturnToPool)
+                        {
+                            lobby = ReturnCardToPool(lobby, cardToReturn);
+                        }
+
+                        lobby.Players[i].CardsToReturnToPool = new List<Card>();
+                    }
                 }
             }
 

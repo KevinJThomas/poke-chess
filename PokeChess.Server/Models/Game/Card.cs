@@ -27,7 +27,7 @@ namespace PokeChess.Server.Models.Game
         public string? Height { get; set; }
         public string? Weight { get; set; }
         public bool HasBattlecry { get; set; }
-        public bool IsBattlecryTargetted { get; set; }
+        public bool IsBattlecryTargeted { get; set; }
         public bool IsBattlecryTargetFriendlyOnly { get; set; }
         public bool IsTavernSpell { get; set; }
         public CardType CardType { get; set; }
@@ -66,7 +66,7 @@ namespace PokeChess.Server.Models.Game
                     }
                 }
 
-                if (CardType == CardType.Minion && HasBattlecry && IsBattlecryTargetted)
+                if (CardType == CardType.Minion && HasBattlecry && IsBattlecryTargeted)
                 {
                     if (IsBattlecryTargetFriendlyOnly)
                     {

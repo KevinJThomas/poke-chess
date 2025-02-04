@@ -1447,7 +1447,7 @@
     "pokemonId": 58,
     "num": "058",
     "tier": 2,
-    "text": "__Battlecry:__ Give other friendly __Fire__ minions +2/+1",
+    "text": "__Battlecry:__ Give other friendly __Fire__ types +2/+1",
     "name": "Growlithe",
     "baseAttack": 2,
     "baseHealth": 2,
@@ -2353,7 +2353,8 @@
         "num": "093",
         "name": "Haunter"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 95,
@@ -2391,13 +2392,15 @@
         "num": "097",
         "name": "Hypno"
       }
-    ]
+    ],
+    "hasBattlecry": true,
+    "isBattlecryTargeted": true
   },
   {
     "pokemonId": 97,
     "num": "097",
     "tier": 5,
-    "text": "__Battlecry:__ Give a Psychic type stats equal to how many __Battlecries__ you've played this game",
+    "text": "__Battlecry:__ Give a friendly Psychic type stats equal to how many __Battlecries__ you've played this game",
     "name": "Hypno",
     "baseAttack": 3,
     "baseHealth": 3,
@@ -2413,7 +2416,10 @@
         "num": "096",
         "name": "Drowzee"
       }
-    ]
+    ],
+    "hasBattlecry": true,
+    "isBattlecryTargeted": true,
+    "isBattlecryTargetFriendlyOnly": true
   },
   {
     "pokemonId": 98,
@@ -2465,7 +2471,7 @@
     "pokemonId": 100,
     "num": "100",
     "tier": 2,
-    "text": "__Battlecry:__ Give each friendly Electric type +3/+3",
+    "text": "__Battlecry:__ Give other friendly __Electric__ types +3/+3",
     "name": "Voltorb",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -2481,7 +2487,8 @@
         "num": "101",
         "name": "Electrode"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 101,
@@ -2525,7 +2532,8 @@
         "num": "103",
         "name": "Exeggutor"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 103,
@@ -2569,7 +2577,10 @@
         "num": "105",
         "name": "Marowak"
       }
-    ]
+    ],
+    "hasBattlecry": true,
+    "isBattlecryTargeted": true,
+    "isBattlecryTargetFriendlyOnly": true
   },
   {
     "pokemonId": 105,
@@ -3444,7 +3455,8 @@
         "num": "149",
         "name": "Dragonite"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 149,

@@ -68,7 +68,7 @@ namespace PokeChess.Server.Extensions
             return false;
         }
 
-        public static Player TriggerBattlecry(this Card card, Player player)
+        public static Player TriggerBattlecry(this Card card, Player player, string? targetId)
         {
             if (!card.HasBattlecry || player == null)
             {
@@ -82,6 +82,7 @@ namespace PokeChess.Server.Extensions
                     var discoverTreasure = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault();
                     discoverTreasure.Id = Guid.NewGuid().ToString() + _copyStamp;
                     player.Hand.Add(discoverTreasure);
+                    player.BattlecriesPlayed++;
                     return player;
                 case 10:
                     var randomMinionInShop10 = player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())];
@@ -92,6 +93,7 @@ namespace PokeChess.Server.Extensions
                         player.Shop.Remove(randomMinionInShop10);
                     }
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 11:
                     var randomMinionInShop11 = player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())];
@@ -102,6 +104,7 @@ namespace PokeChess.Server.Extensions
                         player.Shop.Remove(randomMinionInShop11);
                     }
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 12:
                     foreach (var bugType in player.Board.Where(x => x.CardType == CardType.Minion && x.MinionTypes.Contains(MinionType.Bug) && x.Id != card.Id))
@@ -117,6 +120,7 @@ namespace PokeChess.Server.Extensions
                         player.Shop.Remove(randomMinionInShop12);
                     }
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 14:
                     foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
@@ -127,6 +131,7 @@ namespace PokeChess.Server.Extensions
                     player.ShopBuffAttack += 2;
                     player.ShopBuffHealth += 2;
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 15:
                     foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
@@ -137,6 +142,7 @@ namespace PokeChess.Server.Extensions
                     player.ShopBuffAttack += 5;
                     player.ShopBuffHealth += 5;
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 21:
                     if (player.Discounts.Flying >= 0)
@@ -145,6 +151,7 @@ namespace PokeChess.Server.Extensions
                         player.ApplyShopDiscounts();
                     }
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 27:
                     player.DelayedSpells.Add(new Card
@@ -163,6 +170,7 @@ namespace PokeChess.Server.Extensions
                         IsTavernSpell = true
                     });
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 29:
                     player.UpgradeCost -= 1;
@@ -171,6 +179,7 @@ namespace PokeChess.Server.Extensions
                         player.UpgradeCost = 0;
                     }
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 32:
                     if (player.Discounts.Spell >= 0)
@@ -179,9 +188,11 @@ namespace PokeChess.Server.Extensions
                         player.ApplyShopDiscounts();
                     }
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 36:
                     card.Health = card.Health * 2;
+                    player.BattlecriesPlayed++;
                     return player;
                 case 40:
                     if (player.Board.Any())
@@ -213,6 +224,7 @@ namespace PokeChess.Server.Extensions
                         }
                     }
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 46:
                     if (player.Hand.Count() < player.MaxHandSize)
@@ -220,6 +232,7 @@ namespace PokeChess.Server.Extensions
                         player.Hand.Add(CardService.Instance.GetFertilizer());
                     }
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 48:
                     if (player.Armor > 0)
@@ -231,6 +244,7 @@ namespace PokeChess.Server.Extensions
                         player.Health -= 1;
                     }
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 51:
                     player.DelayedSpells.Add(new Card
@@ -249,6 +263,7 @@ namespace PokeChess.Server.Extensions
                         IsTavernSpell = true
                     });
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 52:
                     if (player.Board.Any())
@@ -280,10 +295,12 @@ namespace PokeChess.Server.Extensions
                         }
                     }
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 53:
                     card.Attack = card.Attack * 2;
                     card.Health = card.Health * 2;
+                    player.BattlecriesPlayed++;
                     return player;
                 case 58:
                     if (player.Board.Any(x => x.CardType == CardType.Minion && x.MinionTypes.Contains(MinionType.Fire) && x.Id != card.Id))
@@ -294,11 +311,14 @@ namespace PokeChess.Server.Extensions
                             fireMinion.Health += 1;
                         }
                     }
+
+                    player.BattlecriesPlayed++;
                     return player;
                 case 60:
                     var pokeLunch = CardService.Instance.GetAllSpells().Where(x => x.Name == "Poké Lunch").FirstOrDefault();
                     pokeLunch.Id = Guid.NewGuid().ToString() + _copyStamp;
                     player.Hand.Add(pokeLunch);
+                    player.BattlecriesPlayed++;
                     return player;
                 case 70:
                     if (player.Board.Any(x => x.Id != card.Id))
@@ -310,16 +330,104 @@ namespace PokeChess.Server.Extensions
                         }
                     }
 
+                    player.BattlecriesPlayed++;
                     return player;
                 case 72:
                     player.NextSpellCastsTwice = true;
+                    player.BattlecriesPlayed++;
                     return player;
                 case 73:
                     player.SpellsCastTwiceThisTurn = true;
+                    player.BattlecriesPlayed++;
                     return player;
                 case 79:
                     player.Discounts.Spell = -1;
                     player.ApplyShopDiscounts();
+                    player.BattlecriesPlayed++;
+                    return player;
+                case 94:
+                    if (player.Board.Any(x => x.Tier % 2 != 0 && x.Id != card.Id))
+                    {
+                        foreach (var minion in player.Board.Where(x => x.Tier % 2 != 0 && x.Id != card.Id))
+                        {
+                            minion.Attack += 4;
+                            minion.Health += 4;
+                        }
+                    }
+
+                    player.BattlecriesPlayed++;
+                    return player;
+                case 96:
+                    if (!string.IsNullOrWhiteSpace(targetId) && targetId != card.Id)
+                    {
+                        var minionOnBoard96 = player.Board.Any(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                        var minionInShop96 = player.Shop.Any(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                        if (minionOnBoard96)
+                        {
+                            var index96 = player.Board.FindIndex(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                            if (index96 >= 0 && index96 < player.Board.Count())
+                            {
+                                player.Board[index96].Attack += 5;
+                                player.Board[index96].Health += 5;
+                            }
+                        }
+                        if (minionInShop96)
+                        {
+                            var index96 = player.Shop.FindIndex(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                            if (index96 >= 0 && index96 < player.Shop.Count())
+                            {
+                                player.Shop[index96].Attack += 5;
+                                player.Shop[index96].Health += 5;
+                            }
+                        }
+                    }
+
+                    player.BattlecriesPlayed++;
+                    return player;
+                case 97:
+                    if (!string.IsNullOrWhiteSpace(targetId) && targetId != card.Id)
+                    {
+                        var index97 = player.Board.FindIndex(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                        if (index97 >= 0 && index97 < player.Board.Count())
+                        {
+                            player.Board[index97].Attack += player.BattlecriesPlayed;
+                            player.Board[index97].Health += player.BattlecriesPlayed;
+                        }
+                    }
+
+                    player.BattlecriesPlayed++;
+                    return player;
+                case 100:
+                    if (player.Board.Any(x => x.CardType == CardType.Minion && x.MinionTypes.Contains(MinionType.Electric) && x.Id != card.Id))
+                    {
+                        foreach (var fireMinion in player.Board.Where(x => x.CardType == CardType.Minion && x.MinionTypes.Contains(MinionType.Electric) && x.Id != card.Id))
+                        {
+                            fireMinion.Attack += 3;
+                            fireMinion.Health += 3;
+                        }
+                    }
+
+                    player.BattlecriesPlayed++;
+                    return player;
+                case 102:
+                    player.FertilizerHealth += 1;
+                    player.UpdateFertilizerText();
+                    player.BattlecriesPlayed++;
+                    return player;
+                case 104:
+                    player.BattlecriesPlayed++;
+                    return player;
+                case 148:
+                    if (player.Board.Any(x => x.Tier % 2 == 0 && x.Id != card.Id))
+                    {
+                        foreach (var minion in player.Board.Where(x => x.Tier % 2 == 0 && x.Id != card.Id))
+                        {
+                            minion.Attack += 4;
+                            minion.Health += 4;
+                        }
+                    }
+
+                    player.BattlecriesPlayed++;
                     return player;
                 default:
                     return player;

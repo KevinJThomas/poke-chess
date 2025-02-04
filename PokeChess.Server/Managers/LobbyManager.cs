@@ -173,7 +173,7 @@ namespace PokeChess.Server.Managers
             }
         }
 
-        public Player MoveCard(string playerId, string cardId, MoveCardAction action, int boardIndex, string? spellTargetId)
+        public Player MoveCard(string playerId, string cardId, MoveCardAction action, int boardIndex, string? targetId)
         {
             if (!Initialized())
             {
@@ -205,7 +205,7 @@ namespace PokeChess.Server.Managers
                 var player  = _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
                 var card = FindCard(player, cardId, action);
                 
-                _lobbies[lobby.Id] = _gameService.MoveCard(lobby, player, card, action, boardIndex, spellTargetId);
+                _lobbies[lobby.Id] = _gameService.MoveCard(lobby, player, card, action, boardIndex, targetId);
 
                 return _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
             }

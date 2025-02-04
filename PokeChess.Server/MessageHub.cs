@@ -70,7 +70,7 @@ namespace PokeChess.Server
             }
         }
 
-        public async Task MoveCard(string cardId, MoveCardAction action, int? boardIndex, string? spellTargetId)
+        public async Task MoveCard(string cardId, MoveCardAction action, int? boardIndex, string? targetId)
         {
             if (!_lobbyManager.Initialized())
             {
@@ -78,7 +78,7 @@ namespace PokeChess.Server
             }
 
             var id = Context.ConnectionId;
-            var player = _lobbyManager.MoveCard(id, cardId, action, boardIndex ?? -1, spellTargetId);
+            var player = _lobbyManager.MoveCard(id, cardId, action, boardIndex ?? -1, targetId);
 
             if (player != null)
             {
