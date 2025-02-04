@@ -1436,7 +1436,7 @@
     "pokemonId": 58,
     "num": "058",
     "tier": 2,
-    "text": "__Battlecry:__ Give friendly __Burning__ minions +2/+1",
+    "text": "__Battlecry:__ Give friendly __Fire__ minions +2/+1",
     "name": "Growlithe",
     "baseAttack": 2,
     "baseHealth": 2,

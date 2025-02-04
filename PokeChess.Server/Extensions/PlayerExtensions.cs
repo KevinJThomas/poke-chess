@@ -173,6 +173,155 @@ namespace PokeChess.Server.Extensions
             }
         }
 
+        public static void ApplyShopDiscounts(this Player player)
+        {
+            foreach (var card in player.Shop)
+            {
+                card.Cost = card.BaseCost;
+                if (card.CardType == CardType.Minion)
+                {
+                    card.Cost -= player.Discounts.Flex;
+                    card.Cost -= player.Discounts.Minion;
+
+                    if (card.MinionTypes.Any())
+                    {
+                        foreach (var minionType in card.MinionTypes)
+                        {
+                            switch (minionType)
+                            {
+                                case MinionType.Normal:
+                                    card.Cost -= player.Discounts.Normal;
+                                    break;
+                                case MinionType.Fire:
+                                    card.Cost -= player.Discounts.Fire;
+                                    break;
+                                case MinionType.Water:
+                                    card.Cost -= player.Discounts.Water;
+                                    break;
+                                case MinionType.Grass:
+                                    card.Cost -= player.Discounts.Grass;
+                                    break;
+                                case MinionType.Poison:
+                                    card.Cost -= player.Discounts.Poison;
+                                    break;
+                                case MinionType.Flying:
+                                    card.Cost -= player.Discounts.Flying;
+                                    break;
+                                case MinionType.Bug:
+                                    card.Cost -= player.Discounts.Bug;
+                                    break;
+                                case MinionType.Electric:
+                                    card.Cost -= player.Discounts.Electric;
+                                    break;
+                                case MinionType.Ground:
+                                    card.Cost -= player.Discounts.Ground;
+                                    break;
+                                case MinionType.Fighting:
+                                    card.Cost -= player.Discounts.Fighting;
+                                    break;
+                                case MinionType.Psychic:
+                                    card.Cost -= player.Discounts.Psychic;
+                                    break;
+                                case MinionType.Rock:
+                                    card.Cost -= player.Discounts.Rock;
+                                    break;
+                                case MinionType.Ice:
+                                    card.Cost -= player.Discounts.Ice;
+                                    break;
+                                case MinionType.Ghost:
+                                    card.Cost -= player.Discounts.Ghost;
+                                    break;
+                                case MinionType.Dragon:
+                                    card.Cost -= player.Discounts.Dragon;
+                                    break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    card.Cost -= player.Discounts.Flex;
+                    card.Cost -= player.Discounts.Spell;
+                }
+
+                if (card.Cost < 0)
+                {
+                    card.Cost = 0;
+                }
+            }
+        }
+
+        public static void ConsumeShopDiscounts(this Player player, Card card)
+        {
+            if (card.CardType == CardType.Minion)
+            {
+                player.Discounts.Flex = 0;
+                player.Discounts.Minion = 0;
+
+                if (card.MinionTypes.Any())
+                {
+                    foreach (var minionType in card.MinionTypes)
+                    {
+                        switch (minionType)
+                        {
+                            case MinionType.Normal:
+                                player.Discounts.Normal = 0;
+                                break;
+                            case MinionType.Fire:
+                                player.Discounts.Fire = 0;
+                                break;
+                            case MinionType.Water:
+                                player.Discounts.Water = 0;
+                                break;
+                            case MinionType.Grass:
+                                player.Discounts.Grass = 0;
+                                break;
+                            case MinionType.Poison:
+                                player.Discounts.Poison = 0;
+                                break;
+                            case MinionType.Flying:
+                                player.Discounts.Flying = 0;
+                                break;
+                            case MinionType.Bug:
+                                player.Discounts.Bug = 0;
+                                break;
+                            case MinionType.Electric:
+                                player.Discounts.Electric = 0;
+                                break;
+                            case MinionType.Ground:
+                                player.Discounts.Ground = 0;
+                                break;
+                            case MinionType.Fighting:
+                                player.Discounts.Fighting = 0;
+                                break;
+                            case MinionType.Psychic:
+                                player.Discounts.Psychic = 0;
+                                break;
+                            case MinionType.Rock:
+                                player.Discounts.Rock = 0;
+                                break;
+                            case MinionType.Ice:
+                                player.Discounts.Ice = 0;
+                                break;
+                            case MinionType.Ghost:
+                                player.Discounts.Ghost = 0;
+                                break;
+                            case MinionType.Dragon:
+                                player.Discounts.Dragon = 0;
+                                break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                player.Discounts.Flex = 0;
+                player.Discounts.Spell = 0;
+            }
+
+            player.ApplyShopDiscounts();
+        }
+
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
         {
             switch (spellType)

@@ -138,6 +138,8 @@ namespace PokeChess.Server.Extensions
 
                     return player;
                 case 21:
+                    player.Discounts.Flying += 1;
+                    player.ApplyShopDiscounts();
                     return player;
                 default:
                     return player;

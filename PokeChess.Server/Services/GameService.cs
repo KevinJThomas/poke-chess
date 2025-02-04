@@ -185,6 +185,9 @@ namespace PokeChess.Server.Services
                     case MoveCardAction.Play:
                         (lobby, player) = PlayCard(lobby, player, card, boardIndex, spellTargetId);
                         break;
+                    case MoveCardAction.RepositionBoard:
+                        (lobby, player) = RepositionBoard(lobby, player, card, boardIndex);
+                        break;
                     default:
                         return lobby;
                 }
@@ -450,7 +453,7 @@ namespace PokeChess.Server.Services
                 minion.Attack += player.ShopBuffAttack;
                 minion.Health += player.ShopBuffHealth;
             }
-
+            player.ApplyShopDiscounts();
 
             return (lobby, player.Shop);
         }
@@ -486,13 +489,14 @@ namespace PokeChess.Server.Services
 
         private (Lobby, Player) BuyCard(Lobby lobby, Player player, Card card)
         {
+            // Only buy the card if the player has room in their hand
             if (player.Hand.Count() < player.MaxHandSize)
             {
-                // Only buy the card if the player has room in their hand
                 player.Shop.Remove(card);
                 player.Hand.Add(card);
                 player.EvolveCheck();
                 player.Gold -= card.Cost;
+                player.ConsumeShopDiscounts(card);
             }
 
             return (lobby, player);
@@ -528,6 +532,26 @@ namespace PokeChess.Server.Services
                 {
                     player.Hand.Remove(card);
                     lobby = ReturnCardToPool(lobby, card);
+                }
+            }
+
+            return (lobby, player);
+        }
+
+        private (Lobby, Player) RepositionBoard(Lobby lobby, Player player, Card card, int boardIndex)
+        {
+            if (card.CardType != CardType.Minion || !player.Board.Any(x => x.Id == card.Id))
+            {
+                return (lobby, player);
+            }
+
+            var newBoard = player.Board.Where(x => x.Id != card.Id).ToList();
+            if (newBoard.Any() && newBoard.Count() < _boardsSlots)
+            {
+                if (boardIndex >= 0 && boardIndex <= newBoard.Count())
+                {
+                    newBoard.Insert(boardIndex, card);
+                    player.Board = newBoard;
                 }
             }
 

@@ -11,13 +11,11 @@
         Bug,
         Electric,
         Ground,
-        Fairy,
         Fighting,
         Psychic,
         Rock,
         Ice,
         Ghost,
-        Dragon,
-        All
+        Dragon
     }
 }

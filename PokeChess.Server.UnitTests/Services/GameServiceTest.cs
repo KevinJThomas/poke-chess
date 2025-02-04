@@ -558,6 +558,44 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
+        public void TestPlayMinion_Battlecry_21()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 21).FirstOrDefault());
+            var flyingMinions = CardService.Instance.GetAllMinions().Where(x => x.MinionTypes.Contains(Enums.MinionType.Flying)).ToList();
+            lobby.Players[0].Shop.Add(flyingMinions[0]);
+            lobby.Players[0].Shop.Add(flyingMinions[1]);
+            var boardCount = lobby.Players[0].Board.Count();
+            var handCount = lobby.Players[0].Hand.Count();
+            var shopCount = lobby.Players[0].Shop.Count();
+            var cardIdToRemove = lobby.Players[0].Hand[0].Id;
+            var cardIdToDiscount = flyingMinions[0].Id;
+            var cardIdToCheckDiscountIsConsumed = flyingMinions[1].Id;
+            var cardPoolCountBeforeBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var costBeforePlay = lobby.Players[0].Shop.Where(x => x.Id == cardIdToDiscount).FirstOrDefault().Cost;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, null);
+            var cardPoolCountAfterBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var costAfterPlay = lobby.Players[0].Shop.Where(x => x.Id == cardIdToDiscount).FirstOrDefault().Cost;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop.Where(x => x.Id == cardIdToDiscount).FirstOrDefault(), Enums.MoveCardAction.Buy, -1, null);
+
+            // Assert
+            Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(lobby.Players[0].Board.Count() > boardCount);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == handCount);
+            Assert.IsTrue(lobby.Players[0].Shop.Count() < shopCount);
+            Assert.IsTrue(cardPoolCountBeforeBuy == cardPoolCountAfterBuy);
+            Assert.IsTrue(costBeforePlay > costAfterPlay);
+            Assert.IsTrue(costBeforePlay == lobby.Players[0].Shop.Where(x => x.Id == cardIdToCheckDiscountIsConsumed).FirstOrDefault().Cost);
+        }
+
+        [TestMethod]
         public void TestPlaySpell_GainGold()
         {
             // Arrange

@@ -4,6 +4,7 @@
     {
         Buy,
         Sell,
-        Play
+        Play,
+        RepositionBoard
     }
 }
