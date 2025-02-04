@@ -464,6 +464,8 @@ namespace PokeChess.Server.Managers
                     return player.Board.Where(x => x.Id == cardId).FirstOrDefault();
                 case MoveCardAction.Play:
                     return player.Hand.Where(x => x.Id == cardId).FirstOrDefault();
+                case MoveCardAction.RepositionBoard:
+                    return player.Board.Where(x => x.Id == cardId).FirstOrDefault();
             }
 
             return null;
