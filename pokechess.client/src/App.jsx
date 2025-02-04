@@ -11,6 +11,7 @@ import Lobby from "./components/pages/LobbyPage";
 import NamePage from "./components/pages/NamePage";
 import cloneDeep from "lodash/cloneDeep";
 import GameOverPage from "./components/pages/GameOverPage";
+import { swap } from "./util";
 
 export default function App() {
   const [gameStatus, setGameStatus] = useState("name");
@@ -33,6 +34,20 @@ export default function App() {
 
   console.log(players);
 
+  function removeCardFromHand(cardId) {
+    const clonedPlayers = cloneDeep(players);
+
+    const playerIndex = clonedPlayers.findIndex(
+      (player) => player.id === playerId,
+    );
+
+    clonedPlayers[playerIndex].board = clonedPlayers[playerIndex].board.filter(
+      (card) => card.id !== cardId,
+    );
+
+    setPlayers(clonedPlayers);
+  }
+
   function onDragStart(result) {
     if (result.source.droppableId === "droppable-shop") {
       setDisableSellDrop(true);
@@ -48,7 +63,12 @@ export default function App() {
         setDisableShopDrop(true);
       }
 
+      // Can't play more than 7 minions
       if (player.board.length >= 7 && card.cardType === 0) {
+        setDisableBoardDrop(true);
+      }
+
+      if (card.cardType === 1 && card.targetOptions === "none") {
         setDisableBoardDrop(true);
       }
     }
@@ -69,19 +89,21 @@ export default function App() {
 
     const cardId = result.draggableId;
 
+    // Play spell without target
+    if (
+      cardBeingPlayed?.cardType === 1 &&
+      cardBeingPlayed?.targetOptions === "none" &&
+      !result.destination
+    ) {
+      removeCardFromHand(cardId);
+
+      connection.invoke("MoveCard", result.draggableId, 2, null, null);
+      return;
+    }
+
     // Play card with target
     if (result?.combine?.draggableId) {
-      const clonedPlayers = cloneDeep(players);
-
-      const playerIndex = clonedPlayers.findIndex(
-        (player) => player.id === playerId,
-      );
-
-      clonedPlayers[playerIndex].board = clonedPlayers[
-        playerIndex
-      ].board.filter((card) => card.id !== cardId);
-
-      setPlayers(clonedPlayers);
+      removeCardFromHand(cardId);
 
       connection.invoke(
         "MoveCard",
@@ -96,6 +118,35 @@ export default function App() {
     // Check if the drag was canceled
     if (!result.destination) return;
 
+    // Swap board
+    if (
+      result.source.droppableId === "droppable-board" &&
+      result.destination.droppableId === "droppable-board"
+    ) {
+      const clonedPlayers = cloneDeep(players);
+
+      const playerIndex = clonedPlayers.findIndex(
+        (player) => player.id === playerId,
+      );
+
+      swap(
+        clonedPlayers[playerIndex].board,
+        result.source.index,
+        result.destination.index,
+      );
+
+      setPlayers(clonedPlayers);
+
+      connection.invoke(
+        "MoveCard",
+        result.draggableId,
+        3,
+        result.destination.index,
+        null,
+      );
+      return;
+    }
+    
     // Sell
     if (
       result.source.droppableId === "droppable-board" &&
