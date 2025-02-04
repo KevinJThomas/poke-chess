@@ -1,4 +1,5 @@
 ﻿using PokeChess.Server.Enums;
+using PokeChess.Server.Helpers;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services;
@@ -7,6 +8,7 @@ namespace PokeChess.Server.Extensions
 {
     public static class CardExtensions
     {
+        private static readonly string _copyStamp = ConfigurationHelper.config.GetValue<string>("App:Game:CardIdCopyStamp");
         public static void ScrubModifiers(this Card card)
         {
             if (card.CardType == CardType.Minion)
@@ -77,8 +79,65 @@ namespace PokeChess.Server.Extensions
             {
                 case 7:
                     var discoverTreasure = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault();
-                    discoverTreasure.Id += "_copy";
+                    discoverTreasure.Id += _copyStamp;
                     player.Hand.Add(discoverTreasure);
+                    return player;
+                case 10:
+                    var randomMinionInShop10 = player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())];
+                    if (randomMinionInShop10 != null)
+                    {
+                        card.Attack += randomMinionInShop10.Attack;
+                        card.Health += randomMinionInShop10.Health;
+                        player.Shop.Remove(randomMinionInShop10);
+                    }
+
+                    return player;
+                case 11:
+                    var randomMinionInShop11 = player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())];
+                    if (randomMinionInShop11 != null)
+                    {
+                        card.Attack += randomMinionInShop11.Attack * 2;
+                        card.Health += randomMinionInShop11.Health * 2;
+                        player.Shop.Remove(randomMinionInShop11);
+                    }
+
+                    return player;
+                case 12:
+                    foreach (var bugType in player.Board.Where(x => x.CardType == CardType.Minion && x.MinionTypes.Contains(MinionType.Bug) && x.Id != card.Id))
+                    {
+                        var randomMinionInShop12 = player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())];
+                        if (randomMinionInShop12 == null)
+                        {
+                            return player;
+                        }
+
+                        bugType.Attack += randomMinionInShop12.Attack;
+                        bugType.Health += randomMinionInShop12.Health;
+                        player.Shop.Remove(randomMinionInShop12);
+                    }
+
+                    return player;
+                case 14:
+                    foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
+                    {
+                        minion.Attack += 2;
+                        minion.Health += 2;
+                    }
+                    player.ShopBuffAttack += 2;
+                    player.ShopBuffHealth += 2;
+
+                    return player;
+                case 15:
+                    foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
+                    {
+                        minion.Attack += 5;
+                        minion.Health += 5;
+                    }
+                    player.ShopBuffAttack += 5;
+                    player.ShopBuffHealth += 5;
+
+                    return player;
+                case 21:
                     return player;
                 default:
                     return player;

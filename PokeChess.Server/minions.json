@@ -284,7 +284,8 @@
         "num": "012",
         "name": "Butterfree"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 11,
@@ -312,7 +313,8 @@
         "num": "012",
         "name": "Butterfree"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 12,
@@ -338,7 +340,8 @@
         "num": "011",
         "name": "Metapod"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 13,
@@ -370,7 +373,7 @@
     "pokemonId": 14,
     "num": "014",
     "tier": 3,
-    "text": "__Battlecry:__ Minions in the tavern have +2/+2 this game.",
+    "text": "__Battlecry:__ Minions in the tavern have +2/+2 this game",
     "name": "Kakuna",
     "baseAttack": 3,
     "baseHealth": 9,
@@ -392,7 +395,8 @@
         "num": "015",
         "name": "Beedrill"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 15,
@@ -420,7 +424,8 @@
         "num": "014",
         "name": "Kakuna"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 16,
@@ -568,7 +573,8 @@
         "num": "022",
         "name": "Fearow"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 22,

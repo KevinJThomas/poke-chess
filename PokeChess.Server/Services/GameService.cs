@@ -29,6 +29,7 @@ namespace PokeChess.Server.Services
         private static readonly int _mediumDamageCap = ConfigurationHelper.config.GetValue<int>("App:Game:DamageCap:Medium");
         private static readonly int _largeDamageCap = ConfigurationHelper.config.GetValue<int>("App:Game:DamageCap:Large");
         private static readonly int _boardsSlots = ConfigurationHelper.config.GetValue<int>("App:Game:BoardsSlots");
+        private static readonly string _copyStamp = ConfigurationHelper.config.GetValue<string>("App:Game:CardIdCopyStamp");
 
         public int BoardSlots
         {
@@ -462,7 +463,7 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
-            if (card.Id.Contains("_copy"))
+            if (card.Id.Contains(_copyStamp))
             {
                 // Don't return the card to a pool if it's marked as a copy
                 return lobby;

@@ -24,6 +24,8 @@ namespace PokeChess.Server.Services
         private static readonly int _cardCountTierFive = ConfigurationHelper.config.GetValue<int>("App:Game:CardCountPerTier:Five");
         private static readonly int _cardCountTierSix = ConfigurationHelper.config.GetValue<int>("App:Game:CardCountPerTier:Six");
         private static readonly int _playerMaxTier = ConfigurationHelper.config.GetValue<int>("App:Player:MaxTier");
+        private static readonly string _copyStamp = ConfigurationHelper.config.GetValue<string>("App:Game:CardIdCopyStamp");
+
 
         #region class setup
 
@@ -73,7 +75,12 @@ namespace PokeChess.Server.Services
                                 newCard.Health = newCard.BaseHealth;
                                 newCard.Cost = newCard.BaseCost;
                                 newCard.Keywords = newCard.BaseKeywords.Clone();
-                                newCard.SellValue = 1;
+                                var sellValue = newCard.BaseSellValue;
+                                if (sellValue < 1)
+                                {
+                                    sellValue = 1;
+                                }
+                                newCard.SellValue = sellValue;
                                 if (newCard.Type != null && newCard.Type.Any())
                                 {
                                     foreach (var type in newCard.Type)
@@ -235,7 +242,7 @@ namespace PokeChess.Server.Services
         public Card GetMinionCopyByNum(string num)
         {
             var minion = _allMinions.Where(x => x.Num == num).FirstOrDefault().Clone();
-            minion.Id = Guid.NewGuid().ToString() + "_copy";
+            minion.Id = Guid.NewGuid().ToString() + _copyStamp;
             return minion;
         }
 
