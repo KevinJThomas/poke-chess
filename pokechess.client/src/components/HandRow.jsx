@@ -1,6 +1,7 @@
 import Pokemon from "./Pokemon";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { MINION_LENGTH } from "../constants";
+import { cn } from "../util";
 
 export default function HandRow({ player, isDragDisabled, isDropDisabled }) {
   function getListStyle(isDraggingOver, itemsLength) {
@@ -38,7 +39,7 @@ export default function HandRow({ player, isDragDisabled, isDropDisabled }) {
     >
       {(provided, snapshot) => (
         <div
-          className="row rounded-xl bg-white/50"
+          className={cn("row rounded-xl bg-white/50")}
           ref={provided.innerRef}
           style={getListStyle(snapshot.isDraggingOver, player.hand.length)}
           {...provided.droppableProps}
