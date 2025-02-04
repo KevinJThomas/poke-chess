@@ -472,6 +472,11 @@ namespace PokeChess.Server.Extensions
 
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
         {
+            if (amount < 0)
+            {
+                amount = player.Tier;
+            }
+
             switch (spellType)
             {
                 case SpellType.GainGold:
@@ -495,6 +500,7 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexAttack >= 0 && targetIndexAttack < player.Board.Count())
                         {
                             player.Board[targetIndexAttack].Attack += amount;
+
                             return true;
                         }
                     }
@@ -504,6 +510,7 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexAttack >= 0 && targetIndexAttack < player.Shop.Count())
                         {
                             player.Shop[targetIndexAttack].Attack += amount;
+
                             return true;
                         }
                     }
@@ -519,6 +526,7 @@ namespace PokeChess.Server.Extensions
                     if (targetIndexFriendlyAttack >= 0 && targetIndexFriendlyAttack < player.Board.Count())
                     {
                         player.Board[targetIndexFriendlyAttack].Attack += amount;
+
                         return true;
                     }
 
@@ -537,6 +545,7 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexHealth >= 0 && targetIndexHealth < player.Board.Count())
                         {
                             player.Board[targetIndexHealth].Health += amount;
+
                             return true;
                         }
                     }
@@ -546,6 +555,7 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexHealth >= 0 && targetIndexHealth < player.Shop.Count())
                         {
                             player.Shop[targetIndexHealth].Health += amount;
+
                             return true;
                         }
                     }
@@ -561,6 +571,7 @@ namespace PokeChess.Server.Extensions
                     if (targetIndexFriendlyHealth >= 0 && targetIndexFriendlyHealth < player.Board.Count())
                     {
                         player.Board[targetIndexFriendlyHealth].Health += amount;
+
                         return true;
                     }
 

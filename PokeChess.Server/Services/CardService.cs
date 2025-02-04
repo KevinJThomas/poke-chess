@@ -30,7 +30,17 @@ namespace PokeChess.Server.Services
         {
             Name = "Fertilizer",
             Text = "Give a minion +1/+1",
-            CardType = CardType.Spell
+            CardType = CardType.Spell,
+            SpellTypes = new List<SpellType>
+            {
+                SpellType.BuffTargetAttack,
+                SpellType.BuffTargetHealth
+            },
+            Amount = new List<int>
+            {
+                -1,
+                -1
+            }
         };
 
 

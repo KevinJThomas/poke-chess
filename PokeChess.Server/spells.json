@@ -124,7 +124,7 @@
     "text": "Give a minion stats equal to your tier",
     "cardType": 1,
     "baseCost": 1,
-    "spellTypes": [ 3, 5 ],
+    "spellTypes": [ 2, 4 ],
     "amount": [ -1, -1 ]
   }
 ]
