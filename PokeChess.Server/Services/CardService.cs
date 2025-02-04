@@ -26,6 +26,13 @@ namespace PokeChess.Server.Services
         private static readonly int _playerMaxTier = ConfigurationHelper.config.GetValue<int>("App:Player:MaxTier");
         private static readonly string _copyStamp = ConfigurationHelper.config.GetValue<string>("App:Game:CardIdCopyStamp");
 
+        private static readonly Card _fertilizer = new Card
+        {
+            Name = "Fertilizer",
+            Text = "Give a minion +1/+1",
+            CardType = CardType.Spell
+        };
+
 
         #region class setup
 
@@ -128,6 +135,7 @@ namespace PokeChess.Server.Services
                                 newCard.Id = Guid.NewGuid().ToString();
                                 newCard.Cost = newCard.BaseCost;
                                 newCard.Delay = newCard.BaseDelay;
+                                newCard.IsTavernSpell = true;
                                 _allCards.Add(newCard);
                                 _allSpells.Add(newCard);
                             }
@@ -244,6 +252,13 @@ namespace PokeChess.Server.Services
             var minion = _allMinions.Where(x => x.Num == num).FirstOrDefault().Clone();
             minion.Id = Guid.NewGuid().ToString() + _copyStamp;
             return minion;
+        }
+
+        public Card GetFertilizer()
+        {
+            var card = _fertilizer.Clone();
+            card.Id = Guid.NewGuid().ToString() + _copyStamp;
+            return card;
         }
 
         #endregion

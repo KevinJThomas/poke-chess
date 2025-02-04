@@ -85,12 +85,52 @@ namespace PokeChess.Server.Extensions
             }
             else
             {
-                for (var i = 0; i < spell.SpellTypes.Count(); i++)
+                if (spell.IsTavernSpell)
                 {
-                    success = player.ExecuteSpell(spell, spell.SpellTypes[i], spell.Amount[i], targetId);
-                    if (!success)
+                    for (var i = 0; i < spell.SpellTypes.Count(); i++)
                     {
-                        return success;
+                        success = player.ExecuteSpell(spell, spell.SpellTypes[i], spell.Amount[i], targetId);
+                        if (!success)
+                        {
+                            return success;
+                        }
+                    }
+                }
+                else
+                {
+                    switch (spell.Name)
+                    {
+                        case "Fertilizer":
+                            if (string.IsNullOrWhiteSpace(targetId))
+                            {
+                                return false;
+                            }
+
+                            var targetOnBoard = player.Board.Where(x => x.Id == targetId).FirstOrDefault();
+                            if (targetOnBoard != null)
+                            {
+                                var targetIndex = player.Board.FindIndex(x => x.Id == targetId);
+                                if (targetIndex >= 0 && targetIndex < player.Board.Count())
+                                {
+                                    player.Board[targetIndex].Attack += player.FertilizerAttack;
+                                    player.Board[targetIndex].Health += player.FertilizerHealth;
+                                    return true;
+                                }
+                            }
+
+                            var targetInShop = player.Shop.Where(x => x.Id == targetId).FirstOrDefault();
+                            if (targetInShop != null)
+                            {
+                                var targetIndex = player.Shop.FindIndex(x => x.Id == targetId);
+                                if (targetIndex >= 0 && targetIndex < player.Board.Count())
+                                {
+                                    player.Board[targetIndex].Attack += player.FertilizerAttack;
+                                    player.Board[targetIndex].Health += player.FertilizerHealth;
+                                    return true;
+                                }
+                            }
+
+                            return false;
                     }
                 }
             }
@@ -320,6 +360,18 @@ namespace PokeChess.Server.Extensions
             }
 
             player.ApplyShopDiscounts();
+        }
+
+        public static void UpdateFertilizerText(this Player player)
+        {
+            if (player.Hand.Any(x => x.Name == "Fertilizer"))
+            {
+                foreach (var fertilizer in player.Hand.Where(x => x.Name == "Fertilizer").ToList())
+                {
+                    var substring = $"+{player.FertilizerAttack}/+{player.FertilizerHealth}";
+                    fertilizer.Text = fertilizer.Text.Substring(0, fertilizer.Text.Length - 5) + substring;
+                }
+            }
         }
 
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)

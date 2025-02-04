@@ -28,6 +28,8 @@ namespace PokeChess.Server.Models.Player
             MaxHandSize = _maxHandSize;
             ShopBuffAttack = 0;
             ShopBuffHealth = 0;
+            FertilizerAttack = 1;
+            FertilizerHealth = 1;
             Discounts = new Discounts();
             Board = new List<Card>();
             Hand = new List<Card>();
@@ -58,6 +60,8 @@ namespace PokeChess.Server.Models.Player
         public string? CurrentOpponentId { get; set; }
         public int ShopBuffAttack { get; set; }
         public int ShopBuffHealth { get; set; }
+        public int FertilizerAttack { get; set; }
+        public int FertilizerHealth { get; set; }
         public Discounts Discounts { get; set; }
         public List<Card> Board { get; set; }
         public List<Card> Hand { get; set; }

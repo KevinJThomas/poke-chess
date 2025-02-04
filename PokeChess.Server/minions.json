@@ -757,7 +757,8 @@
         "num": "031",
         "name": "Nidoqueen"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 30,
@@ -841,7 +842,8 @@
         "num": "034",
         "name": "Nidoking"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 33,
@@ -943,7 +945,8 @@
         "num": "035",
         "name": "Clefairy"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 37,
@@ -1035,7 +1038,8 @@
         "num": "039",
         "name": "Jigglypuff"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 41,
@@ -1187,7 +1191,8 @@
         "num": "047",
         "name": "Parasect"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 47,
@@ -1231,7 +1236,8 @@
         "num": "049",
         "name": "Venomoth"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 49,
@@ -1297,7 +1303,8 @@
         "num": "050",
         "name": "Diglett"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 52,
@@ -1319,7 +1326,8 @@
         "num": "053",
         "name": "Persian"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 53,
@@ -1341,7 +1349,8 @@
         "num": "052",
         "name": "Meowth"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 54,
@@ -1363,7 +1372,8 @@
         "num": "055",
         "name": "Golduck"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 55,
@@ -1437,7 +1447,7 @@
     "pokemonId": 58,
     "num": "058",
     "tier": 2,
-    "text": "__Battlecry:__ Give friendly __Fire__ minions +2/+1",
+    "text": "__Battlecry:__ Give other friendly __Fire__ minions +2/+1",
     "name": "Growlithe",
     "baseAttack": 2,
     "baseHealth": 2,
@@ -1453,7 +1463,8 @@
         "num": "059",
         "name": "Arcanine"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 59,
@@ -1501,7 +1512,8 @@
         "num": "062",
         "name": "Poliwrath"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 61,
@@ -1769,7 +1781,8 @@
         "num": "071",
         "name": "Victreebel"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 71,

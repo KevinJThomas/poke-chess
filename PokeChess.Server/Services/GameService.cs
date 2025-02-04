@@ -72,6 +72,14 @@ namespace PokeChess.Server.Services
 
         #region public methods
 
+        public Lobby TestFertilizerText(Lobby lobby)
+        {
+            // This function reference can be replaced in GameServiceTest once there is a card that can do the same thing
+            lobby.Players[0].FertilizerAttack = 2;
+            lobby.Players[0].UpdateFertilizerText();
+            return lobby;
+        }
+
         public Lobby StartGame(Lobby lobby)
         {
             if (!Initialized())
@@ -194,6 +202,7 @@ namespace PokeChess.Server.Services
             }
 
             lobby.Players[playerIndex] = player;
+            lobby.UpdateFertilizerText();
             return lobby;
         }
 
@@ -236,6 +245,7 @@ namespace PokeChess.Server.Services
                 lobby = NextRound(lobby);
             }
 
+            lobby.UpdateFertilizerText();
             return lobby;
         }
 

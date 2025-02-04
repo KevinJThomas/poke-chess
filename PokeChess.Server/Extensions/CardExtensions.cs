@@ -78,6 +78,7 @@ namespace PokeChess.Server.Extensions
             switch (card.PokemonId)
             {
                 case 7:
+                case 54:
                     var discoverTreasure = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault();
                     discoverTreasure.Id = Guid.NewGuid().ToString() + _copyStamp;
                     player.Hand.Add(discoverTreasure);
@@ -154,8 +155,153 @@ namespace PokeChess.Server.Extensions
                         {
                             1
                         },
-                        Delay = 1
+                        Delay = 1,
+                        IsTavernSpell = true
                     });
+
+                    return player;
+                case 29:
+                    player.UpgradeCost -= 1;
+                    if (player.UpgradeCost < 0)
+                    {
+                        player.UpgradeCost = 0;
+                    }
+
+                    return player;
+                case 32:
+                    player.Discounts.Spell += 1;
+                    player.ApplyShopDiscounts();
+                    return player;
+                case 36:
+                    card.Health = card.Health * 2;
+                    return player;
+                case 40:
+                    if (player.Board.Any())
+                    {
+                        var types = new List<MinionType>();
+                        foreach (var minion in player.Board.Where(x => x.CardType == CardType.Minion && card.MinionTypes.Count() == 1))
+                        {
+                            if (!types.Contains(minion.MinionTypes[0]))
+                            {
+                                types.Add(minion.MinionTypes[0]);
+                                minion.Attack += 2;
+                                minion.Health += 1;
+                            }
+                        }
+                        foreach (var minion in player.Board.Where(x => x.CardType == CardType.Minion && card.MinionTypes.Count() == 2))
+                        {
+                            if (!types.Contains(minion.MinionTypes[0]))
+                            {
+                                types.Add(minion.MinionTypes[0]);
+                                minion.Attack += 2;
+                                minion.Health += 1;
+                            }
+                            else if (!types.Contains(minion.MinionTypes[1]))
+                            {
+                                types.Add(minion.MinionTypes[1]);
+                                minion.Attack += 2;
+                                minion.Health += 1;
+                            }
+                        }
+                    }
+
+                    return player;
+                case 46:
+                    if (player.Hand.Count() < player.MaxHandSize)
+                    {
+                        player.Hand.Add(CardService.Instance.GetFertilizer());
+                    }
+
+                    return player;
+                case 48:
+                    if (player.Armor > 0)
+                    {
+                        player.Armor -= 1;
+                    }
+                    else
+                    {
+                        player.Health -= 1;
+                    }
+
+                    return player;
+                case 51:
+                    player.DelayedSpells.Add(new Card
+                    {
+                        Id = Guid.NewGuid().ToString() + _copyStamp,
+                        CardType = CardType.Spell,
+                        SpellTypes = new List<SpellType>()
+                        {
+                            SpellType.GainGold
+                        },
+                        Amount = new List<int>
+                        {
+                            4
+                        },
+                        Delay = 2,
+                        IsTavernSpell = true
+                    });
+
+                    return player;
+                case 52:
+                    if (player.Board.Any())
+                    {
+                        var types = new List<MinionType>();
+                        foreach (var minion in player.Board.Where(x => x.CardType == CardType.Minion && card.MinionTypes.Count() == 1))
+                        {
+                            if (!types.Contains(minion.MinionTypes[0]))
+                            {
+                                types.Add(minion.MinionTypes[0]);
+                                card.Attack += 1;
+                                card.Health += 1;
+                            }
+                        }
+                        foreach (var minion in player.Board.Where(x => x.CardType == CardType.Minion && card.MinionTypes.Count() == 2))
+                        {
+                            if (!types.Contains(minion.MinionTypes[0]))
+                            {
+                                types.Add(minion.MinionTypes[0]);
+                                card.Attack += 1;
+                                card.Health += 1;
+                            }
+                            else if (!types.Contains(minion.MinionTypes[1]))
+                            {
+                                types.Add(minion.MinionTypes[1]);
+                                card.Attack += 1;
+                                card.Health += 1;
+                            }
+                        }
+                    }
+
+                    return player;
+                case 53:
+                    card.Attack = card.Attack * 2;
+                    card.Health = card.Health * 2;
+                    return player;
+                case 58:
+                    if (player.Board.Any(x => x.CardType == CardType.Minion && x.MinionTypes.Contains(MinionType.Fire) && x.Id != card.Id))
+                    {
+                        foreach (var fireMinion in player.Board.Where(x => x.CardType == CardType.Minion && x.MinionTypes.Contains(MinionType.Fire) && x.Id != card.Id))
+                        {
+                            fireMinion.Attack += 2;
+                            fireMinion.Health += 1;
+                        }
+                    }
+                    return player;
+                case 60:
+                    var pokeLunch = CardService.Instance.GetAllSpells().Where(x => x.Name == "Poké Lunch").FirstOrDefault();
+                    pokeLunch.Id = Guid.NewGuid().ToString() + _copyStamp;
+                    player.Hand.Add(pokeLunch);
+                    return player;
+                case 70:
+                    if (player.Board.Any(x => x.Id != card.Id))
+                    {
+                        foreach (var minion in player.Board.Where(x => x.Id != card.Id))
+                        {
+                            minion.Attack += player.FertilizerAttack;
+                            minion.Health += player.FertilizerHealth;
+                        }
+                    }
+
                     return player;
                 default:
                     return player;
