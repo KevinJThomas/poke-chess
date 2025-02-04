@@ -43,7 +43,7 @@
     "cardType": 1,
     "baseCost": 1,
     "spellTypes": [ 4, 12 ],
-    "amount": [ 4, 4 ]
+    "amount": [ 3, 4 ]
   },
   {
     "tier": 1,
