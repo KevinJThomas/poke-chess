@@ -11,7 +11,6 @@ import Lobby from "./components/pages/LobbyPage";
 import NamePage from "./components/pages/NamePage";
 import cloneDeep from "lodash/cloneDeep";
 import GameOverPage from "./components/pages/GameOverPage";
-import { swap } from "./util";
 
 export default function App() {
   const [gameStatus, setGameStatus] = useState("name");
@@ -118,6 +117,39 @@ export default function App() {
     // Check if the drag was canceled
     if (!result.destination) return;
 
+    // Swap shop
+    if (
+      result.source.droppableId === "droppable-shop" &&
+      result.destination.droppableId === "droppable-shop"
+    ) {
+      const clonedPlayers = cloneDeep(players);
+
+      const playerIndex = clonedPlayers.findIndex(
+        (player) => player.id === playerId,
+      );
+
+      const minion = clonedPlayers[playerIndex].shop[result.source.index];
+
+      clonedPlayers[playerIndex].shop.splice(result.source.index, 1);
+
+      clonedPlayers[playerIndex].shop.splice(
+        result.destination.index,
+        0,
+        minion,
+      );
+
+      setPlayers(clonedPlayers);
+
+      // connection.invoke(
+      //   "MoveCard",
+      //   result.draggableId,
+      //   3,
+      //   result.destination.index,
+      //   null,
+      // );
+      return;
+    }
+
     // Swap board
     if (
       result.source.droppableId === "droppable-board" &&
@@ -129,10 +161,14 @@ export default function App() {
         (player) => player.id === playerId,
       );
 
-      swap(
-        clonedPlayers[playerIndex].board,
-        result.source.index,
+      const minion = clonedPlayers[playerIndex].board[result.source.index];
+
+      clonedPlayers[playerIndex].board.splice(result.source.index, 1);
+
+      clonedPlayers[playerIndex].board.splice(
         result.destination.index,
+        0,
+        minion,
       );
 
       setPlayers(clonedPlayers);
@@ -146,7 +182,7 @@ export default function App() {
       );
       return;
     }
-    
+
     // Sell
     if (
       result.source.droppableId === "droppable-board" &&
