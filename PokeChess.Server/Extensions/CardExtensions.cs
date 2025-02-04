@@ -79,7 +79,7 @@ namespace PokeChess.Server.Extensions
             {
                 case 7:
                     var discoverTreasure = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault();
-                    discoverTreasure.Id += _copyStamp;
+                    discoverTreasure.Id = Guid.NewGuid().ToString() + _copyStamp;
                     player.Hand.Add(discoverTreasure);
                     return player;
                 case 10:
@@ -140,6 +140,22 @@ namespace PokeChess.Server.Extensions
                 case 21:
                     player.Discounts.Flying += 1;
                     player.ApplyShopDiscounts();
+                    return player;
+                case 27:
+                    player.DelayedSpells.Add(new Card
+                    {
+                        Id = Guid.NewGuid().ToString() + _copyStamp,
+                        CardType = CardType.Spell,
+                        SpellTypes = new List<SpellType>()
+                        {
+                            SpellType.GainGold
+                        },
+                        Amount = new List<int>
+                        {
+                            1
+                        },
+                        Delay = 1
+                    });
                     return player;
                 default:
                     return player;

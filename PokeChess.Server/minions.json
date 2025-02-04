@@ -708,7 +708,8 @@
         "num": "028",
         "name": "Sandslash"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 28,
