@@ -4,12 +4,13 @@ import { MINION_LENGTH } from "../constants";
 
 export default function HandRow({ player, isDragDisabled, isDropDisabled }) {
   function getListStyle(isDraggingOver, itemsLength) {
+    const width = Math.max(MINION_LENGTH * itemsLength, MINION_LENGTH);
     return {
       // background: isDraggingOver ? "lightblue" : "lightgrey",
       // display: "flex",
       // padding: grid,
       // width: itemsLength * 68.44 + 16,
-      width: Math.max(MINION_LENGTH * itemsLength, MINION_LENGTH),
+      width,
     };
   }
 
@@ -37,7 +38,7 @@ export default function HandRow({ player, isDragDisabled, isDropDisabled }) {
     >
       {(provided, snapshot) => (
         <div
-          className="row"
+          className="row rounded-xl bg-white/50"
           ref={provided.innerRef}
           style={getListStyle(snapshot.isDraggingOver, player.hand.length)}
           {...provided.droppableProps}

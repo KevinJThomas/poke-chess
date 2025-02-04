@@ -40,11 +40,13 @@ export default function App() {
     }
 
     if (result.source.droppableId === "droppable-hand") {
-      setDisableShopDrop(true);
-
       const card = player.hand[result.source.index];
 
       setCardBeingPlayed(card);
+
+      if (card.cardType === 0 || card.targetOptions !== "any") {
+        setDisableShopDrop(true);
+      }
 
       if (player.board.length >= 7 && card.cardType === 0) {
         setDisableBoardDrop(true);
@@ -88,7 +90,6 @@ export default function App() {
         null,
         result.combine.draggableId,
       );
-      console.log("play card", result.draggableId, result.combine.draggableId);
       return;
     }
 
@@ -230,7 +231,6 @@ export default function App() {
     });
 
     connection.on("PlayerUpdated", (newPlayer) => {
-      console.log("Player Updated", newPlayer);
       setPlayers((prev) =>
         prev.map((player) => {
           if (player.id === playerId) {

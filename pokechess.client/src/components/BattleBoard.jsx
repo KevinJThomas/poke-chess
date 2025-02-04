@@ -257,8 +257,6 @@ export default function BattleBoard({
   useAsyncEffect(async () => {
     await delay(1000);
 
-    console.log(player.combatActions);
-
     for (const [index, action] of player.combatActions.entries()) {
       if (action.type === "minion") {
         await attackMinion(action, index);

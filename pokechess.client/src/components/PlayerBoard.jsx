@@ -43,7 +43,7 @@ export default function PlayerBoard({
     >
       {(provided, snapshot) => (
         <div
-          className={clsx("row")}
+          className={clsx("row rounded-xl bg-white/50")}
           ref={provided.innerRef}
           style={getListStyle(snapshot.isDraggingOver, player.board.length)}
           {...provided.droppableProps}
