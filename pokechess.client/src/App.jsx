@@ -11,6 +11,7 @@ import Lobby from "./components/pages/LobbyPage";
 import NamePage from "./components/pages/NamePage";
 import cloneDeep from "lodash/cloneDeep";
 import GameOverPage from "./components/pages/GameOverPage";
+import { swap } from "./util";
 
 export default function App() {
   const [gameStatus, setGameStatus] = useState("name");
@@ -117,6 +118,35 @@ export default function App() {
     // Check if the drag was canceled
     if (!result.destination) return;
 
+    // Swap board
+    if (
+      result.source.droppableId === "droppable-board" &&
+      result.destination.droppableId === "droppable-board"
+    ) {
+      const clonedPlayers = cloneDeep(players);
+
+      const playerIndex = clonedPlayers.findIndex(
+        (player) => player.id === playerId,
+      );
+
+      swap(
+        clonedPlayers[playerIndex].board,
+        result.source.index,
+        result.destination.index,
+      );
+
+      setPlayers(clonedPlayers);
+
+      connection.invoke(
+        "MoveCard",
+        result.draggableId,
+        3,
+        result.destination.index,
+        null,
+      );
+      return;
+    }
+    
     // Sell
     if (
       result.source.droppableId === "droppable-board" &&
