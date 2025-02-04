@@ -1014,6 +1014,108 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
+        public void TestPlayMinion_Battlecry_72()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 72).FirstOrDefault());
+            var discoverTreasures = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").ToList();
+            lobby.Players[0].Hand.Add(discoverTreasures[0]);
+            lobby.Players[0].Hand.Add(discoverTreasures[1]);
+            var boardCount = lobby.Players[0].Board.Count();
+            var handCount = lobby.Players[0].Hand.Count();
+            var cardIdToRemove = lobby.Players[0].Hand[0].Id;
+            var originalGold = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, null);
+            var goldAfterMinionPlayed = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            var goldAfterFirstSpellPlayed = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            var goldAfterSecondSpellPlayed = lobby.Players[0].Gold;
+
+            // Assert
+            Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(lobby.Players[0].Board.Count() > boardCount);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() < handCount);
+            Assert.IsTrue(originalGold == goldAfterMinionPlayed);
+            Assert.IsTrue(originalGold == goldAfterFirstSpellPlayed - 2);
+            Assert.IsTrue(originalGold == goldAfterSecondSpellPlayed - 3);
+        }
+
+        [TestMethod]
+        public void TestPlayMinion_Battlecry_73()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 73).FirstOrDefault());
+            var discoverTreasures = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").ToList();
+            lobby.Players[0].Hand.Add(discoverTreasures[0]);
+            lobby.Players[0].Hand.Add(discoverTreasures[1]);
+            var boardCount = lobby.Players[0].Board.Count();
+            var handCount = lobby.Players[0].Hand.Count();
+            var cardIdToRemove = lobby.Players[0].Hand[0].Id;
+            var originalGold = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, null);
+            var goldAfterMinionPlayed = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            var goldAfterFirstSpellPlayed = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            var goldAfterSecondSpellPlayed = lobby.Players[0].Gold;
+
+            // Assert
+            Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(lobby.Players[0].Board.Count() > boardCount);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() < handCount);
+            Assert.IsTrue(originalGold == goldAfterMinionPlayed);
+            Assert.IsTrue(originalGold == goldAfterFirstSpellPlayed - 2);
+            Assert.IsTrue(originalGold == goldAfterSecondSpellPlayed - 4);
+        }
+
+        [TestMethod]
+        public void TestPlayMinion_Battlecry_79()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 79).FirstOrDefault());
+            var masterBall = CardService.Instance.GetAllSpells().Where(x => x.Name == "Master Ball").FirstOrDefault();
+            lobby.Players[0].Shop.Add(masterBall);
+            var boardCount = lobby.Players[0].Board.Count();
+            var handCount = lobby.Players[0].Hand.Count();
+            var cardIdToRemove = lobby.Players[0].Hand[0].Id;
+            var originalGold = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], masterBall, Enums.MoveCardAction.Buy, -1, null);
+            var goldAfterBuy = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop.Where(x => x.CardType == Enums.CardType.Spell).FirstOrDefault(), Enums.MoveCardAction.Buy, -1, null);
+            var goldAfterSecondBuy = lobby.Players[0].Gold;
+
+            // Assert
+            Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(lobby.Players[0].Board.Count() > boardCount);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() > handCount);
+            Assert.IsTrue(originalGold == goldAfterBuy);
+            Assert.IsTrue(goldAfterBuy > goldAfterSecondBuy);
+        }
+
+        [TestMethod]
         public void TestPlaySpell_Fertilizer()
         {
             // Arrange

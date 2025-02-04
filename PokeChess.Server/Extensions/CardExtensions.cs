@@ -139,8 +139,12 @@ namespace PokeChess.Server.Extensions
 
                     return player;
                 case 21:
-                    player.Discounts.Flying += 1;
-                    player.ApplyShopDiscounts();
+                    if (player.Discounts.Flying >= 0)
+                    {
+                        player.Discounts.Flying += 1;
+                        player.ApplyShopDiscounts();
+                    }
+
                     return player;
                 case 27:
                     player.DelayedSpells.Add(new Card
@@ -169,8 +173,12 @@ namespace PokeChess.Server.Extensions
 
                     return player;
                 case 32:
-                    player.Discounts.Spell += 1;
-                    player.ApplyShopDiscounts();
+                    if (player.Discounts.Spell >= 0)
+                    {
+                        player.Discounts.Spell += 1;
+                        player.ApplyShopDiscounts();
+                    }
+
                     return player;
                 case 36:
                     card.Health = card.Health * 2;
@@ -302,6 +310,16 @@ namespace PokeChess.Server.Extensions
                         }
                     }
 
+                    return player;
+                case 72:
+                    player.NextSpellCastsTwice = true;
+                    return player;
+                case 73:
+                    player.SpellsCastTwiceThisTurn = true;
+                    return player;
+                case 79:
+                    player.Discounts.Spell = -1;
+                    player.ApplyShopDiscounts();
                     return player;
                 default:
                     return player;

@@ -1834,7 +1834,8 @@
         "num": "073",
         "name": "Tentacruel"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 73,
@@ -1856,7 +1857,8 @@
         "num": "072",
         "name": "Tentacool"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 74,
@@ -2002,7 +2004,8 @@
         "num": "080",
         "name": "Slowbro"
       }
-    ]
+    ],
+    "hasBattlecry": true
   },
   {
     "pokemonId": 80,

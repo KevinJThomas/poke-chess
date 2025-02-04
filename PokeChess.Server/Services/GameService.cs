@@ -592,6 +592,7 @@ namespace PokeChess.Server.Services
             for (var i = 0; i < lobby.Players.Count(); i++)
             {
                 lobby.Players[i].TurnEnded = false;
+                lobby.Players[i].SpellsCastTwiceThisTurn = false;
 
                 if (lobby.Players[i].BaseGold < lobby.Players[i].MaxGold)
                 {

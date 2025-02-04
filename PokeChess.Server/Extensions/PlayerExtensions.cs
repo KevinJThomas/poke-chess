@@ -79,60 +79,69 @@ namespace PokeChess.Server.Extensions
             }
 
             var success = true;
-            if (spell.Delay > 0)
+            var castCount = (player.SpellsCastTwiceThisTurn || player.NextSpellCastsTwice) ? 2 : 1;
+            for (var i = 0; i < castCount; i++)
             {
-                player.DelayedSpells.Add(spell);
-            }
-            else
-            {
-                if (spell.IsTavernSpell)
+                if (spell.Delay > 0)
                 {
-                    for (var i = 0; i < spell.SpellTypes.Count(); i++)
-                    {
-                        success = player.ExecuteSpell(spell, spell.SpellTypes[i], spell.Amount[i], targetId);
-                        if (!success)
-                        {
-                            return success;
-                        }
-                    }
+                    player.DelayedSpells.Add(spell);
                 }
                 else
                 {
-                    switch (spell.Name)
+                    if (spell.IsTavernSpell)
                     {
-                        case "Fertilizer":
-                            if (string.IsNullOrWhiteSpace(targetId))
+                        for (var j = 0; j < spell.SpellTypes.Count(); j++)
+                        {
+                            success = player.ExecuteSpell(spell, spell.SpellTypes[j], spell.Amount[j], targetId);
+                            if (!success)
                             {
+                                return success;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        switch (spell.Name)
+                        {
+                            case "Fertilizer":
+                                if (string.IsNullOrWhiteSpace(targetId))
+                                {
+                                    return false;
+                                }
+
+                                var targetOnBoard = player.Board.Where(x => x.Id == targetId).FirstOrDefault();
+                                if (targetOnBoard != null)
+                                {
+                                    var targetIndex = player.Board.FindIndex(x => x.Id == targetId);
+                                    if (targetIndex >= 0 && targetIndex < player.Board.Count())
+                                    {
+                                        player.Board[targetIndex].Attack += player.FertilizerAttack;
+                                        player.Board[targetIndex].Health += player.FertilizerHealth;
+                                        return true;
+                                    }
+                                }
+
+                                var targetInShop = player.Shop.Where(x => x.Id == targetId).FirstOrDefault();
+                                if (targetInShop != null)
+                                {
+                                    var targetIndex = player.Shop.FindIndex(x => x.Id == targetId);
+                                    if (targetIndex >= 0 && targetIndex < player.Board.Count())
+                                    {
+                                        player.Board[targetIndex].Attack += player.FertilizerAttack;
+                                        player.Board[targetIndex].Health += player.FertilizerHealth;
+                                        return true;
+                                    }
+                                }
+
                                 return false;
-                            }
-
-                            var targetOnBoard = player.Board.Where(x => x.Id == targetId).FirstOrDefault();
-                            if (targetOnBoard != null)
-                            {
-                                var targetIndex = player.Board.FindIndex(x => x.Id == targetId);
-                                if (targetIndex >= 0 && targetIndex < player.Board.Count())
-                                {
-                                    player.Board[targetIndex].Attack += player.FertilizerAttack;
-                                    player.Board[targetIndex].Health += player.FertilizerHealth;
-                                    return true;
-                                }
-                            }
-
-                            var targetInShop = player.Shop.Where(x => x.Id == targetId).FirstOrDefault();
-                            if (targetInShop != null)
-                            {
-                                var targetIndex = player.Shop.FindIndex(x => x.Id == targetId);
-                                if (targetIndex >= 0 && targetIndex < player.Board.Count())
-                                {
-                                    player.Board[targetIndex].Attack += player.FertilizerAttack;
-                                    player.Board[targetIndex].Health += player.FertilizerHealth;
-                                    return true;
-                                }
-                            }
-
-                            return false;
+                        }
                     }
                 }
+            }
+
+            if (success)
+            {
+                player.NextSpellCastsTwice = false;
             }
 
             return success;
@@ -220,6 +229,12 @@ namespace PokeChess.Server.Extensions
                 card.Cost = card.BaseCost;
                 if (card.CardType == CardType.Minion)
                 {
+                    if (player.Discounts.Flex < 0 || player.Discounts.Minion < 0)
+                    {
+                        card.Cost = 0;
+                        continue;
+                    }
+
                     card.Cost -= player.Discounts.Flex;
                     card.Cost -= player.Discounts.Minion;
 
@@ -230,48 +245,123 @@ namespace PokeChess.Server.Extensions
                             switch (minionType)
                             {
                                 case MinionType.Normal:
+                                    if (player.Discounts.Normal < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Normal;
                                     break;
                                 case MinionType.Fire:
+                                    if (player.Discounts.Fire < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Fire;
                                     break;
                                 case MinionType.Water:
+                                    if (player.Discounts.Water < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Water;
                                     break;
                                 case MinionType.Grass:
+                                    if (player.Discounts.Grass < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Grass;
                                     break;
                                 case MinionType.Poison:
+                                    if (player.Discounts.Poison < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Poison;
                                     break;
                                 case MinionType.Flying:
+                                    if (player.Discounts.Flying < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Flying;
                                     break;
                                 case MinionType.Bug:
+                                    if (player.Discounts.Bug < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Bug;
                                     break;
                                 case MinionType.Electric:
+                                    if (player.Discounts.Electric < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Electric;
                                     break;
                                 case MinionType.Ground:
+                                    if (player.Discounts.Ground < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Ground;
                                     break;
                                 case MinionType.Fighting:
+                                    if (player.Discounts.Fighting < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Fighting;
                                     break;
                                 case MinionType.Psychic:
+                                    if (player.Discounts.Psychic < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Psychic;
                                     break;
                                 case MinionType.Rock:
+                                    if (player.Discounts.Rock < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Rock;
                                     break;
                                 case MinionType.Ice:
+                                    if (player.Discounts.Ice < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Ice;
                                     break;
                                 case MinionType.Ghost:
+                                    if (player.Discounts.Ghost < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Ghost;
                                     break;
                                 case MinionType.Dragon:
+                                    if (player.Discounts.Dragon < 0)
+                                    {
+                                        card.Cost = 0;
+                                        return;
+                                    }
                                     card.Cost -= player.Discounts.Dragon;
                                     break;
                             }
@@ -280,6 +370,12 @@ namespace PokeChess.Server.Extensions
                 }
                 else
                 {
+                    if (player.Discounts.Flex < 0 || player.Discounts.Spell < 0)
+                    {
+                        card.Cost = 0;
+                        continue;
+                    }
+
                     card.Cost -= player.Discounts.Flex;
                     card.Cost -= player.Discounts.Spell;
                 }
@@ -293,9 +389,10 @@ namespace PokeChess.Server.Extensions
 
         public static void ConsumeShopDiscounts(this Player player, Card card)
         {
+            player.Discounts.Flex = 0;
+
             if (card.CardType == CardType.Minion)
             {
-                player.Discounts.Flex = 0;
                 player.Discounts.Minion = 0;
 
                 if (card.MinionTypes.Any())
@@ -355,7 +452,6 @@ namespace PokeChess.Server.Extensions
             }
             else
             {
-                player.Discounts.Flex = 0;
                 player.Discounts.Spell = 0;
             }
 

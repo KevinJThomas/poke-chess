@@ -62,6 +62,8 @@ namespace PokeChess.Server.Models.Player
         public int ShopBuffHealth { get; set; }
         public int FertilizerAttack { get; set; }
         public int FertilizerHealth { get; set; }
+        public bool NextSpellCastsTwice { get; set; }
+        public bool SpellsCastTwiceThisTurn { get; set; }
         public Discounts Discounts { get; set; }
         public List<Card> Board { get; set; }
         public List<Card> Hand { get; set; }
