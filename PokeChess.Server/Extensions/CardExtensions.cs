@@ -442,5 +442,33 @@ namespace PokeChess.Server.Extensions
                     return player;
             }
         }
+
+        public static Player TriggerEndOfTurn(this Card card, Player player)
+        {
+            if (!card.HasEndOfTurn || player == null)
+            {
+                return player;
+            }
+
+            switch (card.PokemonId)
+            {
+                default:
+                    return player;
+            }
+        }
+
+        public static Player TriggerStartOfTurn(this Card card, Player player)
+        {
+            if (!card.HasEndOfTurn || player == null)
+            {
+                return player;
+            }
+
+            switch (card.PokemonId)
+            {
+                default:
+                    return player;
+            }
+        }
     }
 }

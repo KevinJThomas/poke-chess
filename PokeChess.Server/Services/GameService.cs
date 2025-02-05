@@ -222,6 +222,14 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
+            for (var i = 0; i < lobby.Players.Count(); i++)
+            {
+                foreach (var minion in lobby.Players[i].Board)
+                {
+                    lobby.Players[i] = minion.TriggerEndOfTurn(lobby.Players[i]);
+                }
+            }
+
             lobby = CalculateCombat(lobby);
 
             if (lobby.Players.Where(x => x.Health > 0).Count() <= 1)
@@ -617,6 +625,11 @@ namespace PokeChess.Server.Services
                 lobby.Players[i].TurnEnded = false;
                 lobby.Players[i].SpellsCastTwiceThisTurn = false;
                 lobby.Players[i].GoldSpentThisTurn = 0;
+
+                foreach (var minion in lobby.Players[i].Board)
+                {
+                    lobby.Players[i] = minion.TriggerStartOfTurn(lobby.Players[i]);
+                }
 
                 if (lobby.Players[i].BaseGold < lobby.Players[i].MaxGold)
                 {
