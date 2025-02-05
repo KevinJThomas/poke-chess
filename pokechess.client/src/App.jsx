@@ -56,7 +56,7 @@ export default function App() {
 
     if (result.source.droppableId === "droppable-hand") {
       const card = player.hand[result.source.index];
-
+      setDisableSellDrop(true);
       setCardBeingPlayed(card);
 
       if (card.cardType === 0 || card.targetOptions !== "any") {
