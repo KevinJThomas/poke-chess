@@ -8,6 +8,7 @@ export default function PlayerBoard({
   player,
   isDropDisabled,
   isCombineEnabled,
+  isShiftDisabled,
 }) {
   function getListStyle(isDraggingOver, itemsLength) {
     return {
@@ -18,20 +19,20 @@ export default function PlayerBoard({
     };
   }
 
-  function getItemStyle(isDragging, draggableStyle) {
-    return {
-      // some basic styles to make the items look a bit nicer
-      userSelect: "none",
-      // padding: grid * 2,
-      // margin: `0 0 ${grid}px 0`,
+  function getItemStyle(style, snapshot) {
+    if (!snapshot.isDragging && isShiftDisabled) return {};
+    if (!snapshot.isDropAnimating) {
+      return style;
+    }
 
-      // change background colour if dragging
-      // background: isDragging ? "lightgreen" : "red",
+    if (isShiftDisabled) {
+      return {
+        ...style,
+        transitionDuration: `0.001s`,
+      };
+    }
 
-      // styles we need to apply on draggables
-
-      ...draggableStyle,
-    };
+    return style;
   }
 
   return (
@@ -60,17 +61,20 @@ export default function PlayerBoard({
                   ref={provided.innerRef}
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
-                  style={getItemStyle(
-                    snapshot.isDragging,
-                    provided.draggableProps.style,
-                  )}
+                  style={getItemStyle(provided.draggableProps.style, snapshot)}
                 >
                   <Pokemon key={pokemon.id} {...pokemon} location="board" />
                 </div>
               )}
             </Draggable>
           ))}
-          {provided.placeholder}
+          <span
+            style={{
+              display: isShiftDisabled ? "none" : "inline-block",
+            }}
+          >
+            {provided.placeholder}
+          </span>
         </div>
       )}
     </Droppable>
