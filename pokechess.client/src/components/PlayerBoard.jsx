@@ -21,7 +21,7 @@ export default function PlayerBoard({
 
   function getItemStyle(style, snapshot) {
     if (!snapshot.isDragging && isShiftDisabled) return {};
-    if (!snapshot.isDropAnimating) {
+    if (!snapshot.isDropAnimating && isShiftDisabled) {
       return style;
     }
 
@@ -29,6 +29,13 @@ export default function PlayerBoard({
       return {
         ...style,
         transitionDuration: `0.001s`,
+      };
+    }
+
+    if (snapshot.draggingOver === "droppable-sell") {
+      return {
+        ...style,
+        opacity: 0.5,
       };
     }
 
