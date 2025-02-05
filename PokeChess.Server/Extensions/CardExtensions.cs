@@ -415,6 +415,15 @@ namespace PokeChess.Server.Extensions
                     player.BattlecriesPlayed++;
                     return player;
                 case 104:
+                    if (!string.IsNullOrWhiteSpace(targetId) && targetId != card.Id)
+                    {
+                        var index104 = player.Board.FindIndex(x => x.Id == targetId);
+                        if (index104 >= 0 && index104 < player.Board.Count())
+                        {
+                            player.Board[index104].Health += player.GoldSpentThisTurn;
+                        }
+                    }
+
                     player.BattlecriesPlayed++;
                     return player;
                 case 148:

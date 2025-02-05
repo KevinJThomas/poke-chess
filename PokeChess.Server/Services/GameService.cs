@@ -136,6 +136,7 @@ namespace PokeChess.Server.Services
                 else
                 {
                     player.Gold -= player.RefreshCost;
+                    player.GoldSpentThisTurn += player.RefreshCost;
                 }
             }
 
@@ -507,6 +508,7 @@ namespace PokeChess.Server.Services
                 player.Hand.Add(card);
                 player.EvolveCheck();
                 player.Gold -= card.Cost;
+                player.GoldSpentThisTurn += card.Cost;
                 player.ConsumeShopDiscounts(card);
 
                 if (player.CardsToReturnToPool.Any())
@@ -614,6 +616,7 @@ namespace PokeChess.Server.Services
             {
                 lobby.Players[i].TurnEnded = false;
                 lobby.Players[i].SpellsCastTwiceThisTurn = false;
+                lobby.Players[i].GoldSpentThisTurn = 0;
 
                 if (lobby.Players[i].BaseGold < lobby.Players[i].MaxGold)
                 {

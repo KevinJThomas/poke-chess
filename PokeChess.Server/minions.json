@@ -2257,7 +2257,7 @@
     "pokemonId": 91,
     "num": "091",
     "tier": 5,
-    "text": "At the end of your turn, gain 2 random tavern spells",
+    "text": "Your end of turn effects trigger twice",
     "name": "Cloyster",
     "baseAttack": 3,
     "baseHealth": 3,

@@ -31,6 +31,7 @@ namespace PokeChess.Server.Models.Player
             FertilizerAttack = 1;
             FertilizerHealth = 1;
             BattlecriesPlayed = 0;
+            GoldSpentThisTurn = 0;
             Discounts = new Discounts();
             Board = new List<Card>();
             Hand = new List<Card>();
@@ -66,6 +67,7 @@ namespace PokeChess.Server.Models.Player
         public bool NextSpellCastsTwice { get; set; }
         public bool SpellsCastTwiceThisTurn { get; set; }
         public int BattlecriesPlayed { get; set; }
+        public int GoldSpentThisTurn { get; set; }
         public Discounts Discounts { get; set; }
         public List<Card> Board { get; set; }
         public List<Card> Hand { get; set; }
