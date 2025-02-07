@@ -117,6 +117,12 @@ namespace PokeChess.Server.Managers
                     return null;
                 }
 
+                if (!lobby.IsWaitingToStart)
+                {
+                    _logger.LogError($"StartGame failed because lobby is already started player id: {playerId}");
+                    return null;
+                }
+
                 if (!_gameService.Initialized())
                 {
                     _gameService.Initialize(_logger);
@@ -202,9 +208,9 @@ namespace PokeChess.Server.Managers
                     _gameService.Initialize(_logger);
                 }
 
-                var player  = _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                var player = _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
                 var card = FindCard(player, cardId, action);
-                
+
                 _lobbies[lobby.Id] = _gameService.MoveCard(lobby, player, card, action, boardIndex, targetId);
 
                 return _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
