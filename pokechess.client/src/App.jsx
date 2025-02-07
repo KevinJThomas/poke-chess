@@ -24,6 +24,7 @@ export default function App() {
   const [disableBoardDrop, setDisableBoardDrop] = useState(false);
   const [disableShopDrop, setDisableShopDrop] = useState(false);
   const [disableHandDrop, setDisableHandDrop] = useState(false);
+  const [disableBoardShift, setDisableBoardShift] = useState(false);
   const [hasEndedTurn, setHasEndedTurn] = useState(false);
   const [winner, setWinner] = useState("");
   const [cardBeingPlayed, setCardBeingPlayed] = useState(null);
@@ -55,7 +56,7 @@ export default function App() {
 
     if (result.source.droppableId === "droppable-hand") {
       const card = player.hand[result.source.index];
-
+      setDisableSellDrop(true);
       setCardBeingPlayed(card);
 
       if (card.cardType === 0 || card.targetOptions !== "any") {
@@ -67,8 +68,14 @@ export default function App() {
         setDisableBoardDrop(true);
       }
 
+      // Spell without target
       if (card.cardType === 1 && card.targetOptions === "none") {
         setDisableBoardDrop(true);
+      }
+
+      // Spell with target
+      if (card.cardType === 1 && card.targetOptions !== "none") {
+        setDisableBoardShift(true);
       }
     }
 
@@ -85,6 +92,7 @@ export default function App() {
     setDisableBoardDrop(false);
     setDisableShopDrop(false);
     setDisableHandDrop(false);
+    setDisableBoardShift(false);
 
     const cardId = result.draggableId;
 
@@ -94,6 +102,7 @@ export default function App() {
       cardBeingPlayed?.targetOptions === "none" &&
       !result.destination
     ) {
+      console.log("play spell");
       removeCardFromHand(cardId);
 
       connection.invoke("MoveCard", result.draggableId, 2, null, null);
@@ -393,6 +402,7 @@ export default function App() {
             disableShopDrop={disableShopDrop}
             disableHandDrop={disableHandDrop}
             cardBeingPlayed={cardBeingPlayed}
+            disableBoardShift={disableBoardShift}
           />
         )}
         {gameStatus === "battle" && (

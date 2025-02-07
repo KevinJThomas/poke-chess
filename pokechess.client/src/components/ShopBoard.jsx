@@ -14,6 +14,7 @@ export default function ShopBoard({
   disableShopDrop,
   disableHandDrop,
   cardBeingPlayed,
+  disableBoardShift,
 }) {
   function upgrade() {
     connection.invoke("UpgradeTavern");
@@ -52,7 +53,11 @@ export default function ShopBoard({
       <PlayerBoard
         player={player}
         isDropDisabled={disableBoardDrop}
-        isCombineEnabled={cardBeingPlayed?.targetOptions === "any" || cardBeingPlayed?.targetOptions === "friendly"}
+        isCombineEnabled={
+          cardBeingPlayed?.targetOptions === "any" ||
+          cardBeingPlayed?.targetOptions === "friendly"
+        }
+        isShiftDisabled={disableBoardShift}
       />
       <Row>
         <Hero name={player.name} health={player.health} armor={player.armor} />
