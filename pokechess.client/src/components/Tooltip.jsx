@@ -1,6 +1,7 @@
 import { Popover, ArrowContainer } from "react-tiny-popover";
 import Markdown from "react-markdown";
 import TypeTooltip from "./TypeTooltip";
+import Tier from "./Tier";
 
 export default function Tooltip({
   children,
@@ -8,6 +9,8 @@ export default function Tooltip({
   text,
   types,
   positions,
+  location,
+  tier,
 }) {
   return (
     <Popover
@@ -28,7 +31,15 @@ export default function Tooltip({
         >
           <div className="flex flex-col items-center gap-2 rounded-md bg-gray-800 p-2 text-sm text-white">
             <Markdown>{text}</Markdown>
-            {!!types.length && <TypeTooltip types={types} />}
+            <div className="flex w-full flex-row items-center justify-between">
+              <div className="w-6"></div>
+              <div>{!!types.length && <TypeTooltip types={types} />}</div>
+              <div className="w-6">
+                {location !== "shop" && (
+                  <Tier tier={tier} className="relative" />
+                )}
+              </div>
+            </div>
           </div>
         </ArrowContainer>
       )}

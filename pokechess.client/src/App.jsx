@@ -392,7 +392,7 @@ export default function App() {
           </span>
         </div>
       )}
-      <div className="relative h-screen w-screen bg-[url(/sky.jpg)] bg-cover">
+      <div className="relative h-screen w-screen overflow-hidden bg-[url(/sky.jpg)] bg-cover">
         {gameStatus === "shop" && (
           <ShopBoard
             connection={connection}
@@ -422,9 +422,7 @@ export default function App() {
             End Turn
           </Button>
         )}
-        {player?.gold && (
-          <Gold gold={player?.gold} maxGold={player?.baseGold} />
-        )}
+        <Gold gold={player?.gold} maxGold={player?.baseGold} />
         <Opponents players={players} opponent={opponent} />
       </div>
     </DragDropContext>

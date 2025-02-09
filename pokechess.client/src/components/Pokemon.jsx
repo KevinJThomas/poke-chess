@@ -92,7 +92,9 @@ export default function Pokemon({
             />
           )}
           {!!tier && showTier && <Tier tier={tier} />}
-          {!isMinion && Number.isInteger(cost) && <Cost cost={cost} />}
+          {!isMinion && Number.isInteger(cost) && location !== "hand" && (
+            <Cost cost={cost} />
+          )}
           {!!damage && showDamage && (
             <Damage damage={damage} damageType={damageType} />
           )}
@@ -109,9 +111,11 @@ export default function Pokemon({
 
   return (
     <Tooltip
+      tier={tier}
       showToolTip={showToolTip}
       text={text}
       types={type}
+      location={location}
       positions={location === "board" ? ["bottom"] : ["top"]}
     >
       {pokemon}
