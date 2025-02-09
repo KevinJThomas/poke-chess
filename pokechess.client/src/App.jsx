@@ -29,6 +29,7 @@ export default function App() {
   const [hasEndedTurn, setHasEndedTurn] = useState(false);
   const [winner, setWinner] = useState("");
   const [cardBeingPlayed, setCardBeingPlayed] = useState(null);
+  const [reconnecting, setReconnecting] = useState(false);
 
   const player = players.find((player) => player.id === playerId);
   const opponent = players.find((x) => x.id === player?.currentOpponentId);
@@ -301,6 +302,22 @@ export default function App() {
       setGameStatus("error");
     });
 
+    connection.onreconnecting((error) => {
+      setReconnecting(true);
+      console.log("RECONNECTING", error);
+    });
+
+    connection.onreconnected((connectionId) => {
+      setReconnecting(false);
+      console.log("RECONNECTED", connectionId);
+    });
+
+    // connection.onclose((error) => {
+    //   setError(error);
+    // });
+
+    console.log("connection", connection);
+
     setConnection(connection);
   }, []);
 
@@ -396,6 +413,13 @@ export default function App() {
           </span>
         </div>
       )}
+
+      {reconnecting && (
+        <div className="absolute top-0 right-0 left-0 z-10 flex items-center justify-center bg-red-900 py-2 text-xs text-white">
+          Reconnecting...
+        </div>
+      )}
+
       <div className="relative h-screen w-screen overflow-hidden bg-[url(/sky.jpg)] bg-cover">
         {gameStatus === "shop" && (
           <ShopBoard
