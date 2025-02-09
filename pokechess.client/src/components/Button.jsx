@@ -6,9 +6,10 @@ export default function Button({ children, className, disabled, ...props }) {
       disabled={disabled}
       type="button"
       className={clsx(
-        "w-16 rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 ring-1 shadow-sm ring-gray-300 ring-inset hover:bg-gray-50",
+        "group inline-flex h-8 items-center justify-center overflow-hidden rounded-md border border-neutral-600 bg-amber-200 px-1 text-sm [box-shadow:0px_4px_1px_#a3a3a3]",
         disabled && "cursor-not-allowed opacity-50",
-        !disabled && "cursor-pointer",
+        !disabled &&
+          "cursor-pointer transition-all active:translate-y-[2px] active:shadow-none",
         className,
       )}
     >
