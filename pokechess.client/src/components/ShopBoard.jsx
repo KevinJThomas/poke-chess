@@ -13,6 +13,7 @@ export default function ShopBoard({
   disableBoardDrop,
   disableShopDrop,
   disableHandDrop,
+  disableShopShift,
   cardBeingPlayed,
   disableBoardShift,
 }) {
@@ -49,6 +50,7 @@ export default function ShopBoard({
         isDragDisabled={false}
         isDropDisabled={disableShopDrop}
         isCombineEnabled={cardBeingPlayed?.targetOptions === "any"}
+        isShiftDisabled={disableShopShift}
       />
       <PlayerBoard
         player={player}

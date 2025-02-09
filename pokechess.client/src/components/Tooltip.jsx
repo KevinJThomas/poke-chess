@@ -31,7 +31,7 @@ export default function Tooltip({
         >
           <div className="flex flex-col items-center gap-2 rounded-md bg-gray-800 p-2 text-sm text-white">
             <Markdown>{text}</Markdown>
-            <div className="flex w-full flex-row items-center justify-between">
+            <div className="flex w-full flex-row items-center justify-between gap-3">
               <div className="w-6"></div>
               <div>{!!types.length && <TypeTooltip types={types} />}</div>
               <div className="w-6">

@@ -25,6 +25,7 @@ export default function App() {
   const [disableShopDrop, setDisableShopDrop] = useState(false);
   const [disableHandDrop, setDisableHandDrop] = useState(false);
   const [disableBoardShift, setDisableBoardShift] = useState(false);
+  const [disableShopShift, setDisableShopShift] = useState(false);
   const [hasEndedTurn, setHasEndedTurn] = useState(false);
   const [winner, setWinner] = useState("");
   const [cardBeingPlayed, setCardBeingPlayed] = useState(null);
@@ -76,6 +77,7 @@ export default function App() {
       // Spell with target
       if (card.cardType === 1 && card.targetOptions !== "none") {
         setDisableBoardShift(true);
+        setDisableShopShift(true);
       }
     }
 
@@ -93,6 +95,7 @@ export default function App() {
     setDisableShopDrop(false);
     setDisableHandDrop(false);
     setDisableBoardShift(false);
+    setDisableShopShift(false);
 
     const cardId = result.draggableId;
 
@@ -290,6 +293,7 @@ export default function App() {
         skipNegotiation: true, // skipNegotiation as we specify WebSockets
         transport: signalR.HttpTransportType.WebSockets, // force WebSocket transport
       })
+      .withAutomaticReconnect()
       .build();
 
     connection.start().catch((error) => {
@@ -403,6 +407,7 @@ export default function App() {
             disableHandDrop={disableHandDrop}
             cardBeingPlayed={cardBeingPlayed}
             disableBoardShift={disableBoardShift}
+            disableShopShift={disableShopShift}
           />
         )}
         {gameStatus === "battle" && (
