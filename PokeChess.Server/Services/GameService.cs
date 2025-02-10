@@ -6,6 +6,7 @@ using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services.Interfaces;
 using System.Numerics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PokeChess.Server.Services
 {
@@ -1189,6 +1190,19 @@ namespace PokeChess.Server.Services
                     PlayerIsAttacking = true,
                     OnHitValues = new HitValues { Damage = damage, Health = player1.Health, Armor = player1.Armor },
                     Type = CombatActionType.Hero.ToString().ToLower()
+                });
+            }
+            else
+            {
+                player1.CombatHistory.Add(new CombatHistoryItem
+                {
+                    Name = player2.Name,
+                    Damage = 0
+                });
+                player2.CombatHistory.Add(new CombatHistoryItem
+                {
+                    Name = player1.Name,
+                    Damage = 0
                 });
             }
 
