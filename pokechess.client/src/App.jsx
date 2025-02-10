@@ -313,9 +313,10 @@ export default function App() {
       console.log("RECONNECTED", connectionId);
     });
 
-    // connection.onclose((error) => {
-    //   setError(error);
-    // });
+    connection.onclose((error) => {
+      console.log("CLOSED", error);
+      // setError(error);
+    });
 
     console.log("connection", connection);
 

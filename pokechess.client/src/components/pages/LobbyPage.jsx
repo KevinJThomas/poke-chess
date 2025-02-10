@@ -27,7 +27,7 @@ export default function Lobby({ players, connection }) {
         </ul>
         <Button
           fullWidth
-          disabled={players.length <= 1}
+          // disabled={players.length <= 1}
           onClick={startGame}
           loading={isLoading}
         >
