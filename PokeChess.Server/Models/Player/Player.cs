@@ -40,6 +40,7 @@ namespace PokeChess.Server.Models.Player
             PreviousOpponentIds = new List<string>();
             CombatActions = new List<CombatAction>();
             CardsToReturnToPool = new List<Card>();
+            CombatHistory = new List<CombatHistoryItem>();
         }
 
         public string? Id { get; set; }
