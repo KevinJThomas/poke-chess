@@ -78,6 +78,7 @@ namespace PokeChess.Server.Models.Player
         public List<Card> CardsToReturnToPool { get; set; }
         public List<string> PreviousOpponentIds { get; set; }
         public List<CombatAction> CombatActions { get; set; }
+        public List<CombatHistoryItem> CombatHistory { get; set; }
         public bool IsDead
         {
             get

@@ -1113,6 +1113,16 @@ namespace PokeChess.Server.Services
                     player2.Health -= damage;
                 }
 
+                player1.CombatHistory.Add(new CombatHistoryItem
+                {
+                    Name = player2.Name,
+                    Damage = damage
+                });
+                player2.CombatHistory.Add(new CombatHistoryItem
+                {
+                    Name = player1.Name,
+                    Damage = damage * -1
+                });
                 player1.CombatActions.Add(new CombatAction
                 {
                     PlayerIsAttacking = true,
@@ -1158,6 +1168,16 @@ namespace PokeChess.Server.Services
                     player1.Health -= damage;
                 }
 
+                player1.CombatHistory.Add(new CombatHistoryItem
+                {
+                    Name = player2.Name,
+                    Damage = damage * -1
+                });
+                player2.CombatHistory.Add(new CombatHistoryItem
+                {
+                    Name = player1.Name,
+                    Damage = damage
+                });
                 player1.CombatActions.Add(new CombatAction
                 {
                     PlayerIsAttacking = false,
