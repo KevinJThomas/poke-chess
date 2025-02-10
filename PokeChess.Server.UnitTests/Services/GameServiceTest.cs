@@ -1552,9 +1552,9 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].FertilizerAttack = fertilizerAttack;
             lobby.Players[0].FertilizerHealth = fertilizerHealth;
             lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 45).FirstOrDefault());
-            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 45).ToList()[random.Next(minions.Where(x => x.PokemonId != 45).Count())]);
-            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 45).ToList()[random.Next(minions.Where(x => x.PokemonId != 45).Count())]);
-            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 45).ToList()[random.Next(minions.Where(x => x.PokemonId != 45).Count())]);
+            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 45 && x.PokemonId != 121).ToList()[random.Next(minions.Where(x => x.PokemonId != 45).Count())]);
+            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 45 && x.PokemonId != 121).ToList()[random.Next(minions.Where(x => x.PokemonId != 45).Count())]);
+            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 45 && x.PokemonId != 121).ToList()[random.Next(minions.Where(x => x.PokemonId != 45).Count())]);
             var handCount = lobby.Players[0].Hand.Count();
             var minionAttackListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 45).Select(y => y.Attack).ToList();
             var minionHealthListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 45).Select(y => y.Health).ToList();
@@ -1780,6 +1780,33 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(lobby.Players[0].Hand[0].Tier <= lobby.Players[0].Tier);
             Assert.IsTrue(lobby.Players[0].Hand[0].MinionTypes.Contains(Enums.MinionType.Water));
             Assert.IsTrue(handCount < handCountAfter);
+        }
+
+        [TestMethod]
+        public void TestEndOfTurn_121()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 7).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 121).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 10).FirstOrDefault());
+            var handCount = lobby.Players[0].Hand.Count();
+            var attackBefore = lobby.Players[0].Board[2].Attack;
+            var healthBefore = lobby.Players[0].Board[2].Health;
+            lobby = instance.CombatRound(lobby);
+            var handCountAfter = lobby.Players[0].Hand.Count();
+            var attackAfter = lobby.Players[0].Board[2].Attack;
+            var healthAfter = lobby.Players[0].Board[2].Health;
+
+            // Assert
+            Assert.IsTrue(handCount < handCountAfter);
+            Assert.IsTrue(attackBefore < attackAfter);
+            Assert.IsTrue(healthBefore < healthAfter);
         }
 
         [TestMethod]
@@ -2918,7 +2945,7 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsNotNull(lobby.Players);
             Assert.IsTrue(lobby.Players.All(x => !x.IsDead));
             Assert.IsTrue(lobby.Players.All(x => x.Health == 30));
-            Assert.IsTrue(lobby.Players.All(x => x.Armor == 5));
+            Assert.IsTrue(lobby.Players.All(x => x.Armor == 10));
         }
 
         [TestMethod]

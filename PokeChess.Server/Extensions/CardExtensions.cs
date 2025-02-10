@@ -604,44 +604,42 @@ namespace PokeChess.Server.Extensions
                         }
 
                         return player;
-                    //case 121:
-                    //    if (player.Board.Any(x => x.Id != card.Id))
-                    //    {
-                    //        var minionIndex = player.Board.FindIndex(x => x.Id == card.Id);
-                    //        if (minionIndex == -1)
-                    //        {
-                    //            return player;
-                    //        }
+                    case 121:
+                        if (player.Board.Any(x => x.Id != card.Id))
+                        {
+                            var minionIndex = player.Board.FindIndex(x => x.Id == card.Id);
+                            if (minionIndex == -1)
+                            {
+                                return player;
+                            }
 
-                    //        var battlecryTriggerCount = player.BattlecryTriggerCount();
-                    //        for (var i = 0; i < battlecryTriggerCount; i++)
-                    //        {
+                            var battlecryTriggerCount = player.BattlecryTriggerCount();
+                            for (var i = 0; i < battlecryTriggerCount; i++)
+                            {
+                                if (minionIndex == 0)
+                                {
+                                    // Minion is on far left
+                                    var targetId = GetTargetId(player, player.Board[1]);
+                                    player = player.Board[1].TriggerBattlecry(player, targetId);
+                                }
+                                else if (minionIndex == player.Board.Count() - 1)
+                                {
+                                    // Minion is on far right
+                                    var targetId = GetTargetId(player, player.Board[player.Board.Count() - 2]);
+                                    player = player.Board[player.Board.Count() - 2].TriggerBattlecry(player, targetId);
+                                }
+                                else
+                                {
+                                    // Minion isn't on far left or right
+                                    var targetId1 = GetTargetId(player, player.Board[minionIndex - 1]);
+                                    player = player.Board[minionIndex - 1].TriggerBattlecry(player, targetId1);
+                                    var targetId2 = GetTargetId(player, player.Board[minionIndex + 1]);
+                                    player = player.Board[minionIndex + 1].TriggerBattlecry(player, targetId2);
+                                }
+                            }
+                        }
 
-                    //        }
-
-                    //        if (minionIndex == 0)
-                    //        {
-                    //            // Minion is on far left
-                    //            var targetId = player.Board[1].TargetOptions != TargetType.None.ToString().ToLower() ? player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())].Id ?? player.Shop[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Count())].Id : null;
-                    //            player = player.Board[1].TriggerBattlecry(player, targetId);
-                    //        }
-                    //        else if (minionIndex == player.Board.Count() - 1)
-                    //        {
-                    //            // Minion is on far right
-                    //            player.Board[player.Board.Count() - 2].Attack += player.FertilizerAttack;
-                    //            player.Board[player.Board.Count() - 2].Health += player.FertilizerHealth;
-                    //        }
-                    //        else
-                    //        {
-                    //            // Minion isn't on far left or right
-                    //            player.Board[minionIndex - 1].Attack += player.FertilizerAttack;
-                    //            player.Board[minionIndex - 1].Health += player.FertilizerHealth;
-                    //            player.Board[minionIndex + 1].Attack += player.FertilizerAttack;
-                    //            player.Board[minionIndex + 1].Health += player.FertilizerHealth;
-                    //        }
-                    //    }
-
-                    //    return player;
+                        return player;
                     default:
                         return player;
                 }
@@ -669,6 +667,56 @@ namespace PokeChess.Server.Extensions
 
         private static string GetTargetId(Player player, Card card)
         {
+            if (card == null || !card.HasBattlecry || !card.IsBattlecryTargeted)
+            {
+                return null;
+            }
+
+            var idList = new List<string>();
+            switch (card.PokemonId)
+            {
+                case 96:
+                    if (player.Board.Any(x => x.Id != card.Id && x.MinionTypes.Contains(MinionType.Psychic)))
+                    {
+                        foreach (var minion in player.Board.Where(x => x.Id != card.Id && x.MinionTypes.Contains(MinionType.Psychic)))
+                        {
+                            idList.Add(minion.Id);
+                        }
+                    }
+
+                    if (player.Shop.Any(x => x.Id != card.Id && x.MinionTypes.Contains(MinionType.Psychic)))
+                    {
+                        foreach (var minion in player.Shop.Where(x => x.Id != card.Id && x.MinionTypes.Contains(MinionType.Psychic)))
+                        {
+                            idList.Add(minion.Id);
+                        }
+                    }
+                    break;
+                case 97:
+                    if (player.Board.Any(x => x.Id != card.Id && x.MinionTypes.Contains(MinionType.Psychic)))
+                    {
+                        foreach (var minion in player.Board.Where(x => x.Id != card.Id && x.MinionTypes.Contains(MinionType.Psychic)))
+                        {
+                            idList.Add(minion.Id);
+                        }
+                    }
+                    break;
+                case 104:
+                    if (player.Board.Any(x => x.Id != card.Id))
+                    {
+                        foreach (var minion in player.Board.Where(x => x.Id != card.Id))
+                        {
+                            idList.Add(minion.Id);
+                        }
+                    }
+                    break;
+            }
+
+            if (idList.Any())
+            {
+                return idList[ThreadSafeRandom.ThisThreadsRandom.Next(idList.Count())];
+            }
+
             return null;
         }
     }
