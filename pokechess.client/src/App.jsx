@@ -311,6 +311,7 @@ export default function App() {
     connection.onreconnected((connectionId) => {
       setReconnecting(false);
       console.log("RECONNECTED", connectionId);
+      connection.invoke("OnReconnected", playerId);
     });
 
     connection.onclose((error) => {
