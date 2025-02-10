@@ -45,6 +45,7 @@ namespace PokeChess.Server.Models.Player
         public string? Id { get; set; }
         public string? Name { get; set; }
         public bool IsActive { get; set; }
+        public bool IsBot { get; set; }
         public int Health { get; set; }
         public int Armor { get; set; }
         public int Tier { get; set; }
@@ -60,6 +61,7 @@ namespace PokeChess.Server.Models.Player
         public int MaxGold {  get; set; }
         public int MaxHandSize { get; set; }
         public string? CurrentOpponentId { get; set; }
+        public string? CombatOpponentId { get; set; }
         public int ShopBuffAttack { get; set; }
         public int ShopBuffHealth { get; set; }
         public int FertilizerAttack { get; set; }

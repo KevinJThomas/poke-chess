@@ -30,6 +30,7 @@ namespace PokeChess.Server.Services
         private static readonly int _largeDamageCap = ConfigurationHelper.config.GetValue<int>("App:Game:DamageCap:Large");
         private static readonly int _boardsSlots = ConfigurationHelper.config.GetValue<int>("App:Game:BoardsSlots");
         private static readonly string _copyStamp = ConfigurationHelper.config.GetValue<string>("App:Game:CardIdCopyStamp");
+        private static readonly bool _populateEmptySlotsWithBots = ConfigurationHelper.config.GetValue<bool>("App:Game:PopulateEmptySlotsWithBots");
 
         public int BoardSlots
         {
@@ -87,12 +88,22 @@ namespace PokeChess.Server.Services
                 _logger.LogError("StartGame failed because GameService was not initialized");
                 return lobby;
             }
-
+            
             if (lobby.Players.Count() < _playersPerLobby)
             {
-                for (var i = lobby.Players.Count(); i < _playersPerLobby; i++)
+                if (_populateEmptySlotsWithBots)
                 {
-                    lobby.Players.Add(GetNewGhost());
+                    for (var i = lobby.Players.Count(); i < _playersPerLobby; i++)
+                    {
+                        lobby.Players.Add(GetNewBot(++lobby.GameState.BotCount));
+                    }
+                }
+                else
+                {
+                    for (var i = lobby.Players.Count(); i < _playersPerLobby; i++)
+                    {
+                        lobby.Players.Add(GetNewGhost());
+                    }
                 }
             }
 
@@ -686,6 +697,12 @@ namespace PokeChess.Server.Services
                         lobby.Players[i].CardsToReturnToPool = new List<Card>();
                     }
                 }
+
+                // Bots play their turn immediately
+                if (lobby.Players[i].IsBot)
+                {
+                    (lobby, lobby.Players[i]) = PlayTurnAsBot(lobby, lobby.Players[i], lobby.GameState.RoundNumber);
+                }
             }
 
             return lobby;
@@ -702,6 +719,8 @@ namespace PokeChess.Server.Services
             {
                 var player1 = lobby.Players.Where(x => x.Id == matchup[0].Id).FirstOrDefault();
                 var player2 = lobby.Players.Where(x => x.Id == matchup[1].Id).FirstOrDefault();
+                player1.CombatOpponentId = player2.Id;
+                player2.CombatOpponentId = player1.Id;
 
                 if (player1 == null || player2 == null)
                 {
@@ -1173,6 +1192,14 @@ namespace PokeChess.Server.Services
             return ghost;
         }
 
+        private Player GetNewBot(int botNumber)
+        {
+            var id = Guid.NewGuid().ToString();
+            var bot = new Player(id, "Bot " + botNumber, 0);
+            bot.IsBot = true;
+            return bot;
+        }
+
         private DamageType GetDamageType(KeyValuePair<bool, bool> weaknessValues, bool isSource)
         {
             if (weaknessValues.Key && !weaknessValues.Value)
@@ -1195,6 +1222,68 @@ namespace PokeChess.Server.Services
             }
 
             return DamageType.Normal;
+        }
+
+        private (Lobby, Player) PlayTurnAsBot(Lobby lobby, Player player, int roundNumber)
+        {
+            switch (roundNumber)
+            {
+                case 1:
+                    // Buy and play a random minion
+                    if (player.Shop.Any(x => x.CardType == CardType.Minion))
+                    {
+                        (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
+                        (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                    }
+                    break;
+                case 2:
+                    // Upgrade to tier 2
+                    var playerIndex2 = lobby.Players.FindIndex(x => x == player);
+                    player.UpgradeTavern();
+                    lobby.Players[playerIndex2] = player;
+                    break;
+                case 3:
+                    // Buy and play a random minion
+                    if (player.Shop.Any(x => x.CardType == CardType.Minion))
+                    {
+                        (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
+                        (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                    }
+
+                    // Buy and play a spell if able
+                    if (player.Shop.Any(x => x.CardType == CardType.Spell && x.Cost <= player.Gold))
+                    {
+                        (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Spell && x.Cost <= player.Gold).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Spell && x.Cost <= player.Gold).Count())]);
+                        var targetId = player.Hand[0].TargetOptions != TargetType.None.ToString().ToLower() ? player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())].Id : null;
+                        (lobby, player) = PlayCard(lobby, player, player.Hand[0], -1, targetId);
+                    }
+                    break;
+                case 4:
+                    // Buy and play 2 random minions
+                    if (player.Shop.Any(x => x.CardType == CardType.Minion))
+                    {
+                        (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
+                        (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
+                        (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                        (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                    }
+                    break;
+                case 5:
+                    // Upgrade to tier 3
+                    var playerIndex5 = lobby.Players.FindIndex(x => x == player);
+                    player.UpgradeTavern();
+                    lobby.Players[playerIndex5] = player;
+
+                    // Buy and play a random minion
+                    if (player.Shop.Any(x => x.CardType == CardType.Minion))
+                    {
+                        (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
+                        (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                    }
+                    break;
+            }
+
+            return (lobby, player);
         }
 
         #endregion

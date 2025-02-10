@@ -33,6 +33,7 @@ export default function App() {
 
   const player = players.find((player) => player.id === playerId);
   const opponent = players.find((x) => x.id === player?.currentOpponentId);
+  const combatOpponent = players.find((x) => x.id === player?.combatOpponentId);
 
   console.log(players);
 
@@ -437,7 +438,7 @@ export default function App() {
         {gameStatus === "battle" && (
           <BattleBoard
             initialPlayer={player}
-            initialOpponent={opponent}
+            initialOpponent={combatOpponent}
             setGameStatus={setGameStatus}
             setWinner={setWinner}
           />

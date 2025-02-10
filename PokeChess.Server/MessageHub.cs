@@ -104,7 +104,7 @@ namespace PokeChess.Server
                 {
                     foreach (var player in lobbyPostCombat.Players.Where(x => x.IsActive).ToList())
                     {
-                        var lobbyReturn = ScrubLobby(lobbyPostCombat, player.Id, player.CurrentOpponentId);
+                        var lobbyReturn = ScrubLobby(lobbyPostCombat, player.Id, player.CombatOpponentId);
 
                         await Clients.Client(player.Id).SendAsync("CombatComplete", lobbyReturn);
                     }
@@ -141,10 +141,16 @@ namespace PokeChess.Server
 
             var id = Context.ConnectionId;
             var player = _lobbyManager.UpgradeTavern(id);
+            var lobby = _lobbyManager.GetLobbyByPlayerId(id);
 
             if (player != null)
             {
                 await Clients.Caller.SendAsync("PlayerUpdated", player);
+            }
+
+            if (lobby != null)
+            {
+                await Clients.Group(lobby.Id).SendAsync("LobbyUpdated", lobby);
             }
         }
 
@@ -182,7 +188,7 @@ namespace PokeChess.Server
             await base.OnDisconnectedAsync(exception);
         }
 
-        private Lobby ScrubLobby(Lobby lobby, string playerId, string currentOpponentId)
+        private Lobby ScrubLobby(Lobby lobby, string playerId, string combatOpponentId)
         {
             var scrubbedLobby = lobby.Clone();
 
@@ -200,7 +206,7 @@ namespace PokeChess.Server
                     player.Hand = new List<Card>();
                     player.DelayedSpells = new List<Card>();
                     player.CombatActions = new List<CombatAction>();
-                    if (player.Id != currentOpponentId)
+                    if (player.Id != combatOpponentId)
                     {
                         player.Board = new List<Card>();
                     }

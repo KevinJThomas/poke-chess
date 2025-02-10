@@ -274,7 +274,7 @@ namespace PokeChess.Server.Managers
 
         public bool ReadyForCombat(string lobbyId)
         {
-            return _lobbies[lobbyId].Players.All(x => x.TurnEnded || x.IsDead || !x.IsActive);
+            return _lobbies[lobbyId].Players.All(x => x.TurnEnded || x.IsDead || !x.IsActive || x.IsBot);
         }
 
         public Player FreezeShop(string playerId)

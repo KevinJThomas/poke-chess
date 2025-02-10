@@ -8,5 +8,6 @@
         public List<Card> MinionCardPool { get; set; } = new List<Card>();
         public List<Card> SpellCardPool { get; set; } = new List<Card>();
         public List<Player.Player[]> NextRoundMatchups { get; set; } = new List<Player.Player[]>();
+        public int BotCount { get; set; } = 0;
     }
 }
