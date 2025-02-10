@@ -126,10 +126,10 @@ namespace PokeChess.Server.Extensions
                                 if (targetInShop != null)
                                 {
                                     var targetIndex = player.Shop.FindIndex(x => x.Id == targetId);
-                                    if (targetIndex >= 0 && targetIndex < player.Board.Count())
+                                    if (targetIndex >= 0 && targetIndex < player.Shop.Count())
                                     {
-                                        player.Board[targetIndex].Attack += player.FertilizerAttack;
-                                        player.Board[targetIndex].Health += player.FertilizerHealth;
+                                        player.Shop[targetIndex].Attack += player.FertilizerAttack;
+                                        player.Shop[targetIndex].Health += player.FertilizerHealth;
                                         return true;
                                     }
                                 }

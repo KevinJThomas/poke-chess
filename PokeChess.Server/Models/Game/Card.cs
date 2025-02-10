@@ -31,7 +31,11 @@ namespace PokeChess.Server.Models.Game
         public bool IsBattlecryTargetFriendlyOnly { get; set; }
         public bool IsTavernSpell { get; set; }
         public bool HasEndOfTurn { get; set; }
+        public int BaseEndOfTurnInterval { get; set; } = 1;
+        public int EndOfTurnInterval { get; set; } = 1;
         public bool HasStartOfTurn { get; set; }
+        public int BaseStartOfTurnInterval { get; set; } = 1;
+        public int StartOfTurnInterval { get; set; } = 1;
         public CardType CardType { get; set; }
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();
         public List<MinionType> WeaknessTypes { get; set; } = new List<MinionType>();

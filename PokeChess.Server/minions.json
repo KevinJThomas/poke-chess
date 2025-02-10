@@ -232,7 +232,8 @@
         "num": "009",
         "name": "Blastoise"
       }
-    ]
+    ],
+    "hasEndOfTurn": true
   },
   {
     "pokemonId": 9,
@@ -551,7 +552,8 @@
         "num": "019",
         "name": "Rattata"
       }
-    ]
+    ],
+    "hasEndOfTurn": true
   },
   {
     "pokemonId": 21,
@@ -596,7 +598,9 @@
         "num": "021",
         "name": "Spearow"
       }
-    ]
+    ],
+    "hasEndOfTurn": true,
+    "baseEndOfTurnInterval": 2
   },
   {
     "pokemonId": 23,
@@ -1169,7 +1173,8 @@
         "num": "044",
         "name": "Gloom"
       }
-    ]
+    ],
+    "hasEndOfTurn": true
   },
   {
     "pokemonId": 46,
@@ -1198,7 +1203,7 @@
     "pokemonId": 47,
     "num": "047",
     "tier": 3,
-    "text": "At the end of your turn, player a __Fertilizer__ on adjacent minions",
+    "text": "At the end of your turn, play a __Fertilizer__ on adjacent minions",
     "name": "Parasect",
     "baseAttack": 9,
     "baseHealth": 3,
@@ -1214,7 +1219,8 @@
         "num": "046",
         "name": "Paras"
       }
-    ]
+    ],
+    "hasEndOfTurn": true
   },
   {
     "pokemonId": 48,

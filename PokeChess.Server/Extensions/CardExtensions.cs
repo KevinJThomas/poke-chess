@@ -450,16 +450,72 @@ namespace PokeChess.Server.Extensions
                 return player;
             }
 
-            switch (card.PokemonId)
+            if (card.EndOfTurnInterval <= 1)
             {
-                default:
-                    return player;
+                card.EndOfTurnInterval = card.BaseEndOfTurnInterval;
+
+                switch (card.PokemonId)
+                {
+                    case 8:
+                        var possibleSpells = CardService.Instance.GetAllSpells().Where(x => x.Tier <= player.Tier).Distinct().ToList();
+                        var spell = possibleSpells[ThreadSafeRandom.ThisThreadsRandom.Next(possibleSpells.Count)];
+                        spell.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        player.Hand.Add(spell);
+                        return player;
+                    case 20:
+                        var types = new List<MinionType>();
+                        foreach (var minion in player.Board.Where(x => x.CardType == CardType.Minion && card.MinionTypes.Any()))
+                        {
+                            foreach (var type in minion.MinionTypes)
+                            {
+                                if (!types.Contains(type))
+                                {
+                                    types.Add(type);
+                                    card.Attack += 1;
+                                    card.Health += 1;
+                                }
+                            }
+                        }
+
+                        return player;
+                    case 22:
+                        var flyingMinions = CardService.Instance.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains(MinionType.Flying)).Distinct().ToList();
+                        var flyingMinion = flyingMinions[ThreadSafeRandom.ThisThreadsRandom.Next(flyingMinions.Count)];
+                        flyingMinion.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        player.Hand.Add(flyingMinion);
+                        return player;
+                    case 45:
+                        if (player.Board.Any(x => x.Id != card.Id))
+                        {
+                            foreach (var minion in player.Board.Where(x => x.Id != card.Id))
+                            {
+                                minion.Attack += player.FertilizerAttack;
+                                minion.Health += player.FertilizerHealth;
+                            }
+                        }
+
+                        return player;
+                    case 47:
+                        if (player.Board.Any(x => x.Id != card.Id))
+                        {
+                            // Play fert on adj minions
+                        }
+
+                        return player;
+                    default:
+                        return player;
+                }
+            }
+            else
+            {
+                card.EndOfTurnInterval--;
+                return player;
             }
         }
 
         public static Player TriggerStartOfTurn(this Card card, Player player)
         {
-            if (!card.HasEndOfTurn || player == null)
+            if (!card.HasStartOfTurn || player == null)
             {
                 return player;
             }
