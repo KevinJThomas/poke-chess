@@ -111,7 +111,7 @@ namespace PokeChess.Server.Services
             return lobby;
         }
 
-        public (Lobby, Player) GetNewShop(Lobby lobby, Player player, bool spendRefreshCost = false)
+        public (Lobby, Player) GetNewShop(Lobby lobby, Player player, bool spendRefreshCost = false, bool wasShopFrozen = false)
         {
             if (!Initialized())
             {
@@ -140,7 +140,7 @@ namespace PokeChess.Server.Services
                 }
             }
 
-            if (player.Shop.Any())
+            if (player.Shop.Any() && !wasShopFrozen)
             {
                 // Return old shop back into card pool
                 foreach (var card in player.Shop)
@@ -458,14 +458,18 @@ namespace PokeChess.Server.Services
                     return (lobby, new List<Card>());
             }
 
-            for (var i = 0; i < shopSize; i++)
+            for (var i = player.Shop.Count(x => x.CardType == CardType.Minion); i < shopSize; i++)
             {
                 // Add appropriate number of minions to shop
                 var minion = lobby.GameState.MinionCardPool.DrawCard(player.Tier);
                 player.Shop.Add(minion);
             }
-            // Add a single spell to the shop
-            player.Shop.Add(lobby.GameState.SpellCardPool.DrawCard(player.Tier));
+
+            if (!player.Shop.Any(x => x.CardType == CardType.Spell))
+            {
+                // Add a single spell to the shop
+                player.Shop.Add(lobby.GameState.SpellCardPool.DrawCard(player.Tier));
+            }
 
             // Account for player's shop buffs
             foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion))
