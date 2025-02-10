@@ -80,7 +80,7 @@ namespace PokeChess.Server.Extensions
             }
 
             var success = true;
-            var castCount = (player.SpellsCastTwiceThisTurn || player.NextSpellCastsTwice) ? 2 : 1;
+            var castCount = (player.SpellsCastTwiceThisTurn || player.NextSpellCastsTwice || player.Board.Any(x => x.PokemonId == 9)) ? 2 : 1;
             for (var i = 0; i < castCount; i++)
             {
                 if (spell.Delay > 0)
@@ -469,6 +469,26 @@ namespace PokeChess.Server.Extensions
                     fertilizer.Text = fertilizer.Text.Substring(0, fertilizer.Text.Length - 5) + substring;
                 }
             }
+        }
+
+        public static int BattlecryTriggerCount(this Player player)
+        {
+            if (player.Board.Any(x => x.PokemonId == 64))
+            {
+                return 2;
+            }
+
+            return 1;
+        }
+
+        public static int EndOfTurnTriggerCount(this Player player)
+        {
+            if (player.Board.Any(x => x.PokemonId == 91))
+            {
+                return 2;
+            }
+
+            return 1;
         }
 
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)

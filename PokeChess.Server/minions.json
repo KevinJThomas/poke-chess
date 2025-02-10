@@ -1761,7 +1761,8 @@
         "num": "071",
         "name": "Victreebel"
       }
-    ]
+    ],
+    "hasEndOfTurn": true
   },
   {
     "pokemonId": 70,
@@ -1990,7 +1991,8 @@
         "num": "077",
         "name": "Ponyta"
       }
-    ]
+    ],
+    "hasEndOfTurn": true
   },
   {
     "pokemonId": 79,
@@ -2259,7 +2261,8 @@
         "num": "091",
         "name": "Cloyster"
       }
-    ]
+    ],
+    "hasEndOfTurn": true
   },
   {
     "pokemonId": 91,
@@ -2518,7 +2521,8 @@
         "num": "100",
         "name": "Voltorb"
       }
-    ]
+    ],
+    "hasEndOfTurn": true
   },
   {
     "pokemonId": 102,
@@ -2563,7 +2567,8 @@
         "num": "102",
         "name": "Exeggcute"
       }
-    ]
+    ],
+    "hasEndOfTurn": true
   },
   {
     "pokemonId": 104,
@@ -2911,7 +2916,8 @@
         "num": "121",
         "name": "Starmie"
       }
-    ]
+    ],
+    "hasEndOfTurn": true
   },
   {
     "pokemonId": 121,
@@ -2933,7 +2939,8 @@
         "num": "120",
         "name": "Staryu"
       }
-    ]
+    ],
+    "hasEndOfTurn": true
   },
   {
     "pokemonId": 122,

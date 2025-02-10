@@ -460,10 +460,14 @@ namespace PokeChess.Server.Extensions
                 switch (card.PokemonId)
                 {
                     case 8:
-                        var possibleSpells = CardService.Instance.GetAllSpells().Where(x => x.Tier <= player.Tier).Distinct().ToList();
-                        var spell = possibleSpells[ThreadSafeRandom.ThisThreadsRandom.Next(possibleSpells.Count)];
-                        spell.Id = Guid.NewGuid().ToString() + _copyStamp;
-                        player.Hand.Add(spell);
+                        if (player.Hand.Count() < player.MaxHandSize)
+                        {
+                            var possibleSpells = CardService.Instance.GetAllSpells().Where(x => x.Tier <= player.Tier).Distinct().ToList();
+                            var spell = possibleSpells[ThreadSafeRandom.ThisThreadsRandom.Next(possibleSpells.Count)];
+                            spell.Id = Guid.NewGuid().ToString() + _copyStamp;
+                            player.Hand.Add(spell);
+                        }
+
                         return player;
                     case 20:
                         var types = new List<MinionType>();
@@ -482,10 +486,14 @@ namespace PokeChess.Server.Extensions
 
                         return player;
                     case 22:
-                        var flyingMinions = CardService.Instance.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains(MinionType.Flying)).Distinct().ToList();
-                        var flyingMinion = flyingMinions[ThreadSafeRandom.ThisThreadsRandom.Next(flyingMinions.Count)];
-                        flyingMinion.Id = Guid.NewGuid().ToString() + _copyStamp;
-                        player.Hand.Add(flyingMinion);
+                        if (player.Hand.Count() < player.MaxHandSize)
+                        {
+                            var flyingMinions = CardService.Instance.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains(MinionType.Flying)).Distinct().ToList();
+                            var flyingMinion = flyingMinions[ThreadSafeRandom.ThisThreadsRandom.Next(flyingMinions.Count)];
+                            flyingMinion.Id = Guid.NewGuid().ToString() + _copyStamp;
+                            player.Hand.Add(flyingMinion);
+                        }
+
                         return player;
                     case 45:
                         if (player.Board.Any(x => x.Id != card.Id))
@@ -542,10 +550,98 @@ namespace PokeChess.Server.Extensions
 
                         return player;
                     case 61:
-                        var pokeLunch = CardService.Instance.GetAllSpells().Where(x => x.Name == "Poké Lunch").FirstOrDefault();
-                        pokeLunch.Id = Guid.NewGuid().ToString() + _copyStamp;
-                        player.Hand.Add(pokeLunch);
+                        if (player.Hand.Count() < player.MaxHandSize)
+                        {
+                            var pokeLunch = CardService.Instance.GetAllSpells().Where(x => x.Name == "Poké Lunch").FirstOrDefault();
+                            pokeLunch.Id = Guid.NewGuid().ToString() + _copyStamp;
+                            player.Hand.Add(pokeLunch);
+                        }
+
                         return player;
+                    case 69:
+                        if (player.Hand.Count() < player.MaxHandSize)
+                        {
+                            player.Hand.Add(CardService.Instance.GetFertilizer());
+                        }
+
+                        return player;
+                    case 78:
+                        var fireTypeCount = player.Board.Where(x => x.MinionTypes.Contains(MinionType.Fire)).Count();
+                        foreach (var minion in player.Board.Where(x => x.MinionTypes.Contains(MinionType.Fire)))
+                        {
+                            minion.Attack += fireTypeCount;
+                            minion.Health += fireTypeCount;
+                        }
+
+                        return player;
+                    case 90:
+                        if (player.Hand.Count() < player.MaxHandSize)
+                        {
+                            var discoverTreasure = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault();
+                            discoverTreasure.Id = Guid.NewGuid().ToString() + _copyStamp;
+                            player.Hand.Add(discoverTreasure);
+                        }
+
+                        return player;
+                    case 101:
+                        foreach (var minion in player.Board.Where(x => x.MinionTypes.Contains(MinionType.Electric)))
+                        {
+                            minion.Attack += 3;
+                            minion.Health += 3;
+                        }
+                        return player;
+                    case 103:
+                        player.FertilizerAttack += 1;
+                        player.FertilizerHealth += 1;
+                        return player;
+                    case 120:
+                        if (player.Hand.Count() < player.MaxHandSize)
+                        {
+                            var waterMinions = CardService.Instance.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains(MinionType.Water)).Distinct().ToList();
+                            var waterMinion = waterMinions[ThreadSafeRandom.ThisThreadsRandom.Next(waterMinions.Count)];
+                            waterMinion.Id = Guid.NewGuid().ToString() + _copyStamp;
+                            player.Hand.Add(waterMinion);
+                        }
+
+                        return player;
+                    //case 121:
+                    //    if (player.Board.Any(x => x.Id != card.Id))
+                    //    {
+                    //        var minionIndex = player.Board.FindIndex(x => x.Id == card.Id);
+                    //        if (minionIndex == -1)
+                    //        {
+                    //            return player;
+                    //        }
+
+                    //        var battlecryTriggerCount = player.BattlecryTriggerCount();
+                    //        for (var i = 0; i < battlecryTriggerCount; i++)
+                    //        {
+
+                    //        }
+
+                    //        if (minionIndex == 0)
+                    //        {
+                    //            // Minion is on far left
+                    //            var targetId = player.Board[1].TargetOptions != TargetType.None.ToString().ToLower() ? player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())].Id ?? player.Shop[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Count())].Id : null;
+                    //            player = player.Board[1].TriggerBattlecry(player, targetId);
+                    //        }
+                    //        else if (minionIndex == player.Board.Count() - 1)
+                    //        {
+                    //            // Minion is on far right
+                    //            player.Board[player.Board.Count() - 2].Attack += player.FertilizerAttack;
+                    //            player.Board[player.Board.Count() - 2].Health += player.FertilizerHealth;
+                    //        }
+                    //        else
+                    //        {
+                    //            // Minion isn't on far left or right
+                    //            player.Board[minionIndex - 1].Attack += player.FertilizerAttack;
+                    //            player.Board[minionIndex - 1].Health += player.FertilizerHealth;
+                    //            player.Board[minionIndex + 1].Attack += player.FertilizerAttack;
+                    //            player.Board[minionIndex + 1].Health += player.FertilizerHealth;
+                    //        }
+                    //    }
+
+                    //    return player;
                     default:
                         return player;
                 }
@@ -569,6 +665,11 @@ namespace PokeChess.Server.Extensions
                 default:
                     return player;
             }
+        }
+
+        private static string GetTargetId(Player player, Card card)
+        {
+            return null;
         }
     }
 }

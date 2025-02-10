@@ -449,18 +449,18 @@ namespace PokeChess.Server.Managers
             }
         }
 
-        public void OnRonnected(string oldId, string newId)
+        public bool OnReconnected(string oldId, string newId)
         {
             if (!Initialized())
             {
-                _logger.LogError($"OnRonnected failed because LobbyManager was not initialized");
-                return;
+                _logger.LogError($"OnReconnected failed because LobbyManager was not initialized");
+                return false;
             }
 
             if (string.IsNullOrWhiteSpace(oldId) || string.IsNullOrWhiteSpace(newId))
             {
-                _logger.LogError($"OnRonnected received null or empty id");
-                return;
+                _logger.LogError($"OnReconnected received null or empty id");
+                return false;
             }
 
             try
@@ -469,16 +469,17 @@ namespace PokeChess.Server.Managers
                 var lobby = GetLobbyByPlayerId(oldId);
                 if (lobby == null)
                 {
-                    _logger.LogError($"OnRonnected couldn't find lobby by player id: {oldId}");
-                    return;
+                    _logger.LogError($"OnReconnected couldn't find lobby by player id: {oldId}");
+                    return false;
                 }
 
                 _lobbies[lobby.Id] = ScrubOldIdReferences(_lobbies[lobby.Id], oldId, newId);
+                return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"OnRonnected exception: {ex.Message}");
-                return;
+                _logger.LogError($"OnReconnected exception: {ex.Message}");
+                return false;
             }
         }
 
@@ -555,6 +556,7 @@ namespace PokeChess.Server.Managers
                 if (player.Id == oldId)
                 {
                     player.Id = newId;
+                    player.IsActive = true;
                 }
 
                 if (player.CurrentOpponentId == oldId)

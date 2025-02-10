@@ -5,6 +5,7 @@ using PokeChess.Server.Models;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services.Interfaces;
+using System.Numerics;
 
 namespace PokeChess.Server.Services
 {
@@ -243,9 +244,13 @@ namespace PokeChess.Server.Services
 
             for (var i = 0; i < lobby.Players.Count(); i++)
             {
+                var endOfTurnTriggerCount = lobby.Players[i].BattlecryTriggerCount();
                 foreach (var minion in lobby.Players[i].Board)
                 {
-                    lobby.Players[i] = minion.TriggerEndOfTurn(lobby.Players[i]);
+                    for (var j = 0; j < endOfTurnTriggerCount; j++)
+                    {
+                        lobby.Players[i] = minion.TriggerEndOfTurn(lobby.Players[i]);
+                    }
                 }
             }
 
@@ -590,7 +595,12 @@ namespace PokeChess.Server.Services
                 {
                     player.Board.Add(card);
                 }
-                player = card.TriggerBattlecry(player, targetId);
+
+                var battlecryTriggerCount = player.BattlecryTriggerCount();
+                for (var i = 0; i < battlecryTriggerCount; i++)
+                {
+                    player = card.TriggerBattlecry(player, targetId);
+                }
             }
             else
             {

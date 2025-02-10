@@ -180,17 +180,20 @@ namespace PokeChess.Server
 
         public async Task OnReconnected(string id)
         {
-            var lobby = _lobbyManager.GetLobbyByPlayerId(id);
-
-            if (lobby != null)
+            if (!string.IsNullOrWhiteSpace(id))
             {
-                _lobbyManager.OnRonnected(id, Context.ConnectionId);
-            }
-        }
+                var lobby = _lobbyManager.GetLobbyByPlayerId(id);
 
-        public override async Task OnConnectedAsync()
-        {
-            await base.OnConnectedAsync();
+                if (lobby != null)
+                {
+                    var success = _lobbyManager.OnReconnected(id, Context.ConnectionId);
+                    if (success)
+                    {
+                        await Groups.AddToGroupAsync(Context.ConnectionId, lobby.Id);
+                        await Groups.RemoveFromGroupAsync(id, lobby.Id);
+                    }
+                }
+            }
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)

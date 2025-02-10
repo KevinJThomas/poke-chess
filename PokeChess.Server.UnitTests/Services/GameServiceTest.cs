@@ -1531,6 +1531,7 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(lobby.Players[0].Hand[0].Tier <= lobby.Players[0].Tier);
             Assert.IsTrue(handCount == handCountAfterOneRound);
             Assert.IsTrue(handCount < handCountAfterTwoRounds);
+            Assert.IsTrue(lobby.Players[0].Hand[0].MinionTypes.Contains(Enums.MinionType.Flying));
         }
 
         [TestMethod]
@@ -1644,6 +1645,141 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsTrue(handCountBefore < handCountAfter);
+        }
+
+        [TestMethod]
+        public void TestEndOfTurn_69()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 69).FirstOrDefault());
+            var handCountBefore = lobby.Players[0].Hand.Count();
+            lobby = instance.CombatRound(lobby);
+            var handCountAfter = lobby.Players[0].Hand.Count();
+
+            // Assert
+            Assert.IsTrue(handCountBefore < handCountAfter);
+        }
+
+        [TestMethod]
+        public void TestEndOfTurn_78()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 78).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 78 && x.MinionTypes.Contains(Enums.MinionType.Fire)).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 78 && x.MinionTypes.Contains(Enums.MinionType.Fire)).FirstOrDefault());
+            var minionAttackListBefore = lobby.Players[0].Board.Select(x => x.Attack).ToList();
+            var minionHealthListBefore = lobby.Players[0].Board.Select(x => x.Health).ToList();
+            lobby = instance.CombatRound(lobby);
+            var minionAttackListAfter = lobby.Players[0].Board.Select(x => x.Attack).ToList();
+            var minionHealthListAfter = lobby.Players[0].Board.Select(x => x.Health).ToList();
+
+            // Assert
+            Assert.IsFalse(Enumerable.SequenceEqual(minionAttackListBefore, minionAttackListAfter));
+            Assert.IsFalse(Enumerable.SequenceEqual(minionHealthListBefore, minionHealthListAfter));
+            Assert.IsTrue(minionAttackListBefore[0] == minionAttackListAfter[0] - 3);
+            Assert.IsTrue(minionHealthListBefore[0] == minionHealthListAfter[0] - 3);
+        }
+
+        [TestMethod]
+        public void TestEndOfTurn_90()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 90).FirstOrDefault());
+            var handCountBefore = lobby.Players[0].Hand.Count();
+            lobby = instance.CombatRound(lobby);
+            var handCountAfter = lobby.Players[0].Hand.Count();
+
+            // Assert
+            Assert.IsTrue(handCountBefore < handCountAfter);
+        }
+
+        [TestMethod]
+        public void TestEndOfTurn_101()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 101).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 101 && x.MinionTypes.Contains(Enums.MinionType.Electric)).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 101 && x.MinionTypes.Contains(Enums.MinionType.Electric)).FirstOrDefault());
+            var minionAttackListBefore = lobby.Players[0].Board.Select(x => x.Attack).ToList();
+            var minionHealthListBefore = lobby.Players[0].Board.Select(x => x.Health).ToList();
+            lobby = instance.CombatRound(lobby);
+            var minionAttackListAfter = lobby.Players[0].Board.Select(x => x.Attack).ToList();
+            var minionHealthListAfter = lobby.Players[0].Board.Select(x => x.Health).ToList();
+
+            // Assert
+            Assert.IsFalse(Enumerable.SequenceEqual(minionAttackListBefore, minionAttackListAfter));
+            Assert.IsFalse(Enumerable.SequenceEqual(minionHealthListBefore, minionHealthListAfter));
+            Assert.IsTrue(minionAttackListBefore[0] == minionAttackListAfter[0] - 3);
+            Assert.IsTrue(minionHealthListBefore[0] == minionHealthListAfter[0] - 3);
+        }
+
+        [TestMethod]
+        public void TestEndOfTurn_103()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+            var fertilizerAttack = 2;
+            var fertilizerHealth = 5;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].FertilizerAttack = fertilizerAttack;
+            lobby.Players[0].FertilizerHealth = fertilizerHealth;
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 103).FirstOrDefault());
+            lobby = instance.CombatRound(lobby);
+
+            // Assert
+            Assert.IsTrue(fertilizerAttack == lobby.Players[0].FertilizerAttack - 1);
+            Assert.IsTrue(fertilizerHealth == lobby.Players[0].FertilizerHealth - 1);
+        }
+
+        [TestMethod]
+        public void TestEndOfTurn_120()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Tier = 4;
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 120).FirstOrDefault());
+            var handCount = lobby.Players[0].Hand.Count();
+            lobby = instance.CombatRound(lobby);
+            var handCountAfter = lobby.Players[0].Hand.Count();
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Hand[0].CardType == Enums.CardType.Minion);
+            Assert.IsTrue(lobby.Players[0].Hand[0].Tier <= lobby.Players[0].Tier);
+            Assert.IsTrue(lobby.Players[0].Hand[0].MinionTypes.Contains(Enums.MinionType.Water));
+            Assert.IsTrue(handCount < handCountAfter);
         }
 
         [TestMethod]
