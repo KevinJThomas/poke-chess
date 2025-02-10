@@ -5,7 +5,6 @@ using PokeChess.Server.Models;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services.Interfaces;
-using System.Numerics;
 
 namespace PokeChess.Server.Services
 {
@@ -653,6 +652,7 @@ namespace PokeChess.Server.Services
                 else
                 {
                     lobby.Players[i].IsShopFrozen = false;
+                    (lobby, lobby.Players[i]) = GetNewShop(lobby, lobby.Players[i], false, true);
                 }
 
                 if (lobby.Players[i].DelayedSpells.Any())
