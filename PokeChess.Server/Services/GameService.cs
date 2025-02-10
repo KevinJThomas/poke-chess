@@ -102,6 +102,14 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
+#if DEBUG
+            foreach (var player in lobby.Players)
+            {
+                player.Gold = 100;
+                player.BaseGold = 100;
+            }
+#endif
+
             lobby.IsWaitingToStart = false;
             lobby.GameState.MinionCardPool = _cardService.GetAllMinionsForPool();
             lobby.GameState.SpellCardPool = _cardService.GetAllSpells().ToList();
