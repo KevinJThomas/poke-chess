@@ -4,6 +4,7 @@ using PokeChess.Server.Models;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services;
+using System.Diagnostics;
 
 namespace PokeChess.Server.UnitTests.Services
 {
@@ -2880,6 +2881,11 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.CombatRound(lobby);
             lobby = instance.CombatRound(lobby);
             lobby = instance.CombatRound(lobby);
+
+            if (lobby.Players.Count(x => !x.IsDead) != 3)
+            {
+                Debug.WriteLine("Player count: " + lobby.Players.Count(x => !x.IsDead));
+            }
 
             // Assert
             Assert.IsNotNull(lobby);

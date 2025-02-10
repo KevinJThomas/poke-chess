@@ -769,7 +769,7 @@ namespace PokeChess.Server.Services
                     {
                         attacker.Attacked = false;
                     }
-                    nextSourceIndex = 0;
+                    nextSourceIndex = GetNextSourceIndex(player1.Board);
                 }
 
                 var nextTargetIndex = GetNextTargetIndex(player2.Board);
@@ -821,7 +821,7 @@ namespace PokeChess.Server.Services
                     {
                         attacker.Attacked = false;
                     }
-                    nextSourceIndex = 0;
+                    nextSourceIndex = GetNextSourceIndex(player2.Board);
                 }
 
                 var nextTargetIndex = GetNextTargetIndex(player1.Board);
@@ -959,17 +959,17 @@ namespace PokeChess.Server.Services
                     damage = damage + halfDamage;
                 }
 
-                target.CombatHealth -= damage;
-
                 if (source.CombatKeywords.Venomous)
                 {
                     source.CombatKeywords.Venomous = false;
 
-                    if (target.CombatHealth > 0)
+                    if (target.CombatHealth > damage)
                     {
-                        target.CombatHealth = 0;
+                        damage = target.CombatHealth;
                     }
                 }
+
+                target.CombatHealth -= damage;
             }
 
             // Update source's state
@@ -991,17 +991,17 @@ namespace PokeChess.Server.Services
                     damage = halfDamage;
                 }
 
-                source.CombatHealth -= damage;
-
                 if (target.CombatKeywords.Venomous)
                 {
                     target.CombatKeywords.Venomous = false;
 
-                    if (source.CombatHealth > 0)
+                    if (source.CombatHealth > damage)
                     {
-                        source.CombatHealth = 0;
+                        damage = source.CombatHealth;
                     }
                 }
+
+                source.CombatHealth -= damage;
             }
 
             source.Attacked = true;
