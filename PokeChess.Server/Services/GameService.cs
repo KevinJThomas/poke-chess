@@ -88,7 +88,7 @@ namespace PokeChess.Server.Services
                 _logger.LogError("StartGame failed because GameService was not initialized");
                 return lobby;
             }
-            
+
             if (lobby.Players.Count() < _playersPerLobby)
             {
                 if (_populateEmptySlotsWithBots)
@@ -126,6 +126,7 @@ namespace PokeChess.Server.Services
             lobby.GameState.SpellCardPool = _cardService.GetAllSpells().ToList();
             // Remove Where statement on above line once front end implements spells with targets
             lobby = NextRound(lobby);
+            lobby = PlayBotTurns(lobby);
             return lobby;
         }
 
@@ -326,6 +327,19 @@ namespace PokeChess.Server.Services
             var playerIndex = lobby.Players.FindIndex(x => x == player);
             player.UpgradeTavern();
             lobby.Players[playerIndex] = player;
+            return lobby;
+        }
+
+        public Lobby PlayBotTurns(Lobby lobby)
+        {
+            for (var i = 0; i < lobby.Players.Count(); i++)
+            {
+                if (lobby.Players[i].IsBot)
+                {
+                    (lobby, lobby.Players[i]) = PlayTurnAsBot(lobby, lobby.Players[i], lobby.GameState.RoundNumber);
+                }
+            }
+
             return lobby;
         }
 
@@ -696,12 +710,6 @@ namespace PokeChess.Server.Services
 
                         lobby.Players[i].CardsToReturnToPool = new List<Card>();
                     }
-                }
-
-                // Bots play their turn immediately
-                if (lobby.Players[i].IsBot)
-                {
-                    (lobby, lobby.Players[i]) = PlayTurnAsBot(lobby, lobby.Players[i], lobby.GameState.RoundNumber);
                 }
             }
 

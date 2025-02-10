@@ -108,6 +108,8 @@ namespace PokeChess.Server
 
                         await Clients.Client(player.Id).SendAsync("CombatComplete", lobbyReturn);
                     }
+
+                    _lobbyManager.PlayBotTurns(lobby.Id);
                 }
                 else
                 {

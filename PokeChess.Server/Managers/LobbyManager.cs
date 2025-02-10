@@ -411,6 +411,44 @@ namespace PokeChess.Server.Managers
             }
         }
 
+        public void PlayBotTurns(string lobbyId)
+        {
+            if (!Initialized())
+            {
+                _logger.LogError($"PlayBotTurns failed because LobbyManager was not initialized");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(lobbyId))
+            {
+                _logger.LogError($"PlayBotTurns received null or empty playerId");
+                return;
+            }
+
+            try
+            {
+                _logger.LogInformation($"PlayBotTurns. lobbyId: {lobbyId}");
+                var lobby = GetLobbyById(lobbyId);
+                if (lobby == null)
+                {
+                    _logger.LogError($"PlayBotTurns couldn't find lobby by lobby id: {lobbyId}");
+                    return;
+                }
+
+                if (!_gameService.Initialized())
+                {
+                    _gameService.Initialize(_logger);
+                }
+
+                _lobbies[lobby.Id] = _gameService.PlayBotTurns(lobby);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"UpgradeTavern exception: {ex.Message}");
+                return;
+            }
+        }
+
         #endregion
 
         #region private methods

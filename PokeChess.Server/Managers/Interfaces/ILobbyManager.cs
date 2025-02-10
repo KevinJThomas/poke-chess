@@ -21,5 +21,6 @@ namespace PokeChess.Server.Managers.Interfaces
         bool ReadyForCombat(string lobbyId);
         Player FreezeShop(string playerId);
         Player UpgradeTavern(string playerId);
+        void PlayBotTurns(string lobbyId);
     }
 }
