@@ -2,7 +2,7 @@ import Hero from "./Hero";
 import { orderBy } from "lodash";
 import clsx from "clsx";
 
-export default function Players({ players, opponent }) {
+export default function Opponents({ players, opponentId }) {
   const sortedPlayers = orderBy(
     players,
     (player) => player.health + player.armor,
@@ -18,7 +18,7 @@ export default function Players({ players, opponent }) {
           health={player.health}
           tier={player.tier}
           className={clsx(
-            opponent?.id === player.id && "ml-16",
+            opponentId === player.id && "ml-16",
             player.isDead && "opacity-60",
           )}
         />

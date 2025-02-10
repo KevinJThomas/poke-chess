@@ -454,7 +454,14 @@ export default function App() {
           </Button>
         )}
         <Gold gold={player?.gold} maxGold={player?.baseGold} />
-        <Opponents players={players} opponent={opponent} />
+        <Opponents
+          players={players}
+          opponentId={
+            gameStatus === "battle"
+              ? player?.combatOpponentId
+              : player?.currentOpponentId
+          }
+        />
       </div>
     </DragDropContext>
   );
