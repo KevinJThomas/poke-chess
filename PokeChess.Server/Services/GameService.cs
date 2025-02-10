@@ -1213,7 +1213,7 @@ namespace PokeChess.Server.Services
         private Player GetNewBot(int botNumber)
         {
             var id = Guid.NewGuid().ToString();
-            var bot = new Player(id, "Bot " + botNumber, 0);
+            var bot = new Player(id, "Bot " + botNumber);
             bot.IsBot = true;
             return bot;
         }

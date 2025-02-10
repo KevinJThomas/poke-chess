@@ -10,7 +10,7 @@ namespace PokeChess.Server.Models.Player
         private readonly int _maxHandSize = ConfigurationHelper.config.GetValue<int>("App:Player:MaxHandSize");
         private readonly int _upgradeToTwoCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Two");
 
-        public Player(string id, string name, int armor = 5, int refreshCost = 1)
+        public Player(string id, string name, int armor = 10, int refreshCost = 1)
         {
             Id = id;
             Name = name;

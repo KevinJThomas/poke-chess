@@ -152,7 +152,12 @@ namespace PokeChess.Server
 
             if (lobby != null)
             {
-                await Clients.Group(lobby.Id).SendAsync("LobbyUpdated", lobby);
+                foreach (var playerReturn in lobby.Players.Where(x => x.IsActive).ToList())
+                {
+                    var lobbyReturn = ScrubLobby(lobby, playerReturn.Id, playerReturn.CombatOpponentId);
+
+                    await Clients.Client(playerReturn.Id).SendAsync("LobbyUpdated", lobbyReturn);
+                }
             }
         }
 
@@ -186,11 +191,12 @@ namespace PokeChess.Server
 
                 if (lobby != null)
                 {
-                    var success = _lobbyManager.OnReconnected(id, Context.ConnectionId);
-                    if (success)
+                    lobby = _lobbyManager.OnReconnected(id, Context.ConnectionId);
+                    if (lobby != null)
                     {
                         await Groups.AddToGroupAsync(Context.ConnectionId, lobby.Id);
                         await Groups.RemoveFromGroupAsync(id, lobby.Id);
+                        await Clients.Caller.SendAsync("ReconnectSuccess", lobby, Context.ConnectionId);
                     }
                 }
             }

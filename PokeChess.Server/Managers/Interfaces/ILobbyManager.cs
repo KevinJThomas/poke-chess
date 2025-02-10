@@ -22,6 +22,6 @@ namespace PokeChess.Server.Managers.Interfaces
         Player FreezeShop(string playerId);
         Player UpgradeTavern(string playerId);
         void PlayBotTurns(string lobbyId);
-        bool OnReconnected(string oldId, string newId);
+        Lobby OnReconnected(string oldId, string newId);
     }
 }
