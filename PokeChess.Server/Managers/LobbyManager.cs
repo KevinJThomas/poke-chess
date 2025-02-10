@@ -444,7 +444,40 @@ namespace PokeChess.Server.Managers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"UpgradeTavern exception: {ex.Message}");
+                _logger.LogError($"PlayBotTurns exception: {ex.Message}");
+                return;
+            }
+        }
+
+        public void OnRonnected(string oldId, string newId)
+        {
+            if (!Initialized())
+            {
+                _logger.LogError($"OnRonnected failed because LobbyManager was not initialized");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(oldId) || string.IsNullOrWhiteSpace(newId))
+            {
+                _logger.LogError($"OnRonnected received null or empty id");
+                return;
+            }
+
+            try
+            {
+                _logger.LogInformation($"OnRonnected. oldId: {oldId}, newId: {newId}");
+                var lobby = GetLobbyByPlayerId(oldId);
+                if (lobby == null)
+                {
+                    _logger.LogError($"OnRonnected couldn't find lobby by player id: {oldId}");
+                    return;
+                }
+
+                _lobbies[lobby.Id] = ScrubOldIdReferences(_lobbies[lobby.Id], oldId, newId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"OnRonnected exception: {ex.Message}");
                 return;
             }
         }
@@ -513,6 +546,37 @@ namespace PokeChess.Server.Managers
             }
 
             return null;
+        }
+
+        private Lobby ScrubOldIdReferences(Lobby lobby, string oldId, string newId)
+        {
+            foreach (var player in lobby.Players)
+            {
+                if (player.Id == oldId)
+                {
+                    player.Id = newId;
+                }
+
+                if (player.CurrentOpponentId == oldId)
+                {
+                    player.CurrentOpponentId = newId;
+                }
+
+                if (player.CombatOpponentId == oldId)
+                {
+                    player.CombatOpponentId = newId;
+                }
+
+                for (var i = 0; i < player.PreviousOpponentIds.Count(); i++)
+                {
+                    if (player.PreviousOpponentIds[i] == oldId)
+                    {
+                        player.PreviousOpponentIds[i] = newId;
+                    }
+                }
+            }
+
+            return lobby;
         }
 
         #endregion

@@ -1570,6 +1570,83 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
+        public void TestEndOfTurn_47()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+            var minions = CardService.Instance.GetAllMinions();
+            var random = new Random();
+            var fertilizerAttack = 2;
+            var fertilizerHealth = 5;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Tier = 4;
+            lobby.Players[0].FertilizerAttack = fertilizerAttack;
+            lobby.Players[0].FertilizerHealth = fertilizerHealth;
+            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 47).ToList()[random.Next(minions.Where(x => x.PokemonId != 47).Count())]);
+            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 47).FirstOrDefault());
+            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 47).ToList()[random.Next(minions.Where(x => x.PokemonId != 47).Count())]);
+            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 47).ToList()[random.Next(minions.Where(x => x.PokemonId != 47).Count())]);
+            var minionAttackListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 47).Select(y => y.Attack).ToList();
+            var minionHealthListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 47).Select(y => y.Health).ToList();
+            lobby = instance.CombatRound(lobby);
+            var minionAttackListAfter = lobby.Players[0].Board.Where(x => x.PokemonId != 47).Select(y => y.Attack).ToList();
+            var minionHealthListAfter = lobby.Players[0].Board.Where(x => x.PokemonId != 47).Select(y => y.Health).ToList();
+
+            // Assert
+            Assert.IsFalse(Enumerable.SequenceEqual(minionAttackListBefore, minionAttackListAfter));
+            Assert.IsFalse(Enumerable.SequenceEqual(minionHealthListBefore, minionHealthListAfter));
+            Assert.IsTrue(minionAttackListBefore[0] == minionAttackListAfter[0] - fertilizerAttack);
+            Assert.IsTrue(minionHealthListBefore[0] == minionHealthListAfter[0] - fertilizerHealth);
+            Assert.IsTrue(minionAttackListBefore[2] == minionAttackListAfter[2]);
+            Assert.IsTrue(minionHealthListBefore[2] == minionHealthListAfter[2]);
+        }
+
+        [TestMethod]
+        public void TestEndOfTurn_49()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 49).FirstOrDefault());
+            var attackBefore = lobby.Players[0].Board[0].Attack;
+            var healthBefore = lobby.Players[0].Board[0].Health;
+            lobby = instance.CombatRound(lobby);
+            var attackAfter = lobby.Players[0].Board[0].Attack;
+            var healthAfter = lobby.Players[0].Board[0].Health;
+
+            // Assert
+            Assert.IsTrue(attackBefore < attackAfter);
+            Assert.IsTrue(healthBefore < healthAfter);
+        }
+
+        [TestMethod]
+        public void TestEndOfTurn_61()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 61).FirstOrDefault());
+            var handCountBefore = lobby.Players[0].Hand.Count();
+            lobby = instance.CombatRound(lobby);
+            var handCountAfter = lobby.Players[0].Hand.Count();
+
+            // Assert
+            Assert.IsTrue(handCountBefore < handCountAfter);
+        }
+
+        [TestMethod]
         public void TestPlaySpell_Fertilizer()
         {
             // Arrange

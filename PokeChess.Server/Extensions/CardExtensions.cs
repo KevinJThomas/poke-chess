@@ -90,6 +90,7 @@ namespace PokeChess.Server.Extensions
                     {
                         card.Attack += randomMinionInShop10.Attack;
                         card.Health += randomMinionInShop10.Health;
+                        player.CardsToReturnToPool.Add(randomMinionInShop10);
                         player.Shop.Remove(randomMinionInShop10);
                     }
 
@@ -101,6 +102,7 @@ namespace PokeChess.Server.Extensions
                     {
                         card.Attack += randomMinionInShop11.Attack * 2;
                         card.Health += randomMinionInShop11.Health * 2;
+                        player.CardsToReturnToPool.Add(randomMinionInShop11);
                         player.Shop.Remove(randomMinionInShop11);
                     }
 
@@ -117,6 +119,7 @@ namespace PokeChess.Server.Extensions
 
                         bugType.Attack += randomMinionInShop12.Attack;
                         bugType.Health += randomMinionInShop12.Health;
+                        player.CardsToReturnToPool.Add(randomMinionInShop12);
                         player.Shop.Remove(randomMinionInShop12);
                     }
 
@@ -498,9 +501,50 @@ namespace PokeChess.Server.Extensions
                     case 47:
                         if (player.Board.Any(x => x.Id != card.Id))
                         {
-                            // Play fert on adj minions
+                            var minionIndex = player.Board.FindIndex(x => x.Id == card.Id);
+                            if (minionIndex == -1)
+                            {
+                                return player;
+                            }
+
+                            if (minionIndex == 0)
+                            {
+                                // Minion is on far left
+                                player.Board[1].Attack += player.FertilizerAttack;
+                                player.Board[1].Health += player.FertilizerHealth;
+                            }
+                            else if (minionIndex == player.Board.Count() - 1)
+                            {
+                                // Minion is on far right
+                                player.Board[player.Board.Count() - 2].Attack += player.FertilizerAttack;
+                                player.Board[player.Board.Count() - 2].Health += player.FertilizerHealth;
+                            }
+                            else
+                            {
+                                // Minion isn't on far left or right
+                                player.Board[minionIndex - 1].Attack += player.FertilizerAttack;
+                                player.Board[minionIndex - 1].Health += player.FertilizerHealth;
+                                player.Board[minionIndex + 1].Attack += player.FertilizerAttack;
+                                player.Board[minionIndex + 1].Health += player.FertilizerHealth;
+                            }
                         }
 
+                        return player;
+                    case 49:
+                        var randomMinionInShop49 = player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())];
+                        if (randomMinionInShop49 != null)
+                        {
+                            card.Attack += randomMinionInShop49.Attack;
+                            card.Health += randomMinionInShop49.Health;
+                            player.CardsToReturnToPool.Add(randomMinionInShop49);
+                            player.Shop.Remove(randomMinionInShop49);
+                        }
+
+                        return player;
+                    case 61:
+                        var pokeLunch = CardService.Instance.GetAllSpells().Where(x => x.Name == "Poké Lunch").FirstOrDefault();
+                        pokeLunch.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        player.Hand.Add(pokeLunch);
                         return player;
                     default:
                         return player;

@@ -1265,7 +1265,8 @@
         "num": "048",
         "name": "Venonat"
       }
-    ]
+    ],
+    "hasEndOfTurn": true
   },
   {
     "pokemonId": 50,
@@ -1547,7 +1548,8 @@
         "num": "062",
         "name": "Poliwrath"
       }
-    ]
+    ],
+    "hasEndOfTurn": true
   },
   {
     "pokemonId": 62,

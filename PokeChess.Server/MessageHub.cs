@@ -178,6 +178,21 @@ namespace PokeChess.Server
             }
         }
 
+        public async Task OnReconnected(string id)
+        {
+            var lobby = _lobbyManager.GetLobbyByPlayerId(id);
+
+            if (lobby != null)
+            {
+                _lobbyManager.OnRonnected(id, Context.ConnectionId);
+            }
+        }
+
+        public override async Task OnConnectedAsync()
+        {
+            await base.OnConnectedAsync();
+        }
+
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             var lobby = _lobbyManager.PlayerLeft(Context.ConnectionId);
