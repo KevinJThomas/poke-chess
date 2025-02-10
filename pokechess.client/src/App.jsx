@@ -308,12 +308,6 @@ export default function App() {
       console.log("RECONNECTING", error);
     });
 
-    connection.onreconnected((connectionId) => {
-      setReconnecting(false);
-      console.log("RECONNECTED", connectionId);
-      connection.invoke("OnReconnected", playerId);
-    });
-
     connection.onclose((error) => {
       console.log("CLOSED", error);
       // setError(error);
@@ -322,7 +316,23 @@ export default function App() {
     console.log("connection", connection);
 
     setConnection(connection);
+
+    return () => {
+      connection.close();
+    };
   }, []);
+
+  useEffect(() => {
+    if (!connection) {
+      return;
+    }
+
+    connection.onreconnected(() => {
+      setReconnecting(false);
+      console.log("RECONNECTED", );
+      connection.invoke("OnReconnected", playerId);
+    });
+  }, [connection, playerId]);
 
   useEffect(() => {
     if (!connection) {
