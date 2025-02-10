@@ -35,7 +35,7 @@ export default function App() {
   const opponent = players.find((x) => x.id === player?.currentOpponentId);
   const combatOpponent = players.find((x) => x.id === player?.combatOpponentId);
 
-  console.log(players);
+  console.log("players", players);
 
   function removeCardFromHand(cardId) {
     const clonedPlayers = cloneDeep(players);
@@ -323,13 +323,13 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (!connection) {
+    if (!connection || !playerId) {
       return;
     }
 
     connection.onreconnected(() => {
       setReconnecting(false);
-      console.log("RECONNECTED", );
+      console.log("RECONNECTED");
       connection.invoke("OnReconnected", playerId);
     });
   }, [connection, playerId]);
@@ -379,12 +379,18 @@ export default function App() {
       setHasEndedTurn(false);
     });
 
+    connection.on("ReconnectSuccess", (lobby, playerId) => {
+      setPlayers(lobby.players);
+      setPlayerId(playerId);
+    });
+
     return () => {
       connection.off("LobbyUpdated");
       connection.off("GameError");
       connection.off("StartGameConfirmed");
       connection.off("PlayerUpdated");
       connection.off("CombatComplete");
+      connection.off("ReconnectSuccess");
     };
   }, [connection, playerId]);
 
