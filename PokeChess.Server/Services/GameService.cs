@@ -270,7 +270,7 @@ namespace PokeChess.Server.Services
                         player.CombatActions.Add(new CombatAction
                         {
                             Type = CombatActionType.GameOver.ToString().ToLower(),
-                            WinnerName = winnerName
+                            Placement = player.IsDead ? 2 : 1
                         });
                     }
                 }
@@ -802,6 +802,23 @@ namespace PokeChess.Server.Services
                 var player2Index = GetPlayerIndexById(player2.Id, lobby);
                 lobby.Players[player1Index] = player1;
                 lobby.Players[player2Index] = player2;
+            }
+
+            foreach (var player in lobby.Players)
+            {
+                if (player.IsDead && player.IsActive)
+                {
+                    if (player.CombatActions == null)
+                    {
+                        player.CombatActions = new List<CombatAction>();
+                    }
+
+                    player.CombatActions.Add(new CombatAction
+                    {
+                        Type = CombatActionType.GameOver.ToString().ToLower(),
+                        Placement = lobby.Players.Count(x => !x.IsDead) + 1
+                    });
+                }
             }
 
             return lobby;

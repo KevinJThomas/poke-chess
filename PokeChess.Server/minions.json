@@ -1228,7 +1228,7 @@
     "pokemonId": 48,
     "num": "048",
     "tier": 1,
-    "text": "__Batllecry:__ Deal 1 damage to your hero",
+    "text": "__Battlecry:__ Deal 1 damage to your hero",
     "name": "Venonat",
     "baseAttack": 4,
     "baseHealth": 4,
