@@ -62,7 +62,12 @@ export default function ShopBoard({
         isShiftDisabled={disableBoardShift}
       />
       <Row>
-        <Hero name={player.name} health={player.health} armor={player.armor} />
+        <Hero
+          name={player.name}
+          health={player.health}
+          armor={player.armor}
+          type="player"
+        />
       </Row>
       <HandRow
         player={player}
