@@ -319,9 +319,11 @@ export default function App() {
 
     setConnection(connection);
 
+    console.log("hi");
+
     return () => {
-      if (connection?.close) {
-        connection?.close();
+      if (connection?.stop) {
+        connection.stop();
       }
     };
   }, []);
