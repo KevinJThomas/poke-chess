@@ -20,10 +20,11 @@ export default function App() {
   const [name, setName] = useState("");
   const [gameState, setGameState] = useState();
   const [playerId, setPlayerId] = useState();
-  const [disableSellDrop, setDisableSellDrop] = useState(false);
-  const [disableBoardDrop, setDisableBoardDrop] = useState(false);
-  const [disableShopDrop, setDisableShopDrop] = useState(false);
-  const [disableHandDrop, setDisableHandDrop] = useState(false);
+  const [disableSellDrop, setDisableSellDrop] = useState(true);
+  const [disableBoardDrop, setDisableBoardDrop] = useState(true);
+  const [disableShopDrop, setDisableShopDrop] = useState(true);
+  const [disableHandDrop, setDisableHandDrop] = useState(true);
+  const [disableHeroDrop, setDisableHeroDrop] = useState(true);
   const [disableBoardShift, setDisableBoardShift] = useState(false);
   const [disableShopShift, setDisableShopShift] = useState(false);
   const [hasEndedTurn, setHasEndedTurn] = useState(false);
@@ -44,7 +45,7 @@ export default function App() {
       (player) => player.id === playerId,
     );
 
-    clonedPlayers[playerIndex].board = clonedPlayers[playerIndex].board.filter(
+    clonedPlayers[playerIndex].hand = clonedPlayers[playerIndex].hand.filter(
       (card) => card.id !== cardId,
     );
 
@@ -53,18 +54,14 @@ export default function App() {
 
   function onDragStart(result) {
     if (result.source.droppableId === "droppable-shop") {
-      setDisableSellDrop(true);
-      setDisableBoardDrop(true);
+      setDisableHandDrop(false);
     }
 
     if (result.source.droppableId === "droppable-hand") {
       const card = player.hand[result.source.index];
-      setDisableSellDrop(true);
+      console.log("card", card.targetOptions);
+      setDisableBoardDrop(false);
       setCardBeingPlayed(card);
-
-      if (card.cardType === 0 || card.targetOptions !== "any") {
-        setDisableShopDrop(true);
-      }
 
       // Can't play more than 7 minions
       if (player.board.length >= 7 && card.cardType === 0) {
@@ -74,28 +71,36 @@ export default function App() {
       // Spell without target
       if (card.cardType === 1 && card.targetOptions === "none") {
         setDisableBoardDrop(true);
+        setDisableHeroDrop(false);
       }
 
-      // Spell with target
-      if (card.cardType === 1 && card.targetOptions !== "none") {
+      // Spell with board target
+      if (card.cardType === 1 && card.targetOptions === "friendly") {
         setDisableBoardShift(true);
+      }
+
+      // Spell with board or shop target
+      if (card.cardType === 1 && card.targetOptions === "any") {
+        setDisableBoardShift(true);
+        setDisableShopDrop(false);
         setDisableShopShift(true);
       }
     }
 
     if (result.source.droppableId === "droppable-board") {
-      setDisableShopDrop(true);
-      setDisableHandDrop(true);
+      setDisableBoardDrop(false);
+      setDisableSellDrop(false);
     }
   }
 
   function onDragEnd(result) {
     console.log("Drag End Result", result);
     setCardBeingPlayed(null);
-    setDisableSellDrop(false);
-    setDisableBoardDrop(false);
-    setDisableShopDrop(false);
-    setDisableHandDrop(false);
+    setDisableSellDrop(true);
+    setDisableBoardDrop(true);
+    setDisableShopDrop(true);
+    setDisableHandDrop(true);
+    setDisableHeroDrop(true);
     setDisableBoardShift(false);
     setDisableShopShift(false);
 
@@ -105,7 +110,7 @@ export default function App() {
     if (
       cardBeingPlayed?.cardType === 1 &&
       cardBeingPlayed?.targetOptions === "none" &&
-      !result.destination
+      result.destination?.droppableId === "droppable-hero"
     ) {
       removeCardFromHand(cardId);
 
@@ -314,8 +319,12 @@ export default function App() {
 
     setConnection(connection);
 
+    console.log("hi");
+
     return () => {
-      connection.close();
+      if (connection?.stop) {
+        connection.stop();
+      }
     };
   }, []);
 
@@ -450,6 +459,7 @@ export default function App() {
             cardBeingPlayed={cardBeingPlayed}
             disableBoardShift={disableBoardShift}
             disableShopShift={disableShopShift}
+            disableHeroDrop={disableHeroDrop}
           />
         )}
         {gameStatus === "battle" && (
