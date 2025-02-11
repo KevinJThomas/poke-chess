@@ -21,6 +21,7 @@ namespace PokeChess.Server.Extensions
             foreach (var minion in player.Board)
             {
                 minion.CombatKeywords = minion.Keywords.Clone();
+                minion.Attacked = false;
             }
         }
 
@@ -157,7 +158,7 @@ namespace PokeChess.Server.Extensions
 
             var fallback = player.Clone();
             var pokemonIdList = new List<int>();
-            pokemonIdList.AddRange(player.Hand.Select(x => x.PokemonId));
+            pokemonIdList.AddRange(player.Hand.Where(x => x.CardType == CardType.Minion).Select(x => x.PokemonId));
             pokemonIdList.AddRange(player.Board.Select(x => x.PokemonId));
             var evolveList = pokemonIdList.GroupBy(x => x).Where(y => y.Count() >= 3).Select(z => z.Key).ToList();
 
