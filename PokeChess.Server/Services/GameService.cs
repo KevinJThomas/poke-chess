@@ -5,8 +5,6 @@ using PokeChess.Server.Models;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services.Interfaces;
-using System.Numerics;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace PokeChess.Server.Services
 {
@@ -126,7 +124,6 @@ namespace PokeChess.Server.Services
             lobby.IsWaitingToStart = false;
             lobby.GameState.MinionCardPool = _cardService.GetAllMinionsForPool();
             lobby.GameState.SpellCardPool = _cardService.GetAllSpells().ToList();
-            // Remove Where statement on above line once front end implements spells with targets
             lobby = NextRound(lobby);
             lobby = PlayBotTurns(lobby);
             return lobby;

@@ -465,7 +465,7 @@ namespace PokeChess.Server.Managers
 
             try
             {
-                _logger.LogInformation($"OnRonnected. oldId: {oldId}, newId: {newId}");
+                _logger.LogInformation($"OnReconnected. oldId: {oldId}, newId: {newId}");
                 var lobby = GetLobbyByPlayerId(oldId);
                 if (lobby == null)
                 {

@@ -211,7 +211,7 @@
     "pokemonId": 8,
     "num": "008",
     "tier": 4,
-    "text": "Add the end of your turn, get a random tavern spell",
+    "text": "At the end of your turn, get a random tavern spell",
     "name": "Wartortle",
     "baseAttack": 6,
     "baseHealth": 3,

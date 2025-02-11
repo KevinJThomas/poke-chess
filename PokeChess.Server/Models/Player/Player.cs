@@ -18,7 +18,6 @@ namespace PokeChess.Server.Models.Player
             Health = 30;
             Armor = armor;
             Tier = 1;
-            TripleCount = 0;
             BaseGold = _startingGold;
             Gold = _startingGold;
             UpgradeCost = _upgradeToTwoCost + 1; // Adding 1 here because it will be decremented by the StartGame function before the first round
@@ -50,7 +49,6 @@ namespace PokeChess.Server.Models.Player
         public int Health { get; set; }
         public int Armor { get; set; }
         public int Tier { get; set; }
-        public int TripleCount { get; set; }
         public int BaseGold { get; set; }
         public int Gold { get; set; }
         public int UpgradeCost { get; set; }
