@@ -577,14 +577,15 @@ namespace PokeChess.Server.Services
 
         private (Lobby, Player) SellMinion(Lobby lobby, Player player, Card card)
         {
-            player.Gold += card.SellValue;
+            player.MinionSold(card);
             lobby = ReturnCardToPool(lobby, card);
-            player.Board.Remove(card);
             return (lobby, player);
         }
 
         private (Lobby, Player) PlayCard(Lobby lobby, Player player, Card card, int boardIndex, string? targetId)
         {
+            var success = false;
+
             if (card.CardType == CardType.Minion && player.Board.Count() < _boardsSlots)
             {
                 player.Hand.Remove(card);
@@ -602,10 +603,12 @@ namespace PokeChess.Server.Services
                 {
                     player = card.TriggerBattlecry(player, targetId);
                 }
+
+                success = true;
             }
             else
             {
-                var success = player.PlaySpell(card, targetId);
+                success = player.PlaySpell(card, targetId);
                 if (success)
                 {
                     player.Hand.Remove(card);
@@ -621,6 +624,11 @@ namespace PokeChess.Server.Services
                         player.CardsToReturnToPool = new List<Card>();
                     }
                 }
+            }
+
+            if (success)
+            {
+                player.CardPlayed(card);
             }
 
             return (lobby, player);

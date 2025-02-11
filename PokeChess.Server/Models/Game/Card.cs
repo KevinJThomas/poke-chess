@@ -36,7 +36,9 @@ namespace PokeChess.Server.Models.Game
         public bool HasStartOfTurn { get; set; }
         public int BaseStartOfTurnInterval { get; set; } = 1;
         public int StartOfTurnInterval { get; set; } = 1;
-        public CardType CardType { get; set; }
+        public bool HasPlayCardTrigger { get; set; }
+        public bool HasShopBuffAura { get; set; }
+        public CardType CardType { get; set; } = CardType.Unknown;
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();
         public List<MinionType> WeaknessTypes { get; set; } = new List<MinionType>();
         public List<SpellType> SpellTypes { get; set; } = new List<SpellType>();

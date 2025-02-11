@@ -3,6 +3,7 @@
     public enum CardType
     {
         Minion,
-        Spell
+        Spell,
+        Unknown
     }
 }

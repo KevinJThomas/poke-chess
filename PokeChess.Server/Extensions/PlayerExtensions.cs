@@ -492,6 +492,35 @@ namespace PokeChess.Server.Extensions
             return 1;
         }
 
+        public static void CardPlayed(this Player player, Card card)
+        {
+            if (player.Board.Any())
+            {
+                foreach (var minion in player.Board)
+                {
+                    if (minion.HasPlayCardTrigger)
+                    {
+                        player = minion.PlayCardTrigger(player);
+                    }
+                }
+            }
+
+            if (card.HasShopBuffAura)
+            {
+                player = card.ShopBuffAura(player);
+            }
+        }
+
+        public static void MinionSold(this Player player, Card card)
+        {
+            player.Gold += card.SellValue;
+            player.Board.Remove(card);
+            if (card.HasShopBuffAura)
+            {
+                player = card.ShopBuffAura(player, true);
+            }
+        }
+
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
         {
             if (amount < 0)

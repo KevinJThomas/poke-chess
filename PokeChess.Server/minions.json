@@ -177,7 +177,8 @@
         "num": "005",
         "name": "Charmeleon"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 7,
@@ -368,7 +369,8 @@
         "num": "015",
         "name": "Beedrill"
       }
-    ]
+    ],
+    "hasShopBuffAura": true
   },
   {
     "pokemonId": 14,

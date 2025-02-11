@@ -665,6 +665,55 @@ namespace PokeChess.Server.Extensions
             }
         }
 
+        public static Player PlayCardTrigger(this Card card, Player player)
+        {
+            if (!card.HasPlayCardTrigger)
+            {
+                return player;
+            }
+
+            switch (card.PokemonId)
+            {
+                case 6:
+                    if (card.CardType == CardType.Minion && player.Board.Any(x => x.Id != card.Id))
+                    {
+                        foreach (var minion in player.Board.Where(x => x.Id != card.Id))
+                        {
+                            minion.Attack += 1;
+                            minion.Health += 1;
+                        }
+                    }
+                    return player;
+                default:
+                    return player;
+            }
+        }
+
+        public static Player ShopBuffAura(this Card card, Player player, bool remove = false)
+        {
+            if (!card.HasShopBuffAura)
+            {
+                return player;
+            }
+
+            switch (card.PokemonId)
+            {
+                case 13:
+                    var buff = remove ? -1 : 1;
+                    foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
+                    {
+                        minion.Attack += buff;
+                        minion.Health += buff;
+                    }
+
+                    player.ShopBuffAttack += buff;
+                    player.ShopBuffHealth += buff;
+                    return player;
+                default:
+                    return player;
+            }
+        }
+
         private static string GetTargetId(Player player, Card card)
         {
             if (card == null || !card.HasBattlecry || !card.IsBattlecryTargeted)

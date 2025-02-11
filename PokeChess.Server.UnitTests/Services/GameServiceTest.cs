@@ -111,13 +111,15 @@ namespace PokeChess.Server.UnitTests.Services
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "Card 1",
-                SellValue = 1
+                SellValue = 1,
+                CardType = Enums.CardType.Minion
             });
             lobby.Players[0].Board.Add(new Card
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "Card 2",
-                SellValue = 1
+                SellValue = 1,
+                CardType = Enums.CardType.Minion
             });
             var boardCount = lobby.Players[0].Board.Count();
             var cardIdToRemove = lobby.Players[0].Board[0].Id;
@@ -262,12 +264,14 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].Hand.Add(new Card
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = "Card 1"
+                Name = "Card 1",
+                CardType = Enums.CardType.Minion
             });
             lobby.Players[0].Hand.Add(new Card
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = "Card 2"
+                Name = "Card 2",
+                CardType = Enums.CardType.Minion
             });
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
@@ -1552,9 +1556,10 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].FertilizerAttack = fertilizerAttack;
             lobby.Players[0].FertilizerHealth = fertilizerHealth;
             lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 45).FirstOrDefault());
-            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 45 && x.PokemonId != 121).ToList()[random.Next(minions.Where(x => x.PokemonId != 45).Count())]);
-            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 45 && x.PokemonId != 121).ToList()[random.Next(minions.Where(x => x.PokemonId != 45).Count())]);
-            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 45 && x.PokemonId != 121).ToList()[random.Next(minions.Where(x => x.PokemonId != 45).Count())]);
+            var ekansList = minions.Where(x => x.PokemonId == 23).ToList();
+            lobby.Players[0].Board.Add(ekansList[0]);
+            lobby.Players[0].Board.Add(ekansList[1]);
+            lobby.Players[0].Board.Add(ekansList[2]);
             var handCount = lobby.Players[0].Hand.Count();
             var minionAttackListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 45).Select(y => y.Attack).ToList();
             var minionHealthListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 45).Select(y => y.Health).ToList();
