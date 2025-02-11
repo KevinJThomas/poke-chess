@@ -37,20 +37,20 @@ export default function OpponentTooltip({
                 className="flex w-24 items-center justify-between gap-4 truncate rounded-sm bg-red-300 p-1"
                 key={index}
               >
-                {combat.damage && (
-                  <span
-                    className={cn(
-                      "font-bold",
-                      combat.damage < 0 &&
-                        "rounded-sm bg-red-800 px-1 text-white",
-                      combat.damage > 0 &&
-                        "rounded-sm bg-emerald-700 px-1 text-white",
-                    )}
-                  >
-                    {combat.damage > 0 && <span>+</span>}
-                    {combat.damage}
-                  </span>
-                )}
+                <span
+                  className={cn(
+                    "font-bold",
+                    combat.damage < 0 &&
+                      "rounded-sm bg-red-800 px-1 text-white",
+                    combat.damage > 0 &&
+                      "rounded-sm bg-emerald-700 px-1 text-white",
+                    combat.damage === 0 &&
+                      "rounded-sm bg-gray-500 px-1 text-white",
+                  )}
+                >
+                  {combat.damage > 0 && <span>+</span>}
+                  {combat.damage}
+                </span>
                 <span className="text-black">{combat.name}</span>{" "}
               </div>
             ))}
