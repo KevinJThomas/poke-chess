@@ -23,6 +23,7 @@ builder.Services.AddSignalR(hubOptions =>
 {
     hubOptions.ClientTimeoutInterval = TimeSpan.FromMinutes(5);
     hubOptions.HandshakeTimeout = TimeSpan.FromMinutes(5);
+    hubOptions.KeepAliveInterval = TimeSpan.FromMinutes(5);
 });
 builder.Services.AddCors();
 
