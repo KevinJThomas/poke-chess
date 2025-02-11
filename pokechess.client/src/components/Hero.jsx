@@ -7,6 +7,7 @@ import { useState } from "react";
 import { delay } from "../util";
 import HeroDamage from "./HeroDamage";
 import OpponentTooltip from "./OpponentTooltip";
+import { Droppable } from "@hello-pangea/dnd";
 
 export default function Hero({
   health,
@@ -20,9 +21,19 @@ export default function Hero({
   type,
   combatHistory,
   winStreak,
+  isDropDisabled,
 }) {
   const [showDamage, setShowDamage] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+
+  function getListStyle(isDraggingOver) {
+    return {
+      // background: isDraggingOver ? "lightblue" : "lightgrey",
+      // display: "flex",
+      // padding: grid,
+      // width: itemsLength * 68.44 + 16,
+    };
+  }
 
   useAsyncEffect(async () => {
     setShowDamage(true);
@@ -58,6 +69,29 @@ export default function Hero({
       >
         {hero}
       </OpponentTooltip>
+    );
+  }
+
+  if (type === "player-shop") {
+    return (
+      <Droppable
+        droppableId="droppable-hero"
+        direction="vertical"
+        isDropDisabled={isDropDisabled}
+      >
+        {(provided, snapshot) => (
+          <>
+            <div
+              ref={provided.innerRef}
+              style={getListStyle(snapshot.isDraggingOver)}
+              {...provided.droppableProps}
+            >
+              {hero}
+            </div>
+            <span className="hidden">{provided.placeholder}</span>
+          </>
+        )}
+      </Droppable>
     );
   }
 

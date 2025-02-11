@@ -292,7 +292,7 @@ export default function BattleBoard({
           <PlayerPokemon player={player} />
         </Row>
         <Row>
-          <Hero {...player} type="player" id="player-hero" />
+          <Hero {...player} type="player-battle" id="player-hero" />
         </Row>
         <Row></Row>
       </div>

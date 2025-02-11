@@ -16,6 +16,7 @@ export default function ShopBoard({
   disableShopShift,
   cardBeingPlayed,
   disableBoardShift,
+  disableHeroDrop,
 }) {
   function upgrade() {
     connection.invoke("UpgradeTavern");
@@ -66,7 +67,8 @@ export default function ShopBoard({
           name={player.name}
           health={player.health}
           armor={player.armor}
-          type="player"
+          type="player-shop"
+          isDropDisabled={disableHeroDrop}
         />
       </Row>
       <HandRow
