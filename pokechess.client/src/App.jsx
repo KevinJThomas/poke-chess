@@ -27,7 +27,7 @@ export default function App() {
   const [disableBoardShift, setDisableBoardShift] = useState(false);
   const [disableShopShift, setDisableShopShift] = useState(false);
   const [hasEndedTurn, setHasEndedTurn] = useState(false);
-  const [winner, setWinner] = useState("");
+  const [place, setPlace] = useState("");
   const [cardBeingPlayed, setCardBeingPlayed] = useState(null);
   const [reconnecting, setReconnecting] = useState(false);
 
@@ -90,7 +90,7 @@ export default function App() {
   }
 
   function onDragEnd(result) {
-    console.log("result", result);
+    console.log("Drag End Result", result);
     setCardBeingPlayed(null);
     setDisableSellDrop(false);
     setDisableBoardDrop(false);
@@ -107,7 +107,6 @@ export default function App() {
       cardBeingPlayed?.targetOptions === "none" &&
       !result.destination
     ) {
-      console.log("play spell");
       removeCardFromHand(cardId);
 
       connection.invoke("MoveCard", result.draggableId, 2, null, null);
@@ -313,8 +312,6 @@ export default function App() {
       // setError(error);
     });
 
-    console.log("connection", connection);
-
     setConnection(connection);
 
     return () => {
@@ -323,14 +320,16 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (!connection || !playerId) {
+    if (!connection) {
       return;
     }
 
     connection.onreconnected(() => {
       setReconnecting(false);
       console.log("RECONNECTED");
-      connection.invoke("OnReconnected", playerId);
+      if (playerId) {
+        connection.invoke("OnReconnected", playerId);
+      }
     });
   }, [connection, playerId]);
 
@@ -420,7 +419,7 @@ export default function App() {
   }
 
   if (gameStatus === "gameover") {
-    return <GameOverPage winner={winner} />;
+    return <GameOverPage place={place} />;
   }
 
   return (
@@ -458,7 +457,7 @@ export default function App() {
             initialPlayer={player}
             initialOpponent={combatOpponent}
             setGameStatus={setGameStatus}
-            setWinner={setWinner}
+            setPlace={setPlace}
           />
         )}
         {gameStatus === "shop" && (
