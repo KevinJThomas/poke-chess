@@ -34,7 +34,7 @@ export default function BattleBoard({
   initialPlayer,
   initialOpponent,
   setGameStatus,
-  setWinner,
+  setPlace,
 }) {
   const [player, setPlayer] = useState(initialPlayer);
   const [opponent, setOpponent] = useState(initialOpponent);
@@ -268,7 +268,7 @@ export default function BattleBoard({
 
       if (action.type === "gameover") {
         setGameStatus("gameover");
-        setWinner(action.winnerName);
+        setPlace(action.placement);
         return;
       }
 
