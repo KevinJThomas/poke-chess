@@ -665,7 +665,7 @@ namespace PokeChess.Server.Extensions
             }
         }
 
-        public static Player PlayCardTrigger(this Card card, Player player)
+        public static Player PlayCardTrigger(this Card card, Player player, Card cardPlayed)
         {
             if (!card.HasPlayCardTrigger)
             {
@@ -675,7 +675,7 @@ namespace PokeChess.Server.Extensions
             switch (card.PokemonId)
             {
                 case 6:
-                    if (card.CardType == CardType.Minion && player.Board.Any(x => x.Id != card.Id))
+                    if (cardPlayed.CardType == CardType.Minion && player.Board.Any(x => x.Id != card.Id))
                     {
                         foreach (var minion in player.Board.Where(x => x.Id != card.Id))
                         {

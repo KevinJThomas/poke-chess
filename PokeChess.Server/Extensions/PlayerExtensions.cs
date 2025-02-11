@@ -500,7 +500,7 @@ namespace PokeChess.Server.Extensions
                 {
                     if (minion.HasPlayCardTrigger)
                     {
-                        player = minion.PlayCardTrigger(player);
+                        player = minion.PlayCardTrigger(player, card);
                     }
                 }
             }
