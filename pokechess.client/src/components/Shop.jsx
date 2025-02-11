@@ -24,7 +24,7 @@ export default function Shop({ player, isDropDisabled }) {
             style={getListStyle(snapshot.isDraggingOver)}
             {...provided.droppableProps}
           >
-            <Hero name="Shop" tier={player.tier} />
+            <Hero name="Shop" tier={player.tier} type="shop" />
           </div>
           <span className="hidden">{provided.placeholder}</span>
         </>

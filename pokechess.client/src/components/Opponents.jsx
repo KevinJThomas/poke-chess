@@ -12,11 +12,9 @@ export default function Opponents({ players, opponentId }) {
     <div className="absolute top-0 bottom-0 left-2 flex scale-75 flex-col items-center justify-center gap-3">
       {sortedPlayers.map((player) => (
         <Hero
+          {...player}
           key={player.id}
-          name={player.name}
-          armor={player.armor}
-          health={player.health}
-          tier={player.tier}
+          type="opponents"
           className={clsx(
             opponentId === player.id && "ml-16",
             player.isDead && "opacity-60",

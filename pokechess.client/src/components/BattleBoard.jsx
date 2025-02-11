@@ -283,14 +283,7 @@ export default function BattleBoard({
     <>
       <div className="flex h-screen flex-col items-center justify-center">
         <Row>
-          <Hero
-            name={opponent.name}
-            health={opponent.health}
-            armor={opponent.armor}
-            style={opponent.style}
-            damage={opponent.damage}
-            id="opponent-hero"
-          />
+          <Hero {...opponent} type="opponent" id="opponent-hero" />
         </Row>
         <Row>
           <OpponentPokemon opponent={opponent} />
@@ -299,14 +292,7 @@ export default function BattleBoard({
           <PlayerPokemon player={player} />
         </Row>
         <Row>
-          <Hero
-            name={player.name}
-            health={player.health}
-            armor={player.armor}
-            style={player.style}
-            damage={player.damage}
-            id="player-hero"
-          />
+          <Hero {...player} type="player" id="player-hero" />
         </Row>
         <Row></Row>
       </div>
