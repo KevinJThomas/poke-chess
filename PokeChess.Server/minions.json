@@ -454,7 +454,8 @@
         "num": "018",
         "name": "Pidgeot"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 17,
@@ -482,7 +483,8 @@
         "num": "018",
         "name": "Pidgeot"
       }
-    ]
+    ],
+    "hasSellCardTrigger": true
   },
   {
     "pokemonId": 18,
@@ -510,7 +512,8 @@
         "num": "017",
         "name": "Pidgeotto"
       }
-    ]
+    ],
+    "hasSellCardTrigger": true
   },
   {
     "pokemonId": 19,
@@ -668,7 +671,8 @@
         "num": "026",
         "name": "Raichu"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 26,
@@ -692,7 +696,8 @@
         "num": "025",
         "name": "Pikachu"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 27,

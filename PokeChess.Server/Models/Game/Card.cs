@@ -22,6 +22,7 @@ namespace PokeChess.Server.Models.Game
         public int PokemonId { get; set; }
         public string Num { get; set; }
         public bool Attacked { get; set; }
+        public bool AttackedOnceWindfury { get; set; }
         public int CombatHealth { get; set; }
         public int Delay { get; set; }
         public string? Height { get; set; }
@@ -38,6 +39,7 @@ namespace PokeChess.Server.Models.Game
         public int StartOfTurnInterval { get; set; } = 1;
         public bool HasPlayCardTrigger { get; set; }
         public bool HasShopBuffAura { get; set; }
+        public bool HasSellCardTrigger { get; set; }
         public CardType CardType { get; set; } = CardType.Unknown;
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();
         public List<MinionType> WeaknessTypes { get; set; } = new List<MinionType>();

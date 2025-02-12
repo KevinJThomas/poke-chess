@@ -684,6 +684,62 @@ namespace PokeChess.Server.Extensions
                         }
                     }
                     return player;
+                case 16:
+                    if (cardPlayed.MinionTypes.Contains(MinionType.Flying) && card.Id != cardPlayed.Id)
+                    {
+                        card.Health += 1;
+                    }
+
+                    return player;
+                case 25:
+                    if (cardPlayed.MinionTypes.Contains(MinionType.Electric) && card.Id != cardPlayed.Id)
+                    {
+                        var minionToBuff = player.Board.Where(x => x.MinionTypes.Contains(MinionType.Electric)).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count(x => x.MinionTypes.Contains(MinionType.Electric)))];
+                        var index = player.Board.FindIndex(x => x.Id == minionToBuff.Id);
+                        player.Board[index].Attack += 1;
+                    }
+
+                    return player;
+                case 26:
+                    if (cardPlayed.MinionTypes.Contains(MinionType.Electric) && card.Id != cardPlayed.Id)
+                    {
+                        var minionToBuff = player.Board.Where(x => x.MinionTypes.Contains(MinionType.Electric)).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count(x => x.MinionTypes.Contains(MinionType.Electric)))];
+                        var index = player.Board.FindIndex(x => x.Id == minionToBuff.Id);
+                        player.Board[index].Attack += 3;
+                        player.Board[index].Health += 1;
+                    }
+
+                    return player;
+                default:
+                    return player;
+            }
+        }
+
+        public static Player SellCardTrigger(this Card card, Player player, Card cardSold)
+        {
+            if (!card.HasSellCardTrigger)
+            {
+                return player;
+            }
+
+            switch (card.PokemonId)
+            {
+                case 17:
+                    if (cardSold.MinionTypes.Contains(MinionType.Flying))
+                    {
+                        card.Attack += 2;
+                        card.Health += 2;
+                    }
+
+                    return player;
+                case 18:
+                    if (cardSold.MinionTypes.Contains(MinionType.Flying))
+                    {
+                        card.Attack += 4;
+                        card.Health += 4;
+                    }
+
+                    return player;
                 default:
                     return player;
             }

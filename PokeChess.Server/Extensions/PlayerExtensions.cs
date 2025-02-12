@@ -73,6 +73,20 @@ namespace PokeChess.Server.Extensions
             }
         }
 
+        public static void TrimCombatHistory(this Player player)
+        {
+            var historyLength = 2;
+
+            var historyLengthOverflow = player.CombatHistory.Count() - historyLength;
+            if (historyLengthOverflow > 0)
+            {
+                for (var i = 0; i < historyLengthOverflow; i++)
+                {
+                    player.CombatHistory.RemoveAt(0);
+                }
+            }
+        }
+
         public static bool PlaySpell(this Player player, Card spell, string? targetId = null)
         {
             if (player == null || spell == null || spell.CardType != CardType.Spell || spell.Amount.Count() < spell.SpellTypes.Count())
@@ -515,9 +529,21 @@ namespace PokeChess.Server.Extensions
         {
             player.Gold += card.SellValue;
             player.Board.Remove(card);
+
             if (card.HasShopBuffAura)
             {
                 player = card.ShopBuffAura(player, true);
+            }
+
+            if (player.Board.Any())
+            {
+                foreach (var minion in player.Board)
+                {
+                    if (minion.HasSellCardTrigger)
+                    {
+                        player = minion.SellCardTrigger(player, card);
+                    }
+                }
             }
         }
 

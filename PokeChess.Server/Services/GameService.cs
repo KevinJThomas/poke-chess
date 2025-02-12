@@ -803,6 +803,8 @@ namespace PokeChess.Server.Services
 
             foreach (var player in lobby.Players)
             {
+                player.TrimCombatHistory();
+
                 if (player.IsDead && player.IsActive)
                 {
                     if (player.CombatActions == null)
@@ -840,6 +842,7 @@ namespace PokeChess.Server.Services
                     foreach (var attacker in player1.Board)
                     {
                         attacker.Attacked = false;
+                        attacker.AttackedOnceWindfury = false;
                     }
                     nextSourceIndex = GetNextSourceIndex(player1.Board);
                 }
@@ -876,6 +879,11 @@ namespace PokeChess.Server.Services
                 if (!player1.Board.Any(x => !x.IsDead) || !player2.Board.Any(x => !x.IsDead))
                 {
                     return ScoreCombatRound(player1, player2, damageCap);
+                }
+                else if (!player1.Board[nextSourceIndex].IsDead && player1.Board[nextSourceIndex].Keywords.Windfury && !player1.Board[nextSourceIndex].Attacked)
+                {
+                    // If the source is a winfury minion that has only swung once and is still alive, make it swing again
+                    return SwingMinions(player1, player2, damageCap);
                 }
                 else
                 {
@@ -928,6 +936,11 @@ namespace PokeChess.Server.Services
                 if (!player1.Board.Any(x => !x.IsDead) || !player2.Board.Any(x => !x.IsDead))
                 {
                     return ScoreCombatRound(player1, player2, damageCap);
+                }
+                else if (!player2.Board[nextSourceIndex].IsDead && player2.Board[nextSourceIndex].Keywords.Windfury && !player2.Board[nextSourceIndex].Attacked)
+                {
+                    // If the source is a winfury minion that has only swung once and is still alive, make it swing again
+                    return SwingMinions(player1, player2, damageCap);
                 }
                 else
                 {
@@ -1042,6 +1055,13 @@ namespace PokeChess.Server.Services
                 }
 
                 target.CombatHealth -= damage;
+
+                if (target.IsDead && target.CombatKeywords.Reborn)
+                {
+                    target.Attack = target.BaseAttack;
+                    target.CombatHealth = 1;
+                    target.CombatKeywords.Reborn = false;
+                }
             }
 
             // Update source's state
@@ -1074,9 +1094,24 @@ namespace PokeChess.Server.Services
                 }
 
                 source.CombatHealth -= damage;
+
+                if (source.IsDead && source.CombatKeywords.Reborn)
+                {
+                    source.Attack = source.BaseAttack;
+                    source.CombatHealth = 1;
+                    source.CombatKeywords.Reborn = false;
+                }
             }
 
-            source.Attacked = true;
+            if (source.Keywords.Windfury && !source.AttackedOnceWindfury)
+            {
+                source.AttackedOnceWindfury = true;
+            }
+            else
+            {
+                source.Attacked = true;
+            }
+
             if (source.CombatKeywords.Stealth)
             {
                 source.CombatKeywords.Stealth = false;
