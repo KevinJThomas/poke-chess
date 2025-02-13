@@ -35,6 +35,8 @@ export default function BattleBoard({
   initialOpponent,
   setGameStatus,
   setPlace,
+  connection,
+  combatActions,
 }) {
   const [player, setPlayer] = useState(initialPlayer);
   const [opponent, setOpponent] = useState(initialOpponent);
@@ -250,14 +252,14 @@ export default function BattleBoard({
     } catch (error) {
       console.error(error);
       console.error("Action index that failed:", index);
-      console.error("All combat actions", player.combatActions);
+      console.error("All combat actions", combatActions);
     }
   }
 
   useAsyncEffect(async () => {
     await delay(1000);
 
-    for (const [index, action] of player.combatActions.entries()) {
+    for (const [index, action] of combatActions.entries()) {
       if (action.type === "minion") {
         await attackMinion(action, index);
       }
@@ -275,6 +277,8 @@ export default function BattleBoard({
       await delay(250);
     }
     await delay(3000);
+
+    connection.invoke("CombatComplete");
 
     setGameStatus("shop");
   }, []);

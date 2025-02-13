@@ -3,10 +3,13 @@ import { orderBy } from "lodash";
 import clsx from "clsx";
 
 export default function Opponents({ playersMap, opponentId }) {
-  const playerIds = Object.keys(playersMap)
+  const playerIds = Object.keys(playersMap);
   const sortedPlayers = orderBy(
     playerIds,
-    (playerId) => playersMap[playerId].health + playersMap[playerId].armor,
+    [
+      (playerId) => playersMap[playerId].health + playersMap[playerId].armor,
+      (playerId) => playersMap[playerId].name,
+    ],
     "desc",
   );
   return (
