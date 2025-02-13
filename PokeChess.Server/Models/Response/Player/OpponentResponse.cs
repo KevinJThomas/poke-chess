@@ -12,7 +12,7 @@ namespace PokeChess.Server.Models.Response.Player
         public int Tier { get; set; }
         public int WinStreak { get; set; }
         public List<Card> Board { get; set; } = new List<Card>();
-        public List<CombatHistoryItem> CombatHistory { get; set; }
+        public List<CombatHistoryItem> CombatHistory { get; set; } = new List<CombatHistoryItem>();
         public bool IsDead
         {
             get

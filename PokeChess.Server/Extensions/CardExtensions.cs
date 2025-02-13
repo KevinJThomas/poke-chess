@@ -9,6 +9,7 @@ namespace PokeChess.Server.Extensions
     public static class CardExtensions
     {
         private static readonly string _copyStamp = ConfigurationHelper.config.GetValue<string>("App:Game:CardIdCopyStamp");
+
         public static void ScrubModifiers(this Card card)
         {
             if (card.CardType == CardType.Minion)
@@ -51,6 +52,12 @@ namespace PokeChess.Server.Extensions
                     break;
                 case Keyword.Venomous:
                     card.Keywords.Venomous = true;
+                    break;
+                case Keyword.Burning:
+                    card.Keywords.Burning = true;
+                    break;
+                case Keyword.Shock:
+                    card.Keywords.Shock = true;
                     break;
             }
         }

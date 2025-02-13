@@ -14,6 +14,6 @@ namespace PokeChess.Server.Models.Response.Player
         public string? CombatOpponentId { get; set; }
         public List<Card> Hand { get; set; } = new List<Card>();
         public List<Card> Shop { get; set; } = new List<Card>();
-        public List<CombatAction> CombatActions { get; set; }
+        public List<CombatAction> CombatActions { get; set; } = new List<CombatAction>();
     }
 }
