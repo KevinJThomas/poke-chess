@@ -109,8 +109,6 @@ namespace PokeChess.Server
                 {
                     //await SendSafeLobbyAsync(lobby, "CombatComplete");
                     await SendCombatStarted(lobby);
-
-                    _lobbyManager.PlayBotTurns(lobby.Id);
                 }
                 else
                 {
@@ -129,6 +127,7 @@ namespace PokeChess.Server
 
             var id = Context.ConnectionId;
             var lobby = _lobbyManager.GetLobbyByPlayerId(id);
+            _lobbyManager.PlayBotTurns(lobby.Id);
 
             if (lobby != null && !string.IsNullOrWhiteSpace(lobby.Id))
             {
