@@ -329,7 +329,7 @@ export default function App() {
       if (playerId) {
         setPlayerId(playerId);
       }
-      if (lobby.isWaitingToStart) {
+      if (gameStatus === "name") {
         setGameStatus("lobby");
       }
       setPlayersMap(lobby.players);
