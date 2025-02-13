@@ -683,6 +683,7 @@ namespace PokeChess.Server.Extensions
                             minion.Health += 1;
                         }
                     }
+
                     return player;
                 case 16:
                     if (cardPlayed.MinionTypes.Contains(MinionType.Flying) && card.Id != cardPlayed.Id)

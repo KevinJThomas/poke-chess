@@ -7,6 +7,8 @@
         DivineShield,
         Reborn,
         Taunt,
-        Venomous
+        Venomous,
+        Burning,
+        Shock
     }
 }

@@ -882,7 +882,7 @@ namespace PokeChess.Server.Services
                 }
                 else if (!player1.Board[nextSourceIndex].IsDead && player1.Board[nextSourceIndex].Keywords.Windfury && !player1.Board[nextSourceIndex].Attacked)
                 {
-                    // If the source is a winfury minion that has only swung once and is still alive, make it swing again
+                    // If the source is a windfury minion that has only swung once and is still alive, make it swing again
                     return SwingMinions(player1, player2, damageCap);
                 }
                 else
