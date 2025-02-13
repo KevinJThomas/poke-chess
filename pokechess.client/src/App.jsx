@@ -16,7 +16,7 @@ export default function App() {
   const [gameStatus, setGameStatus] = useState("name");
   const [connection, setConnection] = useState();
   const [error, setError] = useState();
-  const [players, setPlayers] = useState([]);
+  const [playersMap, setPlayersMap] = useState({});
   const [name, setName] = useState("");
   const [gameState, setGameState] = useState();
   const [playerId, setPlayerId] = useState();
@@ -32,24 +32,21 @@ export default function App() {
   const [cardBeingPlayed, setCardBeingPlayed] = useState(null);
   const [reconnecting, setReconnecting] = useState(false);
 
-  const player = players.find((player) => player.id === playerId);
-  const opponent = players.find((x) => x.id === player?.currentOpponentId);
-  const combatOpponent = players.find((x) => x.id === player?.combatOpponentId);
+  const player = playersMap[playerId];
+  const opponent = playersMap[player?.currentOpponentId];
+  const combatOpponent = playersMap[player?.combatOpponentId];
 
-  console.log("players", players);
+  console.log("playersMap", playersMap);
+  console.log("playersId", playerId);
 
   function removeCardFromHand(cardId) {
-    const clonedPlayers = cloneDeep(players);
+    const clonedPlayersMap = cloneDeep(playersMap);
 
-    const playerIndex = clonedPlayers.findIndex(
-      (player) => player.id === playerId,
-    );
-
-    clonedPlayers[playerIndex].hand = clonedPlayers[playerIndex].hand.filter(
+    clonedPlayersMap[playerId].hand = clonedPlayersMap[playerId].hand.filter(
       (card) => card.id !== cardId,
     );
 
-    setPlayers(clonedPlayers);
+    setPlayersMap(clonedPlayersMap);
   }
 
   function onDragStart(result) {
@@ -140,23 +137,19 @@ export default function App() {
       result.source.droppableId === "droppable-shop" &&
       result.destination.droppableId === "droppable-shop"
     ) {
-      const clonedPlayers = cloneDeep(players);
+      const clonedPlayersMap = cloneDeep(playersMap);
 
-      const playerIndex = clonedPlayers.findIndex(
-        (player) => player.id === playerId,
-      );
+      const minion = clonedPlayersMap[playerId].shop[result.source.index];
 
-      const minion = clonedPlayers[playerIndex].shop[result.source.index];
+      clonedPlayersMap[playerId].shop.splice(result.source.index, 1);
 
-      clonedPlayers[playerIndex].shop.splice(result.source.index, 1);
-
-      clonedPlayers[playerIndex].shop.splice(
+      clonedPlayersMap[playerId].shop.splice(
         result.destination.index,
         0,
         minion,
       );
 
-      setPlayers(clonedPlayers);
+      setPlayersMap(clonedPlayersMap);
 
       // connection.invoke(
       //   "MoveCard",
@@ -173,23 +166,19 @@ export default function App() {
       result.source.droppableId === "droppable-board" &&
       result.destination.droppableId === "droppable-board"
     ) {
-      const clonedPlayers = cloneDeep(players);
+      const clonedPlayersMap = cloneDeep(playersMap);
 
-      const playerIndex = clonedPlayers.findIndex(
-        (player) => player.id === playerId,
-      );
+      const minion = clonedPlayersMap[playerId].board[result.source.index];
 
-      const minion = clonedPlayers[playerIndex].board[result.source.index];
+      clonedPlayersMap[playerId].board.splice(result.source.index, 1);
 
-      clonedPlayers[playerIndex].board.splice(result.source.index, 1);
-
-      clonedPlayers[playerIndex].board.splice(
+      clonedPlayersMap[playerId].board.splice(
         result.destination.index,
         0,
         minion,
       );
 
-      setPlayers(clonedPlayers);
+      setPlayersMap(clonedPlayersMap);
 
       connection.invoke(
         "MoveCard",
@@ -206,17 +195,13 @@ export default function App() {
       result.source.droppableId === "droppable-board" &&
       result.destination.droppableId === "droppable-sell"
     ) {
-      const clonedPlayers = cloneDeep(players);
+      const clonedPlayersMap = cloneDeep(playersMap);
 
-      const playerIndex = clonedPlayers.findIndex(
-        (player) => player.id === playerId,
-      );
-
-      clonedPlayers[playerIndex].board = clonedPlayers[
-        playerIndex
+      clonedPlayersMap[playerId].board = clonedPlayersMap[
+        playerId
       ].board.filter((card) => card.id !== cardId);
 
-      setPlayers(clonedPlayers);
+      setPlayersMap(clonedPlayersMap);
 
       connection.invoke("MoveCard", result.draggableId, 1, null, null);
       return;
@@ -227,27 +212,23 @@ export default function App() {
       result.source.droppableId === "droppable-hand" &&
       result.destination.droppableId === "droppable-board"
     ) {
-      const clonedPlayers = cloneDeep(players);
+      const clonedPlayersMap = cloneDeep(playersMap);
 
-      const playerIndex = clonedPlayers.findIndex(
-        (player) => player.id === playerId,
-      );
-
-      const card = clonedPlayers[playerIndex].hand.find(
+      const card = clonedPlayersMap[playerId].hand.find(
         (card) => card.id === cardId,
       );
 
-      clonedPlayers[playerIndex].hand = clonedPlayers[playerIndex].hand.filter(
+      clonedPlayersMap[playerId].hand = clonedPlayersMap[playerId].hand.filter(
         (card) => card.id !== cardId,
       );
 
-      clonedPlayers[playerIndex].board.splice(
+      clonedPlayersMap[playerId].board.splice(
         result.destination.index,
         0,
         card,
       );
 
-      setPlayers(clonedPlayers);
+      setPlayersMap(clonedPlayersMap);
 
       connection.invoke(
         "MoveCard",
@@ -264,23 +245,19 @@ export default function App() {
       result.source.droppableId === "droppable-shop" &&
       result.destination.droppableId === "droppable-hand"
     ) {
-      const clonedPlayers = cloneDeep(players);
+      const clonedPlayersMap = cloneDeep(playersMap);
 
-      const playerIndex = clonedPlayers.findIndex(
-        (player) => player.id === playerId,
-      );
-
-      const card = clonedPlayers[playerIndex].shop.find(
+      const card = clonedPlayersMap[playerId].shop.find(
         (card) => card.id === cardId,
       );
 
-      clonedPlayers[playerIndex].shop = clonedPlayers[playerIndex].shop.filter(
+      clonedPlayersMap[playerId].shop = clonedPlayersMap[playerId].shop.filter(
         (card) => card.id !== cardId,
       );
 
-      clonedPlayers[playerIndex].hand.push(card);
+      clonedPlayersMap[playerId].hand.push(card);
 
-      setPlayers(clonedPlayers);
+      setPlayersMap(clonedPlayersMap);
 
       connection.invoke("MoveCard", result.draggableId, 0, null, null);
       return;
@@ -348,13 +325,14 @@ export default function App() {
     }
 
     connection.on("LobbyUpdated", (lobby, playerId) => {
+      console.log("LobbyUdated", lobby, playerId);
       if (playerId) {
         setPlayerId(playerId);
       }
       if (lobby.isWaitingToStart) {
         setGameStatus("lobby");
       }
-      setPlayers(lobby.players);
+      setPlayersMap(lobby.players);
     });
 
     connection.on("GameError", (error) => {
@@ -363,32 +341,26 @@ export default function App() {
     });
 
     connection.on("StartGameConfirmed", (lobby) => {
-      setPlayers(lobby.players);
+      console.log("StartGameConfirmed", lobby);
+      setPlayersMap(lobby.players);
       setGameState(lobby.gameState);
       setGameStatus("shop");
     });
 
     connection.on("PlayerUpdated", (newPlayer) => {
-      setPlayers((prev) =>
-        prev.map((player) => {
-          if (player.id === playerId) {
-            return newPlayer;
-          }
-
-          return player;
-        }),
-      );
+      console.log("PlayerUpdated", newPlayer);
+      setPlayersMap((prev) => ({ ...newPlayer, ...prev }));
     });
 
     connection.on("CombatComplete", (lobby) => {
-      setPlayers(lobby.players);
+      setPlayersMap(lobby.players);
       setGameState(lobby.gameState);
       setGameStatus("battle");
       setHasEndedTurn(false);
     });
 
     connection.on("ReconnectSuccess", (lobby, playerId) => {
-      setPlayers(lobby.players);
+      setPlayersMap(lobby.players);
       setPlayerId(playerId);
     });
 
@@ -412,7 +384,7 @@ export default function App() {
   }
 
   if (gameStatus === "lobby") {
-    return <Lobby players={players} connection={connection} />;
+    return <Lobby playersMap={playersMap} connection={connection} />;
   }
 
   if (gameStatus === "name") {
@@ -481,7 +453,7 @@ export default function App() {
         )}
         <Gold gold={player?.gold} maxGold={player?.baseGold} />
         <Opponents
-          players={players}
+          playersMap={playersMap}
           opponentId={
             gameStatus === "battle"
               ? player?.combatOpponentId
