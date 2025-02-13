@@ -30,7 +30,6 @@ namespace PokeChess.Server.Extensions
             if (player.Gold >= player.UpgradeCost)
             {
                 player.Gold -= player.UpgradeCost;
-                player.GoldSpentThisTurn += player.UpgradeCost;
                 player.Tier += 1;
                 switch (player.Tier)
                 {

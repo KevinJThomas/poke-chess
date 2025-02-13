@@ -154,7 +154,6 @@ namespace PokeChess.Server.Services
                 else
                 {
                     player.Gold -= player.RefreshCost;
-                    player.GoldSpentThisTurn += player.RefreshCost;
                 }
             }
 
@@ -555,7 +554,6 @@ namespace PokeChess.Server.Services
                 player.Hand.Add(card);
                 player.EvolveCheck();
                 player.Gold -= card.Cost;
-                player.GoldSpentThisTurn += card.Cost;
                 player.ConsumeShopDiscounts(card);
 
                 if (player.CardsToReturnToPool.Any())

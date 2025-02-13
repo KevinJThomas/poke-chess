@@ -9,6 +9,7 @@ namespace PokeChess.Server.Models.Player
         private readonly int _maxGold = ConfigurationHelper.config.GetValue<int>("App:Player:MaxGold");
         private readonly int _maxHandSize = ConfigurationHelper.config.GetValue<int>("App:Player:MaxHandSize");
         private readonly int _upgradeToTwoCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Two");
+        private int _gold = 0;
 
         public Player(string id, string name, int armor = 10, int refreshCost = 1)
         {
@@ -50,14 +51,32 @@ namespace PokeChess.Server.Models.Player
         public int Armor { get; set; }
         public int Tier { get; set; }
         public int BaseGold { get; set; }
-        public int Gold { get; set; }
+        public int Gold
+        {
+            get
+            {
+                return _gold;
+            }
+            set
+            {
+                if (value != _gold)
+                {
+                    if (value < _gold)
+                    {
+                        GoldSpentThisTurn += _gold - value;
+                    }
+
+                    _gold = value;
+                }
+            }
+        }
         public int UpgradeCost { get; set; }
         public int RefreshCost { get; set; }
         public bool IsShopFrozen { get; set; }
         public int WinStreak { get; set; }
         public bool Attacking { get; set; }
         public bool TurnEnded { get; set; }
-        public int MaxGold {  get; set; }
+        public int MaxGold { get; set; }
         public int MaxHandSize { get; set; }
         public string? CurrentOpponentId { get; set; }
         public string? CombatOpponentId { get; set; }
