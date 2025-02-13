@@ -349,7 +349,7 @@ export default function App() {
 
     connection.on("PlayerUpdated", (newPlayer) => {
       console.log("PlayerUpdated", newPlayer);
-      setPlayersMap((prev) => ({ [newPlayer.id]: newPlayer, ...prev }));
+      setPlayersMap((prev) => ({ ...prev, [newPlayer.id]: newPlayer }));
     });
 
     connection.on("CombatComplete", (lobby) => {
