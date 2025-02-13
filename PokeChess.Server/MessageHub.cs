@@ -332,13 +332,13 @@ namespace PokeChess.Server
                     {
                         response.Players[playerResponse.Id] = new OpponentResponse
                         {
-                            Id = player.Id,
-                            Name = player.Name,
-                            Health = player.Health,
-                            Armor = player.Armor,
-                            Tier = player.Tier,
-                            WinStreak = player.WinStreak,
-                            CombatHistory = player.CombatHistory
+                            Id = playerResponse.Id,
+                            Name = playerResponse.Name,
+                            Health = playerResponse.Health,
+                            Armor = playerResponse.Armor,
+                            Tier = playerResponse.Tier,
+                            WinStreak = playerResponse.WinStreak,
+                            CombatHistory = playerResponse.CombatHistory
                         };
                     }
 
