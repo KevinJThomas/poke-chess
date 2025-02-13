@@ -31,9 +31,9 @@ export default function App() {
   const [place, setPlace] = useState("");
   const [cardBeingPlayed, setCardBeingPlayed] = useState(null);
   const [reconnecting, setReconnecting] = useState(false);
+  const [combatActions, setCombatActions] = useState([]);
 
   const player = playersMap[playerId];
-  const opponent = playersMap[player?.currentOpponentId];
   const combatOpponent = playersMap[player?.combatOpponentId];
 
   console.log("playersMap", playersMap);
@@ -352,9 +352,8 @@ export default function App() {
       setPlayersMap((prev) => ({ ...prev, [newPlayer.id]: newPlayer }));
     });
 
-    connection.on("CombatComplete", (lobby) => {
-      setPlayersMap(lobby.players);
-      setGameState(lobby.gameState);
+    connection.on("CombatStarted", (combatActions) => {
+      setCombatActions(combatActions);
       setGameStatus("battle");
       setHasEndedTurn(false);
     });
@@ -369,10 +368,10 @@ export default function App() {
       connection.off("GameError");
       connection.off("StartGameConfirmed");
       connection.off("PlayerUpdated");
-      connection.off("CombatComplete");
+      connection.off("CombatStarted");
       connection.off("ReconnectSuccess");
     };
-  }, [connection, playerId]);
+  }, [connection, playerId, gameStatus]);
 
   function endTurn() {
     connection.invoke("EndTurn");
@@ -436,10 +435,12 @@ export default function App() {
         )}
         {gameStatus === "battle" && (
           <BattleBoard
+            connection={connection}
             initialPlayer={player}
             initialOpponent={combatOpponent}
             setGameStatus={setGameStatus}
             setPlace={setPlace}
+            combatActions={combatActions}
           />
         )}
         {gameStatus === "shop" && (
