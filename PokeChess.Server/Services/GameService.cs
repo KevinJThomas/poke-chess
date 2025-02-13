@@ -125,6 +125,10 @@ namespace PokeChess.Server.Services
             lobby.GameState.MinionCardPool = _cardService.GetAllMinionsForPool();
             lobby.GameState.SpellCardPool = _cardService.GetAllSpells().ToList();
             lobby = NextRound(lobby);
+            foreach (var player in lobby.Players)
+            {
+                player.CombatOpponentId = player.CurrentOpponentId;
+            }
             lobby = PlayBotTurns(lobby);
             return lobby;
         }

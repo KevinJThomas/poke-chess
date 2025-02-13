@@ -8,6 +8,7 @@ using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Models.Response;
 using PokeChess.Server.Models.Response.Player;
+using System.Collections;
 
 namespace PokeChess.Server
 {
@@ -323,59 +324,62 @@ namespace PokeChess.Server
 
             foreach (var player in lobby.Players)
             {
-                scrubbedLobbyResponse.Players[player.Id] = new OpponentResponse
+                if (player.IsActive && !player.IsBot)
                 {
-                    Id = player.Id,
-                    Name = player.Name,
-                    Health = player.Health,
-                    Armor = player.Armor,
-                    Tier = player.Tier,
-                    WinStreak = player.WinStreak,
-                    CombatHistory = player.CombatHistory
-                };
-            }
+                    var response = scrubbedLobbyResponse.Clone();
 
-            foreach (var player in lobby.Players)
-            {
-                var response = scrubbedLobbyResponse.Clone();
+                    foreach (var playerResponse in lobby.Players.Where(x => x.Id != player.Id && x.Id != player.CombatOpponentId))
+                    {
+                        response.Players[playerResponse.Id] = new OpponentResponse
+                        {
+                            Id = player.Id,
+                            Name = player.Name,
+                            Health = player.Health,
+                            Armor = player.Armor,
+                            Tier = player.Tier,
+                            WinStreak = player.WinStreak,
+                            CombatHistory = player.CombatHistory
+                        };
+                    }
 
-                response.Players[player.Id] = new PlayerResponse
-                {
-                    Id = player.Id,
-                    Name = player.Name,
-                    Health = player.Health,
-                    Armor = player.Armor,
-                    Tier = player.Tier,
-                    WinStreak = player.WinStreak,
-                    Board = player.Board,
-                    CombatHistory = player.CombatHistory,
-                    BaseGold = player.BaseGold,
-                    Gold = player.Gold,
-                    UpgradeCost = player.UpgradeCost,
-                    RefreshCost = player.RefreshCost,
-                    IsShopFrozen = player.IsShopFrozen,
-                    CurrentOpponentId = player.CurrentOpponentId,
-                    CombatOpponentId = player.CombatOpponentId,
-                    Hand = player.Hand,
-                    Shop = player.Shop,
-                    CombatActions = player.CombatActions
-                };
+                    response.Players[player.Id] = new PlayerResponse
+                    {
+                        Id = player.Id,
+                        Name = player.Name,
+                        Health = player.Health,
+                        Armor = player.Armor,
+                        Tier = player.Tier,
+                        WinStreak = player.WinStreak,
+                        Board = player.Board,
+                        CombatHistory = player.CombatHistory,
+                        BaseGold = player.BaseGold,
+                        Gold = player.Gold,
+                        UpgradeCost = player.UpgradeCost,
+                        RefreshCost = player.RefreshCost,
+                        IsShopFrozen = player.IsShopFrozen,
+                        CurrentOpponentId = player.CurrentOpponentId,
+                        CombatOpponentId = player.CombatOpponentId,
+                        Hand = player.Hand,
+                        Shop = player.Shop,
+                        CombatActions = player.CombatActions
+                    };
 
-                var opponent = lobby.Players.Where(x => x.Id == player.CombatOpponentId).FirstOrDefault();
+                    var opponent = lobby.Players.Where(x => x.Id == player.CombatOpponentId).FirstOrDefault();
 
-                response.Players[player.CombatOpponentId] = new OpponentResponse
-                {
-                    Id = opponent.Id,
-                    Name = opponent.Name,
-                    Health = opponent.Health,
-                    Armor = opponent.Armor,
-                    Tier = opponent.Tier,
-                    WinStreak = opponent.WinStreak,
-                    Board = opponent.Board,
-                    CombatHistory = opponent.CombatHistory
-                };
+                    response.Players[player.CombatOpponentId] = new OpponentResponse
+                    {
+                        Id = opponent.Id,
+                        Name = opponent.Name,
+                        Health = opponent.Health,
+                        Armor = opponent.Armor,
+                        Tier = opponent.Tier,
+                        WinStreak = opponent.WinStreak,
+                        Board = opponent.Board,
+                        CombatHistory = opponent.CombatHistory
+                    };
 
-                await Clients.Client(player.Id).SendAsync(methodName, response);
+                    await Clients.Client(player.Id).SendAsync(methodName, response);
+                }
             }
         }
     }
