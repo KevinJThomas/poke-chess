@@ -4,11 +4,10 @@ using PokeChess.Server.Extensions;
 using PokeChess.Server.Managers;
 using PokeChess.Server.Managers.Interfaces;
 using PokeChess.Server.Models;
-using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Models.Response;
 using PokeChess.Server.Models.Response.Player;
-using System.Collections;
+using System.Reflection;
 
 namespace PokeChess.Server
 {
@@ -35,7 +34,7 @@ namespace PokeChess.Server
 
             if (lobby != null)
             {
-                var lobbyResponse = MapLobbyToResponse(lobby);
+                var lobbyResponse = MapLobbyToResponse(lobby, id);
                 await Groups.AddToGroupAsync(id, lobby.Id);
                 await Clients.Caller.SendAsync("LobbyUpdated", lobbyResponse, Context.ConnectionId);
                 await Clients.Group(lobby.Id).SendAsync("LobbyUpdated", lobbyResponse);
@@ -55,7 +54,6 @@ namespace PokeChess.Server
             if (lobby != null)
             {
                 await SendSafeLobbyAsync(lobby, "StartGameConfirmed");
-                //await Clients.Group(lobby.Id).SendAsync("StartGameConfirmed", lobby);
             }
         }
 
@@ -109,21 +107,33 @@ namespace PokeChess.Server
 
                 if (lobbyPostCombat != null)
                 {
-                    await SendSafeLobbyAsync(lobby, "CombatComplete");
-                    //foreach (var player in lobbyPostCombat.Players.Where(x => x.IsActive).ToList())
-                    //{
-                    //    var lobbyReturn = ScrubLobby(lobbyPostCombat, player.Id, player.CombatOpponentId);
-
-                    //    await Clients.Client(player.Id).SendAsync("CombatComplete", lobbyReturn);
-                    //}
+                    //await SendSafeLobbyAsync(lobby, "CombatComplete");
+                    await SendCombatStarted(lobby);
 
                     _lobbyManager.PlayBotTurns(lobby.Id);
                 }
                 else
                 {
-                    var lobbyResponse = MapLobbyToResponse(lobby);
+                    var lobbyResponse = MapLobbyToResponse(lobby, id);
                     await Clients.Group(lobby.Id).SendAsync("GameError", lobbyResponse);
                 }
+            }
+        }
+
+        public async Task CombatComplete()
+        {
+            if (!_lobbyManager.Initialized())
+            {
+                _lobbyManager.Initialize(_logger);
+            }
+
+            var id = Context.ConnectionId;
+            var lobby = _lobbyManager.GetLobbyByPlayerId(id);
+
+            if (lobby != null && !string.IsNullOrWhiteSpace(lobby.Id))
+            {
+                var lobbyResponse = MapLobbyToResponse(lobby, id);
+                await Clients.Caller.SendAsync("LobbyUpdated", lobbyResponse);
             }
         }
 
@@ -163,12 +173,6 @@ namespace PokeChess.Server
             if (lobby != null)
             {
                 await SendSafeLobbyAsync(lobby, "LobbyUpdated");
-                //foreach (var playerReturn in lobby.Players.Where(x => x.IsActive).ToList())
-                //{
-                //    var lobbyReturn = ScrubLobby(lobby, playerReturn.Id, playerReturn.CurrentOpponentId);
-
-                //    await Clients.Client(playerReturn.Id).SendAsync("LobbyUpdated", lobbyReturn);
-                //}
             }
         }
 
@@ -205,7 +209,7 @@ namespace PokeChess.Server
                     lobby = _lobbyManager.OnReconnected(id, Context.ConnectionId);
                     if (lobby != null)
                     {
-                        var lobbyResponse = MapLobbyToResponse(lobby);
+                        var lobbyResponse = MapLobbyToResponse(lobby, Context.ConnectionId);
                         await Groups.AddToGroupAsync(Context.ConnectionId, lobby.Id);
                         await Groups.RemoveFromGroupAsync(id, lobby.Id);
                         await Clients.Caller.SendAsync("ReconnectSuccess", lobbyResponse, Context.ConnectionId);
@@ -221,41 +225,12 @@ namespace PokeChess.Server
             if (lobby != null && lobby.IsActive && !string.IsNullOrWhiteSpace(lobby.Id) && lobby.Players != null && lobby.Players.Any())
             {
                 await SendSafeLobbyAsync(lobby, "LobbyUpdated");
-                //await Clients.Group(lobby.Id).SendAsync("LobbyUpdated", lobby);
             }
 
             await base.OnDisconnectedAsync(exception);
         }
 
-        //private Lobby ScrubLobby(Lobby lobby, string playerId, string combatOpponentId)
-        //{
-        //    var scrubbedLobby = lobby.Clone();
-
-        //    foreach (var player in scrubbedLobby.Players)
-        //    {
-        //        if (player.Id != playerId)
-        //        {
-        //            player.BaseGold = 0;
-        //            player.MaxGold = 0;
-        //            player.Gold = 0;
-        //            player.UpgradeCost = 0;
-        //            player.RefreshCost = 0;
-        //            player.IsShopFrozen = false;
-        //            player.Shop = new List<Card>();
-        //            player.Hand = new List<Card>();
-        //            player.DelayedSpells = new List<Card>();
-        //            player.CombatActions = new List<CombatAction>();
-        //            if (player.Id != combatOpponentId)
-        //            {
-        //                player.Board = new List<Card>();
-        //            }
-        //        }
-        //    }
-
-        //    return scrubbedLobby;
-        //}
-
-        private LobbyResponse MapLobbyToResponse(Lobby lobby)
+        private LobbyResponse MapLobbyToResponse(Lobby lobby, string playerId)
         {
             var response = new LobbyResponse();
             response.GameState.RoundNumber = lobby.GameState.RoundNumber;
@@ -263,29 +238,48 @@ namespace PokeChess.Server
 
             foreach (var player in lobby.Players)
             {
-                var playerResponse = new PlayerResponse
+                if (player.Id == playerId)
                 {
-                    Id = player.Id,
-                    Name = player.Name,
-                    Health = player.Health,
-                    Armor = player.Armor,
-                    Tier = player.Tier,
-                    WinStreak = player.WinStreak,
-                    Board = player.Board,
-                    CombatHistory = player.CombatHistory,
-                    BaseGold = player.BaseGold,
-                    Gold = player.Gold,
-                    UpgradeCost = player.UpgradeCost,
-                    RefreshCost = player.RefreshCost,
-                    IsShopFrozen = player.IsShopFrozen,
-                    CurrentOpponentId = player.CurrentOpponentId,
-                    CombatOpponentId = player.CombatOpponentId,
-                    Hand = player.Hand,
-                    Shop = player.Shop,
-                    CombatActions = player.CombatActions
-                };
+                    var playerResponse = new PlayerResponse
+                    {
+                        Id = player.Id,
+                        Name = player.Name,
+                        Health = player.Health,
+                        Armor = player.Armor,
+                        Tier = player.Tier,
+                        WinStreak = player.WinStreak,
+                        Board = player.Board,
+                        CombatHistory = player.CombatHistory,
+                        BaseGold = player.BaseGold,
+                        Gold = player.Gold,
+                        UpgradeCost = player.UpgradeCost,
+                        RefreshCost = player.RefreshCost,
+                        IsShopFrozen = player.IsShopFrozen,
+                        CurrentOpponentId = player.CurrentOpponentId,
+                        CombatOpponentId = player.CombatOpponentId,
+                        Hand = player.Hand,
+                        Shop = player.Shop,
+                        CombatActions = player.CombatActions
+                    };
 
-                response.Players.Add(player.Id ?? string.Empty, playerResponse);
+                    response.Players.Add(player.Id ?? string.Empty, playerResponse);
+                }
+                else
+                {
+                    var opponentResponse = new OpponentResponse
+                    {
+                        Id = player.Id,
+                        Name = player.Name,
+                        Health = player.Health,
+                        Armor = player.Armor,
+                        Tier = player.Tier,
+                        WinStreak = player.WinStreak,
+                        Board = player.Board,
+                        CombatHistory = player.CombatHistory
+                    };
+
+                    response.Players.Add(player.Id ?? string.Empty, opponentResponse);
+                }
             }
 
             return response;
@@ -380,6 +374,14 @@ namespace PokeChess.Server
 
                     await Clients.Client(player.Id).SendAsync(methodName, response);
                 }
+            }
+        }
+
+        private async Task SendCombatStarted(Lobby lobby)
+        {
+            foreach (var player in lobby.Players)
+            {
+                await Clients.Client(player.Id).SendAsync("CombatStarted", player.CombatActions);
             }
         }
     }
