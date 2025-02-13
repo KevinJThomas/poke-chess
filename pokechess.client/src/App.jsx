@@ -352,9 +352,13 @@ export default function App() {
       setPlayersMap((prev) => ({ ...prev, [newPlayer.id]: newPlayer }));
     });
 
-    connection.on("CombatStarted", (combatActions) => {
+    connection.on("CombatStarted", (combatActions, opponentBoard) => {
       setCombatActions(combatActions);
       setGameStatus("battle");
+      setPlayersMap((prev) => ({
+        ...prev,
+        [player.combatOpponentId]: { ...combatOpponent, board: opponentBoard },
+      }));
       setHasEndedTurn(false);
     });
 
