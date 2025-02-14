@@ -555,6 +555,7 @@ namespace PokeChess.Server.Services
             {
                 player.Shop.Remove(card);
                 player.Hand.Add(card);
+                player.CardAddedToHand();
                 player.EvolveCheck();
                 player.Gold -= card.Cost;
                 player.ConsumeShopDiscounts(card);
@@ -570,7 +571,7 @@ namespace PokeChess.Server.Services
                 }
             }
 
-            return (lobby, player);
+            return (lobby, player); // Does this trigger before new logic?
         }
 
         private (Lobby, Player) SellMinion(Lobby lobby, Player player, Card card)

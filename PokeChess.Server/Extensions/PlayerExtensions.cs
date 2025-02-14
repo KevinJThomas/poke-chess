@@ -58,7 +58,7 @@ namespace PokeChess.Server.Extensions
 
         public static void AddPreviousOpponent(this Player player, Player previousOpponent)
         {
-            var historyLength = 3;
+            var historyLength = 2;
 
             player.PreviousOpponentIds.Add(previousOpponent.Id);
 
@@ -228,6 +228,7 @@ namespace PokeChess.Server.Extensions
                             evolvedMinion.Attack += extraAttack;
                             evolvedMinion.Health += extraHealth;
                             player.Hand.Add(evolvedMinion);
+                            player.CardAddedToHand();
                         }
                     }
                 }
@@ -560,6 +561,28 @@ namespace PokeChess.Server.Extensions
             }
         }
 
+        public static void CardAddedToHand(this Player player)
+        {
+            if (player.Board.Any())
+            {
+                foreach (var minion in player.Board)
+                {
+                    if (minion.HasCardsToHandTrigger)
+                    {
+                        if (minion.CardsToHandInterval <= 1)
+                        {
+                            minion.CardsToHandInterval = minion.BaseCardsToHandInterval;
+                            player = minion.CardsToHandTrigger(player);
+                        }
+                        else
+                        {
+                            minion.CardsToHandInterval--;
+                        }
+                    }
+                }
+            }
+        }
+
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
         {
             if (amount < 0)
@@ -752,6 +775,7 @@ namespace PokeChess.Server.Extensions
                             if (minionToSteal != null)
                             {
                                 player.Hand.Add(minionToSteal);
+                                player.CardAddedToHand();
                                 player.Shop.Remove(minionToSteal);
                             }
                             else
@@ -780,6 +804,7 @@ namespace PokeChess.Server.Extensions
                             if (cardToSteal != null)
                             {
                                 player.Hand.Add(cardToSteal);
+                                player.CardAddedToHand();
                                 player.Shop.Remove(cardToSteal);
                             }
                             else
@@ -803,6 +828,7 @@ namespace PokeChess.Server.Extensions
                         foreach (var card in player.Shop)
                         {
                             player.Hand.Add(card);
+                            player.CardAddedToHand();
                         }
                         player.EvolveCheck();
                         player.Shop = new List<Card>();

@@ -11,6 +11,7 @@ namespace PokeChess.Server.Models.Player
         private readonly int _maxHandSize = ConfigurationHelper.config.GetValue<int>("App:Player:MaxHandSize");
         private readonly int _upgradeToTwoCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Two");
         private int _gold = 0;
+        private List<Card> _hand;
 
         public Player(string id, string name, int armor = 10, int refreshCost = 1)
         {
@@ -92,6 +93,25 @@ namespace PokeChess.Server.Models.Player
         public int GoldSpentThisTurn { get; set; }
         public Discounts Discounts { get; set; }
         public List<Card> Board { get; set; }
+        //public List<Card> Hand
+        //{
+        //    get
+        //    {
+        //        return _hand;
+        //    }
+        //    set
+        //    {
+        //        if (value != _hand)
+        //        {
+        //            if (value != null && _hand != null && value.Count > _hand.Count)
+        //            {
+        //                this.CardAddedToHand(value.Count - _hand.Count);
+        //            }
+
+        //            _hand = value;
+        //        }
+        //    }
+        //}
         public List<Card> Hand { get; set; }
         public List<Card> Shop { get; set; }
         public List<Card> DelayedSpells { get; set; }

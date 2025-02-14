@@ -93,6 +93,7 @@ namespace PokeChess.Server.Services
                                 newCard.Cost = newCard.BaseCost;
                                 newCard.Keywords = newCard.BaseKeywords.Clone();
                                 newCard.EndOfTurnInterval = newCard.BaseEndOfTurnInterval;
+                                newCard.CardsToHandInterval = newCard.BaseCardsToHandInterval;
                                 var sellValue = newCard.BaseSellValue;
                                 if (sellValue < 1)
                                 {

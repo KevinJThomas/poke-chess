@@ -41,6 +41,9 @@ namespace PokeChess.Server.Models.Game
         public bool HasShopBuffAura { get; set; }
         public bool HasSellCardTrigger { get; set; }
         public bool HasGoldSpentTrigger { get; set; }
+        public bool HasCardsToHandTrigger { get; set; }
+        public int BaseCardsToHandInterval { get; set; } = 1;
+        public int CardsToHandInterval { get; set; } = 1;
         public CardType CardType { get; set; } = CardType.Unknown;
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();
         public List<MinionType> WeaknessTypes { get; set; } = new List<MinionType>();

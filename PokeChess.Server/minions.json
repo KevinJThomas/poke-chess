@@ -913,7 +913,9 @@
         "num": "033",
         "name": "Nidorino"
       }
-    ]
+    ],
+    "hasCardsToHandTrigger": true,
+    "baseCardsToHandInterval": 3
   },
   {
     "pokemonId": 35,
