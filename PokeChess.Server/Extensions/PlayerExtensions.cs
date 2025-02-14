@@ -58,7 +58,7 @@ namespace PokeChess.Server.Extensions
 
         public static void AddPreviousOpponent(this Player player, Player previousOpponent)
         {
-            var historyLength = 2;
+            var historyLength = 3;
 
             player.PreviousOpponentIds.Add(previousOpponent.Id);
 
@@ -74,14 +74,14 @@ namespace PokeChess.Server.Extensions
 
         public static void TrimCombatHistory(this Player player)
         {
-            var historyLength = 2;
+            var historyLength = 3;
 
             var historyLengthOverflow = player.CombatHistory.Count() - historyLength;
             if (historyLengthOverflow > 0)
             {
                 for (var i = 0; i < historyLengthOverflow; i++)
                 {
-                    player.CombatHistory.RemoveAt(0);
+                    player.CombatHistory.RemoveAt(player.CombatHistory.Count() - 1);
                 }
             }
         }

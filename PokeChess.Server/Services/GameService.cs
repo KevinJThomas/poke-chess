@@ -1192,12 +1192,12 @@ namespace PokeChess.Server.Services
                     player2.Health -= damage;
                 }
 
-                player1.CombatHistory.Add(new CombatHistoryItem
+                player1.CombatHistory.Insert(0, new CombatHistoryItem
                 {
                     Name = player2.Name,
                     Damage = damage
                 });
-                player2.CombatHistory.Add(new CombatHistoryItem
+                player2.CombatHistory.Insert(0, new CombatHistoryItem
                 {
                     Name = player1.Name,
                     Damage = damage * -1
@@ -1247,12 +1247,12 @@ namespace PokeChess.Server.Services
                     player1.Health -= damage;
                 }
 
-                player1.CombatHistory.Add(new CombatHistoryItem
+                player1.CombatHistory.Insert(0, new CombatHistoryItem
                 {
                     Name = player2.Name,
                     Damage = damage * -1
                 });
-                player2.CombatHistory.Add(new CombatHistoryItem
+                player2.CombatHistory.Insert(0, new CombatHistoryItem
                 {
                     Name = player1.Name,
                     Damage = damage
@@ -1272,12 +1272,12 @@ namespace PokeChess.Server.Services
             }
             else
             {
-                player1.CombatHistory.Add(new CombatHistoryItem
+                player1.CombatHistory.Insert(0, new CombatHistoryItem
                 {
                     Name = player2.Name,
                     Damage = 0
                 });
-                player2.CombatHistory.Add(new CombatHistoryItem
+                player2.CombatHistory.Insert(0, new CombatHistoryItem
                 {
                     Name = player1.Name,
                     Damage = 0
