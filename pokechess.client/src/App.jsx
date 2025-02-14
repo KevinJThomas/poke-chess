@@ -34,7 +34,7 @@ export default function App() {
   const [combatActions, setCombatActions] = useState([]);
 
   const player = playersMap[playerId];
-  const combatOpponent = playersMap[player?.combatOpponentId];
+  const opponent = playersMap[player?.opponent];
 
   console.log("playersMap", playersMap);
   console.log("playersId", playerId);
@@ -331,6 +331,8 @@ export default function App() {
       }
       if (gameStatus === "name") {
         setGameStatus("lobby");
+      } else {
+        setGameStatus("shop");
       }
       setPlayersMap(lobby.players);
     });
@@ -357,7 +359,7 @@ export default function App() {
       setGameStatus("battle");
       setPlayersMap((prev) => ({
         ...prev,
-        [player.combatOpponentId]: { ...combatOpponent, board: opponentBoard },
+        [player.opponentId]: { ...opponent, board: opponentBoard },
       }));
       setHasEndedTurn(false);
     });
@@ -441,7 +443,7 @@ export default function App() {
           <BattleBoard
             connection={connection}
             initialPlayer={player}
-            initialOpponent={combatOpponent}
+            initialOpponent={opponent}
             setGameStatus={setGameStatus}
             setPlace={setPlace}
             combatActions={combatActions}
@@ -457,14 +459,7 @@ export default function App() {
           </Button>
         )}
         <Gold gold={player?.gold} maxGold={player?.baseGold} />
-        <Opponents
-          playersMap={playersMap}
-          opponentId={
-            gameStatus === "battle"
-              ? player?.combatOpponentId
-              : player?.currentOpponentId
-          }
-        />
+        <Opponents playersMap={playersMap} opponentId={player?.opponentId} />
       </div>
     </DragDropContext>
   );
