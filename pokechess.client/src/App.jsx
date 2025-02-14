@@ -52,6 +52,7 @@ export default function App() {
   function onDragStart(result) {
     if (result.source.droppableId === "droppable-shop") {
       setDisableHandDrop(false);
+      setDisableShopDrop(false);
     }
 
     if (result.source.droppableId === "droppable-hand") {
@@ -151,13 +152,13 @@ export default function App() {
 
       setPlayersMap(clonedPlayersMap);
 
-      // connection.invoke(
-      //   "MoveCard",
-      //   result.draggableId,
-      //   3,
-      //   result.destination.index,
-      //   null,
-      // );
+      connection.invoke(
+        "MoveCard",
+        result.draggableId,
+        4,
+        result.destination.index,
+        null,
+      );
       return;
     }
 
