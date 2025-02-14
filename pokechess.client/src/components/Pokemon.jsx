@@ -103,7 +103,7 @@ export default function Pokemon({
           {keywords.taunt && <Taunt />}
           {keywords.stealth && <Stealth />}
           {keywords.reborn && <Reborn />}
-          {keywords.Windfury && <Windfury />}
+          {keywords.windfury && <Windfury />}
         </div>
       </div>
     </div>
