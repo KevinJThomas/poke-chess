@@ -546,6 +546,20 @@ namespace PokeChess.Server.Extensions
             }
         }
 
+        public static void GoldSpent(this Player player)
+        {
+            if (player.Board.Any())
+            {
+                foreach (var minion in player.Board)
+                {
+                    if (minion.HasGoldSpentTrigger)
+                    {
+                        player = minion.GoldSpentTrigger(player);
+                    }
+                }
+            }
+        }
+
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
         {
             if (amount < 0)

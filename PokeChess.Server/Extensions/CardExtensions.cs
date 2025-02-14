@@ -753,6 +753,27 @@ namespace PokeChess.Server.Extensions
             }
         }
 
+        public static Player GoldSpentTrigger(this Card card, Player player)
+        {
+            if (!card.HasGoldSpentTrigger)
+            {
+                return player;
+            }
+
+            switch (card.PokemonId)
+            {
+                case 31:
+                    var minionToBuff = player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())];
+                    var index = player.Board.FindIndex(x => x.Id == minionToBuff.Id);
+                    player.Board[index].Attack += 1;
+                    player.Board[index].Health += 1;
+
+                    return player;
+                default:
+                    return player;
+            }
+        }
+
         public static Player ShopBuffAura(this Card card, Player player, bool remove = false)
         {
             if (!card.HasShopBuffAura)

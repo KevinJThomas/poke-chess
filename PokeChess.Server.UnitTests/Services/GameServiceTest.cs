@@ -1995,6 +1995,29 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
+        public void TestMinionEffects_31()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 31).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
+            (lobby, lobby.Players[0]) = instance.GetNewShop(lobby, lobby.Players[0], true);
+
+            // Assert
+            Assert.IsTrue(
+                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth + 1) ||
+                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth + 1 && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth));
+            Assert.IsTrue(
+                (lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack && lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack + 1) ||
+                (lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack + 1 && lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack));
+        }
+
+        [TestMethod]
         public void TestPlaySpell_Fertilizer()
         {
             // Arrange

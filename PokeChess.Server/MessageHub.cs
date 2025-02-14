@@ -7,7 +7,6 @@ using PokeChess.Server.Models;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Models.Response;
 using PokeChess.Server.Models.Response.Player;
-using System.Reflection;
 
 namespace PokeChess.Server
 {
@@ -74,7 +73,7 @@ namespace PokeChess.Server
             }
         }
 
-        public async Task MoveCard(string cardId, MoveCardAction action, int? boardIndex, string? targetId)
+        public async Task MoveCard(string cardId, MoveCardAction action, int? index, string? targetId)
         {
             if (!_lobbyManager.Initialized())
             {
@@ -82,7 +81,7 @@ namespace PokeChess.Server
             }
 
             var id = Context.ConnectionId;
-            var player = _lobbyManager.MoveCard(id, cardId, action, boardIndex ?? -1, targetId);
+            var player = _lobbyManager.MoveCard(id, cardId, action, index ?? -1, targetId);
 
             if (player != null)
             {

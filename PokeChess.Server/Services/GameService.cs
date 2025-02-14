@@ -175,7 +175,7 @@ namespace PokeChess.Server.Services
             return (lobby, player);
         }
 
-        public Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action, int boardIndex, string? targetId)
+        public Lobby MoveCard(Lobby lobby, Player player, Card card, MoveCardAction action, int index, string? targetId)
         {
             if (!Initialized())
             {
@@ -210,10 +210,13 @@ namespace PokeChess.Server.Services
                         (lobby, player) = SellMinion(lobby, player, card);
                         break;
                     case MoveCardAction.Play:
-                        (lobby, player) = PlayCard(lobby, player, card, boardIndex, targetId);
+                        (lobby, player) = PlayCard(lobby, player, card, index, targetId);
                         break;
                     case MoveCardAction.RepositionBoard:
-                        (lobby, player) = RepositionBoard(lobby, player, card, boardIndex);
+                        (lobby, player) = RepositionBoard(lobby, player, card, index);
+                        break;
+                    case MoveCardAction.RepositionShop:
+                        (lobby, player) = RepositionShop(lobby, player, card, index);
                         break;
                     default:
                         return lobby;
@@ -643,6 +646,26 @@ namespace PokeChess.Server.Services
                 {
                     newBoard.Insert(boardIndex, card);
                     player.Board = newBoard;
+                }
+            }
+
+            return (lobby, player);
+        }
+
+        private (Lobby, Player) RepositionShop(Lobby lobby, Player player, Card card, int shopIndex)
+        {
+            if (!player.Shop.Any(x => x.Id == card.Id))
+            {
+                return (lobby, player);
+            }
+
+            var newShop = player.Shop.Where(x => x.Id != card.Id).ToList();
+            if (newShop.Any() && newShop.Count() < _boardsSlots)
+            {
+                if (shopIndex >= 0 && shopIndex <= newShop.Count())
+                {
+                    newShop.Insert(shopIndex, card);
+                    player.Shop = newShop;
                 }
             }
 

@@ -1,4 +1,5 @@
-﻿using PokeChess.Server.Helpers;
+﻿using PokeChess.Server.Extensions;
+using PokeChess.Server.Helpers;
 using PokeChess.Server.Models.Game;
 
 namespace PokeChess.Server.Models.Player
@@ -64,6 +65,7 @@ namespace PokeChess.Server.Models.Player
                     if (value < _gold)
                     {
                         GoldSpentThisTurn += _gold - value;
+                        this.GoldSpent();
                     }
 
                     _gold = value;

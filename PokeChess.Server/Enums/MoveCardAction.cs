@@ -5,6 +5,7 @@
         Buy,
         Sell,
         Play,
-        RepositionBoard
+        RepositionBoard,
+        RepositionShop
     }
 }

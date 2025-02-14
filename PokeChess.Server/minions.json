@@ -827,7 +827,8 @@
         "num": "030",
         "name": "Nidorina"
       }
-    ]
+    ],
+    "hasGoldSpentTrigger": true
   },
   {
     "pokemonId": 32,
