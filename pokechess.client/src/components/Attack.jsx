@@ -1,6 +1,8 @@
 import { cn } from "../util";
+import { FireIcon } from "@heroicons/react/24/solid";
+import { BoltIcon } from "@heroicons/react/24/solid";
 
-export default function Attack({ attack, isBuffed }) {
+export default function Attack({ attack, isBuffed, burning, shock }) {
   return (
     <div
       style={{ minWidth: 24 }}
@@ -9,6 +11,8 @@ export default function Attack({ attack, isBuffed }) {
         isBuffed && "font-semibold",
       )}
     >
+      {burning && <FireIcon className="size-3 text-amber-700" />}
+      {shock && <BoltIcon className="size-3 text-amber-700" />}
       <span className="text-sm">{attack}</span>
     </div>
   );
