@@ -1163,6 +1163,7 @@ namespace PokeChess.Server.Services
             if (player1.Board.Any(x => !x.IsDead))
             {
                 player1.WinStreak += 1;
+                player2.WinStreak = 0;
                 var damage = player1.Tier;
                 foreach (var minion in player1.Board.Where(x => !x.IsDead))
                 {
@@ -1218,6 +1219,7 @@ namespace PokeChess.Server.Services
             else if (player2.Board.Any(x => !x.IsDead))
             {
                 player2.WinStreak += 1;
+                player1.WinStreak = 0;
                 var damage = player2.Tier;
                 foreach (var minion in player2.Board.Where(x => !x.IsDead))
                 {
