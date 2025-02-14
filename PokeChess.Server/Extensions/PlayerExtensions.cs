@@ -512,9 +512,19 @@ namespace PokeChess.Server.Extensions
             {
                 foreach (var minion in player.Board)
                 {
-                    if (minion.HasPlayCardTrigger)
+                    if (minion.PlayCardTriggerType == PlayCardTriggerType.Either ||
+                        (minion.PlayCardTriggerType == PlayCardTriggerType.Minion && card.CardType == CardType.Minion) ||
+                        (minion.PlayCardTriggerType == PlayCardTriggerType.Spell && card.CardType == CardType.Spell))
                     {
-                        player = minion.PlayCardTrigger(player, card);
+                        if (minion.PlayCardTriggerInterval <= 1)
+                        {
+                            minion.PlayCardTriggerInterval = minion.BasePlayCardTriggerInterval;
+                            player = minion.PlayCardTrigger(player, card);
+                        }
+                        else
+                        {
+                            minion.PlayCardTriggerInterval--;
+                        }
                     }
                 }
             }
@@ -533,6 +543,11 @@ namespace PokeChess.Server.Extensions
             if (card.HasShopBuffAura)
             {
                 player = card.ShopBuffAura(player, true);
+            }
+
+            if (card.HasSellSelfTrigger)
+            {
+                player = card.SellSelfTrigger(player);
             }
 
             if (player.Board.Any())

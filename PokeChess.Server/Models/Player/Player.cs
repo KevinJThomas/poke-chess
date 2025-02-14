@@ -93,26 +93,23 @@ namespace PokeChess.Server.Models.Player
         public int GoldSpentThisTurn { get; set; }
         public Discounts Discounts { get; set; }
         public List<Card> Board { get; set; }
-        //public List<Card> Hand
-        //{
-        //    get
-        //    {
-        //        return _hand;
-        //    }
-        //    set
-        //    {
-        //        if (value != _hand)
-        //        {
-        //            if (value != null && _hand != null && value.Count > _hand.Count)
-        //            {
-        //                this.CardAddedToHand(value.Count - _hand.Count);
-        //            }
-
-        //            _hand = value;
-        //        }
-        //    }
-        //}
-        public List<Card> Hand { get; set; }
+        public List<Card> Hand
+        {
+            get
+            {
+                return _hand;
+            }
+            set
+            {
+                if (value != _hand)
+                {
+                    if (value == null || value.Count <= MaxHandSize)
+                    {
+                        _hand = value;
+                    }
+                }
+            }
+        }
         public List<Card> Shop { get; set; }
         public List<Card> DelayedSpells { get; set; }
         public List<Card> CardsToReturnToPool { get; set; }

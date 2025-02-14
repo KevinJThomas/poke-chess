@@ -3,6 +3,7 @@ using PokeChess.Server.Helpers;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services;
+using System.Linq;
 
 namespace PokeChess.Server.Extensions
 {
@@ -691,7 +692,7 @@ namespace PokeChess.Server.Extensions
             switch (card.PokemonId)
             {
                 case 6:
-                    if (cardPlayed.CardType == CardType.Minion && player.Board.Any(x => x.Id != card.Id))
+                    if (cardPlayed.CardType == CardType.Minion && player.Board.Any(x => x.Id != card.Id) && card.Id != cardPlayed.Id)
                     {
                         foreach (var minion in player.Board.Where(x => x.Id != card.Id))
                         {
@@ -727,6 +728,63 @@ namespace PokeChess.Server.Extensions
                     }
 
                     return player;
+                case 39:
+                    if (cardPlayed.CardType == CardType.Minion && card.Id != cardPlayed.Id)
+                    {
+                        var typesOnBoard = new List<MinionType>();
+                        foreach (var minion in player.Board.Where(x => x.Id != cardPlayed.Id))
+                        {
+                            foreach (var type in minion.MinionTypes)
+                            {
+                                if (!typesOnBoard.Contains(type))
+                                {
+                                    typesOnBoard.Add(type);
+                                }
+                            }
+                        }
+
+                        foreach (var type in cardPlayed.MinionTypes)
+                        {
+                            if (!typesOnBoard.Contains(type))
+                            {
+                                card.Attack += 1;
+                                card.Health += 1;
+                                break;
+                            }
+                        }
+                    }
+
+                    return player;
+                case 41:
+                    if (cardPlayed.CardType == CardType.Minion && card.Id != cardPlayed.Id)
+                    {
+                        card.Attack += 1;
+                    }
+
+                    return player;
+                case 42:
+                    if (cardPlayed.CardType == CardType.Minion && card.Id != cardPlayed.Id)
+                    {
+                        card.Attack += 3;
+                    }
+
+                    return player;
+                case 50:
+                    var discoverTreasure = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault();
+                    discoverTreasure.Id = Guid.NewGuid().ToString() + _copyStamp;
+                    player.Hand.Add(discoverTreasure);
+                    player.CardAddedToHand();
+                    return player;
+                case 55:
+                    if (cardPlayed.CardType == CardType.Spell)
+                    {
+                        var minionToBuff = player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())];
+                        var index = player.Board.FindIndex(x => x.Id == minionToBuff.Id);
+                        player.Board[index].Attack += 4;
+                        player.Board[index].Health += 2;
+                    }
+
+                    return player;
                 default:
                     return player;
             }
@@ -755,6 +813,27 @@ namespace PokeChess.Server.Extensions
                         card.Attack += 4;
                         card.Health += 4;
                     }
+
+                    return player;
+                default:
+                    return player;
+            }
+        }
+
+        public static Player SellSelfTrigger(this Card card, Player player)
+        {
+            if (!card.HasSellSelfTrigger)
+            {
+                return player;
+            }
+
+            switch (card.PokemonId)
+            {
+                case 43:
+                    player.Hand.Add(CardService.Instance.GetFertilizer());
+                    player.CardAddedToHand();
+                    player.Hand.Add(CardService.Instance.GetFertilizer());
+                    player.CardAddedToHand();
 
                     return player;
                 default:

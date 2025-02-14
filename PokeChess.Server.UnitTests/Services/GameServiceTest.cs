@@ -2043,6 +2043,162 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
+        public void TestMinionEffects_39()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 39).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 1).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 34).FirstOrDefault());
+            var attackBefore = lobby.Players[0].Board[0].Attack;
+            var healthBefore = lobby.Players[0].Board[0].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
+            var attackAfter = lobby.Players[0].Board[0].Attack;
+            var healthAfter = lobby.Players[0].Board[0].Health;
+
+            // Assert
+            Assert.IsTrue(attackBefore == attackAfter - 1);
+            Assert.IsTrue(healthBefore == healthAfter - 1);
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_41()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 41).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23 && !lobby.Players[0].Hand.Select(y => y.Id).Contains(x.Id)).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23 && !lobby.Players[0].Hand.Select(y => y.Id).Contains(x.Id)).FirstOrDefault());
+            var attackBefore = lobby.Players[0].Board[0].Attack;
+            var healthBefore = lobby.Players[0].Board[0].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
+            var attackAfter1 = lobby.Players[0].Board[0].Attack;
+            var healthAfter1 = lobby.Players[0].Board[0].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
+            var attackAfter3 = lobby.Players[0].Board[0].Attack;
+            var healthAfter3 = lobby.Players[0].Board[0].Health;
+
+            // Assert
+            Assert.IsTrue(attackBefore == attackAfter1 - 1);
+            Assert.IsTrue(healthBefore == healthAfter1);
+            Assert.IsTrue(attackBefore == attackAfter3 - 3);
+            Assert.IsTrue(healthBefore == healthAfter3);
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_42()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 42).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23 && !lobby.Players[0].Hand.Select(y => y.Id).Contains(x.Id)).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23 && !lobby.Players[0].Hand.Select(y => y.Id).Contains(x.Id)).FirstOrDefault());
+            var attackBefore = lobby.Players[0].Board[0].Attack;
+            var healthBefore = lobby.Players[0].Board[0].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
+            var attackAfter1 = lobby.Players[0].Board[0].Attack;
+            var healthAfter1 = lobby.Players[0].Board[0].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
+            var attackAfter3 = lobby.Players[0].Board[0].Attack;
+            var healthAfter3 = lobby.Players[0].Board[0].Health;
+
+            // Assert
+            Assert.IsTrue(attackBefore == attackAfter1 - 3);
+            Assert.IsTrue(healthBefore == healthAfter1);
+            Assert.IsTrue(attackBefore == attackAfter3 - 9);
+            Assert.IsTrue(healthBefore == healthAfter3);
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_43()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 43).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
+            var handSizeBefore = lobby.Players[0].Hand.Count();
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Board[1], Enums.MoveCardAction.Sell, -1, null);
+            var handSizeAfterSellEkans = lobby.Players[0].Hand.Count();
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Board[0], Enums.MoveCardAction.Sell, -1, null);
+            var handSizeAfterSellOddish = lobby.Players[0].Hand.Count();
+
+            // Assert
+            Assert.IsTrue(handSizeBefore == handSizeAfterSellEkans);
+            Assert.IsTrue(handSizeBefore == handSizeAfterSellOddish - 2);
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_50()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 50).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
+            var handSizeBefore = lobby.Players[0].Hand.Count();
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
+            var handSizeAfterSell1 = lobby.Players[0].Hand.Count();
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
+            var handSizeAfterSell2 = lobby.Players[0].Hand.Count();
+
+            // Assert
+            Assert.IsTrue(handSizeBefore == handSizeAfterSell1 + 1);
+            Assert.IsTrue(handSizeBefore == handSizeAfterSell2 + 1);
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_55()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 55).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault());
+            var attackBefore = lobby.Players[0].Board[0].Attack;
+            var healthBefore = lobby.Players[0].Board[0].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            var attackAfter = lobby.Players[0].Board[0].Attack;
+            var healthAfter = lobby.Players[0].Board[0].Health;
+
+            // Assert
+            Assert.IsTrue(attackBefore == attackAfter - 4);
+            Assert.IsTrue(healthBefore == healthAfter - 2);
+        }
+
+        [TestMethod]
         public void TestPlaySpell_Fertilizer()
         {
             // Arrange

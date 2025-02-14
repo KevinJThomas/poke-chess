@@ -94,6 +94,7 @@ namespace PokeChess.Server.Services
                                 newCard.Keywords = newCard.BaseKeywords.Clone();
                                 newCard.EndOfTurnInterval = newCard.BaseEndOfTurnInterval;
                                 newCard.CardsToHandInterval = newCard.BaseCardsToHandInterval;
+                                newCard.PlayCardTriggerInterval = newCard.BasePlayCardTriggerInterval;
                                 var sellValue = newCard.BaseSellValue;
                                 if (sellValue < 1)
                                 {
