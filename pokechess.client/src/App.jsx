@@ -152,13 +152,13 @@ export default function App() {
 
       setPlayersMap(clonedPlayersMap);
 
-      // connection.invoke(
-      //   "MoveCard",
-      //   result.draggableId,
-      //   3,
-      //   result.destination.index,
-      //   null,
-      // );
+      connection.invoke(
+        "MoveCard",
+        result.draggableId,
+        4,
+        result.destination.index,
+        null,
+      );
       return;
     }
 
