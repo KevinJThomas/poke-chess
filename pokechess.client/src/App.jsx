@@ -34,7 +34,7 @@ export default function App() {
   const [combatActions, setCombatActions] = useState([]);
 
   const player = playersMap[playerId];
-  const opponent = playersMap[player?.opponent];
+  const opponent = playersMap[player?.opponentId];
 
   console.log("playersMap", playersMap);
   console.log("playersId", playerId);
