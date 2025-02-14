@@ -79,6 +79,7 @@ namespace PokeChess.Server.Models.Player
         public int MaxGold { get; set; }
         public int MaxHandSize { get; set; }
         public string? OpponentId { get; set; }
+        public string? PreviousOpponentId { get; set; }
         public int ShopBuffAttack { get; set; }
         public int ShopBuffHealth { get; set; }
         public int FertilizerAttack { get; set; }

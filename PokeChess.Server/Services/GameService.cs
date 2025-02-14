@@ -741,8 +741,8 @@ namespace PokeChess.Server.Services
             {
                 var player1 = lobby.Players.Where(x => x.Id == matchup[0].Id).FirstOrDefault();
                 var player2 = lobby.Players.Where(x => x.Id == matchup[1].Id).FirstOrDefault();
-                player1.OpponentId = player2.Id;
-                player2.OpponentId = player1.Id;
+                player1.PreviousOpponentId = player2.Id;
+                player2.PreviousOpponentId = player1.Id;
 
                 if (player1 == null || player2 == null)
                 {
