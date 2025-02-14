@@ -375,7 +375,7 @@ namespace PokeChess.Server
         {
             foreach (var player in lobby.Players)
             {
-                await Clients.Client(player.Id).SendAsync("CombatStarted", player.CombatActions, lobby.Players.Where(x => x.Id == player.PreviousOpponentId).FirstOrDefault().Board);
+                await Clients.Client(player.Id).SendAsync("CombatStarted", player.CombatActions, lobby.Players.Where(x => x.Id == player.PreviousOpponentId).FirstOrDefault().Board, player.Board);
             }
         }
     }
