@@ -360,11 +360,15 @@ export default function App() {
       (combatActions, opponentBoard, playerBoard) => {
         setCombatActions(combatActions);
         setGameStatus("battle");
-        setPlayersMap((prev) => ({
-          ...prev,
-          [player.opponentId]: { ...opponent, board: opponentBoard },
-          [player.id]: { ...player, board: playerBoard },
-        }));
+        setPlayersMap((prev) => {
+          const player = prev[playerId]
+          const opponent = prev[player.opponentId]
+          return {
+            ...prev,
+            [player.opponentId]: { ...opponent, board: opponentBoard },
+            [player.id]: { ...player, board: playerBoard },
+          };
+        });
         setHasEndedTurn(false);
       },
     );
