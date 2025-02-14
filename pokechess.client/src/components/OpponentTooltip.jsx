@@ -34,7 +34,7 @@ export default function OpponentTooltip({
             </div>
             {combatHistory.map((combat, index) => (
               <div
-                className="flex w-24 items-center justify-between gap-4 truncate rounded-sm bg-red-300 p-1"
+                className="flex w-30 items-center justify-between gap-4 truncate rounded-sm bg-red-300 p-1"
                 key={index}
               >
                 <span
@@ -51,7 +51,7 @@ export default function OpponentTooltip({
                   {combat.damage > 0 && <span>+</span>}
                   {combat.damage}
                 </span>
-                <span className="text-black">{combat.name}</span>{" "}
+                <span className="text-xs text-black">{combat.name}</span>{" "}
               </div>
             ))}
           </div>
