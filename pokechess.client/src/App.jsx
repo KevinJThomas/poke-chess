@@ -329,7 +329,7 @@ export default function App() {
       if (playerId) {
         setPlayerId(playerId);
       }
-      if (gameStatus === "name") {
+      if (gameStatus === "name" || gameStatus === "lobby") {
         setGameStatus("lobby");
       } else {
         setGameStatus("shop");
