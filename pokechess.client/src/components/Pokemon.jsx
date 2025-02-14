@@ -82,7 +82,12 @@ export default function Pokemon({
             <span className="w-20 text-center text-xs">{name}</span>
           )}
           {isMinion && (
-            <Attack attack={attack} isBuffed={attack > baseAttack} />
+            <Attack
+              attack={attack}
+              shock={keywords.shock}
+              burning={keywords.burning}
+              isBuffed={attack > baseAttack}
+            />
           )}
           {isMinion && (
             <Health
