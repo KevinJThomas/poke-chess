@@ -254,8 +254,7 @@ namespace PokeChess.Server
                         UpgradeCost = player.UpgradeCost,
                         RefreshCost = player.RefreshCost,
                         IsShopFrozen = player.IsShopFrozen,
-                        CurrentOpponentId = player.CurrentOpponentId,
-                        CombatOpponentId = player.CombatOpponentId,
+                        OpponentId = player.OpponentId,
                         Hand = player.Hand,
                         Shop = player.Shop,
                         CombatActions = player.CombatActions
@@ -301,8 +300,7 @@ namespace PokeChess.Server
                 UpgradeCost = player.UpgradeCost,
                 RefreshCost = player.RefreshCost,
                 IsShopFrozen = player.IsShopFrozen,
-                CurrentOpponentId = player.CurrentOpponentId,
-                CombatOpponentId = player.CombatOpponentId,
+                OpponentId = player.OpponentId,
                 Hand = player.Hand,
                 Shop = player.Shop,
                 CombatActions = player.CombatActions
@@ -321,7 +319,7 @@ namespace PokeChess.Server
                 {
                     var response = scrubbedLobbyResponse.Clone();
 
-                    foreach (var playerResponse in lobby.Players.Where(x => x.Id != player.Id && x.Id != player.CombatOpponentId))
+                    foreach (var playerResponse in lobby.Players.Where(x => x.Id != player.Id && x.Id != player.OpponentId))
                     {
                         response.Players[playerResponse.Id] = new OpponentResponse
                         {
@@ -350,16 +348,15 @@ namespace PokeChess.Server
                         UpgradeCost = player.UpgradeCost,
                         RefreshCost = player.RefreshCost,
                         IsShopFrozen = player.IsShopFrozen,
-                        CurrentOpponentId = player.CurrentOpponentId,
-                        CombatOpponentId = player.CombatOpponentId,
+                        OpponentId = player.OpponentId,
                         Hand = player.Hand,
                         Shop = player.Shop,
                         CombatActions = player.CombatActions
                     };
 
-                    var opponent = lobby.Players.Where(x => x.Id == player.CombatOpponentId).FirstOrDefault();
+                    var opponent = lobby.Players.Where(x => x.Id == player.OpponentId).FirstOrDefault();
 
-                    response.Players[player.CombatOpponentId] = new OpponentResponse
+                    response.Players[player.OpponentId] = new OpponentResponse
                     {
                         Id = opponent.Id,
                         Name = opponent.Name,
@@ -380,7 +377,7 @@ namespace PokeChess.Server
         {
             foreach (var player in lobby.Players)
             {
-                await Clients.Client(player.Id).SendAsync("CombatStarted", player.CombatActions, lobby.Players.Where(x => x.Id == player.CombatOpponentId).FirstOrDefault().Board);
+                await Clients.Client(player.Id).SendAsync("CombatStarted", player.CombatActions, lobby.Players.Where(x => x.Id == player.OpponentId).FirstOrDefault().Board);
             }
         }
     }

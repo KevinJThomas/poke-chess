@@ -564,14 +564,9 @@ namespace PokeChess.Server.Managers
                     player.IsActive = true;
                 }
 
-                if (player.CurrentOpponentId == oldId)
+                if (player.OpponentId == oldId)
                 {
-                    player.CurrentOpponentId = newId;
-                }
-
-                if (player.CombatOpponentId == oldId)
-                {
-                    player.CombatOpponentId = newId;
+                    player.OpponentId = newId;
                 }
 
                 for (var i = 0; i < player.PreviousOpponentIds.Count(); i++)

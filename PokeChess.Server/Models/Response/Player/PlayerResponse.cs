@@ -10,8 +10,7 @@ namespace PokeChess.Server.Models.Response.Player
         public int UpgradeCost { get; set; }
         public int RefreshCost { get; set; }
         public bool IsShopFrozen { get; set; }
-        public string? CurrentOpponentId { get; set; }
-        public string? CombatOpponentId { get; set; }
+        public string? OpponentId { get; set; }
         public List<Card> Hand { get; set; } = new List<Card>();
         public List<Card> Shop { get; set; } = new List<Card>();
         public List<CombatAction> CombatActions { get; set; } = new List<CombatAction>();

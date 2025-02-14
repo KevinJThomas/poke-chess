@@ -125,10 +125,6 @@ namespace PokeChess.Server.Services
             lobby.GameState.MinionCardPool = _cardService.GetAllMinionsForPool();
             lobby.GameState.SpellCardPool = _cardService.GetAllSpells().ToList();
             lobby = NextRound(lobby);
-            foreach (var player in lobby.Players)
-            {
-                player.CombatOpponentId = player.CurrentOpponentId;
-            }
             lobby = PlayBotTurns(lobby);
             return lobby;
         }
@@ -668,7 +664,7 @@ namespace PokeChess.Server.Services
                     if (index >= 0)
                     {
                         var opponentId = matchup.Where(x => x.Id != player.Id).Select(y => y.Id).FirstOrDefault();
-                        player.CurrentOpponentId = opponentId;
+                        player.OpponentId = opponentId;
                     }
                 }
             }
@@ -745,8 +741,8 @@ namespace PokeChess.Server.Services
             {
                 var player1 = lobby.Players.Where(x => x.Id == matchup[0].Id).FirstOrDefault();
                 var player2 = lobby.Players.Where(x => x.Id == matchup[1].Id).FirstOrDefault();
-                player1.CombatOpponentId = player2.Id;
-                player2.CombatOpponentId = player1.Id;
+                player1.OpponentId = player2.Id;
+                player2.OpponentId = player1.Id;
 
                 if (player1 == null || player2 == null)
                 {
