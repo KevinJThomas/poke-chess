@@ -355,15 +355,19 @@ export default function App() {
       setPlayersMap((prev) => ({ ...prev, [newPlayer.id]: newPlayer }));
     });
 
-    connection.on("CombatStarted", (combatActions, opponentBoard) => {
-      setCombatActions(combatActions);
-      setGameStatus("battle");
-      setPlayersMap((prev) => ({
-        ...prev,
-        [player.opponentId]: { ...opponent, board: opponentBoard },
-      }));
-      setHasEndedTurn(false);
-    });
+    connection.on(
+      "CombatStarted",
+      (combatActions, opponentBoard, playerBoard) => {
+        setCombatActions(combatActions);
+        setGameStatus("battle");
+        setPlayersMap((prev) => ({
+          ...prev,
+          [player.opponentId]: { ...opponent, board: opponentBoard },
+          [player.id]: { ...player, board: playerBoard },
+        }));
+        setHasEndedTurn(false);
+      },
+    );
 
     connection.on("ReconnectSuccess", (lobby, playerId) => {
       setPlayersMap(lobby.players);
