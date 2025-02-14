@@ -52,6 +52,7 @@ export default function App() {
   function onDragStart(result) {
     if (result.source.droppableId === "droppable-shop") {
       setDisableHandDrop(false);
+      setDisableShopDrop(false);
     }
 
     if (result.source.droppableId === "droppable-hand") {
