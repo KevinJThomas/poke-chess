@@ -867,24 +867,52 @@ namespace PokeChess.Server.Services
                         attacker.AttackedOnceWindfury = false;
                     }
                     nextSourceIndex = GetNextSourceIndex(player1.Board);
+
+                    // If nextSourceIndex is still -1, player 1 likely only has paralyzed minions
+                    if (nextSourceIndex == -1)
+                    {
+                        if (player1.Board.Any(x => !x.IsDead && !x.CombatKeywords.Paralyzed) || player2.Board.Any(x => !x.IsDead && !x.CombatKeywords.Paralyzed))
+                        {
+                            player1.Attacking = false;
+                            player2.Attacking = true;
+                            return SwingMinions(player1, player2, damageCap);
+                        }
+                        else
+                        {
+                            return ScoreCombatRound(player1, player2, damageCap);
+                        }
+                    }
                 }
 
                 var nextTargetIndex = GetNextTargetIndex(player2.Board);
 
                 var sourceHealthBeforeAttack = player1.Board[nextSourceIndex].CombatHealth;
                 var targetHealthBeforeAttack = player2.Board[nextTargetIndex].CombatHealth;
-                (player1.Board[nextSourceIndex], player2.Board[nextTargetIndex], var weaknessValues) = MinionAttack(player1.Board[nextSourceIndex], player2.Board[nextTargetIndex]);
+                (player1.Board[nextSourceIndex], player2.Board[nextTargetIndex], var weaknessValues, var burnedMinionId, var burnedMinionDamage, player2.Board) = MinionAttack(player1.Board[nextSourceIndex], player2.Board[nextTargetIndex], player2.Board);
                 var sourceHealthAfterAttack = player1.Board[nextSourceIndex].CombatHealth;
                 var targetHealthAfterAttack = player2.Board[nextTargetIndex].CombatHealth;
                 var sourceDamageType = GetDamageType(weaknessValues, true).ToString().ToLower();
                 var targetDamageType = GetDamageType(weaknessValues, false).ToString().ToLower();
 
+                var burnedOnHitValues = new HitValues();
+                if (burnedMinionId != null)
+                {
+                    var burnedMinion = player2.Board.Where(x => x.Id == burnedMinionId).FirstOrDefault();
+                    var burnedDamageType = GetDamageType(new KeyValuePair<bool, bool>(player1.Board[nextSourceIndex].IsWeakTo(burnedMinion), burnedMinion.IsWeakTo(player1.Board[nextSourceIndex])), true);
+                    burnedOnHitValues.DamageType = burnedDamageType.ToString().ToLower();
+                    burnedOnHitValues.Damage = burnedMinionDamage;
+                    burnedOnHitValues.Health = burnedMinion.Health;
+                    burnedOnHitValues.Keywords = burnedMinion.CombatKeywords;
+                }
+
                 player1.CombatActions.Add(new CombatAction
                 {
                     PlayerMinionId = player1.Board[nextSourceIndex].Id,
                     OpponentMinionId = player2.Board[nextTargetIndex].Id,
+                    BurnedMinionId = burnedMinionId,
                     PlayerOnHitValues = new HitValues { DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player1.Board[nextSourceIndex].CombatKeywords },
                     OpponentOnHitValues = new HitValues { DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player2.Board[nextTargetIndex].CombatKeywords },
+                    BurnedOnHitValues = burnedMinionId != null ? burnedOnHitValues : null,
                     PlayerIsAttacking = true,
                     Type = CombatActionType.Minion.ToString().ToLower()
                 });
@@ -892,8 +920,10 @@ namespace PokeChess.Server.Services
                 {
                     PlayerMinionId = player2.Board[nextTargetIndex].Id,
                     OpponentMinionId = player1.Board[nextSourceIndex].Id,
+                    BurnedMinionId = burnedMinionId,
                     PlayerOnHitValues = new HitValues { DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player2.Board[nextTargetIndex].CombatKeywords },
                     OpponentOnHitValues = new HitValues { DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player1.Board[nextSourceIndex].CombatKeywords },
+                    BurnedOnHitValues = burnedMinionId != null ? burnedOnHitValues : null,
                     PlayerIsAttacking = false,
                     Type = CombatActionType.Minion.ToString().ToLower()
                 });
@@ -924,24 +954,52 @@ namespace PokeChess.Server.Services
                         attacker.Attacked = false;
                     }
                     nextSourceIndex = GetNextSourceIndex(player2.Board);
+
+                    // If nextSourceIndex is still -1, player 2 likely only has paralyzed minions
+                    if (nextSourceIndex == -1)
+                    {
+                        if (player1.Board.Any(x => !x.IsDead && !x.CombatKeywords.Paralyzed) || player2.Board.Any(x => !x.IsDead && !x.CombatKeywords.Paralyzed))
+                        {
+                            player1.Attacking = true;
+                            player2.Attacking = false;
+                            return SwingMinions(player1, player2, damageCap);
+                        }
+                        else
+                        {
+                            return ScoreCombatRound(player1, player2, damageCap);
+                        }
+                    }
                 }
 
                 var nextTargetIndex = GetNextTargetIndex(player1.Board);
 
                 var sourceHealthBeforeAttack = player2.Board[nextSourceIndex].CombatHealth;
                 var targetHealthBeforeAttack = player1.Board[nextTargetIndex].CombatHealth;
-                (player2.Board[nextSourceIndex], player1.Board[nextTargetIndex], var weaknessValues) = MinionAttack(player2.Board[nextSourceIndex], player1.Board[nextTargetIndex]);
+                (player2.Board[nextSourceIndex], player1.Board[nextTargetIndex], var weaknessValues, var burnedMinionId, var burnedMinionDamage, player1.Board) = MinionAttack(player2.Board[nextSourceIndex], player1.Board[nextTargetIndex], player1.Board);
                 var sourceHealthAfterAttack = player2.Board[nextSourceIndex].CombatHealth;
                 var targetHealthAfterAttack = player1.Board[nextTargetIndex].CombatHealth;
                 var sourceDamageType = GetDamageType(weaknessValues, true).ToString().ToLower();
                 var targetDamageType = GetDamageType(weaknessValues, false).ToString().ToLower();
 
+                var burnedOnHitValues = new HitValues();
+                if (burnedMinionId != null)
+                {
+                    var burnedMinion = player2.Board.Where(x => x.Id == burnedMinionId).FirstOrDefault();
+                    var burnedDamageType = GetDamageType(new KeyValuePair<bool, bool>(player1.Board[nextSourceIndex].IsWeakTo(burnedMinion), burnedMinion.IsWeakTo(player1.Board[nextSourceIndex])), true);
+                    burnedOnHitValues.DamageType = burnedDamageType.ToString().ToLower();
+                    burnedOnHitValues.Damage = burnedMinionDamage;
+                    burnedOnHitValues.Health = burnedMinion.Health;
+                    burnedOnHitValues.Keywords = burnedMinion.CombatKeywords;
+                }
+
                 player1.CombatActions.Add(new CombatAction
                 {
                     PlayerMinionId = player1.Board[nextTargetIndex].Id,
                     OpponentMinionId = player2.Board[nextSourceIndex].Id,
+                    BurnedMinionId = burnedMinionId,
                     PlayerOnHitValues = new HitValues { DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player1.Board[nextTargetIndex].CombatKeywords },
                     OpponentOnHitValues = new HitValues { DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player2.Board[nextSourceIndex].CombatKeywords },
+                    BurnedOnHitValues = burnedMinionId != null ? burnedOnHitValues : null,
                     PlayerIsAttacking = false,
                     Type = CombatActionType.Minion.ToString().ToLower()
                 });
@@ -949,8 +1007,10 @@ namespace PokeChess.Server.Services
                 {
                     PlayerMinionId = player2.Board[nextSourceIndex].Id,
                     OpponentMinionId = player1.Board[nextTargetIndex].Id,
+                    BurnedMinionId = burnedMinionId,
                     PlayerOnHitValues = new HitValues { DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player2.Board[nextSourceIndex].CombatKeywords },
                     OpponentOnHitValues = new HitValues { DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player1.Board[nextTargetIndex].CombatKeywords },
+                    BurnedOnHitValues = burnedMinionId != null ? burnedOnHitValues : null,
                     PlayerIsAttacking = true,
                     Type = CombatActionType.Minion.ToString().ToLower()
                 });
@@ -993,7 +1053,7 @@ namespace PokeChess.Server.Services
         {
             for (var i = 0; i < board.Count; i++)
             {
-                if (!board[i].Attacked && !board[i].IsDead)
+                if (!board[i].Attacked && !board[i].IsDead && !board[i].CombatKeywords.Paralyzed)
                 {
                     return i;
                 }
@@ -1042,10 +1102,59 @@ namespace PokeChess.Server.Services
             return nextTargetIndex;
         }
 
-        private (Card, Card, KeyValuePair<bool, bool>) MinionAttack(Card source, Card target)
+        private (Card, Card, KeyValuePair<bool, bool>, string, int, List<Card>) MinionAttack(Card source, Card target, List<Card> targetsBoard)
         {
             var sourceWeakToTarget = source.IsWeakTo(target);
             var targetWeakToSource = target.IsWeakTo(source);
+            var burnAmount = 0;
+            var burnedIndex = -1;
+
+            // Update source's state
+            if (source.CombatKeywords.DivineShield)
+            {
+                source.CombatKeywords.DivineShield = false;
+            }
+            else
+            {
+                var damage = target.Attack;
+                var halfDamage = damage / 2;
+
+                if (target.CombatKeywords.Paralyzed)
+                {
+                    damage = 0;
+                    target.CombatKeywords.Paralyzed = false;
+                }
+                else
+                {
+                    if (sourceWeakToTarget && !targetWeakToSource)
+                    {
+                        damage = damage + halfDamage;
+                    }
+                    if (!sourceWeakToTarget && targetWeakToSource)
+                    {
+                        damage = halfDamage;
+                    }
+
+                    if (target.CombatKeywords.Venomous)
+                    {
+                        target.CombatKeywords.Venomous = false;
+
+                        if (source.CombatHealth > damage)
+                        {
+                            damage = source.CombatHealth;
+                        }
+                    }
+                }
+
+                source.CombatHealth -= damage;
+
+                if (source.IsDead && source.CombatKeywords.Reborn)
+                {
+                    source.Attack = source.BaseAttack;
+                    source.CombatHealth = 1;
+                    source.CombatKeywords.Reborn = false;
+                }
+            }
 
             // Update target's state
             if (target.CombatKeywords.DivineShield)
@@ -1078,50 +1187,30 @@ namespace PokeChess.Server.Services
 
                 target.CombatHealth -= damage;
 
+                if (source.CombatKeywords.Burning && target.CombatHealth < 0)
+                {
+                    burnAmount = target.CombatHealth * -1;
+                    burnedIndex = GetBurningTargetIndex(target, targetsBoard);
+                    if (burnedIndex >= 0 && burnedIndex < targetsBoard.Count())
+                    {
+                        targetsBoard[burnedIndex].CombatHealth -= burnAmount;
+                    }
+                    else
+                    {
+                        burnAmount = 0;
+                    }
+                }
+
                 if (target.IsDead && target.CombatKeywords.Reborn)
                 {
                     target.Attack = target.BaseAttack;
                     target.CombatHealth = 1;
                     target.CombatKeywords.Reborn = false;
                 }
-            }
 
-            // Update source's state
-            if (source.CombatKeywords.DivineShield)
-            {
-                source.CombatKeywords.DivineShield = false;
-            }
-            else
-            {
-                var damage = target.Attack;
-                var halfDamage = damage / 2;
-
-                if (sourceWeakToTarget && !targetWeakToSource)
+                if (!target.IsDead && source.CombatKeywords.Shock)
                 {
-                    damage = damage + halfDamage;
-                }
-                if (!sourceWeakToTarget && targetWeakToSource)
-                {
-                    damage = halfDamage;
-                }
-
-                if (target.CombatKeywords.Venomous)
-                {
-                    target.CombatKeywords.Venomous = false;
-
-                    if (source.CombatHealth > damage)
-                    {
-                        damage = source.CombatHealth;
-                    }
-                }
-
-                source.CombatHealth -= damage;
-
-                if (source.IsDead && source.CombatKeywords.Reborn)
-                {
-                    source.Attack = source.BaseAttack;
-                    source.CombatHealth = 1;
-                    source.CombatKeywords.Reborn = false;
+                    target.CombatKeywords.Paralyzed = true;
                 }
             }
 
@@ -1139,7 +1228,61 @@ namespace PokeChess.Server.Services
                 source.CombatKeywords.Stealth = false;
             }
 
-            return (source, target, new KeyValuePair<bool, bool>(sourceWeakToTarget, targetWeakToSource));
+            return (source, target, new KeyValuePair<bool, bool>(sourceWeakToTarget, targetWeakToSource), burnedIndex >= 0 && burnedIndex < targetsBoard.Count() ? targetsBoard[burnedIndex].Id : null, burnAmount, targetsBoard);
+        }
+
+        private int GetBurningTargetIndex(Card minion, List<Card> board)
+        {
+            if (minion == null || board == null || !board.Any(x => !x.IsDead && x.Id != minion.Id))
+            {
+                return -1;
+            }
+
+            var minionIndex = board.FindIndex(x => x.Id == minion.Id);
+            if (minionIndex == -1)
+            {
+                return -1;
+            }
+
+            var tryLeftFirst = ThreadSafeRandom.ThisThreadsRandom.Next(2) == 0 && minionIndex > 0;
+            if (tryLeftFirst)
+            {
+                for (var i = minionIndex - 1; i >= 0; i--)
+                {
+                    if (!board[i].IsDead)
+                    {
+                        return i;
+                    }
+                }
+
+                for (var i = minionIndex + 1; i < board.Count; i++)
+                {
+                    if (!board[i].IsDead)
+                    {
+                        return i;
+                    }
+                }
+            }
+            else
+            {
+                for (var i = minionIndex + 1; i < board.Count; i++)
+                {
+                    if (!board[i].IsDead)
+                    {
+                        return i;
+                    }
+                }
+
+                for (var i = minionIndex - 1; i >= 0; i--)
+                {
+                    if (!board[i].IsDead)
+                    {
+                        return i;
+                    }
+                }
+            }
+
+            return -1;
         }
 
         private static int GetPlayerIndexById(string id, Lobby lobby)
@@ -1161,7 +1304,7 @@ namespace PokeChess.Server.Services
                 return (player1, player2);
             }
 
-            if (player1.Board.Any(x => !x.IsDead))
+            if (player1.Board.Any(x => !x.IsDead) && player2.Board.All(x => x.IsDead))
             {
                 player1.WinStreak += 1;
                 player2.WinStreak = 0;
@@ -1217,7 +1360,7 @@ namespace PokeChess.Server.Services
                     Type = CombatActionType.Hero.ToString().ToLower()
                 });
             }
-            else if (player2.Board.Any(x => !x.IsDead))
+            else if (player2.Board.Any(x => !x.IsDead) && player1.Board.All(x => x.IsDead))
             {
                 player2.WinStreak += 1;
                 player1.WinStreak = 0;

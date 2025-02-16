@@ -9,6 +9,7 @@
         Taunt,
         Venomous,
         Burning,
-        Shock
+        Shock,
+        Paralyzed
     }
 }
