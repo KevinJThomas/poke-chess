@@ -924,7 +924,7 @@ namespace PokeChess.Server.Services
                     var burnedDamageType = GetDamageType(new KeyValuePair<bool, bool>(player1.Board[nextSourceIndex].IsWeakTo(burnedMinion), burnedMinion.IsWeakTo(player1.Board[nextSourceIndex])), true);
                     burnedOnHitValues.DamageType = burnedDamageType.ToString().ToLower();
                     burnedOnHitValues.Damage = burnedMinionDamage;
-                    burnedOnHitValues.Health = burnedMinion.Health;
+                    burnedOnHitValues.Health = burnedMinion.CombatHealth;
                     burnedOnHitValues.Keywords = burnedMinion.CombatKeywords;
                     burnedOnHitValues.Id = burnedMinion.Id;
                     player2HitValues.Add(burnedOnHitValues);
