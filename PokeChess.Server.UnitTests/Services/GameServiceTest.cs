@@ -2199,6 +2199,72 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
+        public void TestMinionEffects_63()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 63).FirstOrDefault());
+            lobby.Players[0].Shop = new List<Card>
+            {
+                new Card
+                {
+                    Id = Guid.NewGuid().ToString() + "_copy",
+                    BaseCost = 3,
+                    Cost = 3,
+                    HasBattlecry = true,
+                    CardType = Enums.CardType.Minion
+                },
+                new Card
+                {
+                    Id = Guid.NewGuid().ToString() + "_copy",
+                    BaseCost = 3,
+                    Cost = 3,
+                    HasBattlecry = true,
+                    CardType = Enums.CardType.Minion
+                },
+                new Card
+                {
+                    Id = Guid.NewGuid().ToString() + "_copy",
+                    BaseCost = 3,
+                    Cost = 3,
+                    HasBattlecry = true,
+                    CardType = Enums.CardType.Minion
+                },
+                new Card
+                {
+                    Id = Guid.NewGuid().ToString() + "_copy",
+                    BaseCost = 3,
+                    Cost = 3,
+                    HasBattlecry = true,
+                    CardType = Enums.CardType.Minion
+                }
+            };
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, null);
+            var startingGold = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
+            var goldAfterFirstBuy = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
+            var goldAfterSecondBuy = lobby.Players[0].Gold;
+            lobby.Players[0].IsShopFrozen = true;
+            lobby = instance.CombatRound(lobby);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
+            var goldAfterThirdBuy = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
+            var goldAfterFourthBuy = lobby.Players[0].Gold;
+
+            // Assert
+            Assert.IsTrue(startingGold == goldAfterFirstBuy);
+            Assert.IsTrue(goldAfterFirstBuy == goldAfterSecondBuy + 3);
+            Assert.IsTrue(startingGold == goldAfterThirdBuy);
+            Assert.IsTrue(goldAfterThirdBuy == goldAfterFourthBuy + 3);
+        }
+
+        [TestMethod]
         public void TestPlaySpell_Fertilizer()
         {
             // Arrange

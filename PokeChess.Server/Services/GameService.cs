@@ -749,6 +749,14 @@ namespace PokeChess.Server.Services
                         lobby.Players[i].CardsToReturnToPool = new List<Card>();
                     }
                 }
+
+                if (lobby.Players[i].Board.Any(x => x.HasDiscountMechanism))
+                {
+                    foreach (var minion in lobby.Players[i].Board.Where(x => x.HasDiscountMechanism))
+                    {
+                        minion.DiscountMechanism(lobby.Players[i]);
+                    }
+                }
             }
 
             return lobby;

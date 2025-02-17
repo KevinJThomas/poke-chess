@@ -3,7 +3,6 @@ using PokeChess.Server.Helpers;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services;
-using System.Linq;
 
 namespace PokeChess.Server.Extensions
 {
@@ -906,6 +905,24 @@ namespace PokeChess.Server.Extensions
 
                     player.ShopBuffAttack += buff;
                     player.ShopBuffHealth += buff;
+                    return player;
+                default:
+                    return player;
+            }
+        }
+
+        public static Player DiscountMechanism(this Card card, Player player)
+        {
+            if (!card.HasDiscountMechanism)
+            {
+                return player;
+            }
+
+            switch (card.PokemonId)
+            {
+                case 63:
+                    player.Discounts.Battlecry = -1;
+                    player.ApplyShopDiscounts();
                     return player;
                 default:
                     return player;

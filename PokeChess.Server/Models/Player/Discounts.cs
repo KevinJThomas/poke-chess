@@ -17,6 +17,7 @@
         public int Ice { get; set; }
         public int Ghost { get; set; }
         public int Dragon { get; set; }
+        public int Battlecry { get; set; }
         public int Minion { get; set; }
         public int Spell { get; set; }
         public int Flex { get; set; }

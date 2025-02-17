@@ -1619,7 +1619,8 @@
         "num": "065",
         "name": "Alakazam"
       }
-    ]
+    ],
+    "hasDiscountMechanism": true
   },
   {
     "pokemonId": 64,

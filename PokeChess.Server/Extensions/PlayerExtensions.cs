@@ -171,8 +171,8 @@ namespace PokeChess.Server.Extensions
 
             var fallback = player.Clone();
             var pokemonIdList = new List<int>();
-            pokemonIdList.AddRange(player.Hand.Where(x => x.CardType == CardType.Minion).Select(x => x.PokemonId));
-            pokemonIdList.AddRange(player.Board.Select(x => x.PokemonId));
+            pokemonIdList.AddRange(player.Hand.Where(x => x.CardType == CardType.Minion && x.PokemonId != 0).Select(x => x.PokemonId));
+            pokemonIdList.AddRange(player.Board.Where(x => x.PokemonId != 0).Select(x => x.PokemonId));
             var evolveList = pokemonIdList.GroupBy(x => x).Where(y => y.Count() >= 3).Select(z => z.Key).ToList();
 
             if (evolveList != null && evolveList.Any())
@@ -264,7 +264,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Normal < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Normal;
                                     break;
@@ -272,7 +272,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Fire < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Fire;
                                     break;
@@ -280,7 +280,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Water < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Water;
                                     break;
@@ -288,7 +288,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Grass < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Grass;
                                     break;
@@ -296,7 +296,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Poison < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Poison;
                                     break;
@@ -304,7 +304,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Flying < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Flying;
                                     break;
@@ -312,7 +312,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Bug < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Bug;
                                     break;
@@ -320,7 +320,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Electric < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Electric;
                                     break;
@@ -328,7 +328,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Ground < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Ground;
                                     break;
@@ -336,7 +336,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Fighting < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Fighting;
                                     break;
@@ -344,7 +344,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Psychic < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Psychic;
                                     break;
@@ -352,7 +352,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Rock < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Rock;
                                     break;
@@ -360,7 +360,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Ice < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Ice;
                                     break;
@@ -368,7 +368,7 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Ghost < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Ghost;
                                     break;
@@ -376,12 +376,23 @@ namespace PokeChess.Server.Extensions
                                     if (player.Discounts.Dragon < 0)
                                     {
                                         card.Cost = 0;
-                                        return;
+                                        continue;
                                     }
                                     card.Cost -= player.Discounts.Dragon;
                                     break;
                             }
                         }
+                    }
+
+                    if (card.HasBattlecry)
+                    {
+                        if (player.Discounts.Battlecry < 0)
+                        {
+                            card.Cost = 0;
+                            continue;
+                        }
+
+                        card.Cost -= player.Discounts.Battlecry;
                     }
                 }
                 else
@@ -465,6 +476,11 @@ namespace PokeChess.Server.Extensions
                         }
                     }
                 }
+
+                if (card.HasBattlecry)
+                {
+                    player.Discounts.Battlecry = 0;
+                }
             }
             else
             {
@@ -532,6 +548,11 @@ namespace PokeChess.Server.Extensions
             if (card.HasShopBuffAura)
             {
                 player = card.ShopBuffAura(player);
+            }
+
+            if (card.HasDiscountMechanism)
+            {
+                player = card.DiscountMechanism(player);
             }
         }
 
