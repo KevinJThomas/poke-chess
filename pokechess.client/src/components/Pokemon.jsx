@@ -118,6 +118,8 @@ export default function Pokemon({
 
   return (
     <Tooltip
+      cardType={cardType}
+      name={name}
       tier={tier}
       showToolTip={showToolTip}
       text={text}
