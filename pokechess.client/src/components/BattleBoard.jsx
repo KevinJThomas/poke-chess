@@ -41,7 +41,7 @@ export default function BattleBoard({
   const [player, setPlayer] = useState(initialPlayer);
   const [opponent, setOpponent] = useState(initialOpponent);
 
-  console.log("combatActions", combatActions);
+  console.log("combat actions", combatActions);
   // const [player, setPlayer] = useState({
   //   name: "p1",
   //   health: 30,
@@ -93,10 +93,11 @@ export default function BattleBoard({
     setPlayer((prev) => ({
       ...prev,
       board: prev.board.map((minion) => {
-        if (values.id === minion.id) {
+        const value = values.find((value) => value.id === minion.id);
+        if (value?.id === minion.id) {
           return {
             ...minion,
-            ...values,
+            ...value,
           };
         }
 
@@ -109,10 +110,11 @@ export default function BattleBoard({
     setOpponent((prev) => ({
       ...prev,
       board: prev.board.map((minion) => {
-        if (values.id === minion.id) {
+        const value = values.find((value) => value.id === minion.id);
+        if (value?.id === minion.id) {
           return {
             ...minion,
-            ...values,
+            ...value,
           };
         }
 
