@@ -1136,6 +1136,7 @@ namespace PokeChess.Server.Services
             var targetWeakToSource = target.IsWeakTo(source);
             var burnAmount = 0;
             var burnedIndex = -1;
+            var targetStartedParalyzed = target.CombatKeywords.Paralyzed;
 
             // Update source's state
             if (source.CombatKeywords.DivineShield)
@@ -1227,7 +1228,7 @@ namespace PokeChess.Server.Services
 
                 target.TriggerReborn();
 
-                if (!target.IsDead && source.CombatKeywords.Shock)
+                if (!targetStartedParalyzed && !target.IsDead && source.CombatKeywords.Shock)
                 {
                     target.CombatKeywords.Paralyzed = true;
                 }

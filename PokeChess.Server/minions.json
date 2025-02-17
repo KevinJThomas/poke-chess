@@ -2067,8 +2067,8 @@
     "tier": 2,
     "text": "__Shock.__",
     "name": "Magnemite",
-    "baseAttack": 5,
-    "baseHealth": 1,
+    "baseAttack": 1,
+    "baseHealth": 20,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {
