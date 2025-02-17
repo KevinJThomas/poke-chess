@@ -750,9 +750,9 @@ namespace PokeChess.Server.Services
                     }
                 }
 
-                if (lobby.Players[i].Board.Any(x => x.HasDiscountMechanism))
+                if (lobby.Players[i].Board.Any(x => x.HasDiscountMechanism && x.OncePerTurn))
                 {
-                    foreach (var minion in lobby.Players[i].Board.Where(x => x.HasDiscountMechanism))
+                    foreach (var minion in lobby.Players[i].Board.Where(x => x.HasDiscountMechanism && x.OncePerTurn))
                     {
                         minion.DiscountMechanism(lobby.Players[i]);
                     }
@@ -1176,12 +1176,7 @@ namespace PokeChess.Server.Services
 
                 source.CombatHealth -= damage;
 
-                if (source.IsDead && source.CombatKeywords.Reborn)
-                {
-                    source.Attack = source.BaseAttack;
-                    source.CombatHealth = 1;
-                    source.CombatKeywords.Reborn = false;
-                }
+                source.TriggerReborn();
             }
 
             // Update target's state
@@ -1222,6 +1217,7 @@ namespace PokeChess.Server.Services
                     if (burnedIndex >= 0 && burnedIndex < targetsBoard.Count())
                     {
                         targetsBoard[burnedIndex].CombatHealth -= burnAmount;
+                        targetsBoard[burnedIndex].TriggerReborn();
                     }
                     else
                     {
@@ -1229,12 +1225,7 @@ namespace PokeChess.Server.Services
                     }
                 }
 
-                if (target.IsDead && target.CombatKeywords.Reborn)
-                {
-                    target.Attack = target.BaseAttack;
-                    target.CombatHealth = 1;
-                    target.CombatKeywords.Reborn = false;
-                }
+                target.TriggerReborn();
 
                 if (!target.IsDead && source.CombatKeywords.Shock)
                 {

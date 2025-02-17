@@ -1620,7 +1620,8 @@
         "name": "Alakazam"
       }
     ],
-    "hasDiscountMechanism": true
+    "hasDiscountMechanism": true,
+    "oncePerTurn": true
   },
   {
     "pokemonId": 64,
@@ -1674,7 +1675,8 @@
         "num": "064",
         "name": "Kadabra"
       }
-    ]
+    ],
+    "hasDiscountMechanism": true
   },
   {
     "pokemonId": 66,
@@ -1700,7 +1702,8 @@
         "num": "068",
         "name": "Machamp"
       }
-    ]
+    ],
+    "hasTargetedBySpellEffect": true
   },
   {
     "pokemonId": 67,

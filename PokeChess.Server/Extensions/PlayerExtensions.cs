@@ -479,7 +479,15 @@ namespace PokeChess.Server.Extensions
 
                 if (card.HasBattlecry)
                 {
-                    player.Discounts.Battlecry = 0;
+                    // If Alakazam is on the board
+                    if (player.Board.Any(x => x.PokemonId == 65))
+                    {
+                        player.Discounts.Battlecry = 1;
+                    }
+                    else
+                    {
+                        player.Discounts.Battlecry = 0;
+                    }
                 }
             }
             else
@@ -649,6 +657,7 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexAttack >= 0 && targetIndexAttack < player.Board.Count())
                         {
                             player.Board[targetIndexAttack].Attack += amount;
+                            player = player.Board[targetIndexAttack].TargetedBySpell(player);
 
                             return true;
                         }
@@ -659,6 +668,7 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexAttack >= 0 && targetIndexAttack < player.Shop.Count())
                         {
                             player.Shop[targetIndexAttack].Attack += amount;
+                            player = player.Shop[targetIndexAttack].TargetedBySpell(player);
 
                             return true;
                         }
@@ -675,6 +685,7 @@ namespace PokeChess.Server.Extensions
                     if (targetIndexFriendlyAttack >= 0 && targetIndexFriendlyAttack < player.Board.Count())
                     {
                         player.Board[targetIndexFriendlyAttack].Attack += amount;
+                        player = player.Board[targetIndexFriendlyAttack].TargetedBySpell(player);
 
                         return true;
                     }
@@ -694,6 +705,7 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexHealth >= 0 && targetIndexHealth < player.Board.Count())
                         {
                             player.Board[targetIndexHealth].Health += amount;
+                            player = player.Board[targetIndexHealth].TargetedBySpell(player);
 
                             return true;
                         }
@@ -704,6 +716,7 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexHealth >= 0 && targetIndexHealth < player.Shop.Count())
                         {
                             player.Shop[targetIndexHealth].Health += amount;
+                            player = player.Shop[targetIndexHealth].TargetedBySpell(player);
 
                             return true;
                         }
@@ -720,6 +733,7 @@ namespace PokeChess.Server.Extensions
                     if (targetIndexFriendlyHealth >= 0 && targetIndexFriendlyHealth < player.Board.Count())
                     {
                         player.Board[targetIndexFriendlyHealth].Health += amount;
+                        player = player.Board[targetIndexFriendlyHealth].TargetedBySpell(player);
 
                         return true;
                     }
@@ -783,6 +797,7 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexKeyword >= 0 && targetIndexKeyword < player.Board.Count())
                         {
                             player.Board[targetIndexKeyword].ApplyKeyword((Keyword)amount);
+                            player = player.Board[targetIndexKeyword].TargetedBySpell(player);
 
                             return true;
                         }
@@ -794,6 +809,8 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexKeyword >= 0 && targetIndexKeyword < player.Shop.Count())
                         {
                             player.Shop[targetIndexKeyword].ApplyKeyword((Keyword)amount);
+                            player = player.Shop[targetIndexKeyword].TargetedBySpell(player);
+
                             return true;
                         }
                     }

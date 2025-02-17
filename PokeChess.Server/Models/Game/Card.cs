@@ -48,6 +48,8 @@ namespace PokeChess.Server.Models.Game
         public int CardsToHandInterval { get; set; } = 1;
         public bool HasSellSelfTrigger { get; set; }
         public bool HasDiscountMechanism { get; set; }
+        public bool OncePerTurn { get; set; }
+        public bool HasTargetedBySpellEffect { get; set; }
         public PlayCardTriggerType PlayCardTriggerType { get; set; } = PlayCardTriggerType.Either;
         public CardType CardType { get; set; } = CardType.Unknown;
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();

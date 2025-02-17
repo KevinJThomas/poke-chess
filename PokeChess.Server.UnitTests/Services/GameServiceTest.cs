@@ -1592,10 +1592,10 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].Tier = 4;
             lobby.Players[0].FertilizerAttack = fertilizerAttack;
             lobby.Players[0].FertilizerHealth = fertilizerHealth;
-            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 47).ToList()[random.Next(minions.Where(x => x.PokemonId != 47).Count())]);
+            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 23).FirstOrDefault());
             lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 47).FirstOrDefault());
-            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 47).ToList()[random.Next(minions.Where(x => x.PokemonId != 47).Count())]);
-            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId != 47).ToList()[random.Next(minions.Where(x => x.PokemonId != 47).Count())]);
+            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 23 && !lobby.Players[0].Board.Select(y => y.Id).Contains(x.Id)).FirstOrDefault());
+            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 23 && !lobby.Players[0].Board.Select(y => y.Id).Contains(x.Id)).FirstOrDefault());
             var minionAttackListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 47).Select(y => y.Attack).ToList();
             var minionHealthListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 47).Select(y => y.Health).ToList();
             lobby = instance.CombatRound(lobby);
@@ -2262,6 +2262,95 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(goldAfterFirstBuy == goldAfterSecondBuy + 3);
             Assert.IsTrue(startingGold == goldAfterThirdBuy);
             Assert.IsTrue(goldAfterThirdBuy == goldAfterFourthBuy + 3);
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_65()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 65).FirstOrDefault());
+            lobby.Players[0].Shop = new List<Card>
+            {
+                new Card
+                {
+                    Id = Guid.NewGuid().ToString() + "_copy",
+                    BaseCost = 3,
+                    Cost = 3,
+                    HasBattlecry = true,
+                    CardType = Enums.CardType.Minion
+                },
+                new Card
+                {
+                    Id = Guid.NewGuid().ToString() + "_copy",
+                    BaseCost = 3,
+                    Cost = 3,
+                    HasBattlecry = true,
+                    CardType = Enums.CardType.Minion
+                },
+                new Card
+                {
+                    Id = Guid.NewGuid().ToString() + "_copy",
+                    BaseCost = 3,
+                    Cost = 3,
+                    HasBattlecry = true,
+                    CardType = Enums.CardType.Minion
+                },
+                new Card
+                {
+                    Id = Guid.NewGuid().ToString() + "_copy",
+                    BaseCost = 3,
+                    Cost = 3,
+                    HasBattlecry = true,
+                    CardType = Enums.CardType.Minion
+                }
+            };
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, null);
+            var startingGold = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
+            var goldAfterFirstBuy = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
+            var goldAfterSecondBuy = lobby.Players[0].Gold;
+            lobby.Players[0].IsShopFrozen = true;
+            lobby = instance.CombatRound(lobby);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
+            var goldAfterThirdBuy = lobby.Players[0].Gold;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
+            var goldAfterFourthBuy = lobby.Players[0].Gold;
+
+            // Assert
+            Assert.IsTrue(startingGold == goldAfterFirstBuy + 2);
+            Assert.IsTrue(goldAfterFirstBuy == goldAfterSecondBuy + 2);
+            Assert.IsTrue(startingGold == goldAfterThirdBuy + 2);
+            Assert.IsTrue(goldAfterThirdBuy == goldAfterFourthBuy + 2);
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_66()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 66).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Poké Water").FirstOrDefault());
+            var attackBefore = lobby.Players[0].Board[0].Attack;
+            var healthBefore = lobby.Players[0].Board[0].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, lobby.Players[0].Board[0].Id);
+            var attackAfter = lobby.Players[0].Board[0].Attack;
+            var healthAfter = lobby.Players[0].Board[0].Health;
+
+            // Assert
+            Assert.IsTrue(attackBefore == attackAfter - 5);
+            Assert.IsTrue(healthBefore == healthAfter - 1);
         }
 
         [TestMethod]

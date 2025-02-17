@@ -373,7 +373,7 @@ namespace PokeChess.Server
 
         private async Task SendCombatStarted(Lobby lobby)
         {
-            foreach (var player in lobby.Players)
+            foreach (var player in lobby.Players.Where(x => !x.IsBot))
             {
                 await Clients.Client(player.Id).SendAsync("CombatStarted", player.CombatActions, lobby.Players.Where(x => x.Id == player.PreviousOpponentId).FirstOrDefault().Board, player.Board);
             }

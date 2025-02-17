@@ -75,6 +75,16 @@ namespace PokeChess.Server.Extensions
             return false;
         }
 
+        public static void TriggerReborn(this Card card)
+        {
+            if (card.IsDead && card.CombatKeywords.Reborn)
+            {
+                card.Attack = card.BaseAttack;
+                card.CombatHealth = 1;
+                card.CombatKeywords.Reborn = false;
+            }
+        }
+
         public static Player TriggerBattlecry(this Card card, Player player, string? targetId)
         {
             if (!card.HasBattlecry || player == null)
@@ -923,6 +933,33 @@ namespace PokeChess.Server.Extensions
                 case 63:
                     player.Discounts.Battlecry = -1;
                     player.ApplyShopDiscounts();
+                    return player;
+                case 65:
+                    if (player.Discounts.Battlecry >= 0)
+                    {
+                        player.Discounts.Battlecry += 1;
+                        player.ApplyShopDiscounts();
+                    }
+
+                    return player;
+                default:
+                    return player;
+            }
+        }
+
+        public static Player TargetedBySpell(this Card card, Player player)
+        {
+            if (!card.HasTargetedBySpellEffect)
+            {
+                return player;
+            }
+
+            switch (card.PokemonId)
+            {
+                case 66:
+                    card.Attack += 1;
+                    card.Health += 1;
+
                     return player;
                 default:
                     return player;
