@@ -13,6 +13,7 @@ import Taunt from "./Taunt";
 import Stealth from "./Stealth";
 import Reborn from "./Reborn";
 import Windfury from "./Windfury";
+import Paralyze from "./Paralyze";
 
 export default function Pokemon({
   attack,
@@ -109,6 +110,7 @@ export default function Pokemon({
           {keywords.stealth && <Stealth />}
           {keywords.reborn && <Reborn />}
           {keywords.windfury && <Windfury />}
+          {keywords.paralyzed && <Paralyze />}
         </div>
       </div>
     </div>
