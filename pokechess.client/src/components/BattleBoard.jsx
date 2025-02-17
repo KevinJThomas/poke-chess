@@ -10,22 +10,22 @@ import { useState } from "react";
 //   {
 //     playerMinionId: 1,
 //     opponentMinionId: 3,
-//     playerOnHitValues: { damage: 2, health: 1 },
-//     opponentOnHitValues: { damage: 3, health: 0 },
+//     playerOnHitValues: [{ id: 1, damage: 2, health: 1 }],
+//     opponentOnHitValues: [{ id: 3, damage: 3, health: 0 }],
 //     playerIsAttacking: true,
 //     type: "minion",
 //   },
 //   {
 //     playerMinionId: 1,
 //     opponentMinionId: 4,
-//     playerOnHitValues: { damage: 5, health: -4 },
-//     opponentOnHitValues: { damage: 3, health: 2 },
+//     playerOnHitValues: [{ id: 1, damage: 5, health: -4 }],
+//     opponentOnHitValues: [{ id: 4, damage: 3, health: 2 }],
 //     playerIsAttacking: false,
 //     type: "minion",
 //   },
 //   {
 //     playerIsAttacking: true,
-//     onHitValues: { damage: 3, armor: 2 },
+//     heroOnHitValues: { damage: 3, armor: 2 },
 //     type: "hero",
 //   },
 // ];
@@ -87,11 +87,11 @@ export default function BattleBoard({
   //   hand: [],
   // });
 
-  function updatePlayerMinion(playerMinionIndex, values) {
+  function updatePlayerMinions(values) {
     setPlayer((prev) => ({
       ...prev,
-      board: prev.board.map((minion, i) => {
-        if (playerMinionIndex === i) {
+      board: prev.board.map((minion) => {
+        if (values.id === minion.id) {
           return {
             ...minion,
             ...values,
@@ -103,11 +103,11 @@ export default function BattleBoard({
     }));
   }
 
-  function updateOpponentMinion(opponentMinionIndex, values) {
+  function updateOpponentMinions(values) {
     setOpponent((prev) => ({
       ...prev,
-      board: prev.board.map((minion, i) => {
-        if (opponentMinionIndex === i) {
+      board: prev.board.map((minion) => {
+        if (values.id === minion.id) {
           return {
             ...minion,
             ...values,
@@ -159,7 +159,7 @@ export default function BattleBoard({
 
     await delay(400);
 
-    updateLoserFunc((prev) => ({ ...prev, ...action.onHitValues }));
+    updateLoserFunc((prev) => ({ ...prev, ...action.heroOnHitValues }));
 
     updateHeroFunc((prev) => ({
       ...prev,
@@ -200,8 +200,8 @@ export default function BattleBoard({
         : opponentMinionIndex;
 
       const updateMinionFunc = action.playerIsAttacking
-        ? updatePlayerMinion
-        : updateOpponentMinion;
+        ? updatePlayerMinions
+        : updateOpponentMinions;
 
       updateMinionFunc(attackingMinionIndex, {
         style: {
@@ -225,8 +225,8 @@ export default function BattleBoard({
 
       await delay(200);
 
-      updatePlayerMinion(playerMinionIndex, action.playerOnHitValues);
-      updateOpponentMinion(opponentMinionIndex, action.opponentOnHitValues);
+      updatePlayerMinions(action.playerOnHitValues);
+      updateOpponentMinions(action.opponentOnHitValues);
 
       updateMinionFunc(attackingMinionIndex, {
         style: {
