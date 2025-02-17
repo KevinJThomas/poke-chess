@@ -723,7 +723,7 @@ namespace PokeChess.Server.Extensions
                     {
                         var minionToBuff = player.Board.Where(x => x.MinionTypes.Contains(MinionType.Electric)).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count(x => x.MinionTypes.Contains(MinionType.Electric)))];
                         var index = player.Board.FindIndex(x => x.Id == minionToBuff.Id);
-                        player.Board[index].Attack += 1;
+                        player.Board[index].Health += 1;
                     }
 
                     return player;
@@ -732,8 +732,8 @@ namespace PokeChess.Server.Extensions
                     {
                         var minionToBuff = player.Board.Where(x => x.MinionTypes.Contains(MinionType.Electric)).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count(x => x.MinionTypes.Contains(MinionType.Electric)))];
                         var index = player.Board.FindIndex(x => x.Id == minionToBuff.Id);
-                        player.Board[index].Attack += 3;
-                        player.Board[index].Health += 1;
+                        player.Board[index].Attack += 1;
+                        player.Board[index].Health += 3;
                     }
 
                     return player;

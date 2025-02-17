@@ -1964,11 +1964,11 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
 
             // Assert
-            Assert.IsTrue(lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth);
-            Assert.IsTrue(lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth);
+            Assert.IsTrue(lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack);
+            Assert.IsTrue(lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack);
             Assert.IsTrue(
-                (lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack && lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack + 1) ||
-                (lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack + 1 && lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack));
+                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth + 1) ||
+                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth + 1 && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth));
         }
 
         [TestMethod]
@@ -1987,11 +1987,11 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsTrue(
-                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth + 1) ||
-                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth + 1 && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth));
+                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth + 3) ||
+                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth + 3 && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth));
             Assert.IsTrue(
-                (lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack && lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack + 3) ||
-                (lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack + 3 && lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack));
+                (lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack && lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack + 1) ||
+                (lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack + 1 && lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack));
         }
 
         [TestMethod]
