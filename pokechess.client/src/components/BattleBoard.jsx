@@ -40,6 +40,8 @@ export default function BattleBoard({
 }) {
   const [player, setPlayer] = useState(initialPlayer);
   const [opponent, setOpponent] = useState(initialOpponent);
+
+  console.log("combatActions", combatActions);
   // const [player, setPlayer] = useState({
   //   name: "p1",
   //   health: 30,
@@ -180,13 +182,6 @@ export default function BattleBoard({
         action.opponentMinionId,
       );
 
-      const playerMinionIndex = player.board.findIndex(
-        (minion) => minion.id === action.playerMinionId,
-      );
-      const opponentMinionIndex = opponent.board.findIndex(
-        (minion) => minion.id === action.opponentMinionId,
-      );
-
       const startCoords = action.playerIsAttacking
         ? [playerMinionTop, playerMinionLeft]
         : [opponentMinionTop, opponentMinionLeft];
@@ -195,58 +190,70 @@ export default function BattleBoard({
         ? [opponentMinionTop + 30, opponentMinionLeft]
         : [playerMinionTop - 30, playerMinionLeft];
 
-      const attackingMinionIndex = action.playerIsAttacking
-        ? playerMinionIndex
-        : opponentMinionIndex;
+      const attackingMinionId = action.playerIsAttacking
+        ? action.playerMinionId
+        : action.opponentMinionId;
 
       const updateMinionFunc = action.playerIsAttacking
         ? updatePlayerMinions
         : updateOpponentMinions;
 
-      updateMinionFunc(attackingMinionIndex, {
-        style: {
-          position: "fixed",
-          top: startCoords[0],
-          left: startCoords[1],
-          zIndex: 10,
+      updateMinionFunc([
+        {
+          id: attackingMinionId,
+          style: {
+            position: "fixed",
+            top: startCoords[0],
+            left: startCoords[1],
+            zIndex: 10,
+          },
         },
-      });
+      ]);
 
       await delay(1000);
 
-      updateMinionFunc(attackingMinionIndex, {
-        style: {
-          position: "fixed",
-          top: endCoords[0],
-          left: endCoords[1],
-          zIndex: 10,
+      updateMinionFunc([
+        {
+          id: attackingMinionId,
+          style: {
+            position: "fixed",
+            top: endCoords[0],
+            left: endCoords[1],
+            zIndex: 10,
+          },
         },
-      });
+      ]);
 
       await delay(200);
 
       updatePlayerMinions(action.playerOnHitValues);
       updateOpponentMinions(action.opponentOnHitValues);
 
-      updateMinionFunc(attackingMinionIndex, {
-        style: {
-          position: "fixed",
-          top: startCoords[0],
-          left: startCoords[1],
-          zIndex: 10,
+      updateMinionFunc([
+        {
+          id: attackingMinionId,
+          style: {
+            position: "fixed",
+            top: startCoords[0],
+            left: startCoords[1],
+            zIndex: 10,
+          },
         },
-      });
+      ]);
 
       await delay(300);
 
-      updateMinionFunc(attackingMinionIndex, {
-        style: {
-          position: "relative",
-          top: "",
-          left: "",
-          zIndex: "auto",
+      updateMinionFunc([
+        {
+          id: attackingMinionId,
+          style: {
+            position: "relative",
+            top: "",
+            left: "",
+            zIndex: "auto",
+          },
         },
-      });
+      ]);
 
       await delay(1000);
     } catch (error) {
