@@ -571,7 +571,7 @@ namespace PokeChess.Server.Services
                 }
             }
 
-            return (lobby, player); // Does this trigger before new logic?
+            return (lobby, player);
         }
 
         private (Lobby, Player) SellMinion(Lobby lobby, Player player, Card card)
@@ -906,14 +906,14 @@ namespace PokeChess.Server.Services
                 {
                     new HitValues
                     {
-                        DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player1.Board[nextSourceIndex].CombatKeywords, Id = player1.Board[nextSourceIndex].Id
+                        DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player1.Board[nextSourceIndex].CombatKeywords.Clone(), Id = player1.Board[nextSourceIndex].Id
                     }
                 };
                 var player2HitValues = new List<HitValues>
                 {
                     new HitValues
                     {
-                        DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player2.Board[nextTargetIndex].CombatKeywords, Id = player2.Board[nextTargetIndex].Id
+                        DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player2.Board[nextTargetIndex].CombatKeywords.Clone(), Id = player2.Board[nextTargetIndex].Id
                     }
                 };
 
@@ -1004,11 +1004,11 @@ namespace PokeChess.Server.Services
 
                 var player1HitValues = new List<HitValues>
                 {
-                    new HitValues { DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player1.Board[nextTargetIndex].CombatKeywords, Id = player1.Board[nextTargetIndex].Id }
+                    new HitValues { DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player1.Board[nextTargetIndex].CombatKeywords.Clone(), Id = player1.Board[nextTargetIndex].Id }
                 };
                 var player2HitValues = new List<HitValues>
                 {
-                    new HitValues { DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player2.Board[nextSourceIndex].CombatKeywords, Id = player2.Board[nextSourceIndex].Id }
+                    new HitValues { DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player2.Board[nextSourceIndex].CombatKeywords.Clone(), Id = player2.Board[nextSourceIndex].Id }
                 };
 
                 if (burnedMinionId != null)
