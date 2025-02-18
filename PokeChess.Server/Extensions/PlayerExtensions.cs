@@ -957,11 +957,14 @@ namespace PokeChess.Server.Extensions
                     {
                         foreach (var card in player.Shop)
                         {
-                            player.Hand.Add(card);
-                            player.CardAddedToHand();
+                            if (player.Hand.Count() < player.MaxHandSize)
+                            {
+                                player.Hand.Add(card);
+                                player.CardAddedToHand();
+                                player.Shop.Remove(card);
+                            }
                         }
                         player.EvolveCheck();
-                        player.Shop = new List<Card>();
 
                         return true;
                     }
