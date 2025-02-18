@@ -535,7 +535,10 @@ namespace PokeChess.Server.Services
                 {
                     minion.RockMinionBuffTrigger(player.RockTypeDeaths);
                 }
-                player = minion.GainedStatsTrigger(player);
+                if (minion.Attack > minion.BaseAttack || minion.Health > minion.BaseHealth)
+                {
+                    player = minion.GainedStatsTrigger(player);
+                }
             }
             player.ApplyShopDiscounts();
 
@@ -839,10 +842,12 @@ namespace PokeChess.Server.Services
 
                 foreach (var minion in player1.Board)
                 {
+                    minion.CombatAttack = minion.Attack;
                     minion.CombatHealth = minion.Health;
                 }
                 foreach (var minion in player2.Board)
                 {
+                    minion.CombatAttack = minion.Attack;
                     minion.CombatHealth = minion.Health;
                 }
                 player1.StartOfCombatBoard = player1.Board.Clone();
@@ -932,14 +937,14 @@ namespace PokeChess.Server.Services
                 {
                     new HitValues
                     {
-                        DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Attack =  player1.Board[nextSourceIndex].Attack, Health = sourceHealthAfterAttack, Keywords = player1.Board[nextSourceIndex].CombatKeywords.Clone(), Id = player1.Board[nextSourceIndex].Id
+                        DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Attack =  player1.Board[nextSourceIndex].CombatAttack, Health = sourceHealthAfterAttack, Keywords = player1.Board[nextSourceIndex].CombatKeywords.Clone(), Id = player1.Board[nextSourceIndex].Id
                     }
                 };
                 var player2HitValues = new List<HitValues>
                 {
                     new HitValues
                     {
-                        DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Attack = player2.Board[nextTargetIndex].Attack, Health = targetHealthAfterAttack, Keywords = player2.Board[nextTargetIndex].CombatKeywords.Clone(), Id = player2.Board[nextTargetIndex].Id
+                        DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Attack = player2.Board[nextTargetIndex].CombatAttack, Health = targetHealthAfterAttack, Keywords = player2.Board[nextTargetIndex].CombatKeywords.Clone(), Id = player2.Board[nextTargetIndex].Id
                     }
                 };
 
@@ -950,7 +955,7 @@ namespace PokeChess.Server.Services
                     var burnedDamageType = GetDamageType(new KeyValuePair<bool, bool>(player1.Board[nextSourceIndex].IsWeakTo(burnedMinion), burnedMinion.IsWeakTo(player1.Board[nextSourceIndex])), true);
                     burnedOnHitValues.DamageType = burnedDamageType.ToString().ToLower();
                     burnedOnHitValues.Damage = burnedMinionDamage;
-                    burnedOnHitValues.Attack = burnedMinion.Attack;
+                    burnedOnHitValues.Attack = burnedMinion.CombatAttack;
                     burnedOnHitValues.Health = burnedMinion.CombatHealth;
                     burnedOnHitValues.Keywords = burnedMinion.CombatKeywords;
                     burnedOnHitValues.Id = burnedMinion.Id;
@@ -959,7 +964,11 @@ namespace PokeChess.Server.Services
 
                 if (player1.Board[nextSourceIndex].IsDead)
                 {
-                    player1.MinionDiedInCombat(player1.Board[nextSourceIndex]);
+                    var hitValues = player1.MinionDiedInCombat(player1.Board[nextSourceIndex]);
+                    if (hitValues != null && hitValues.Any())
+                    {
+                        player1HitValues.AddRange(hitValues);
+                    }
 
                     if (player1.Board[nextSourceIndex].MinionTypes.Contains(MinionType.Rock))
                     {
@@ -971,7 +980,7 @@ namespace PokeChess.Server.Services
                                 player1HitValues.Add(new HitValues
                                 {
                                     Id = minion.Id,
-                                    Attack = minion.Attack,
+                                    Attack = minion.CombatAttack,
                                     Health = minion.CombatHealth,
                                     Keywords = minion.CombatKeywords
                                 });
@@ -981,7 +990,11 @@ namespace PokeChess.Server.Services
                 }
                 if (player2.Board[nextTargetIndex].IsDead)
                 {
-                    player2.MinionDiedInCombat(player2.Board[nextTargetIndex]);
+                    var hitValues = player2.MinionDiedInCombat(player2.Board[nextTargetIndex]);
+                    if (hitValues != null && hitValues.Any())
+                    {
+                        player2HitValues.AddRange(hitValues);
+                    }
 
                     if (player2.Board[nextTargetIndex].MinionTypes.Contains(MinionType.Rock))
                     {
@@ -993,7 +1006,7 @@ namespace PokeChess.Server.Services
                                 player2HitValues.Add(new HitValues
                                 {
                                     Id = minion.Id,
-                                    Attack = minion.Attack,
+                                    Attack = minion.CombatAttack,
                                     Health = minion.CombatHealth,
                                     Keywords = minion.CombatKeywords
                                 });
@@ -1006,7 +1019,11 @@ namespace PokeChess.Server.Services
                     var burnedMinion = player2.Board.Where(x => x.Id == burnedMinionId).FirstOrDefault();
                     if (burnedMinion != null && burnedMinion.IsDead)
                     {
-                        player2.MinionDiedInCombat(burnedMinion);
+                        var hitValues = player2.MinionDiedInCombat(burnedMinion);
+                        if (hitValues != null && hitValues.Any())
+                        {
+                            player2HitValues.AddRange(hitValues);
+                        }
 
                         if (burnedMinion.MinionTypes.Contains(MinionType.Rock))
                         {
@@ -1018,7 +1035,7 @@ namespace PokeChess.Server.Services
                                     player2HitValues.Add(new HitValues
                                     {
                                         Id = minion.Id,
-                                        Attack = minion.Attack,
+                                        Attack = minion.CombatAttack,
                                         Health = minion.CombatHealth,
                                         Keywords = minion.CombatKeywords
                                     });
@@ -1104,14 +1121,14 @@ namespace PokeChess.Server.Services
                 {
                     new HitValues
                     {
-                        DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Attack = player1.Board[nextTargetIndex].Attack, Health = targetHealthAfterAttack, Keywords = player1.Board[nextTargetIndex].CombatKeywords.Clone(), Id = player1.Board[nextTargetIndex].Id
+                        DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Attack = player1.Board[nextTargetIndex].CombatAttack, Health = targetHealthAfterAttack, Keywords = player1.Board[nextTargetIndex].CombatKeywords.Clone(), Id = player1.Board[nextTargetIndex].Id
                     }
                 };
                 var player2HitValues = new List<HitValues>
                 {
                     new HitValues
                     {
-                        DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Attack = player2.Board[nextSourceIndex].Attack, Health = sourceHealthAfterAttack, Keywords = player2.Board[nextSourceIndex].CombatKeywords.Clone(), Id = player2.Board[nextSourceIndex].Id
+                        DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Attack = player2.Board[nextSourceIndex].CombatAttack, Health = sourceHealthAfterAttack, Keywords = player2.Board[nextSourceIndex].CombatKeywords.Clone(), Id = player2.Board[nextSourceIndex].Id
                     }
                 };
 
@@ -1122,7 +1139,7 @@ namespace PokeChess.Server.Services
                     var burnedDamageType = GetDamageType(new KeyValuePair<bool, bool>(player2.Board[nextSourceIndex].IsWeakTo(burnedMinion), burnedMinion.IsWeakTo(player2.Board[nextSourceIndex])), true);
                     burnedOnHitValues.DamageType = burnedDamageType.ToString().ToLower();
                     burnedOnHitValues.Damage = burnedMinionDamage;
-                    burnedOnHitValues.Attack = burnedMinion.Attack;
+                    burnedOnHitValues.Attack = burnedMinion.CombatAttack;
                     burnedOnHitValues.Health = burnedMinion.CombatHealth;
                     burnedOnHitValues.Keywords = burnedMinion.CombatKeywords;
                     burnedOnHitValues.Id = burnedMinion.Id;
@@ -1131,7 +1148,11 @@ namespace PokeChess.Server.Services
 
                 if (player2.Board[nextSourceIndex].IsDead)
                 {
-                    player2.MinionDiedInCombat(player2.Board[nextSourceIndex]);
+                    var hitValues = player2.MinionDiedInCombat(player2.Board[nextSourceIndex]);
+                    if (hitValues != null && hitValues.Any())
+                    {
+                        player2HitValues.AddRange(hitValues);
+                    }
 
                     if (player2.Board[nextSourceIndex].MinionTypes.Contains(MinionType.Rock))
                     {
@@ -1143,7 +1164,7 @@ namespace PokeChess.Server.Services
                                 player2HitValues.Add(new HitValues
                                 {
                                     Id = minion.Id,
-                                    Attack = minion.Attack,
+                                    Attack = minion.CombatAttack,
                                     Health = minion.CombatHealth,
                                     Keywords = minion.CombatKeywords
                                 });
@@ -1153,7 +1174,11 @@ namespace PokeChess.Server.Services
                 }
                 if (player1.Board[nextTargetIndex].IsDead)
                 {
-                    player1.MinionDiedInCombat(player1.Board[nextTargetIndex]);
+                    var hitValues = player1.MinionDiedInCombat(player1.Board[nextTargetIndex]);
+                    if (hitValues != null && hitValues.Any())
+                    {
+                        player1HitValues.AddRange(hitValues);
+                    }
 
                     if (player1.Board[nextTargetIndex].MinionTypes.Contains(MinionType.Rock))
                     {
@@ -1165,7 +1190,7 @@ namespace PokeChess.Server.Services
                                 player1HitValues.Add(new HitValues
                                 {
                                     Id = minion.Id,
-                                    Attack = minion.Attack,
+                                    Attack = minion.CombatAttack,
                                     Health = minion.CombatHealth,
                                     Keywords = minion.CombatKeywords
                                 });
@@ -1178,7 +1203,11 @@ namespace PokeChess.Server.Services
                     var burnedMinion = player1.Board.Where(x => x.Id == burnedMinionId).FirstOrDefault();
                     if (burnedMinion != null && burnedMinion.IsDead)
                     {
-                        player1.MinionDiedInCombat(burnedMinion);
+                        var hitValues = player1.MinionDiedInCombat(burnedMinion);
+                        if (hitValues != null && hitValues.Any())
+                        {
+                            player1HitValues.AddRange(hitValues);
+                        }
 
                         if (burnedMinion.MinionTypes.Contains(MinionType.Rock))
                         {
@@ -1190,7 +1219,7 @@ namespace PokeChess.Server.Services
                                     player1HitValues.Add(new HitValues
                                     {
                                         Id = minion.Id,
-                                        Attack = minion.Attack,
+                                        Attack = minion.CombatAttack,
                                         Health = minion.CombatHealth,
                                         Keywords = minion.CombatKeywords
                                     });
@@ -1321,7 +1350,7 @@ namespace PokeChess.Server.Services
             }
             else
             {
-                var damage = target.Attack;
+                var damage = target.CombatAttack;
                 var halfDamage = damage / 2;
 
                 if (target.CombatKeywords.Paralyzed)
@@ -1363,7 +1392,7 @@ namespace PokeChess.Server.Services
             }
             else
             {
-                var damage = source.Attack;
+                var damage = source.CombatAttack;
                 var halfDamage = damage / 2;
 
                 if (sourceWeakToTarget && !targetWeakToSource)

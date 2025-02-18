@@ -648,6 +648,7 @@ namespace PokeChess.Server.Extensions
                     case 103:
                         player.FertilizerAttack += 1;
                         player.FertilizerHealth += 1;
+                        player.UpdateFertilizerText();
                         return player;
                     case 120:
                         if (player.Hand.Count() < player.MaxHandSize)
@@ -1124,6 +1125,7 @@ namespace PokeChess.Server.Extensions
             switch (card.PokemonId)
             {
                 case 75:
+                    card.CombatAttack += amount;
                     card.Attack += amount;
                     card.Health += amount;
                     if (!card.IsDead)
@@ -1132,6 +1134,7 @@ namespace PokeChess.Server.Extensions
                     }
                     return;
                 case 76:
+                    card.CombatAttack += amount * 5;
                     card.Attack += amount * 5;
                     card.Health += amount * 5;
                     if (!card.IsDead)
@@ -1192,6 +1195,129 @@ namespace PokeChess.Server.Extensions
                     return player;
                 default:
                     return player;
+            }
+        }
+
+        public static (Player, List<HitValues>) DeathrattleTrigger(this Card card, Player player)
+        {
+            var hitValues = new List<HitValues>();
+            if (!card.HasDeathrattle)
+            {
+                return (player, hitValues);
+            }
+
+            switch (card.PokemonId)
+            {
+                case 28:
+                    if (player.UpgradeCost > 0)
+                    {
+                        player.UpgradeCost -= 1;
+                    }
+
+                    return (player, hitValues);
+                case 44:
+                    player.FertilizerAttack += 1;
+                    player.UpdateFertilizerText();
+                    return (player, hitValues);
+                case 74:
+                    player.DelayedSpells.Add(new Card
+                    {
+                        Id = Guid.NewGuid().ToString() + _copyStamp,
+                        CardType = CardType.Spell,
+                        SpellTypes = new List<SpellType>()
+                        {
+                            SpellType.GainGold
+                        },
+                        Amount = new List<int>
+                        {
+                            1
+                        },
+                        Delay = 1,
+                        IsTavernSpell = true
+                    });
+
+                    return (player, hitValues);
+                case 77:
+                    if (player.Board.Any(x => !x.IsDead && x.MinionTypes.Contains(MinionType.Fire)))
+                    {
+                        foreach (var fireMinion in player.Board.Where(x => !x.IsDead && x.MinionTypes.Contains(MinionType.Fire)))
+                        {
+                            fireMinion.CombatAttack += 2;
+                            fireMinion.CombatHealth += 2;
+                            hitValues.Add(new HitValues
+                            {
+                                Id = fireMinion.Id,
+                                Attack = fireMinion.CombatAttack,
+                                Health = fireMinion.CombatHealth,
+                                Keywords = fireMinion.CombatKeywords
+                            });
+                        }
+                    }
+
+                    return (player, hitValues);
+                case 86:
+                    if (player.Board.Any(x => !x.IsDead && x.MinionTypes.Contains(MinionType.Water)))
+                    {
+                        var minionToBuff = player.Board.Where(x => !x.IsDead && x.MinionTypes.Contains(MinionType.Water)).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count(x => !x.IsDead && x.MinionTypes.Contains(MinionType.Water)))];
+                        var index = player.Board.FindIndex(x => x.Id == minionToBuff.Id);
+                        player.Board[index].CombatAttack += player.SpellsCasted;
+                        player.Board[index].CombatHealth += player.SpellsCasted;
+                        hitValues.Add(new HitValues
+                        {
+                            Id = player.Board[index].Id,
+                            Attack = player.Board[index].CombatAttack,
+                            Health = player.Board[index].CombatHealth,
+                            Keywords = player.Board[index].CombatKeywords
+                        });
+                    }
+
+                    return (player, hitValues);
+                case 87:
+                    if (player.Board.Any(x => !x.IsDead && x.MinionTypes.Contains(MinionType.Water)))
+                    {
+                        foreach (var waterMinion in player.Board.Where(x => !x.IsDead && x.MinionTypes.Contains(MinionType.Water)))
+                        {
+                            waterMinion.CombatAttack += player.SpellsCasted;
+                            waterMinion.CombatHealth += player.SpellsCasted;
+                            hitValues.Add(new HitValues
+                            {
+                                Id = waterMinion.Id,
+                                Attack = waterMinion.CombatAttack,
+                                Health = waterMinion.CombatHealth,
+                                Keywords = waterMinion.CombatKeywords
+                            });
+                        }
+                    }
+
+                    return (player, hitValues);
+                case 138:
+                    if (player.Hand.Count() < player.MaxHandSize)
+                    {
+                        var possibleSpells = CardService.Instance.GetAllSpells().Where(x => x.Tier <= player.Tier).Distinct().ToList();
+                        var spell = possibleSpells[ThreadSafeRandom.ThisThreadsRandom.Next(possibleSpells.Count)];
+                        spell.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        player.Hand.Add(spell);
+                        player.CardAddedToHand();
+                    }
+
+                    return (player, hitValues);
+                case 139:
+                    if (player.Hand.Count() < player.MaxHandSize)
+                    {
+                        var possibleSpells = CardService.Instance.GetAllSpells().Where(x => x.Tier <= player.Tier).Distinct().ToList();
+                        var spell = possibleSpells[ThreadSafeRandom.ThisThreadsRandom.Next(possibleSpells.Count)];
+                        var spell2 = possibleSpells[ThreadSafeRandom.ThisThreadsRandom.Next(possibleSpells.Count)];
+                        spell.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        spell2.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        player.Hand.Add(spell);
+                        player.CardAddedToHand();
+                        player.Hand.Add(spell2);
+                        player.CardAddedToHand();
+                    }
+
+                    return (player, hitValues);
+                default:
+                    return (player, hitValues);
             }
         }
 

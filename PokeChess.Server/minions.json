@@ -742,7 +742,8 @@
         "num": "027",
         "name": "Sandshrew"
       }
-    ]
+    ],
+    "hasDeathrattle": true
   },
   {
     "pokemonId": 29,
@@ -1159,7 +1160,8 @@
         "num": "045",
         "name": "Vileplume"
       }
-    ]
+    ],
+    "hasDeathrattle": true
   },
   {
     "pokemonId": 45,
@@ -1917,7 +1919,8 @@
         "num": "076",
         "name": "Golem"
       }
-    ]
+    ],
+    "hasDeathrattle": true
   },
   {
     "pokemonId": 75,
@@ -1995,7 +1998,8 @@
         "num": "078",
         "name": "Rapidash"
       }
-    ]
+    ],
+    "hasDeathrattle": true
   },
   {
     "pokemonId": 78,
@@ -2198,7 +2202,8 @@
         "num": "087",
         "name": "Dewgong"
       }
-    ]
+    ],
+    "hasDeathrattle": true
   },
   {
     "pokemonId": 87,
@@ -2220,7 +2225,8 @@
         "num": "086",
         "name": "Seel"
       }
-    ]
+    ],
+    "hasDeathrattle": true
   },
   {
     "pokemonId": 88,
@@ -3315,7 +3321,8 @@
         "num": "139",
         "name": "Omastar"
       }
-    ]
+    ],
+    "hasDeathrattle": true
   },
   {
     "pokemonId": 139,
@@ -3337,16 +3344,17 @@
         "num": "138",
         "name": "Omanyte"
       }
-    ]
+    ],
+    "hasDeathrattle": true
   },
   {
     "pokemonId": 140,
     "num": "140",
     "tier": 4,
-    "text": "__Taunt.__ __Deathrattle:__ Water and Rock types have +1/+2 this game",
+    "text": "Your __Deathrattles__ trigger an extra time",
     "name": "Kabuto",
-    "baseAttack": 7,
-    "baseHealth": 5,
+    "baseAttack": 3,
+    "baseHealth": 7,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -3365,10 +3373,10 @@
     "pokemonId": 141,
     "num": "141",
     "tier": 6,
-    "text": "__Taunt.__ __Deathrattle:__ Water and Rock types have +2/+4 this game",
+    "text": "Your __Deathrattles__ trigger 2 extra times",
     "name": "Kabutops",
-    "baseAttack": 21,
-    "baseHealth": 15,
+    "baseAttack": 9,
+    "baseHealth": 21,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},

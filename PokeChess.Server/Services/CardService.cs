@@ -314,6 +314,7 @@ namespace PokeChess.Server.Services
             {
                 Id = Guid.NewGuid().ToString() + _copyStamp,
                 Tier = 1,
+                Name = "Discover Treasure",
                 Text = "Gain 1 gold this turn",
                 CardType = CardType.Spell,
                 BaseCost = 1,

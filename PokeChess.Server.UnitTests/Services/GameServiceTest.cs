@@ -2805,6 +2805,141 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
+        public void TestDeathrattle_28()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 28).FirstOrDefault());
+            for (var i = 1; i < lobby.Players.Count(); i++)
+            {
+                lobby.Players[i].Board.Add(CardService.Instance.BuildTestMinion(false, 50));
+            }
+            var upgradeCostBefore = lobby.Players[0].UpgradeCost;
+            lobby = instance.CombatRound(lobby);
+            var upgradeCostAfter = lobby.Players[0].UpgradeCost;
+
+            // Assert
+            Assert.IsTrue(upgradeCostBefore == upgradeCostAfter + 2);
+        }
+
+        [TestMethod]
+        public void TestDeathrattle_44()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 44).FirstOrDefault());
+            for (var i = 1; i < lobby.Players.Count(); i++)
+            {
+                lobby.Players[i].Board.Add(CardService.Instance.BuildTestMinion(false, 50));
+            }
+            var fertilizerAttackBefore = lobby.Players[0].FertilizerAttack;
+            lobby = instance.CombatRound(lobby);
+            var fertilizerAttackAfter = lobby.Players[0].FertilizerAttack;
+
+            // Assert
+            Assert.IsTrue(fertilizerAttackBefore == fertilizerAttackAfter - 1);
+        }
+
+        [TestMethod]
+        public void TestDeathrattle_74()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 74).FirstOrDefault());
+            for (var i = 1; i < lobby.Players.Count(); i++)
+            {
+                lobby.Players[i].Board.Add(CardService.Instance.BuildTestMinion(false, 50));
+            }
+            lobby = instance.CombatRound(lobby);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold + 1);
+        }
+
+        [TestMethod]
+        public void TestDeathrattle_77()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 77).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 1, 1, false, null, new List<MinionType> { MinionType.Fire }));
+            for (var i = 1; i < lobby.Players.Count(); i++)
+            {
+                lobby.Players[i].Board.Add(CardService.Instance.BuildTestMinion(false, 50));
+            }
+            lobby = instance.CombatRound(lobby);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Board[1].CombatAttack == lobby.Players[0].Board[1].Attack + 2);
+        }
+
+        [TestMethod]
+        public void TestDeathrattle_138()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 138).FirstOrDefault());
+            for (var i = 1; i < lobby.Players.Count(); i++)
+            {
+                lobby.Players[i].Board.Add(CardService.Instance.BuildTestMinion(false, 50));
+            }
+            var handSizeBefore = lobby.Players[0].Hand.Count();
+            lobby = instance.CombatRound(lobby);
+            var handSizeAfter = lobby.Players[0].Hand.Count();
+
+            // Assert
+            Assert.IsTrue(handSizeBefore == handSizeAfter - 1);
+        }
+
+        [TestMethod]
+        public void TestDeathrattle_139()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 139).FirstOrDefault());
+            for (var i = 1; i < lobby.Players.Count(); i++)
+            {
+                lobby.Players[i].Board.Add(CardService.Instance.BuildTestMinion(false, 50));
+            }
+            var handSizeBefore = lobby.Players[0].Hand.Count();
+            lobby = instance.CombatRound(lobby);
+            var handSizeAfter = lobby.Players[0].Hand.Count();
+
+            // Assert
+            Assert.IsTrue(handSizeBefore == handSizeAfter - 2);
+        }
+
+        [TestMethod]
         public void TestPlaySpell_Fertilizer()
         {
             // Arrange

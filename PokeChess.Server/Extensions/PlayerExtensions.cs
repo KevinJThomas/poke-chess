@@ -540,9 +540,9 @@ namespace PokeChess.Server.Extensions
             {
                 foreach (var minion in player.Board)
                 {
-                    if (minion.PlayCardTriggerType == PlayCardTriggerType.Either ||
+                    if ((minion.PlayCardTriggerType == PlayCardTriggerType.Either ||
                         (minion.PlayCardTriggerType == PlayCardTriggerType.Minion && card.CardType == CardType.Minion) ||
-                        (minion.PlayCardTriggerType == PlayCardTriggerType.Spell && card.CardType == CardType.Spell))
+                        (minion.PlayCardTriggerType == PlayCardTriggerType.Spell && card.CardType == CardType.Spell)) && card.Id != minion.Id)
                     {
                         if (minion.PlayCardTriggerInterval <= 1)
                         {
@@ -645,8 +645,26 @@ namespace PokeChess.Server.Extensions
             }
         }
 
-        public static void MinionDiedInCombat(this Player player, Card card)
+        public static List<HitValues> MinionDiedInCombat(this Player player, Card card)
         {
+            var hitValues = new List<HitValues>();
+
+            if (card.HasDeathrattle)
+            {
+                var deathrattleTriggerCount = 1;
+                deathrattleTriggerCount += player.Board.Count(x => !x.IsDead && x.PokemonId == 140);
+                deathrattleTriggerCount += player.Board.Count(x => !x.IsDead && x.PokemonId == 141) * 2;
+
+                for (var i = 0; i < deathrattleTriggerCount; i++)
+                {
+                    (player, var newHitValues) = card.DeathrattleTrigger(player);
+                    if (newHitValues != null && newHitValues.Any())
+                    {
+                        hitValues.AddRange(newHitValues);
+                    }
+                }
+            }
+
             if (player.Board.Any(x => !x.IsDead))
             {
                 foreach (var minion in player.Board.Where(x => !x.IsDead))
@@ -670,6 +688,8 @@ namespace PokeChess.Server.Extensions
                     }
                 }
             }
+
+            return hitValues;
         }
 
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
