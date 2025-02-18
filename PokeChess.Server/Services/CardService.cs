@@ -274,6 +274,38 @@ namespace PokeChess.Server.Services
             return card;
         }
 
+        public Card BuildTestMinion(bool copyStampId = false, int stats = 5, int tier = 1, bool hasBattlecry = false, Keywords keywords = null, List<MinionType> minionTypes = null)
+        {
+            var id = Guid.NewGuid().ToString();
+            if (copyStampId)
+            {
+                id += _copyStamp;
+            }
+            if (keywords == null)
+            {
+                keywords = new Keywords();
+            }
+            if (minionTypes == null)
+            {
+                minionTypes = new List<MinionType>();
+            }
+
+            return new Card
+            {
+                Id = id,
+                Tier = tier,
+                CardType = CardType.Minion,
+                Attack = stats,
+                Health = stats,
+                SellValue = 1,
+                BaseCost = 3,
+                Cost = 3,
+                HasBattlecry = hasBattlecry,
+                Keywords = keywords,
+                MinionTypes = minionTypes
+            };
+        }
+
         #endregion
 
         #region private methods

@@ -36,6 +36,7 @@ namespace PokeChess.Server.Models.Player
             BattlecriesPlayed = 0;
             GoldSpentThisTurn = 0;
             RockTypeDeaths = 0;
+            SpellsCasted = 0;
             Discounts = new Discounts();
             Board = new List<Card>();
             Hand = new List<Card>();
@@ -129,6 +130,7 @@ namespace PokeChess.Server.Models.Player
                 _rockTypeDeaths = value;
             }
         }
+        public int SpellsCasted { get; set; }
         public Discounts Discounts { get; set; }
         public List<Card> Board { get; set; }
         public List<Card> StartOfCombatBoard { get; set; }

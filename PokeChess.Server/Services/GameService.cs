@@ -508,6 +508,24 @@ namespace PokeChess.Server.Services
                 player.Shop.Add(lobby.GameState.SpellCardPool.DrawCard(player.Tier));
             }
 
+            var extraSpells = player.Board.Count(x => x.PokemonId == 118);
+            if (extraSpells > 0)
+            {
+                for (var i = 0; i < extraSpells; i++)
+                {
+                    if (player.Shop.Count() >= _boardsSlots)
+                    {
+                        var cardsToRemoveCount = player.Shop.Count() - _boardsSlots + 1;
+                        for (var j = cardsToRemoveCount; j > 0; j--)
+                        {
+                            player.Shop.RemoveAt(0);
+                        }
+                    }
+
+                    player.Shop.Add(lobby.GameState.SpellCardPool.DrawCard(player.Tier));
+                }
+            }
+
             // Account for player's shop buffs
             foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion))
             {
@@ -560,11 +578,11 @@ namespace PokeChess.Server.Services
             {
                 player.Shop.Remove(card);
                 player.Hand.Add(card);
+                player.Gold -= card.Cost;
+                player.ConsumeShopDiscounts(card);
                 player.CardBought(card);
                 player.CardAddedToHand();
                 player.EvolveCheck();
-                player.Gold -= card.Cost;
-                player.ConsumeShopDiscounts(card);
 
                 if (player.CardsToReturnToPool.Any())
                 {
@@ -939,10 +957,9 @@ namespace PokeChess.Server.Services
                     player2HitValues.Add(burnedOnHitValues);
                 }
 
-                // Capture rock type deaths
                 if (player1.Board[nextSourceIndex].IsDead)
                 {
-                    player1.MinionDiedInCombat();
+                    player1.MinionDiedInCombat(player1.Board[nextSourceIndex]);
 
                     if (player1.Board[nextSourceIndex].MinionTypes.Contains(MinionType.Rock))
                     {
@@ -964,7 +981,7 @@ namespace PokeChess.Server.Services
                 }
                 if (player2.Board[nextTargetIndex].IsDead)
                 {
-                    player2.MinionDiedInCombat();
+                    player2.MinionDiedInCombat(player2.Board[nextTargetIndex]);
 
                     if (player2.Board[nextTargetIndex].MinionTypes.Contains(MinionType.Rock))
                     {
@@ -989,7 +1006,7 @@ namespace PokeChess.Server.Services
                     var burnedMinion = player2.Board.Where(x => x.Id == burnedMinionId).FirstOrDefault();
                     if (burnedMinion != null && burnedMinion.IsDead)
                     {
-                        player2.MinionDiedInCombat();
+                        player2.MinionDiedInCombat(burnedMinion);
 
                         if (burnedMinion.MinionTypes.Contains(MinionType.Rock))
                         {
@@ -1112,10 +1129,9 @@ namespace PokeChess.Server.Services
                     player1HitValues.Add(burnedOnHitValues);
                 }
 
-                // Capture rock type deaths
                 if (player2.Board[nextSourceIndex].IsDead)
                 {
-                    player2.MinionDiedInCombat();
+                    player2.MinionDiedInCombat(player2.Board[nextSourceIndex]);
 
                     if (player2.Board[nextSourceIndex].MinionTypes.Contains(MinionType.Rock))
                     {
@@ -1137,7 +1153,7 @@ namespace PokeChess.Server.Services
                 }
                 if (player1.Board[nextTargetIndex].IsDead)
                 {
-                    player1.MinionDiedInCombat();
+                    player1.MinionDiedInCombat(player1.Board[nextTargetIndex]);
 
                     if (player1.Board[nextTargetIndex].MinionTypes.Contains(MinionType.Rock))
                     {
@@ -1162,7 +1178,7 @@ namespace PokeChess.Server.Services
                     var burnedMinion = player1.Board.Where(x => x.Id == burnedMinionId).FirstOrDefault();
                     if (burnedMinion != null && burnedMinion.IsDead)
                     {
-                        player1.MinionDiedInCombat();
+                        player1.MinionDiedInCombat(burnedMinion);
 
                         if (burnedMinion.MinionTypes.Contains(MinionType.Rock))
                         {

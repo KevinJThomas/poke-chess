@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions;
+using PokeChess.Server.Enums;
 using PokeChess.Server.Extensions;
 using PokeChess.Server.Models;
 using PokeChess.Server.Models.Game;
@@ -107,20 +108,8 @@ namespace PokeChess.Server.UnitTests.Services
             // Act
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
-            lobby.Players[0].Board.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Card 1",
-                SellValue = 1,
-                CardType = Enums.CardType.Minion
-            });
-            lobby.Players[0].Board.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Card 2",
-                SellValue = 1,
-                CardType = Enums.CardType.Minion
-            });
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
             var boardCount = lobby.Players[0].Board.Count();
             var cardIdToRemove = lobby.Players[0].Board[0].Id;
             var cardPoolCountBeforeSell = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
@@ -146,16 +135,6 @@ namespace PokeChess.Server.UnitTests.Services
             // Act
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
-            lobby.Players[0].Hand.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Card 1"
-            });
-            lobby.Players[0].Hand.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Card 2"
-            });
             var shopCount = lobby.Players[0].Shop.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Shop[0].Id;
@@ -184,16 +163,6 @@ namespace PokeChess.Server.UnitTests.Services
             // Act
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
-            lobby.Players[0].Hand.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Card 1"
-            });
-            lobby.Players[0].Hand.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Card 2"
-            });
             lobby.Players[0].Gold = 0;
             var shopCount = lobby.Players[0].Shop.Count();
             var handCount = lobby.Players[0].Hand.Count();
@@ -227,11 +196,7 @@ namespace PokeChess.Server.UnitTests.Services
             for (var i = 0; i < lobby.Players[0].MaxHandSize; i++)
             {
                 // Fill player's hand before attempting to buy one
-                lobby.Players[0].Hand.Add(new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Card " + i + 1
-                });
+                lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
             }
             var shopCount = lobby.Players[0].Shop.Count();
             var handCount = lobby.Players[0].Hand.Count();
@@ -261,18 +226,8 @@ namespace PokeChess.Server.UnitTests.Services
             // Act
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
-            lobby.Players[0].Hand.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Card 1",
-                CardType = Enums.CardType.Minion
-            });
-            lobby.Players[0].Hand.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Card 2",
-                CardType = Enums.CardType.Minion
-            });
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
@@ -298,23 +253,10 @@ namespace PokeChess.Server.UnitTests.Services
             // Act
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
-            lobby.Players[0].Hand.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Card 1"
-            });
-            lobby.Players[0].Hand.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Card 2"
-            });
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
             for (var i = 0; i < instance.BoardSlots; i++)
             {
-                lobby.Players[0].Board.Add(new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion " + i + 1
-                });
+                lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
             }
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
@@ -737,10 +679,10 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 40).FirstOrDefault());
-            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.MinionTypes.Count() == 1 && x.MinionTypes.Contains(Enums.MinionType.Fire)).FirstOrDefault());
-            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.MinionTypes.Count() == 1 && x.MinionTypes.Contains(Enums.MinionType.Water)).FirstOrDefault());
-            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.MinionTypes.Count() == 1 && x.MinionTypes.Contains(Enums.MinionType.Ground)).FirstOrDefault());
-            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.MinionTypes.Count() == 2 && x.MinionTypes.Contains(Enums.MinionType.Rock) && x.MinionTypes.Contains(Enums.MinionType.Ground)).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<Enums.MinionType> { Enums.MinionType.Fire }));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<Enums.MinionType> { Enums.MinionType.Water }));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<Enums.MinionType> { Enums.MinionType.Ground }));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<Enums.MinionType> { Enums.MinionType.Rock, Enums.MinionType.Ground }));
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
@@ -929,10 +871,9 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 58).FirstOrDefault());
-            var fireMinions = CardService.Instance.GetAllMinions().Where(x => x.MinionTypes.Contains(Enums.MinionType.Fire) && x.PokemonId != 58).ToList();
-            lobby.Players[0].Board.Add(fireMinions[random.Next(fireMinions.Count())]);
-            lobby.Players[0].Board.Add(fireMinions[random.Next(fireMinions.Count())]);
-            lobby.Players[0].Board.Add(fireMinions[random.Next(fireMinions.Count())]);
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<Enums.MinionType> { Enums.MinionType.Fire }));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<Enums.MinionType> { Enums.MinionType.Fire }));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<Enums.MinionType> { Enums.MinionType.Fire }));
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
@@ -993,10 +934,9 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 70).FirstOrDefault());
-            var minions = CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 70).ToList();
-            lobby.Players[0].Board.Add(minions[random.Next(minions.Count())]);
-            lobby.Players[0].Board.Add(minions[random.Next(minions.Count())]);
-            lobby.Players[0].Board.Add(minions[random.Next(minions.Count())]);
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
@@ -1133,12 +1073,10 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 94).FirstOrDefault());
-            var oddMinions = CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 94 && x.Tier % 2 != 0).ToList();
-            var evenMinions = CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 94 && x.Tier % 2 == 0).ToList();
-            lobby.Players[0].Board.Add(oddMinions[random.Next(oddMinions.Count())]);
-            lobby.Players[0].Board.Add(oddMinions[random.Next(oddMinions.Count())]);
-            lobby.Players[0].Board.Add(evenMinions[random.Next(evenMinions.Count())]);
-            lobby.Players[0].Board.Add(evenMinions[random.Next(evenMinions.Count())]);
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 5));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 5));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 6));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 6));
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
@@ -1179,8 +1117,7 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 96).FirstOrDefault());
-            var psychicMinions = CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 96 && x.MinionTypes.Contains(Enums.MinionType.Psychic)).ToList();
-            var minionToBuff = psychicMinions[0];
+            var minionToBuff = CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<Enums.MinionType> { Enums.MinionType.Psychic });
             lobby.Players[0].Shop.Add(minionToBuff);
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
@@ -1214,8 +1151,7 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 96).FirstOrDefault());
-            var nonPsychicMinions = CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 96 && !x.MinionTypes.Contains(Enums.MinionType.Psychic)).ToList();
-            var minionToBuff = nonPsychicMinions[0];
+            var minionToBuff = CardService.Instance.BuildTestMinion();
             lobby.Players[0].Shop.Add(minionToBuff);
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
@@ -1251,8 +1187,7 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.StartGame(lobby);
             lobby.Players[0].BattlecriesPlayed = battlecriesPlayed;
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 97).FirstOrDefault());
-            var psychicMinions = CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 97 && x.MinionTypes.Contains(Enums.MinionType.Psychic)).ToList();
-            var minionToBuff = psychicMinions[0];
+            var minionToBuff = CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<Enums.MinionType> { Enums.MinionType.Psychic });
             lobby.Players[0].Board.Add(minionToBuff);
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
@@ -1288,8 +1223,7 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.StartGame(lobby);
             lobby.Players[0].BattlecriesPlayed = battlecriesPlayed;
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 97).FirstOrDefault());
-            var nonPsychicMinions = CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 97 && !x.MinionTypes.Contains(Enums.MinionType.Psychic)).ToList();
-            var minionToBuff = nonPsychicMinions[0];
+            var minionToBuff = CardService.Instance.BuildTestMinion();
             lobby.Players[0].Board.Add(minionToBuff);
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
@@ -1324,10 +1258,9 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 100).FirstOrDefault());
-            var electricMinions = CardService.Instance.GetAllMinions().Where(x => x.MinionTypes.Contains(Enums.MinionType.Electric) && x.PokemonId != 100).ToList();
-            lobby.Players[0].Board.Add(electricMinions[random.Next(electricMinions.Count())]);
-            lobby.Players[0].Board.Add(electricMinions[random.Next(electricMinions.Count())]);
-            lobby.Players[0].Board.Add(electricMinions[random.Next(electricMinions.Count())]);
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<Enums.MinionType> { Enums.MinionType.Electric }));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<Enums.MinionType> { Enums.MinionType.Electric }));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<Enums.MinionType> { Enums.MinionType.Electric }));
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
@@ -1393,8 +1326,7 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.StartGame(lobby);
             lobby.Players[0].GoldSpentThisTurn = goldSpentThisTurn;
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 104).FirstOrDefault());
-            var minions = CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 104).ToList();
-            var minionToBuff = minions[random.Next(minions.Count())];
+            var minionToBuff = CardService.Instance.BuildTestMinion();
             lobby.Players[0].Board.Add(minionToBuff);
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
@@ -1429,12 +1361,10 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 148).FirstOrDefault());
-            var oddMinions = CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 148 && x.Tier % 2 != 0).ToList();
-            var evenMinions = CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 148 && x.Tier % 2 == 0).ToList();
-            lobby.Players[0].Board.Add(oddMinions[random.Next(oddMinions.Count())]);
-            lobby.Players[0].Board.Add(oddMinions[random.Next(oddMinions.Count())]);
-            lobby.Players[0].Board.Add(evenMinions[random.Next(evenMinions.Count())]);
-            lobby.Players[0].Board.Add(evenMinions[random.Next(evenMinions.Count())]);
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 5));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 5));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 6));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 6));
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
@@ -1556,10 +1486,9 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].FertilizerAttack = fertilizerAttack;
             lobby.Players[0].FertilizerHealth = fertilizerHealth;
             lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 45).FirstOrDefault());
-            var ekansList = minions.Where(x => x.PokemonId == 23).ToList();
-            lobby.Players[0].Board.Add(ekansList[0]);
-            lobby.Players[0].Board.Add(ekansList[1]);
-            lobby.Players[0].Board.Add(ekansList[2]);
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
             var handCount = lobby.Players[0].Hand.Count();
             var minionAttackListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 45).Select(y => y.Attack).ToList();
             var minionHealthListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 45).Select(y => y.Health).ToList();
@@ -1592,10 +1521,10 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].Tier = 4;
             lobby.Players[0].FertilizerAttack = fertilizerAttack;
             lobby.Players[0].FertilizerHealth = fertilizerHealth;
-            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 23).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
             lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 47).FirstOrDefault());
-            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 23 && !lobby.Players[0].Board.Select(y => y.Id).Contains(x.Id)).FirstOrDefault());
-            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 23 && !lobby.Players[0].Board.Select(y => y.Id).Contains(x.Id)).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
             var minionAttackListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 47).Select(y => y.Attack).ToList();
             var minionHealthListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 47).Select(y => y.Health).ToList();
             lobby = instance.CombatRound(lobby);
@@ -1682,8 +1611,8 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 78).FirstOrDefault());
-            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 78 && x.MinionTypes.Contains(Enums.MinionType.Fire)).FirstOrDefault());
-            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 78 && x.MinionTypes.Contains(Enums.MinionType.Fire)).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<MinionType> { MinionType.Fire }));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<MinionType> { MinionType.Fire }));
             var minionAttackListBefore = lobby.Players[0].Board.Select(x => x.Attack).ToList();
             var minionHealthListBefore = lobby.Players[0].Board.Select(x => x.Health).ToList();
             lobby = instance.CombatRound(lobby);
@@ -1727,8 +1656,8 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 101).FirstOrDefault());
-            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 101 && x.MinionTypes.Contains(Enums.MinionType.Electric)).FirstOrDefault());
-            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId != 101 && x.MinionTypes.Contains(Enums.MinionType.Electric)).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<MinionType> { MinionType.Electric }));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<MinionType> { MinionType.Electric }));
             var minionAttackListBefore = lobby.Players[0].Board.Select(x => x.Attack).ToList();
             var minionHealthListBefore = lobby.Players[0].Board.Select(x => x.Health).ToList();
             lobby = instance.CombatRound(lobby);
@@ -2211,38 +2140,10 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 63).FirstOrDefault());
             lobby.Players[0].Shop = new List<Card>
             {
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString() + "_copy",
-                    BaseCost = 3,
-                    Cost = 3,
-                    HasBattlecry = true,
-                    CardType = Enums.CardType.Minion
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString() + "_copy",
-                    BaseCost = 3,
-                    Cost = 3,
-                    HasBattlecry = true,
-                    CardType = Enums.CardType.Minion
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString() + "_copy",
-                    BaseCost = 3,
-                    Cost = 3,
-                    HasBattlecry = true,
-                    CardType = Enums.CardType.Minion
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString() + "_copy",
-                    BaseCost = 3,
-                    Cost = 3,
-                    HasBattlecry = true,
-                    CardType = Enums.CardType.Minion
-                }
+                CardService.Instance.BuildTestMinion(true, 5, 1, true),
+                CardService.Instance.BuildTestMinion(true, 5, 1, true),
+                CardService.Instance.BuildTestMinion(true, 5, 1, true),
+                CardService.Instance.BuildTestMinion(true, 5, 1, true)
             };
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, null);
             var startingGold = lobby.Players[0].Gold;
@@ -2277,38 +2178,10 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 65).FirstOrDefault());
             lobby.Players[0].Shop = new List<Card>
             {
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString() + "_copy",
-                    BaseCost = 3,
-                    Cost = 3,
-                    HasBattlecry = true,
-                    CardType = Enums.CardType.Minion
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString() + "_copy",
-                    BaseCost = 3,
-                    Cost = 3,
-                    HasBattlecry = true,
-                    CardType = Enums.CardType.Minion
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString() + "_copy",
-                    BaseCost = 3,
-                    Cost = 3,
-                    HasBattlecry = true,
-                    CardType = Enums.CardType.Minion
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString() + "_copy",
-                    BaseCost = 3,
-                    Cost = 3,
-                    HasBattlecry = true,
-                    CardType = Enums.CardType.Minion
-                }
+                CardService.Instance.BuildTestMinion(true, 5, 1, true),
+                CardService.Instance.BuildTestMinion(true, 5, 1, true),
+                CardService.Instance.BuildTestMinion(true, 5, 1, true),
+                CardService.Instance.BuildTestMinion(true, 5, 1, true)
             };
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, null);
             var startingGold = lobby.Players[0].Gold;
@@ -2415,12 +2288,7 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.StartGame(lobby);
             for (var i = 1; i < lobby.Players.Count(); i++)
             {
-                lobby.Players[i].Board.Add(new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Attack = 50,
-                    Health = 50
-                });
+                lobby.Players[i].Board.Add(CardService.Instance.BuildTestMinion(false, 50));
             }
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 75).FirstOrDefault());
             var attackBefore = lobby.Players[0].Board[0].Attack;
@@ -2446,12 +2314,7 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.StartGame(lobby);
             for (var i = 1; i < lobby.Players.Count(); i++)
             {
-                lobby.Players[i].Board.Add(new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Attack = 50,
-                    Health = 50
-                });
+                lobby.Players[i].Board.Add(CardService.Instance.BuildTestMinion(false, 50));
             }
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 76).FirstOrDefault());
             var attackBefore = lobby.Players[0].Board[0].Attack;
@@ -2685,7 +2548,266 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(baseGoldAfter3 == baseGoldAfter4 - 1);
         }
 
-        // Write test for 111
+        [TestMethod]
+        public void TestMinionEffects_112()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            for (var i = 1; i < lobby.Players.Count(); i++)
+            {
+                lobby.Players[i].Board.Add(CardService.Instance.BuildTestMinion(false, 50));
+            }
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 1, 1, false, new Keywords { Taunt = true }, new List<Enums.MinionType> { Enums.MinionType.Rock }));
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 112).FirstOrDefault());
+            lobby = instance.CombatRound(lobby);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold + 1);
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_116()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 116).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 7).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 8).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault());
+            var attackBefore = lobby.Players[0].Board.Select(x => x.Attack).ToList();
+            var healthBefore = lobby.Players[0].Board.Select(x => x.Health).ToList();
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            var attackAfter = lobby.Players[0].Board.Select(x => x.Attack).ToList();
+            var healthAfter = lobby.Players[0].Board.Select(x => x.Health).ToList();
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            var attackAfter2 = lobby.Players[0].Board.Select(x => x.Attack).ToList();
+            var healthAfter2 = lobby.Players[0].Board.Select(x => x.Health).ToList();
+
+            // Assert
+            Assert.IsFalse(Enumerable.SequenceEqual(attackBefore, attackAfter));
+            Assert.IsFalse(Enumerable.SequenceEqual(attackAfter, attackAfter2));
+            Assert.IsFalse(Enumerable.SequenceEqual(healthBefore, healthAfter));
+            Assert.IsFalse(Enumerable.SequenceEqual(healthAfter, healthAfter2));
+            for (var i = 0; i < lobby.Players[0].Board.Count(); i++)
+            {
+                Assert.IsTrue(attackBefore[i] == attackAfter[i] - 1);
+                Assert.IsTrue(attackAfter[i] == attackAfter2[i] - 1);
+                Assert.IsTrue(healthBefore[i] == healthAfter[i] - 1);
+                Assert.IsTrue(healthAfter[i] == healthAfter2[i] - 1);
+            }
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_117()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 117).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 7).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 8).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault());
+            var attackBefore = lobby.Players[0].Board.Select(x => x.Attack).ToList();
+            var healthBefore = lobby.Players[0].Board.Select(x => x.Health).ToList();
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            var attackAfter = lobby.Players[0].Board.Select(x => x.Attack).ToList();
+            var healthAfter = lobby.Players[0].Board.Select(x => x.Health).ToList();
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            var attackAfter2 = lobby.Players[0].Board.Select(x => x.Attack).ToList();
+            var healthAfter2 = lobby.Players[0].Board.Select(x => x.Health).ToList();
+
+            // Assert
+            Assert.IsFalse(Enumerable.SequenceEqual(attackBefore, attackAfter));
+            Assert.IsFalse(Enumerable.SequenceEqual(attackAfter, attackAfter2));
+            Assert.IsFalse(Enumerable.SequenceEqual(healthBefore, healthAfter));
+            Assert.IsFalse(Enumerable.SequenceEqual(healthAfter, healthAfter2));
+            for (var i = 0; i < lobby.Players[0].Board.Count(); i++)
+            {
+                Assert.IsTrue(attackBefore[i] == attackAfter[i] - 2);
+                Assert.IsTrue(attackAfter[i] == attackAfter2[i] - 2);
+                Assert.IsTrue(healthBefore[i] == healthAfter[i] - 2);
+                Assert.IsTrue(healthAfter[i] == healthAfter2[i] - 2);
+            }
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_118()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 118).FirstOrDefault());
+            (lobby, lobby.Players[0]) = instance.GetNewShop(lobby, lobby.Players[0]);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Shop.Count(x => x.CardType == Enums.CardType.Spell) == 2);
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_119()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 119).FirstOrDefault());
+            var spellInShop = lobby.Players[0].Shop.Where(x => x.CardType == Enums.CardType.Spell).FirstOrDefault();
+            lobby = instance.MoveCard(lobby, lobby.Players[0], spellInShop, Enums.MoveCardAction.Buy, -1, null);
+            (lobby, lobby.Players[0]) = instance.GetNewShop(lobby, lobby.Players[0]);
+            var spellInShop2 = lobby.Players[0].Shop.Where(x => x.CardType == Enums.CardType.Spell).FirstOrDefault();
+
+            // Assert
+            Assert.IsTrue(spellInShop2.Cost == spellInShop2.BaseCost - 1);
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_130()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            var gyaradosList = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 130).ToList();
+            var discoverTreasureList = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").ToList();
+            lobby.Players[0].Board.Add(gyaradosList[0]);
+            lobby.Players[0].Hand.Add(gyaradosList[1]);
+            lobby.Players[0].Hand.Add(discoverTreasureList[0]);
+            lobby.Players[0].Hand.Add(discoverTreasureList[1]);
+            lobby.Players[0].Hand.Add(gyaradosList[2]);
+            var attackBefore = lobby.Players[0].Board[0].Attack;
+            var healthBefore = lobby.Players[0].Board[0].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
+            var attackAfter = lobby.Players[0].Board[0].Attack;
+            var healthAfter = lobby.Players[0].Board[0].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
+            var attackAfter2 = lobby.Players[0].Board[0].Attack;
+            var healthAfter2 = lobby.Players[0].Board[0].Health;
+
+            // Assert
+            Assert.IsTrue(attackBefore == attackAfter);
+            Assert.IsTrue(healthBefore == healthAfter);
+            Assert.IsTrue(attackAfter == attackAfter2 - lobby.Players[0].SpellsCasted);
+            Assert.IsTrue(healthAfter == healthAfter2 - lobby.Players[0].SpellsCasted);
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_134()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 134).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 7).FirstOrDefault());
+            var vaporeonAttack = lobby.Players[0].Board[0].Attack;
+            var vaporeonHealth = lobby.Players[0].Board[0].Health;
+            var squirtleAttackBefore = lobby.Players[0].Board[1].Attack;
+            var squirtleHealthBefore = lobby.Players[0].Board[1].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Board[0], Enums.MoveCardAction.Sell, -1, null);
+            var squirtleAttackAfter = lobby.Players[0].Board[0].Attack;
+            var squirtleHealthAfter = lobby.Players[0].Board[0].Health;
+
+            // Assert
+            Assert.IsTrue(squirtleAttackBefore == squirtleAttackAfter - vaporeonAttack);
+            Assert.IsTrue(squirtleHealthBefore == squirtleHealthAfter - vaporeonHealth);
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_147()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 147).FirstOrDefault());
+            var ivysaurList = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 2).ToList();
+            lobby.Players[0].Hand.Add(ivysaurList[0]);
+            lobby.Players[0].Hand.Add(ivysaurList[1]);
+            var attackBefore = lobby.Players[0].Board[0].Attack;
+            var healthBefore = lobby.Players[0].Board[0].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
+            var attackAfter = lobby.Players[0].Board[0].Attack;
+            var healthAfter = lobby.Players[0].Board[0].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
+            var attackAfter2 = lobby.Players[0].Board[0].Attack;
+            var healthAfter2 = lobby.Players[0].Board[0].Health;
+
+            // Assert
+            Assert.IsTrue(attackBefore == attackAfter - 2);
+            Assert.IsTrue(healthBefore == healthAfter - 2);
+            Assert.IsTrue(attackAfter == attackAfter2 - 2);
+            Assert.IsTrue(healthAfter == healthAfter2 - 2);
+        }
+
+        [TestMethod]
+        public void TestMinionEffects_149()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 149).FirstOrDefault());
+            var ivysaurList = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 2).ToList();
+            lobby.Players[0].Hand.Add(ivysaurList[0]);
+            lobby.Players[0].Hand.Add(ivysaurList[1]);
+            var attackBefore = lobby.Players[0].Board[0].Attack;
+            var healthBefore = lobby.Players[0].Board[0].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
+            var attackAfter = lobby.Players[0].Board[0].Attack;
+            var healthAfter = lobby.Players[0].Board[0].Health;
+            var ivysaurAttackBefore = lobby.Players[0].Board[1].Attack;
+            var ivysaurHealthBefore = lobby.Players[0].Board[1].Health;
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 2, null);
+            var attackAfter2 = lobby.Players[0].Board[0].Attack;
+            var healthAfter2 = lobby.Players[0].Board[0].Health;
+            var ivysaurAttackAfter = lobby.Players[0].Board[1].Attack;
+            var ivysaurHealthAfter = lobby.Players[0].Board[1].Health;
+
+            // Assert
+            Assert.IsTrue(attackBefore == attackAfter - 1);
+            Assert.IsTrue(healthBefore == healthAfter - 2);
+            Assert.IsTrue(attackAfter == attackAfter2 - 1);
+            Assert.IsTrue(healthAfter == healthAfter2 - 2);
+            Assert.IsTrue(ivysaurAttackBefore == ivysaurAttackAfter - 1);
+            Assert.IsTrue(ivysaurHealthBefore == ivysaurHealthAfter - 2);
+        }
 
         [TestMethod]
         public void TestPlaySpell_Fertilizer()
@@ -2843,14 +2965,8 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.CardType == Enums.CardType.Spell && x.SpellTypes.Contains(Enums.SpellType.BuffTargetAttack) && x.Delay == 0).FirstOrDefault());
-            var id = Guid.NewGuid().ToString();
-            lobby.Players[0].Shop.Add(new Card
-            {
-                Id = id,
-                Name = "Minion 1",
-                Attack = 3,
-                Health = 3
-            });
+            lobby.Players[0].Shop.Add(CardService.Instance.BuildTestMinion(false, 3));
+            var id = lobby.Players[0].Shop[0].Id;
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
@@ -2883,26 +2999,24 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.CardType == Enums.CardType.Spell && x.SpellTypes.Contains(Enums.SpellType.BuffTargetHealth) && x.Delay == 0).FirstOrDefault());
-            var id = Guid.NewGuid().ToString();
-            lobby.Players[0].Shop.Add(new Card
+            lobby.Players[0].Shop = new List<Card>
             {
-                Id = id,
-                Name = "Minion 1",
-                Attack = 3,
-                Health = 3
-            });
+                CardService.Instance.BuildTestMinion(),
+                CardService.Instance.BuildTestMinion(),
+                CardService.Instance.BuildTestMinion()
+            };
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
             var cardPoolCountBeforePlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
-            var shopMinionAttackBeforePlay = lobby.Players[0].Shop.Where(x => x.Id == id).FirstOrDefault().Attack;
-            var shopMinionHealthBeforePlay = lobby.Players[0].Shop.Where(x => x.Id == id).FirstOrDefault().Health;
-            var shopMinionKeywordsBeforePlay = lobby.Players[0].Shop.Where(x => x.Id == id).FirstOrDefault().Keywords.Clone();
-            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, id);
+            var shopMinionAttackBeforePlay = lobby.Players[0].Shop[0].Attack;
+            var shopMinionHealthBeforePlay = lobby.Players[0].Shop[0].Health;
+            var shopMinionKeywordsBeforePlay = lobby.Players[0].Shop[0].Keywords.Clone();
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, lobby.Players[0].Shop[0].Id);
             var cardPoolCountAfterPlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
-            var shopMinionAttackAfterPlay = lobby.Players[0].Shop.Where(x => x.Id == id).FirstOrDefault().Attack;
-            var shopMinionHealthAfterPlay = lobby.Players[0].Shop.Where(x => x.Id == id).FirstOrDefault().Health;
-            var shopMinionKeywordsAfterPlay = lobby.Players[0].Shop.Where(x => x.Id == id).FirstOrDefault().Keywords;
+            var shopMinionAttackAfterPlay = lobby.Players[0].Shop[0].Attack;
+            var shopMinionHealthAfterPlay = lobby.Players[0].Shop[0].Health;
+            var shopMinionKeywordsAfterPlay = lobby.Players[0].Shop[0].Keywords;
 
             // Assert
             Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
@@ -2927,14 +3041,8 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.CardType == Enums.CardType.Spell && x.SpellTypes.Contains(Enums.SpellType.BuffFriendlyTargetAttack) && x.SpellTypes.Contains(Enums.SpellType.BuffFriendlyTargetHealth) && x.Delay == 0).FirstOrDefault());
-            var id = Guid.NewGuid().ToString();
-            lobby.Players[0].Board.Add(new Card
-            {
-                Id = id,
-                Name = "Minion 1",
-                Attack = 3,
-                Health = 3
-            });
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 3));
+            var id = lobby.Players[0].Board[0].Id;
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
@@ -2967,27 +3075,9 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.CardType == Enums.CardType.Spell && x.SpellTypes.Contains(Enums.SpellType.BuffBoardAttack) && x.SpellTypes.Contains(Enums.SpellType.BuffBoardHealth) && x.Delay == 0).FirstOrDefault());
-            lobby.Players[0].Board.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Minion 1",
-                Attack = 3,
-                Health = 3
-            });
-            lobby.Players[0].Board.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Minion 2",
-                Attack = 3,
-                Health = 3
-            });
-            lobby.Players[0].Board.Add(new Card
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Minion 3",
-                Attack = 3,
-                Health = 3
-            });
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 3));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 3));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 3));
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
@@ -3232,15 +3322,9 @@ namespace PokeChess.Server.UnitTests.Services
             var lunches = CardService.Instance.GetAllSpells().Where(x => x.CardType == Enums.CardType.Spell && x.Name == "Poké Lunch").ToList();
             lobby.Players[0].Hand.Add(lunches[0]);
             lobby.Players[0].Hand.Add(lunches[1]);
-            var boardMinionId = Guid.NewGuid().ToString();
             var shopMinionId = lobby.Players[0].Shop[0].Id;
-            lobby.Players[0].Board.Add(new Card
-            {
-                Id = boardMinionId,
-                Name = "Minion 1",
-                Attack = 3,
-                Health = 3
-            });
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 3));
+            var boardMinionId = lobby.Players[0].Board[0].Id;
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
@@ -3283,11 +3367,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             foreach (var player in lobby.Players)
             {
-                player.Board.Add(new Card
-                {
-                    Health = 5,
-                    Attack = 5
-                });
+                player.Board.Add(CardService.Instance.BuildTestMinion(false, 5));
             }
             var playerArmorBeforeCombat = lobby.Players.Select(x => x.Armor).ToList();
             var playerHealthBeforeCombat = lobby.Players.Select(x => x.Health).ToList();
@@ -3316,11 +3396,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             for (var i = 0; i < lobby.Players.Count(); i++)
             {
-                lobby.Players[i].Board.Add(new Card
-                {
-                    Health = i + 1,
-                    Attack = i + 1
-                });
+                lobby.Players[i].Board.Add(CardService.Instance.BuildTestMinion(false, i + 1));
             }
             var playerArmorBeforeCombat = lobby.Players[0].Armor;
             var playerHealthBeforeCombat = lobby.Players[0].Health;
@@ -3353,123 +3429,25 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].Health = 15;
             lobby.Players[0].Board = new List<Card>
             {
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 1",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 2",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 3",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 4",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 5",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 6",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 7",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                }
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5)
             };
             lobby.Players[1].Tier = 6;
             lobby.Players[1].Health = 15;
             lobby.Players[1].Board = new List<Card>
             {
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 8",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 9",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 10",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 11",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 12",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 13",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 14",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                }
+                CardService.Instance.BuildTestMinion(false, 7, 5),
+                CardService.Instance.BuildTestMinion(false, 7, 5),
+                CardService.Instance.BuildTestMinion(false, 7, 5),
+                CardService.Instance.BuildTestMinion(false, 7, 5),
+                CardService.Instance.BuildTestMinion(false, 7, 5),
+                CardService.Instance.BuildTestMinion(false, 7, 5),
+                CardService.Instance.BuildTestMinion(false, 7, 5)
             };
             var instance = GameService.Instance;
 
@@ -3504,184 +3482,37 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].Health = 15;
             lobby.Players[0].Board = new List<Card>
             {
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 1",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 2",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 3",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 4",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 5",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 6",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 7",
-                    Tier = 5,
-                    Attack = 20,
-                    Health = 20
-                }
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5)
             };
             lobby.Players[1].Tier = 6;
             lobby.Players[1].Health = 15;
             lobby.Players[1].Board = new List<Card>
             {
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 8",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 9",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 10",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 11",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 12",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 13",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 14",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                }
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5),
+                CardService.Instance.BuildTestMinion(false, 20, 5)
             };
             lobby.Players[2].Tier = 6;
             lobby.Players[2].Health = 15;
             lobby.Players[2].Board = new List<Card>
             {
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 15",
-                    Tier = 5,
-                    Attack = 5,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 16",
-                    Tier = 5,
-                    Attack = 5,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 17",
-                    Tier = 5,
-                    Attack = 5,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 18",
-                    Tier = 5,
-                    Attack = 5,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 19",
-                    Tier = 5,
-                    Attack = 5,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 20",
-                    Tier = 5,
-                    Attack = 5,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 21",
-                    Tier = 5,
-                    Attack = 5,
-                    Health = 7
-                }
+                CardService.Instance.BuildTestMinion(false, 7, 5),
+                CardService.Instance.BuildTestMinion(false, 7, 5),
+                CardService.Instance.BuildTestMinion(false, 7, 5),
+                CardService.Instance.BuildTestMinion(false, 7, 5),
+                CardService.Instance.BuildTestMinion(false, 7, 5),
+                CardService.Instance.BuildTestMinion(false, 7, 5),
+                CardService.Instance.BuildTestMinion(false, 7, 5)
             };
             var instance = GameService.Instance;
 
@@ -3722,62 +3553,13 @@ namespace PokeChess.Server.UnitTests.Services
                 player.Health = 16; // Making sure damage cap keeps everyone alive
                 player.Board = new List<Card>
                 {
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion",
-                        Tier = 5,
-                        Attack = random.Next(1, 20),
-                        Health = random.Next(1, 20)
-                    },
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion",
-                        Tier = 5,
-                        Attack = random.Next(1, 20),
-                        Health = random.Next(1, 20)
-                    },
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion",
-                        Tier = 5,
-                        Attack = random.Next(1, 20),
-                        Health = random.Next(1, 20)
-                    },
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion",
-                        Tier = 5,
-                        Attack = random.Next(1, 20),
-                        Health = random.Next(1, 20)
-                    },
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion",
-                        Tier = 5,
-                        Attack = random.Next(1, 20),
-                        Health = random.Next(1, 20)
-                    },
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion",
-                        Tier = 5,
-                        Attack = random.Next(1, 20),
-                        Health = random.Next(1, 20)
-                    },
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion",
-                        Tier = 5,
-                        Attack = random.Next(1, 20),
-                        Health = random.Next(1, 20)
-                    }
+                    CardService.Instance.BuildTestMinion(false, random.Next(1, 20), 5),
+                    CardService.Instance.BuildTestMinion(false, random.Next(1, 20), 5),
+                    CardService.Instance.BuildTestMinion(false, random.Next(1, 20), 5),
+                    CardService.Instance.BuildTestMinion(false, random.Next(1, 20), 5),
+                    CardService.Instance.BuildTestMinion(false, random.Next(1, 20), 5),
+                    CardService.Instance.BuildTestMinion(false, random.Next(1, 20), 5),
+                    CardService.Instance.BuildTestMinion(false, random.Next(1, 20), 5)
                 };
             }
             var instance = GameService.Instance;
@@ -3807,11 +3589,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             foreach (var player in lobby.Players)
             {
-                player.Board.Add(new Card
-                {
-                    Health = 5,
-                    Attack = 5
-                });
+                player.Board.Add(CardService.Instance.BuildTestMinion(false, 5));
             }
             for (var i = 0; i < rounds; i++)
             {
@@ -3870,62 +3648,13 @@ namespace PokeChess.Server.UnitTests.Services
                 lobby.Players[i].Health = 15;
                 lobby.Players[i].Board = new List<Card>
                 {
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion 1",
-                        Tier = 5,
-                        Attack = 20,
-                        Health = 20
-                    },
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion 2",
-                        Tier = 5,
-                        Attack = 20,
-                        Health = 20
-                    },
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion 3",
-                        Tier = 5,
-                        Attack = 20,
-                        Health = 20
-                    },
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion 4",
-                        Tier = 5,
-                        Attack = 20,
-                        Health = 20
-                    },
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion 5",
-                        Tier = 5,
-                        Attack = 20,
-                        Health = 20
-                    },
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion 6",
-                        Tier = 5,
-                        Attack = 20,
-                        Health = 20
-                    },
-                    new Card
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Minion 7",
-                        Tier = 5,
-                        Attack = 20,
-                        Health = 20
-                    }
+                    CardService.Instance.BuildTestMinion(false, 20, 5),
+                    CardService.Instance.BuildTestMinion(false, 20, 5),
+                    CardService.Instance.BuildTestMinion(false, 20, 5),
+                    CardService.Instance.BuildTestMinion(false, 20, 5),
+                    CardService.Instance.BuildTestMinion(false, 20, 5),
+                    CardService.Instance.BuildTestMinion(false, 20, 5),
+                    CardService.Instance.BuildTestMinion(false, 20, 5)
                 };
             }
             // Give the last player 7/7 minions instead to ensure they die the first combat
@@ -3933,62 +3662,13 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[3].Health = 1;
             lobby.Players[3].Board = new List<Card>
             {
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 8",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 9",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 10",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 11",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 12",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 13",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                },
-                new Card
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Minion 14",
-                    Tier = 5,
-                    Attack = 7,
-                    Health = 7
-                }
+                    CardService.Instance.BuildTestMinion(false, 7, 5),
+                    CardService.Instance.BuildTestMinion(false, 7, 5),
+                    CardService.Instance.BuildTestMinion(false, 7, 5),
+                    CardService.Instance.BuildTestMinion(false, 7, 5),
+                    CardService.Instance.BuildTestMinion(false, 7, 5),
+                    CardService.Instance.BuildTestMinion(false, 7, 5),
+                    CardService.Instance.BuildTestMinion(false, 7, 5)
             };
             var instance = GameService.Instance;
 

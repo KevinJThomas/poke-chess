@@ -2797,7 +2797,8 @@
         "num": "111",
         "name": "Rhyhorn"
       }
-    ]
+    ],
+    "hasDeathTrigger": true
   },
   {
     "pokemonId": 113,
@@ -2867,7 +2868,8 @@
         "num": "117",
         "name": "Seadra"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 117,
@@ -2889,7 +2891,8 @@
         "num": "116",
         "name": "Horsea"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 118,
@@ -2933,7 +2936,8 @@
         "num": "118",
         "name": "Goldeen"
       }
-    ]
+    ],
+    "hasBuyCardTrigger": true
   },
   {
     "pokemonId": 120,
@@ -3135,7 +3139,8 @@
         "num": "129",
         "name": "Magikarp"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 131,
@@ -3219,7 +3224,8 @@
         "num": "133",
         "name": "Eevee"
       }
-    ]
+    ],
+    "hasSellSelfTrigger": true
   },
   {
     "pokemonId": 135,
@@ -3481,7 +3487,8 @@
         "num": "149",
         "name": "Dragonite"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 148,
@@ -3536,7 +3543,8 @@
         "num": "148",
         "name": "Dragonair"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 150,

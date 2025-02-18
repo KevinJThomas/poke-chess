@@ -55,7 +55,9 @@ namespace PokeChess.Server.Models.Game
         public bool HasRockMinionBuffTrigger { get; set; }
         public bool HasAvenge { get; set; }
         public int BaseAvengeInterval { get; set; }
-        public int AvengeInterval { get; set; }
+        public int AvengeInterval { get; set; } 
+        public bool HasDeathTrigger { get; set; }
+        public bool HasShopRefresh { get; set; }
         public PlayCardTriggerType PlayCardTriggerType { get; set; } = PlayCardTriggerType.Either;
         public CardType CardType { get; set; } = CardType.Unknown;
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();

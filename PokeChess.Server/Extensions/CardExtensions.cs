@@ -879,6 +879,7 @@ namespace PokeChess.Server.Extensions
                     if (cardPlayed.CardType == CardType.Spell)
                     {
                         card.Attack += 2;
+                        player = card.GainedStatsTrigger(player);
                     }
 
                     return player;
@@ -886,12 +887,67 @@ namespace PokeChess.Server.Extensions
                     if (cardPlayed.CardType == CardType.Spell)
                     {
                         card.Attack += 4;
+                        player = card.GainedStatsTrigger(player);
                     }
 
                     return player;
                 case 105:
                     player.MaxGold += 1;
                     player.BaseGold += 1;
+                    return player;
+                case 116:
+                    if (cardPlayed.CardType == CardType.Spell)
+                    {
+                        foreach (var waterMinion in player.Board.Where(x => x.MinionTypes.Contains(MinionType.Water)))
+                        {
+                            waterMinion.Attack += 1;
+                            waterMinion.Health += 1;
+                            player = waterMinion.GainedStatsTrigger(player);
+                        }
+                    }
+
+                    return player;
+                case 117:
+                    if (cardPlayed.CardType == CardType.Spell)
+                    {
+                        foreach (var waterMinion in player.Board.Where(x => x.MinionTypes.Contains(MinionType.Water)))
+                        {
+                            waterMinion.Attack += 2;
+                            waterMinion.Health += 2;
+                            player = waterMinion.GainedStatsTrigger(player);
+                        }
+                    }
+
+                    return player;
+                case 130:
+                    if (cardPlayed.CardType == CardType.Minion && card.Id != cardPlayed.Id && (cardPlayed.MinionTypes.Contains(MinionType.Flying) || cardPlayed.MinionTypes.Contains(MinionType.Water)))
+                    {
+                        card.Attack += player.SpellsCasted;
+                        card.Health += player.SpellsCasted;
+                        player = card.GainedStatsTrigger(player);
+                    }
+
+                    return player;
+                case 147:
+                    if (cardPlayed.Tier % 2 == 0 && card.Id != cardPlayed.Id)
+                    {
+                        card.Attack += 2;
+                        card.Health += 2;
+                        player = card.GainedStatsTrigger(player);
+                    }
+
+                    return player;
+                case 149:
+                    if (cardPlayed.Tier % 2 == 0 && card.Id != cardPlayed.Id)
+                    {
+                        foreach (var minion in player.Board.Where(x => x.Tier % 2 == 0))
+                        {
+                            minion.Attack += 1;
+                            minion.Health += 2;
+                            player = minion.GainedStatsTrigger(player);
+                        }
+                    }
+
                     return player;
                 default:
                     return player;
@@ -944,6 +1000,16 @@ namespace PokeChess.Server.Extensions
                     player.CardAddedToHand();
                     player.Hand.Add(CardService.Instance.GetFertilizer());
                     player.CardAddedToHand();
+
+                    return player;
+                case 134:
+                    if (player.Board.Any(x => x.MinionTypes.Contains(MinionType.Water)))
+                    {
+                        var minionToBuff = player.Board.Where(x => x.MinionTypes.Contains(MinionType.Water)).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count(x => x.MinionTypes.Contains(MinionType.Water)))];
+                        var index = player.Board.FindIndex(x => x.Id == minionToBuff.Id);
+                        player.Board[index].Attack += card.Attack;
+                        player.Board[index].Health += card.Health;
+                    }
 
                     return player;
                 default:
@@ -1035,6 +1101,14 @@ namespace PokeChess.Server.Extensions
                     }
 
                     return player;
+                case 119:
+                    if (cardBought.CardType == CardType.Spell && player.Discounts.Spell >= 0)
+                    {
+                        player.Discounts.Spell += 1;
+                        player.ApplyShopDiscounts();
+                    }
+
+                    return player;
                 default:
                     return player;
             }
@@ -1083,6 +1157,41 @@ namespace PokeChess.Server.Extensions
                     card.SellValue += 2;
                     card.Text = $"__Avenge (4):__ This minion sells for 2 more gold\nSells for {card.SellValue - 1} more gold!";
                     return;
+            }
+        }
+
+        public static Player DeathTrigger(this Card card, Player player, Card minionThatDied)
+        {
+            if (!card.HasDeathTrigger)
+            {
+                return player;
+            }
+
+            switch (card.PokemonId)
+            {
+                case 112:
+                    if (minionThatDied.MinionTypes.Contains(MinionType.Rock))
+                    {
+                        player.DelayedSpells.Add(new Card
+                        {
+                            Id = Guid.NewGuid().ToString() + _copyStamp,
+                            CardType = CardType.Spell,
+                            SpellTypes = new List<SpellType>()
+                            {
+                                SpellType.GainGold
+                            },
+                            Amount = new List<int>
+                            {
+                                1
+                            },
+                            Delay = 1,
+                            IsTavernSpell = true
+                        });
+                    }
+
+                    return player;
+                default:
+                    return player;
             }
         }
 

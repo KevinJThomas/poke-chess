@@ -153,6 +153,8 @@ namespace PokeChess.Server.Extensions
                                 return false;
                         }
                     }
+
+                    player.SpellsCasted++;
                 }
             }
 
@@ -643,20 +645,28 @@ namespace PokeChess.Server.Extensions
             }
         }
 
-        public static void MinionDiedInCombat(this Player player)
+        public static void MinionDiedInCombat(this Player player, Card card)
         {
-            if (player.Board.Any(x => x.HasAvenge && !x.IsDead))
+            if (player.Board.Any(x => !x.IsDead))
             {
-                foreach (var minion in player.Board.Where(x => x.HasAvenge && !x.IsDead))
+                foreach (var minion in player.Board.Where(x => !x.IsDead))
                 {
-                    if (minion.AvengeInterval <= 1)
+                    if (minion.HasAvenge)
                     {
-                        minion.AvengeInterval = minion.BaseAvengeInterval;
-                        minion.AvengeTrigger();
+                        if (minion.AvengeInterval <= 1)
+                        {
+                            minion.AvengeInterval = minion.BaseAvengeInterval;
+                            minion.AvengeTrigger();
+                        }
+                        else
+                        {
+                            minion.AvengeInterval--;
+                        }
                     }
-                    else
+
+                    if (minion.HasDeathTrigger)
                     {
-                        minion.AvengeInterval--;
+                        player = minion.DeathTrigger(player, card);
                     }
                 }
             }
