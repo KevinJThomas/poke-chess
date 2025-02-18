@@ -295,7 +295,9 @@ namespace PokeChess.Server.Services
                 Id = id,
                 Tier = tier,
                 CardType = CardType.Minion,
+                BaseAttack = stats,
                 Attack = stats,
+                BaseHealth = stats,
                 Health = stats,
                 SellValue = 1,
                 BaseCost = 3,
@@ -303,6 +305,28 @@ namespace PokeChess.Server.Services
                 HasBattlecry = hasBattlecry,
                 Keywords = keywords,
                 MinionTypes = minionTypes
+            };
+        }
+
+        public Card GetNewDiscoverTreasure()
+        {
+            return new Card
+            {
+                Id = Guid.NewGuid().ToString() + _copyStamp,
+                Tier = 1,
+                Text = "Gain 1 gold this turn",
+                CardType = CardType.Spell,
+                BaseCost = 1,
+                Cost = 1,
+                SpellTypes = new List<SpellType>
+                {
+                    SpellType.GainGold
+                },
+                Amount = new List<int>
+                {
+                    1
+                },
+                IsTavernSpell = true
             };
         }
 

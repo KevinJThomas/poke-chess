@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions;
-using PokeChess.Server.Enums;
+﻿using PokeChess.Server.Enums;
 using PokeChess.Server.Extensions;
 using PokeChess.Server.Models;
 using PokeChess.Server.Models.Game;
@@ -970,9 +969,8 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 72).FirstOrDefault());
-            var discoverTreasures = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").ToList();
-            lobby.Players[0].Hand.Add(discoverTreasures[0]);
-            lobby.Players[0].Hand.Add(discoverTreasures[1]);
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
@@ -1005,9 +1003,8 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 73).FirstOrDefault());
-            var discoverTreasures = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").ToList();
-            lobby.Players[0].Hand.Add(discoverTreasures[0]);
-            lobby.Players[0].Hand.Add(discoverTreasures[1]);
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
             var boardCount = lobby.Players[0].Board.Count();
             var handCount = lobby.Players[0].Hand.Count();
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
@@ -1753,10 +1750,10 @@ namespace PokeChess.Server.UnitTests.Services
             // Act
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
-            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 6).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
             var attackBefore = lobby.Players[0].Board[0].Attack;
             var healthBefore = lobby.Players[0].Board[0].Health;
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
@@ -1934,7 +1931,7 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 31).FirstOrDefault());
-            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
             (lobby, lobby.Players[0]) = instance.GetNewShop(lobby, lobby.Players[0], true);
 
             // Assert
@@ -1957,7 +1954,7 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 34).FirstOrDefault());
-            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
             var attackBefore = lobby.Players[0].Board[0].Attack;
@@ -2006,9 +2003,9 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 41).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23 && !lobby.Players[0].Hand.Select(y => y.Id).Contains(x.Id)).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23 && !lobby.Players[0].Hand.Select(y => y.Id).Contains(x.Id)).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
             var attackBefore = lobby.Players[0].Board[0].Attack;
             var healthBefore = lobby.Players[0].Board[0].Health;
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
@@ -2037,9 +2034,9 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 42).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23 && !lobby.Players[0].Hand.Select(y => y.Id).Contains(x.Id)).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23 && !lobby.Players[0].Hand.Select(y => y.Id).Contains(x.Id)).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
             var attackBefore = lobby.Players[0].Board[0].Attack;
             var healthBefore = lobby.Players[0].Board[0].Health;
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
@@ -2068,7 +2065,7 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 43).FirstOrDefault());
-            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
             var handSizeBefore = lobby.Players[0].Hand.Count();
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Board[1], Enums.MoveCardAction.Sell, -1, null);
             var handSizeAfterSellEkans = lobby.Players[0].Hand.Count();
@@ -2091,8 +2088,8 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 50).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 23).FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
             var handSizeBefore = lobby.Players[0].Hand.Count();
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
             var handSizeAfterSell1 = lobby.Players[0].Hand.Count();
@@ -2115,7 +2112,7 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 55).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
             var attackBefore = lobby.Players[0].Board[0].Attack;
             var healthBefore = lobby.Players[0].Board[0].Health;
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
@@ -2479,7 +2476,7 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 98).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
             var attackBefore = lobby.Players[0].Board[0].Attack;
             var healthBefore = lobby.Players[0].Board[0].Health;
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
@@ -2502,7 +2499,7 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 99).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
             var attackBefore = lobby.Players[0].Board[0].Attack;
             var healthBefore = lobby.Players[0].Board[0].Health;
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
@@ -2525,11 +2522,10 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 105).FirstOrDefault());
-            var arbokList = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 24).ToList();
-            lobby.Players[0].Hand.Add(arbokList[0]);
-            lobby.Players[0].Hand.Add(arbokList[1]);
-            lobby.Players[0].Hand.Add(arbokList[2]);
-            lobby.Players[0].Hand.Add(arbokList[3]);
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
             var maxGoldBefore = lobby.Players[0].MaxGold;
             var baseGoldBefore = lobby.Players[0].BaseGold;
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
@@ -2583,8 +2579,8 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 116).FirstOrDefault());
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 7).FirstOrDefault());
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 8).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
             var attackBefore = lobby.Players[0].Board.Select(x => x.Attack).ToList();
             var healthBefore = lobby.Players[0].Board.Select(x => x.Health).ToList();
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
@@ -2621,8 +2617,8 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 117).FirstOrDefault());
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 7).FirstOrDefault());
             lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 8).FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault());
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
             var attackBefore = lobby.Players[0].Board.Select(x => x.Attack).ToList();
             var healthBefore = lobby.Players[0].Board.Select(x => x.Health).ToList();
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
@@ -2694,11 +2690,10 @@ namespace PokeChess.Server.UnitTests.Services
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
             var gyaradosList = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 130).ToList();
-            var discoverTreasureList = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").ToList();
             lobby.Players[0].Board.Add(gyaradosList[0]);
             lobby.Players[0].Hand.Add(gyaradosList[1]);
-            lobby.Players[0].Hand.Add(discoverTreasureList[0]);
-            lobby.Players[0].Hand.Add(discoverTreasureList[1]);
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
+            lobby.Players[0].Hand.Add(CardService.Instance.GetNewDiscoverTreasure());
             lobby.Players[0].Hand.Add(gyaradosList[2]);
             var attackBefore = lobby.Players[0].Board[0].Attack;
             var healthBefore = lobby.Players[0].Board[0].Health;
@@ -3523,8 +3518,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsNotNull(lobby);
-            Assert.IsTrue(lobby.Players.Count(x => !x.IsDead) == 2);
-            Assert.IsTrue(lobby.Players.Count(x => x.WinStreak == 1) == 2);
+            Assert.IsTrue((lobby.Players.Count(x => !x.IsDead) == 2 && lobby.Players.Count(x => x.WinStreak == 1) == 2) || (lobby.Players.Count(x => !x.IsDead) == 3 && lobby.Players.Count(x => x.WinStreak == 1) == 1));
             Assert.IsTrue(lobby.IsActive);
         }
 

@@ -96,7 +96,7 @@ namespace PokeChess.Server.Extensions
             {
                 case 7:
                 case 54:
-                    var discoverTreasure = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault();
+                    var discoverTreasure = CardService.Instance.GetNewDiscoverTreasure();
                     discoverTreasure.Id = Guid.NewGuid().ToString() + _copyStamp;
                     player.Hand.Add(discoverTreasure);
                     player.CardAddedToHand();
@@ -630,7 +630,7 @@ namespace PokeChess.Server.Extensions
                     case 90:
                         if (player.Hand.Count() < player.MaxHandSize)
                         {
-                            var discoverTreasure = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault();
+                            var discoverTreasure = CardService.Instance.GetNewDiscoverTreasure();
                             discoverTreasure.Id = Guid.NewGuid().ToString() + _copyStamp;
                             player.Hand.Add(discoverTreasure);
                             player.CardAddedToHand();
@@ -816,7 +816,7 @@ namespace PokeChess.Server.Extensions
 
                     return player;
                 case 50:
-                    var discoverTreasure = CardService.Instance.GetAllSpells().Where(x => x.Name == "Discover Treasure").FirstOrDefault();
+                    var discoverTreasure = CardService.Instance.GetNewDiscoverTreasure();
                     discoverTreasure.Id = Guid.NewGuid().ToString() + _copyStamp;
                     player.Hand.Add(discoverTreasure);
                     player.CardAddedToHand();
