@@ -513,6 +513,11 @@ namespace PokeChess.Server.Services
             {
                 minion.Attack += player.ShopBuffAttack;
                 minion.Health += player.ShopBuffHealth;
+                if (minion.HasRockMinionBuffTrigger)
+                {
+                    minion.RockMinionBuffTrigger(player.RockTypeDeaths);
+                }
+                player = minion.GainedStatsTrigger(player);
             }
             player.ApplyShopDiscounts();
 
@@ -555,6 +560,7 @@ namespace PokeChess.Server.Services
             {
                 player.Shop.Remove(card);
                 player.Hand.Add(card);
+                player.CardBought(card);
                 player.CardAddedToHand();
                 player.EvolveCheck();
                 player.Gold -= card.Cost;
@@ -821,6 +827,8 @@ namespace PokeChess.Server.Services
                 {
                     minion.CombatHealth = minion.Health;
                 }
+                player1.StartOfCombatBoard = player1.Board.Clone();
+                player2.StartOfCombatBoard = player2.Board.Clone();
                 (player1, player2) = SwingMinions(player1, player2, lobby.GameState.DamageCap);
 
                 player1.AddPreviousOpponent(player2);
@@ -906,14 +914,14 @@ namespace PokeChess.Server.Services
                 {
                     new HitValues
                     {
-                        DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player1.Board[nextSourceIndex].CombatKeywords.Clone(), Id = player1.Board[nextSourceIndex].Id
+                        DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Attack =  player1.Board[nextSourceIndex].Attack, Health = sourceHealthAfterAttack, Keywords = player1.Board[nextSourceIndex].CombatKeywords.Clone(), Id = player1.Board[nextSourceIndex].Id
                     }
                 };
                 var player2HitValues = new List<HitValues>
                 {
                     new HitValues
                     {
-                        DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player2.Board[nextTargetIndex].CombatKeywords.Clone(), Id = player2.Board[nextTargetIndex].Id
+                        DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Attack = player2.Board[nextTargetIndex].Attack, Health = targetHealthAfterAttack, Keywords = player2.Board[nextTargetIndex].CombatKeywords.Clone(), Id = player2.Board[nextTargetIndex].Id
                     }
                 };
 
@@ -924,10 +932,83 @@ namespace PokeChess.Server.Services
                     var burnedDamageType = GetDamageType(new KeyValuePair<bool, bool>(player1.Board[nextSourceIndex].IsWeakTo(burnedMinion), burnedMinion.IsWeakTo(player1.Board[nextSourceIndex])), true);
                     burnedOnHitValues.DamageType = burnedDamageType.ToString().ToLower();
                     burnedOnHitValues.Damage = burnedMinionDamage;
+                    burnedOnHitValues.Attack = burnedMinion.Attack;
                     burnedOnHitValues.Health = burnedMinion.CombatHealth;
                     burnedOnHitValues.Keywords = burnedMinion.CombatKeywords;
                     burnedOnHitValues.Id = burnedMinion.Id;
                     player2HitValues.Add(burnedOnHitValues);
+                }
+
+                // Capture rock type deaths
+                if (player1.Board[nextSourceIndex].IsDead)
+                {
+                    player1.MinionDiedInCombat();
+
+                    if (player1.Board[nextSourceIndex].MinionTypes.Contains(MinionType.Rock))
+                    {
+                        player1.RockTypeDeaths++;
+                        if (player1.Board.Any(x => x.HasRockMinionBuffTrigger && !x.IsDead))
+                        {
+                            foreach (var minion in player1.Board.Where(x => x.HasRockMinionBuffTrigger && !x.IsDead))
+                            {
+                                player1HitValues.Add(new HitValues
+                                {
+                                    Id = minion.Id,
+                                    Attack = minion.Attack,
+                                    Health = minion.CombatHealth,
+                                    Keywords = minion.CombatKeywords
+                                });
+                            }
+                        }
+                    }
+                }
+                if (player2.Board[nextTargetIndex].IsDead)
+                {
+                    player2.MinionDiedInCombat();
+
+                    if (player2.Board[nextTargetIndex].MinionTypes.Contains(MinionType.Rock))
+                    {
+                        player2.RockTypeDeaths++;
+                        if (player2.Board.Any(x => x.HasRockMinionBuffTrigger && !x.IsDead))
+                        {
+                            foreach (var minion in player2.Board.Where(x => x.HasRockMinionBuffTrigger && !x.IsDead))
+                            {
+                                player2HitValues.Add(new HitValues
+                                {
+                                    Id = minion.Id,
+                                    Attack = minion.Attack,
+                                    Health = minion.CombatHealth,
+                                    Keywords = minion.CombatKeywords
+                                });
+                            }
+                        }
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(burnedMinionId))
+                {
+                    var burnedMinion = player2.Board.Where(x => x.Id == burnedMinionId).FirstOrDefault();
+                    if (burnedMinion != null && burnedMinion.IsDead)
+                    {
+                        player2.MinionDiedInCombat();
+
+                        if (burnedMinion.MinionTypes.Contains(MinionType.Rock))
+                        {
+                            player2.RockTypeDeaths++;
+                            if (player2.Board.Any(x => x.HasRockMinionBuffTrigger && !x.IsDead))
+                            {
+                                foreach (var minion in player2.Board.Where(x => x.HasRockMinionBuffTrigger && !x.IsDead))
+                                {
+                                    player2HitValues.Add(new HitValues
+                                    {
+                                        Id = minion.Id,
+                                        Attack = minion.Attack,
+                                        Health = minion.CombatHealth,
+                                        Keywords = minion.CombatKeywords
+                                    });
+                                }
+                            }
+                        }
+                    }
                 }
 
                 player1.CombatActions.Add(new CombatAction
@@ -1004,11 +1085,17 @@ namespace PokeChess.Server.Services
 
                 var player1HitValues = new List<HitValues>
                 {
-                    new HitValues { DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Health = targetHealthAfterAttack, Keywords = player1.Board[nextTargetIndex].CombatKeywords.Clone(), Id = player1.Board[nextTargetIndex].Id }
+                    new HitValues
+                    {
+                        DamageType = targetDamageType, Damage = targetHealthBeforeAttack - targetHealthAfterAttack, Attack = player1.Board[nextTargetIndex].Attack, Health = targetHealthAfterAttack, Keywords = player1.Board[nextTargetIndex].CombatKeywords.Clone(), Id = player1.Board[nextTargetIndex].Id
+                    }
                 };
                 var player2HitValues = new List<HitValues>
                 {
-                    new HitValues { DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Health = sourceHealthAfterAttack, Keywords = player2.Board[nextSourceIndex].CombatKeywords.Clone(), Id = player2.Board[nextSourceIndex].Id }
+                    new HitValues
+                    {
+                        DamageType = sourceDamageType, Damage = sourceHealthBeforeAttack - sourceHealthAfterAttack, Attack = player2.Board[nextSourceIndex].Attack, Health = sourceHealthAfterAttack, Keywords = player2.Board[nextSourceIndex].CombatKeywords.Clone(), Id = player2.Board[nextSourceIndex].Id
+                    }
                 };
 
                 if (burnedMinionId != null)
@@ -1018,10 +1105,83 @@ namespace PokeChess.Server.Services
                     var burnedDamageType = GetDamageType(new KeyValuePair<bool, bool>(player2.Board[nextSourceIndex].IsWeakTo(burnedMinion), burnedMinion.IsWeakTo(player2.Board[nextSourceIndex])), true);
                     burnedOnHitValues.DamageType = burnedDamageType.ToString().ToLower();
                     burnedOnHitValues.Damage = burnedMinionDamage;
-                    burnedOnHitValues.Health = burnedMinion.Health;
+                    burnedOnHitValues.Attack = burnedMinion.Attack;
+                    burnedOnHitValues.Health = burnedMinion.CombatHealth;
                     burnedOnHitValues.Keywords = burnedMinion.CombatKeywords;
                     burnedOnHitValues.Id = burnedMinion.Id;
                     player1HitValues.Add(burnedOnHitValues);
+                }
+
+                // Capture rock type deaths
+                if (player2.Board[nextSourceIndex].IsDead)
+                {
+                    player2.MinionDiedInCombat();
+
+                    if (player2.Board[nextSourceIndex].MinionTypes.Contains(MinionType.Rock))
+                    {
+                        player2.RockTypeDeaths++;
+                        if (player2.Board.Any(x => x.HasRockMinionBuffTrigger && !x.IsDead))
+                        {
+                            foreach (var minion in player2.Board.Where(x => x.HasRockMinionBuffTrigger && !x.IsDead))
+                            {
+                                player2HitValues.Add(new HitValues
+                                {
+                                    Id = minion.Id,
+                                    Attack = minion.Attack,
+                                    Health = minion.CombatHealth,
+                                    Keywords = minion.CombatKeywords
+                                });
+                            }
+                        }
+                    }
+                }
+                if (player1.Board[nextTargetIndex].IsDead)
+                {
+                    player1.MinionDiedInCombat();
+
+                    if (player1.Board[nextTargetIndex].MinionTypes.Contains(MinionType.Rock))
+                    {
+                        player1.RockTypeDeaths++;
+                        if (player1.Board.Any(x => x.HasRockMinionBuffTrigger && !x.IsDead))
+                        {
+                            foreach (var minion in player1.Board.Where(x => x.HasRockMinionBuffTrigger && !x.IsDead))
+                            {
+                                player1HitValues.Add(new HitValues
+                                {
+                                    Id = minion.Id,
+                                    Attack = minion.Attack,
+                                    Health = minion.CombatHealth,
+                                    Keywords = minion.CombatKeywords
+                                });
+                            }
+                        }
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(burnedMinionId))
+                {
+                    var burnedMinion = player1.Board.Where(x => x.Id == burnedMinionId).FirstOrDefault();
+                    if (burnedMinion != null && burnedMinion.IsDead)
+                    {
+                        player1.MinionDiedInCombat();
+
+                        if (burnedMinion.MinionTypes.Contains(MinionType.Rock))
+                        {
+                            player1.RockTypeDeaths++;
+                            if (player1.Board.Any(x => x.HasRockMinionBuffTrigger && !x.IsDead))
+                            {
+                                foreach (var minion in player1.Board.Where(x => x.HasRockMinionBuffTrigger && !x.IsDead))
+                                {
+                                    player1HitValues.Add(new HitValues
+                                    {
+                                        Id = minion.Id,
+                                        Attack = minion.Attack,
+                                        Health = minion.CombatHealth,
+                                        Keywords = minion.CombatKeywords
+                                    });
+                                }
+                            }
+                        }
+                    }
                 }
 
                 player1.CombatActions.Add(new CombatAction

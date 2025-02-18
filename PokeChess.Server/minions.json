@@ -1731,7 +1731,8 @@
         "num": "068",
         "name": "Machamp"
       }
-    ]
+    ],
+    "hasGainedStatsTrigger": true
   },
   {
     "pokemonId": 68,
@@ -1757,7 +1758,8 @@
         "num": "067",
         "name": "Machoke"
       }
-    ]
+    ],
+    "hasBuyCardTrigger": true
   },
   {
     "pokemonId": 69,
@@ -1923,8 +1925,8 @@
     "tier": 4,
     "text": "Has +1/+1 for every friendly Rock type that has died this game",
     "name": "Graveler",
-    "baseAttack": 12,
-    "baseHealth": 12,
+    "baseAttack": 1,
+    "baseHealth": 1,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1943,7 +1945,8 @@
         "num": "076",
         "name": "Golem"
       }
-    ]
+    ],
+    "hasRockMinionBuffTrigger": true
   },
   {
     "pokemonId": 76,
@@ -1951,8 +1954,8 @@
     "tier": 6,
     "text": "Has +5/+5 for every friendly Rock type that has died this game",
     "name": "Golem",
-    "baseAttack": 36,
-    "baseHealth": 36,
+    "baseAttack": 2,
+    "baseHealth": 2,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},
@@ -1969,7 +1972,8 @@
         "num": "075",
         "name": "Graveler"
       }
-    ]
+    ],
+    "hasRockMinionBuffTrigger": true
   },
   {
     "pokemonId": 77,
@@ -2059,7 +2063,9 @@
         "num": "079",
         "name": "Slowpoke"
       }
-    ]
+    ],
+    "hasDiscountMechanism": true,
+    "oncePerTurn": true
   },
   {
     "pokemonId": 81,
@@ -2146,7 +2152,8 @@
         "num": "085",
         "name": "Dodrio"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 85,
@@ -2168,7 +2175,8 @@
         "num": "084",
         "name": "Doduo"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 86,
@@ -2332,7 +2340,8 @@
         "num": "094",
         "name": "Gengar"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 93,
@@ -2360,7 +2369,8 @@
         "num": "094",
         "name": "Gengar"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 94,
@@ -2474,7 +2484,8 @@
         "num": "099",
         "name": "Kingler"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 99,
@@ -2498,7 +2509,8 @@
         "num": "098",
         "name": "Krabby"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true
   },
   {
     "pokemonId": 100,
@@ -2637,7 +2649,10 @@
         "num": "104",
         "name": "Cubone"
       }
-    ]
+    ],
+    "hasPlayCardTrigger": true,
+    "basePlayCardTriggerInterval": 4,
+    "playCardTriggerType": 0
   },
   {
     "pokemonId": 106,
@@ -2758,7 +2773,9 @@
         "num": "112",
         "name": "Rhydon"
       }
-    ]
+    ],
+    "hasAvenge": true,
+    "baseAvengeInterval": 4
   },
   {
     "pokemonId": 112,
@@ -2858,8 +2875,8 @@
     "tier": 6,
     "text": "Whenever you play a spell, give friendly water types +2/+2",
     "name": "Seadra",
-    "baseAttack": 3,
-    "baseHealth": 2,
+    "baseAttack": 9,
+    "baseHealth": 6,
     "baseCost": 3,
     "cardType": 0,
     "baseKeywords": {},

@@ -132,6 +132,7 @@ namespace PokeChess.Server.Extensions
                                     {
                                         player.Board[targetIndex].Attack += player.FertilizerAttack;
                                         player.Board[targetIndex].Health += player.FertilizerHealth;
+                                        player = player.Board[targetIndex].GainedStatsTrigger(player);
                                         return true;
                                     }
                                 }
@@ -144,6 +145,7 @@ namespace PokeChess.Server.Extensions
                                     {
                                         player.Shop[targetIndex].Attack += player.FertilizerAttack;
                                         player.Shop[targetIndex].Health += player.FertilizerHealth;
+                                        player = player.Shop[targetIndex].GainedStatsTrigger(player);
                                         return true;
                                     }
                                 }
@@ -627,6 +629,39 @@ namespace PokeChess.Server.Extensions
             }
         }
 
+        public static void CardBought(this Player player, Card card)
+        {
+            if (player.Board.Any())
+            {
+                foreach (var minion in player.Board)
+                {
+                    if (minion.HasBuyCardTrigger)
+                    {
+                        player = minion.BuyCardTrigger(player, card);
+                    }
+                }
+            }
+        }
+
+        public static void MinionDiedInCombat(this Player player)
+        {
+            if (player.Board.Any(x => x.HasAvenge && !x.IsDead))
+            {
+                foreach (var minion in player.Board.Where(x => x.HasAvenge && !x.IsDead))
+                {
+                    if (minion.AvengeInterval <= 1)
+                    {
+                        minion.AvengeInterval = minion.BaseAvengeInterval;
+                        minion.AvengeTrigger();
+                    }
+                    else
+                    {
+                        minion.AvengeInterval--;
+                    }
+                }
+            }
+        }
+
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
         {
             if (amount < 0)
@@ -657,6 +692,7 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexAttack >= 0 && targetIndexAttack < player.Board.Count())
                         {
                             player.Board[targetIndexAttack].Attack += amount;
+                            player = player.Board[targetIndexAttack].GainedStatsTrigger(player);
                             player = player.Board[targetIndexAttack].TargetedBySpell(player);
 
                             return true;
@@ -668,6 +704,7 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexAttack >= 0 && targetIndexAttack < player.Shop.Count())
                         {
                             player.Shop[targetIndexAttack].Attack += amount;
+                            player = player.Shop[targetIndexAttack].GainedStatsTrigger(player);
                             player = player.Shop[targetIndexAttack].TargetedBySpell(player);
 
                             return true;
@@ -685,6 +722,7 @@ namespace PokeChess.Server.Extensions
                     if (targetIndexFriendlyAttack >= 0 && targetIndexFriendlyAttack < player.Board.Count())
                     {
                         player.Board[targetIndexFriendlyAttack].Attack += amount;
+                        player = player.Board[targetIndexFriendlyAttack].GainedStatsTrigger(player);
                         player = player.Board[targetIndexFriendlyAttack].TargetedBySpell(player);
 
                         return true;
@@ -705,6 +743,7 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexHealth >= 0 && targetIndexHealth < player.Board.Count())
                         {
                             player.Board[targetIndexHealth].Health += amount;
+                            player = player.Board[targetIndexHealth].GainedStatsTrigger(player);
                             player = player.Board[targetIndexHealth].TargetedBySpell(player);
 
                             return true;
@@ -716,6 +755,7 @@ namespace PokeChess.Server.Extensions
                         if (targetIndexHealth >= 0 && targetIndexHealth < player.Shop.Count())
                         {
                             player.Shop[targetIndexHealth].Health += amount;
+                            player = player.Shop[targetIndexHealth].GainedStatsTrigger(player);
                             player = player.Shop[targetIndexHealth].TargetedBySpell(player);
 
                             return true;
@@ -733,6 +773,7 @@ namespace PokeChess.Server.Extensions
                     if (targetIndexFriendlyHealth >= 0 && targetIndexFriendlyHealth < player.Board.Count())
                     {
                         player.Board[targetIndexFriendlyHealth].Health += amount;
+                        player = player.Board[targetIndexFriendlyHealth].GainedStatsTrigger(player);
                         player = player.Board[targetIndexFriendlyHealth].TargetedBySpell(player);
 
                         return true;
@@ -743,6 +784,7 @@ namespace PokeChess.Server.Extensions
                     foreach (var minion in player.Board)
                     {
                         minion.Attack += amount;
+                        player = minion.GainedStatsTrigger(player);
                     }
 
                     return true;
@@ -750,6 +792,7 @@ namespace PokeChess.Server.Extensions
                     foreach (var minion in player.Board)
                     {
                         minion.Health += amount;
+                        player = minion.GainedStatsTrigger(player);
                     }
 
                     return true;
@@ -757,6 +800,7 @@ namespace PokeChess.Server.Extensions
                     foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
                     {
                         minion.Attack += amount;
+                        player = minion.GainedStatsTrigger(player);
                     }
 
                     return true;
@@ -764,6 +808,7 @@ namespace PokeChess.Server.Extensions
                     foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
                     {
                         minion.Health += amount;
+                        player = minion.GainedStatsTrigger(player);
                     }
 
                     return true;
@@ -771,6 +816,7 @@ namespace PokeChess.Server.Extensions
                     foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
                     {
                         minion.Attack += amount;
+                        player = minion.GainedStatsTrigger(player);
                     }
                     player.ShopBuffAttack += amount;
 
@@ -779,6 +825,7 @@ namespace PokeChess.Server.Extensions
                     foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
                     {
                         minion.Health += amount;
+                        player = minion.GainedStatsTrigger(player);
                     }
                     player.ShopBuffHealth += amount;
 

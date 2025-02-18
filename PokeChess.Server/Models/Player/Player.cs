@@ -12,6 +12,7 @@ namespace PokeChess.Server.Models.Player
         private readonly int _upgradeToTwoCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Two");
         private int _gold = 0;
         private List<Card> _hand;
+        private int _rockTypeDeaths = 0;
 
         public Player(string id, string name, int armor = 10, int refreshCost = 1)
         {
@@ -34,6 +35,7 @@ namespace PokeChess.Server.Models.Player
             FertilizerHealth = 1;
             BattlecriesPlayed = 0;
             GoldSpentThisTurn = 0;
+            RockTypeDeaths = 0;
             Discounts = new Discounts();
             Board = new List<Card>();
             Hand = new List<Card>();
@@ -91,8 +93,45 @@ namespace PokeChess.Server.Models.Player
         public bool SpellsCastTwiceThisTurn { get; set; }
         public int BattlecriesPlayed { get; set; }
         public int GoldSpentThisTurn { get; set; }
+        public int RockTypeDeaths
+        {
+            get
+            {
+                return _rockTypeDeaths;
+            }
+            set
+            {
+                if (value > _rockTypeDeaths)
+                {
+                    if (Board.Any(x => x.HasRockMinionBuffTrigger))
+                    {
+                        foreach (var minion in Board.Where(x => x.HasRockMinionBuffTrigger))
+                        {
+                            minion.RockMinionBuffTrigger(value - _rockTypeDeaths);
+                        }
+                    }
+                    if (Shop.Any(x => x.HasRockMinionBuffTrigger))
+                    {
+                        foreach (var minion in Shop.Where(x => x.HasRockMinionBuffTrigger))
+                        {
+                            minion.RockMinionBuffTrigger(value - _rockTypeDeaths);
+                        }
+                    }
+                    if (Hand.Any(x => x.HasRockMinionBuffTrigger))
+                    {
+                        foreach (var minion in Hand.Where(x => x.HasRockMinionBuffTrigger))
+                        {
+                            minion.RockMinionBuffTrigger(value - _rockTypeDeaths);
+                        }
+                    }
+                }
+
+                _rockTypeDeaths = value;
+            }
+        }
         public Discounts Discounts { get; set; }
         public List<Card> Board { get; set; }
+        public List<Card> StartOfCombatBoard { get; set; }
         public List<Card> Hand
         {
             get

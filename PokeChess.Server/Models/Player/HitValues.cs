@@ -6,6 +6,7 @@ namespace PokeChess.Server.Models.Player
     {
         public string? Id { get; set; }
         public int Damage { get; set; }
+        public int Attack { get; set; }
         public int Health { get; set; }
         public int Armor { get; set; }
         public string? DamageType { get; set; }
