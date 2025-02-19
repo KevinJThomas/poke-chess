@@ -535,7 +535,8 @@
         "num": "020",
         "name": "Raticate"
       }
-    ]
+    ],
+    "hasStartOfCombat": true
   },
   {
     "pokemonId": 20,
@@ -1513,7 +1514,8 @@
         "num": "058",
         "name": "Growlithe"
       }
-    ]
+    ],
+    "hasStartOfCombat": true
   },
   {
     "pokemonId": 60,
@@ -1595,7 +1597,8 @@
         "num": "061",
         "name": "Poliwhirl"
       }
-    ]
+    ],
+    "hasStartOfCombat": true
   },
   {
     "pokemonId": 63,

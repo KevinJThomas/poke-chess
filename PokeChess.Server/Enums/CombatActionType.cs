@@ -2,6 +2,7 @@
 {
     public enum CombatActionType
     {
+        StartOfCombat,
         Minion,
         Hero,
         GameOver

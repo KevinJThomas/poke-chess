@@ -1321,6 +1321,81 @@ namespace PokeChess.Server.Extensions
             }
         }
 
+        public static (Player, List<HitValues>) StartOfCombatTrigger(this Card card, Player player)
+        {
+            var hitValues = new List<HitValues>();
+
+            if (!card.HasStartOfCombat)
+            {
+                return (player, hitValues);
+            }
+
+            switch (card.PokemonId)
+            {
+                case 19:
+                    var types = new List<MinionType>();
+                    foreach (var minion in player.Board)
+                    {
+                        if (minion.MinionTypes != null && minion.MinionTypes.Any())
+                        {
+                            foreach (var type in minion.MinionTypes)
+                            {
+                                if (!types.Contains(type))
+                                {
+                                    types.Add(type);
+                                }
+                            }
+                        }
+                    }
+
+                    if (types.Count() >= 3)
+                    {
+                        card.CombatAttack += 2;
+                        card.CombatHealth += 2;
+                        hitValues.Add(new HitValues
+                        {
+                            Id = card.Id,
+                            Attack = card.CombatAttack,
+                            Health = card.CombatHealth,
+                            Keywords = card.CombatKeywords
+                        });
+                    }
+
+                    return (player, hitValues);
+                case 59:
+                    var fireMinionCount = player.Board.Count(x => x.MinionTypes.Contains(MinionType.Fire));
+                    if (fireMinionCount > 0)
+                    {
+                        for (var i = 0; i < fireMinionCount; i++)
+                        {
+                            card.CombatKeywords = AddRandomKeyword(card.CombatKeywords, card.MinionTypes);
+                        }
+                        hitValues.Add(new HitValues
+                        {
+                            Id = card.Id,
+                            Attack = card.CombatAttack,
+                            Health = card.CombatHealth,
+                            Keywords = card.CombatKeywords
+                        });
+                    }
+
+                    return (player, hitValues);
+                case 62:
+                    card.CombatAttack = card.CombatAttack * 2;
+                    card.CombatHealth = card.CombatHealth * 2;
+                    hitValues.Add(new HitValues
+                    {
+                        Id = card.Id,
+                        Attack = card.CombatAttack,
+                        Health = card.CombatHealth,
+                        Keywords = card.CombatKeywords
+                    });
+                    return (player, hitValues);
+                default:
+                    return (player, hitValues);
+            }
+        }
+
         public static Player ShopBuffAura(this Card card, Player player, bool remove = false)
         {
             if (!card.HasShopBuffAura)
@@ -1449,6 +1524,81 @@ namespace PokeChess.Server.Extensions
             }
 
             return null;
+        }
+
+        private static Keywords AddRandomKeyword(Keywords keywords, List<MinionType> minionTypes)
+        {
+            var missingKeywords = new List<Keyword>();
+
+            if (!keywords.DivineShield)
+            {
+                missingKeywords.Add(Keyword.DivineShield);
+            }
+            if (!keywords.Reborn)
+            {
+                missingKeywords.Add(Keyword.Reborn);
+            }
+            if (!keywords.Taunt)
+            {
+                missingKeywords.Add(Keyword.Taunt);
+            }
+            if (!keywords.Stealth)
+            {
+                missingKeywords.Add(Keyword.Stealth);
+            }
+            if (!keywords.Venomous)
+            {
+                missingKeywords.Add(Keyword.Venomous);
+            }
+            if (!keywords.Windfury)
+            {
+                missingKeywords.Add(Keyword.Windfury);
+            }
+            if (!keywords.Burning && minionTypes.Contains(MinionType.Fire))
+            {
+                missingKeywords.Add(Keyword.Burning);
+            }
+            if (!keywords.Shock && minionTypes.Contains(MinionType.Electric))
+            {
+                missingKeywords.Add(Keyword.Shock);
+            }
+
+            if (!missingKeywords.Any())
+            {
+                return keywords;
+            }
+
+            var keywordToAdd = missingKeywords[ThreadSafeRandom.ThisThreadsRandom.Next(missingKeywords.Count())];
+
+            switch (keywordToAdd)
+            {
+                case Keyword.DivineShield:
+                    keywords.DivineShield = true;
+                    return keywords;
+                case Keyword.Reborn:
+                    keywords.Reborn = true;
+                    return keywords;
+                case Keyword.Taunt:
+                    keywords.Taunt = true;
+                    return keywords;
+                case Keyword.Stealth:
+                    keywords.Stealth = true;
+                    return keywords;
+                case Keyword.Venomous:
+                    keywords.Venomous = true;
+                    return keywords;
+                case Keyword.Windfury:
+                    keywords.Windfury = true;
+                    return keywords;
+                case Keyword.Burning:
+                    keywords.Burning = true;
+                    return keywords;
+                case Keyword.Shock:
+                    keywords.Shock = true;
+                    return keywords;
+                default:
+                    return keywords;
+            }
         }
     }
 }

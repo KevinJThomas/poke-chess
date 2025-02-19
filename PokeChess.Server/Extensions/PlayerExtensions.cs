@@ -692,6 +692,25 @@ namespace PokeChess.Server.Extensions
             return hitValues;
         }
 
+        public static List<HitValues> StartOfCombat(this Player player)
+        {
+            var hitValues = new List<HitValues>();
+
+            if (player.Board.Any(x => x.HasStartOfCombat))
+            {
+                foreach (var minion in player.Board.Where(x => x.HasStartOfCombat))
+                {
+                    (player, var newHitValues) = minion.StartOfCombatTrigger(player);
+                    if (newHitValues != null && newHitValues.Any())
+                    {
+                        hitValues.AddRange(newHitValues);
+                    }
+                }
+            }
+
+            return hitValues;
+        }
+
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
         {
             if (amount < 0)
@@ -955,12 +974,20 @@ namespace PokeChess.Server.Extensions
                 case SpellType.GetTavern:
                     if (player.Shop.Any())
                     {
+                        var cardsToRemoveFromShop = new List<Card>();
                         foreach (var card in player.Shop)
                         {
                             if (player.Hand.Count() < player.MaxHandSize)
                             {
                                 player.Hand.Add(card);
                                 player.CardAddedToHand();
+                                cardsToRemoveFromShop.Add(card);
+                            }
+                        }
+                        if (cardsToRemoveFromShop.Any())
+                        {
+                            foreach (var card in cardsToRemoveFromShop)
+                            {
                                 player.Shop.Remove(card);
                             }
                         }

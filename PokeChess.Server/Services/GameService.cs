@@ -811,6 +811,16 @@ namespace PokeChess.Server.Services
 
                 player1.ApplyKeywords();
                 player2.ApplyKeywords();
+                foreach (var minion in player1.Board)
+                {
+                    minion.CombatAttack = minion.Attack;
+                    minion.CombatHealth = minion.Health;
+                }
+                foreach (var minion in player2.Board)
+                {
+                    minion.CombatAttack = minion.Attack;
+                    minion.CombatHealth = minion.Health;
+                }
 
                 if (player1.Board.Count() == player2.Board.Count())
                 {
@@ -840,18 +850,35 @@ namespace PokeChess.Server.Services
                     }
                 }
 
-                foreach (var minion in player1.Board)
-                {
-                    minion.CombatAttack = minion.Attack;
-                    minion.CombatHealth = minion.Health;
-                }
-                foreach (var minion in player2.Board)
-                {
-                    minion.CombatAttack = minion.Attack;
-                    minion.CombatHealth = minion.Health;
-                }
                 player1.StartOfCombatBoard = player1.Board.Clone();
                 player2.StartOfCombatBoard = player2.Board.Clone();
+                var player1HitValues = new List<HitValues>();
+                var player2HitValues = new List<HitValues>();
+
+                if (player1.Board.Any(x => x.HasStartOfCombat))
+                {
+                    player1HitValues = player1.StartOfCombat();
+                }
+                if (player2.Board.Any(x => x.HasStartOfCombat))
+                {
+                    player2HitValues = player2.StartOfCombat();
+                }
+                if (player1HitValues.Any() || player2HitValues.Any())
+                {
+                    player1.CombatActions.Add(new CombatAction
+                    {
+                        PlayerOnHitValues = player1HitValues,
+                        OpponentOnHitValues = player2HitValues,
+                        Type = CombatActionType.StartOfCombat.ToString().ToLower()
+                    });
+                    player2.CombatActions.Add(new CombatAction
+                    {
+                        PlayerOnHitValues = player2HitValues,
+                        OpponentOnHitValues = player1HitValues,
+                        Type = CombatActionType.StartOfCombat.ToString().ToLower()
+                    });
+                }
+
                 (player1, player2) = SwingMinions(player1, player2, lobby.GameState.DamageCap);
 
                 player1.AddPreviousOpponent(player2);

@@ -2940,6 +2940,27 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
+        public void TestStartOfCombat_19()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 19).FirstOrDefault());
+            lobby = instance.CombatRound(lobby);
+            var combatAttackBefore = lobby.Players[0].Board[0].CombatAttack;
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 1, 1, false, null, new List<MinionType> { MinionType.Fire, MinionType.Flying }));
+            lobby = instance.CombatRound(lobby);
+            var combatAttackAfter = lobby.Players[0].Board[0].CombatAttack;
+
+            // Assert
+            Assert.IsTrue(combatAttackBefore == combatAttackAfter - 2);
+        }
+
+        [TestMethod]
         public void TestPlaySpell_Fertilizer()
         {
             // Arrange

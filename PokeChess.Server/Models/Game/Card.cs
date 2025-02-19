@@ -1,5 +1,4 @@
 ﻿using PokeChess.Server.Enums;
-using PokeChess.Server.Extensions;
 
 namespace PokeChess.Server.Models.Game
 {
@@ -60,6 +59,7 @@ namespace PokeChess.Server.Models.Game
         public bool HasDeathTrigger { get; set; }
         public bool HasShopRefresh { get; set; }
         public bool HasDeathrattle { get; set; }
+        public bool HasStartOfCombat { get; set; }
         public PlayCardTriggerType PlayCardTriggerType { get; set; } = PlayCardTriggerType.Either;
         public CardType CardType { get; set; } = CardType.Unknown;
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();
