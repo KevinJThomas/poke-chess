@@ -316,6 +316,7 @@ export default function App() {
       console.log("RECONNECTED");
       if (playerId) {
         connection.invoke("OnReconnected", playerId);
+        setGameStatus("shop");
       }
     });
   }, [connection, playerId]);
@@ -361,8 +362,8 @@ export default function App() {
         setCombatActions(combatActions);
         setGameStatus("battle");
         setPlayersMap((prev) => {
-          const player = prev[playerId]
-          const opponent = prev[player.opponentId]
+          const player = prev[playerId];
+          const opponent = prev[player.opponentId];
           return {
             ...prev,
             [player.opponentId]: { ...opponent, board: opponentBoard },
