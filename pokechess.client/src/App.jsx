@@ -297,8 +297,6 @@ export default function App() {
 
     setConnection(connection);
 
-    console.log("hi");
-
     return () => {
       if (connection?.stop) {
         connection.stop();
@@ -375,6 +373,7 @@ export default function App() {
     );
 
     connection.on("ReconnectSuccess", (lobby, playerId) => {
+      console.log("ReconnectSuccess", lobby, playerId);
       setPlayersMap(lobby.players);
       setPlayerId(playerId);
     });
