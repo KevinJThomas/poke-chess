@@ -373,6 +373,7 @@ export default function App() {
     );
 
     connection.on("ReconnectSuccess", (lobby, playerId) => {
+      console.log("ReconnectSuccess", lobby, playerId);
       setPlayersMap(lobby.players);
       setPlayerId(playerId);
     });
