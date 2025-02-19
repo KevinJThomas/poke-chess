@@ -1917,14 +1917,33 @@ namespace PokeChess.Server.Services
 
                     break;
                 case 4:
-                    // Buy and play 2 random minions
-                    if (player.Shop.Any(x => x.CardType == CardType.Minion))
+                    if (player.Tier == 1)
                     {
-                        (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
-                        (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
-                        (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
-                        (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                        var playerIndex4 = lobby.Players.FindIndex(x => x == player);
+                        player.UpgradeTavern();
+                        lobby.Players[playerIndex4] = player;
+
+                        (lobby, player) = GetNewShop(lobby, player, true);
+
+                        var minionToBuy = player.Shop.Where(x => x.Tier == player.Board.Max(y => y.Tier)).FirstOrDefault();
+                        if (minionToBuy != null)
+                        {
+                            (lobby, player) = BuyCard(lobby, player, minionToBuy);
+                            (lobby, player) = PlayCard(lobby, player, minionToBuy, player.Board.Count(), null);
+                        }
                     }
+                    else
+                    {
+                        // Buy and play 2 random minions
+                        if (player.Shop.Any(x => x.CardType == CardType.Minion))
+                        {
+                            (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
+                            (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
+                            (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                            (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                        }
+                    }
+
                     break;
                 case 5:
                     // Upgrade to tier 3
@@ -1933,13 +1952,24 @@ namespace PokeChess.Server.Services
                     lobby.Players[playerIndex5] = player;
 
                     // Buy and play a random minion
-                    if (player.Shop.Any(x => x.CardType == CardType.Minion))
+                    if (player.Gold >= 3 && player.Shop.Any(x => x.CardType == CardType.Minion))
                     {
                         (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
                         (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
                     }
+
                     break;
                 default:
+                    // If there are any discover treasures in hand, play them
+                    var discoverTreasures = player.Hand.Where(x => x.Name == "Discover Treasure").ToList();
+                    if (discoverTreasures != null && discoverTreasures.Any())
+                    {
+                        foreach (var spell in discoverTreasures)
+                        {
+                            (lobby, player) = PlayCard(lobby, player, spell, -1, null);
+                        }
+                    }
+
                     // If they can afford to tier up, flip a coin to see if they do
                     if (player.Gold >= player.UpgradeCost && ThreadSafeRandom.ThisThreadsRandom.Next(2) == 1)
                     {
