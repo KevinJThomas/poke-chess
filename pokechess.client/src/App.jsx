@@ -429,8 +429,8 @@ export default function App() {
       )}
 
       {reconnecting && (
-        <div className="absolute top-0 right-0 left-0 z-10 flex items-center justify-center bg-red-900 py-2 text-xs text-white">
-          Reconnecting...
+        <div className="absolute top-0 right-0 bottom-0 left-0 z-20 flex items-center justify-center bg-black/50">
+          <span className="rounded-md bg-gray-300 p-2">Reconnecting...</span>
         </div>
       )}
 
