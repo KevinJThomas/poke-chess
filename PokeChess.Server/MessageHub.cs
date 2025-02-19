@@ -106,7 +106,6 @@ namespace PokeChess.Server
 
                 if (lobbyPostCombat != null)
                 {
-                    //await SendSafeLobbyAsync(lobby, "CombatComplete");
                     await SendCombatStarted(lobby);
                 }
                 else
