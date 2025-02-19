@@ -53,11 +53,7 @@ export default defineConfig({
     },
   },
   build: {
-    minify: false,
-    terserOptions: {
-      compress: false,
-      mangle: false,
-    },
+    sourcemap: true,
   },
   server: {
     proxy: {

@@ -314,7 +314,6 @@ export default function App() {
       console.log("RECONNECTED");
       if (playerId) {
         connection.invoke("OnReconnected", playerId);
-        setGameStatus("shop");
       }
     });
   }, [connection, playerId]);
@@ -376,6 +375,9 @@ export default function App() {
       console.log("ReconnectSuccess", lobby, playerId);
       setPlayersMap(lobby.players);
       setPlayerId(playerId);
+      if (gameStatus === "battle") {
+        connection.invoke("CombatComplete");
+      }
     });
 
     return () => {
