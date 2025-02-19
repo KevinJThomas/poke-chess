@@ -202,6 +202,14 @@ namespace PokeChess.Server.Extensions
                         var extraHealth = 0;
                         if (evolvedMinion != null)
                         {
+                            if (minionToEvolve.HasShopBuffAura)
+                            {
+                                foreach (var minion in player.Board.Where(x => x.PokemonId == minionToEvolve.PokemonId))
+                                {
+                                    player = minion.ShopBuffAura(player, true);
+                                }
+                            }
+
                             while (minionsRemoved < 3)
                             {
                                 if (player.Board.Any(x => x.PokemonId == pokemonId))
