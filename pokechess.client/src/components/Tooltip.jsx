@@ -31,14 +31,14 @@ export default function Tooltip({
           className="popover-arrow-container"
           arrowClassName="popover-arrow"
         >
-          <div className="flex flex-col items-center gap-2 rounded-md bg-gray-800 p-2 text-sm text-white">
+          <div className="flex max-w-96 flex-col items-center gap-2 rounded-md bg-gray-800 p-2 text-center text-sm text-white">
             {cardType === 0 && <p className="font-bold italic">{name}</p>}
             <Markdown>{text}</Markdown>
             <div className="flex w-full flex-row items-center justify-between gap-3">
               <div className="w-6"></div>
               <div>{!!types.length && <TypeTooltip types={types} />}</div>
               <div className="w-6">
-                {location !== "shop" && (
+                {location !== "shop" && !!tier && (
                   <Tier tier={tier} className="relative" />
                 )}
               </div>
