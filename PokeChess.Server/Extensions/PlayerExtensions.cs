@@ -132,6 +132,7 @@ namespace PokeChess.Server.Extensions
                                     {
                                         player.Board[targetIndex].Attack += player.FertilizerAttack;
                                         player.Board[targetIndex].Health += player.FertilizerHealth;
+                                        player = player.Board[targetIndex].TargetedBySpell(player);
                                         player = player.Board[targetIndex].GainedStatsTrigger(player);
                                         return true;
                                     }
@@ -145,6 +146,7 @@ namespace PokeChess.Server.Extensions
                                     {
                                         player.Shop[targetIndex].Attack += player.FertilizerAttack;
                                         player.Shop[targetIndex].Health += player.FertilizerHealth;
+                                        player = player.Shop[targetIndex].TargetedBySpell(player);
                                         player = player.Shop[targetIndex].GainedStatsTrigger(player);
                                         return true;
                                     }
