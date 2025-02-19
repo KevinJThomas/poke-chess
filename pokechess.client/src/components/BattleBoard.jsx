@@ -175,6 +175,14 @@ export default function BattleBoard({
       },
     }));
   }
+
+  async function startOfCombat(action) {
+    await delay(1000);
+
+    updatePlayerMinions(action.playerOnHitValues);
+    updateOpponentMinions(action.opponentOnHitValues);
+  }
+
   async function attackMinion(action, index) {
     try {
       const [playerMinionTop, playerMinionLeft] = getElementPosition(
@@ -269,6 +277,10 @@ export default function BattleBoard({
     await delay(1000);
 
     for (const [index, action] of combatActions.entries()) {
+      if (action.type === "startofcombat") {
+        await startOfCombat(action);
+      }
+
       if (action.type === "minion") {
         await attackMinion(action, index);
       }
