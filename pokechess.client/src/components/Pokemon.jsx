@@ -94,7 +94,7 @@ export default function Pokemon({
             <Health
               health={health}
               animate={health < baseHealth}
-              isBuffed={attack > baseAttack}
+              isBuffed={health > baseHealth}
             />
           )}
           {!!tier && showTier && <Tier tier={tier} />}
