@@ -310,9 +310,9 @@ export default function App() {
     }
 
     connection.onreconnected(() => {
-      setReconnecting(false);
-      console.log("RECONNECTED");
+      console.log("ONRECONNECTED");
       if (playerId) {
+        console.log("invoking OnReconnected", playerId);
         connection.invoke("OnReconnected", playerId);
       }
     });
@@ -372,6 +372,7 @@ export default function App() {
     );
 
     connection.on("ReconnectSuccess", (lobby, playerId) => {
+      setReconnecting(false);
       console.log("ReconnectSuccess", lobby, playerId);
       setPlayersMap(lobby.players);
       setPlayerId(playerId);
