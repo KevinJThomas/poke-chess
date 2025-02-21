@@ -5,8 +5,10 @@ using PokeChess.Server.Managers;
 using PokeChess.Server.Managers.Interfaces;
 using PokeChess.Server.Models;
 using PokeChess.Server.Models.Player;
+using PokeChess.Server.Models.Player.Hero;
 using PokeChess.Server.Models.Response;
 using PokeChess.Server.Models.Response.Player;
+using System.Reflection;
 
 namespace PokeChess.Server
 {
@@ -124,7 +126,7 @@ namespace PokeChess.Server
             }
 
             var id = Context.ConnectionId;
-            var lobby = _lobbyManager.GetLobbyByPlayerId(id);
+            var lobby = _lobbyManager.GetLobbyBySocketId(id);
             _lobbyManager.PlayBotTurns(lobby.Id);
 
             if (lobby != null && !string.IsNullOrWhiteSpace(lobby.Id))
@@ -160,7 +162,7 @@ namespace PokeChess.Server
 
             var id = Context.ConnectionId;
             var player = _lobbyManager.UpgradeTavern(id);
-            var lobby = _lobbyManager.GetLobbyByPlayerId(id);
+            var lobby = _lobbyManager.GetLobbyBySocketId(id);
 
             if (player != null)
             {
@@ -175,7 +177,7 @@ namespace PokeChess.Server
 
         public async Task SendChat(string message)
         {
-            var lobby = _lobbyManager.GetLobbyByPlayerId(Context.ConnectionId);
+            var lobby = _lobbyManager.GetLobbyBySocketId(Context.ConnectionId);
 
             if (lobby != null && lobby.IsActive && !string.IsNullOrWhiteSpace(lobby.Id) && lobby.Players != null && lobby.Players.Any())
             {
@@ -199,7 +201,7 @@ namespace PokeChess.Server
         {
             if (!string.IsNullOrWhiteSpace(id))
             {
-                var lobby = _lobbyManager.GetLobbyByPlayerId(id);
+                var lobby = _lobbyManager.GetLobbyBySocketId(id);
 
                 if (lobby != null)
                 {
@@ -208,8 +210,8 @@ namespace PokeChess.Server
                     {
                         var lobbyResponse = MapLobbyToResponse(lobby, Context.ConnectionId);
                         await Groups.AddToGroupAsync(Context.ConnectionId, lobby.Id);
-                        await Groups.RemoveFromGroupAsync(id, lobby.Id);
-                        await Clients.Caller.SendAsync("ReconnectSuccess", lobbyResponse, Context.ConnectionId);
+                        //await Groups.RemoveFromGroupAsync(id, lobby.Id);
+                        await Clients.Caller.SendAsync("ReconnectSuccess", lobbyResponse);
                     }
                 }
             }
@@ -253,6 +255,7 @@ namespace PokeChess.Server
                         RefreshCost = player.RefreshCost,
                         IsShopFrozen = player.IsShopFrozen,
                         OpponentId = player.OpponentId,
+                        Hero = player.Hero,
                         Hand = player.Hand,
                         Shop = player.Shop,
                         CombatActions = player.CombatActions
@@ -299,6 +302,7 @@ namespace PokeChess.Server
                 RefreshCost = player.RefreshCost,
                 IsShopFrozen = player.IsShopFrozen,
                 OpponentId = player.OpponentId,
+                Hero = player.Hero,
                 Hand = player.Hand,
                 Shop = player.Shop,
                 CombatActions = player.CombatActions
@@ -348,6 +352,7 @@ namespace PokeChess.Server
                         RefreshCost = player.RefreshCost,
                         IsShopFrozen = player.IsShopFrozen,
                         OpponentId = player.OpponentId,
+                        Hero = player.Hero,
                         Hand = player.Hand,
                         Shop = player.Shop,
                         CombatActions = player.CombatActions
@@ -368,7 +373,13 @@ namespace PokeChess.Server
                         CombatHistory = opponent.CombatHistory
                     };
 
-                    await Clients.Client(player.Id).SendAsync(methodName, response);
+                    if (player.SocketIds.Any())
+                    {
+                        foreach (var socketId in player.SocketIds)
+                        {
+                            await Clients.Client(socketId).SendAsync(methodName, response);
+                        }
+                    }
                 }
             }
         }
@@ -377,7 +388,13 @@ namespace PokeChess.Server
         {
             foreach (var player in lobby.Players.Where(x => !x.IsBot))
             {
-                await Clients.Client(player.Id).SendAsync("CombatStarted", player.CombatActions, lobby.Players.Where(x => x.Id == player.PreviousOpponentId).FirstOrDefault().Board, player.StartOfCombatBoard);
+                if (player.SocketIds.Any())
+                {
+                    foreach (var socketId in player.SocketIds)
+                    {
+                        await Clients.Client(socketId).SendAsync("CombatStarted", player.CombatActions, lobby.Players.Where(x => x.Id == player.PreviousOpponentId).FirstOrDefault().Board, player.StartOfCombatBoard);
+                    }
+                }
             }
         }
     }

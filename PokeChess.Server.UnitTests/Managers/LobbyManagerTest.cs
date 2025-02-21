@@ -50,7 +50,6 @@ namespace PokeChess.Server.UnitTests.Managers
             // Arrange
             (var setupLobby, var logger) = InitializeSetup();
             var instance = LobbyManager.Instance;
-            //var playerCount = setupLobby.Players.Count();
             var playerCount = 2;
 
             // Act
@@ -59,8 +58,8 @@ namespace PokeChess.Server.UnitTests.Managers
             {
                 instance.PlayerJoined(setupLobby.Players[i]);
             }
-            var startGame = instance.StartGame(setupLobby.Players[0].Id);
-            var lobby = instance.GetLobbyByPlayerId(setupLobby.Players[0].Id);
+            var startGame = instance.StartGame(setupLobby.Players[0].SocketIds[0]);
+            var lobby = instance.GetLobbyBySocketId(setupLobby.Players[0].SocketIds[0]);
 
             // Assert
             Assert.IsNotNull(lobby);
@@ -91,8 +90,8 @@ namespace PokeChess.Server.UnitTests.Managers
             {
                 instance.PlayerJoined(player);
             }
-            var startGame = instance.StartGame(setupLobby.Players[0].Id);
-            var updatedPlayer = instance.GetNewShop(setupLobby.Players[0].Id);
+            var startGame = instance.StartGame(setupLobby.Players[0].SocketIds[0]);
+            var updatedPlayer = instance.GetNewShop(setupLobby.Players[0].SocketIds[0]);
 
             // Assert
             Assert.IsNotNull(updatedPlayer);
@@ -113,20 +112,20 @@ namespace PokeChess.Server.UnitTests.Managers
             {
                 instance.PlayerJoined(player);
             }
-            var startGame = instance.StartGame(setupLobby.Players[0].Id);
-            var playerId = startGame.Players[0].Id;
+            var startGame = instance.StartGame(setupLobby.Players[0].SocketIds[0]);
+            var socketId = startGame.Players[0].SocketIds[0];
             startGame.Players[0].Gold = 9;
             var cardId1 = startGame.Players[0].Shop[0].Id;
             var cardId2 = startGame.Players[0].Shop[1].Id;
             var cardId3 = startGame.Players[0].Shop[2].Id;
             var boardIndex = 0;
-            var player1 = instance.MoveCard(playerId, cardId1, Enums.MoveCardAction.Buy, boardIndex, null);
-            player1 = instance.MoveCard(playerId, cardId2, Enums.MoveCardAction.Buy, boardIndex, null);
-            player1 = instance.MoveCard(playerId, cardId3, Enums.MoveCardAction.Buy, boardIndex, null);
-            player1 = instance.MoveCard(playerId, cardId1, Enums.MoveCardAction.Play, boardIndex, null);
-            player1 = instance.MoveCard(playerId, cardId2, Enums.MoveCardAction.Play, boardIndex, null);
-            player1 = instance.MoveCard(playerId, cardId1, Enums.MoveCardAction.Sell, boardIndex, null);
-            var lobby = instance.GetLobbyByPlayerId(playerId);
+            var player1 = instance.MoveCard(socketId, cardId1, Enums.MoveCardAction.Buy, boardIndex, null);
+            player1 = instance.MoveCard(socketId, cardId2, Enums.MoveCardAction.Buy, boardIndex, null);
+            player1 = instance.MoveCard(socketId, cardId3, Enums.MoveCardAction.Buy, boardIndex, null);
+            player1 = instance.MoveCard(socketId, cardId1, Enums.MoveCardAction.Play, boardIndex, null);
+            player1 = instance.MoveCard(socketId, cardId2, Enums.MoveCardAction.Play, boardIndex, null);
+            player1 = instance.MoveCard(socketId, cardId1, Enums.MoveCardAction.Sell, boardIndex, null);
+            var lobby = instance.GetLobbyBySocketId(socketId);
 
             // Assert
             Assert.IsNotNull(player1);
@@ -164,7 +163,7 @@ namespace PokeChess.Server.UnitTests.Managers
                 });
                 instance.PlayerJoined(player);
             }
-            var startGame = instance.StartGame(setupLobby.Players[0].Id);
+            var startGame = instance.StartGame(setupLobby.Players[0].SocketIds[0]);
             var lobby = instance.CombatRound(startGame.Id);
 
             // Assert
@@ -185,8 +184,8 @@ namespace PokeChess.Server.UnitTests.Managers
             {
                 instance.PlayerJoined(player);
             }
-            var startGame = instance.StartGame(setupLobby.Players[0].Id);
-            var lobby = instance.EndTurn(setupLobby.Players[0].Id);
+            var startGame = instance.StartGame(setupLobby.Players[0].SocketIds[0]);
+            var lobby = instance.EndTurn(setupLobby.Players[0].SocketIds[0]);
 
             // Assert
             Assert.IsNotNull(lobby);
@@ -208,10 +207,10 @@ namespace PokeChess.Server.UnitTests.Managers
             {
                 instance.PlayerJoined(player);
             }
-            var startGame = instance.StartGame(setupLobby.Players[0].Id);
-            var player1 = instance.FreezeShop(setupLobby.Players[0].Id);
-            var player2 = instance.FreezeShop(setupLobby.Players[1].Id);
-            player2 = instance.FreezeShop(setupLobby.Players[1].Id);
+            var startGame = instance.StartGame(setupLobby.Players[0].SocketIds[0]);
+            var player1 = instance.FreezeShop(setupLobby.Players[0].SocketIds[0]);
+            var player2 = instance.FreezeShop(setupLobby.Players[1].SocketIds[0]);
+            player2 = instance.FreezeShop(setupLobby.Players[1].SocketIds[0]);
 
             // Assert
             Assert.IsNotNull(player1);
@@ -233,11 +232,11 @@ namespace PokeChess.Server.UnitTests.Managers
             {
                 instance.PlayerJoined(player);
             }
-            var startGame = instance.StartGame(setupLobby.Players[0].Id);
+            var startGame = instance.StartGame(setupLobby.Players[0].SocketIds[0]);
             startGame.Players[0].Gold = 50;
             startGame.Players[1].Gold = 0;
-            var player1 = instance.UpgradeTavern(startGame.Players[0].Id);
-            var player2 = instance.UpgradeTavern(startGame.Players[1].Id);
+            var player1 = instance.UpgradeTavern(startGame.Players[0].SocketIds[0]);
+            var player2 = instance.UpgradeTavern(startGame.Players[1].SocketIds[0]);
 
             // Assert
             Assert.IsNotNull(player1);

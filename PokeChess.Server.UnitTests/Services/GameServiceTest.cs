@@ -3753,7 +3753,7 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsNotNull(lobby.Players);
             Assert.IsTrue(lobby.Players.All(x => !x.IsDead));
             Assert.IsTrue(lobby.Players.All(x => x.Health == 30));
-            Assert.IsTrue(lobby.Players.All(x => x.Armor == x.Hero.Armor));
+            Assert.IsTrue(lobby.Players.All(x => x.Armor == x.Hero.BaseArmor));
         }
 
         [TestMethod]

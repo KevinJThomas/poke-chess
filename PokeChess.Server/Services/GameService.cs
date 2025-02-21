@@ -1777,8 +1777,7 @@ namespace PokeChess.Server.Services
 
         private Player GetNewGhost()
         {
-            var id = Guid.NewGuid().ToString();
-            var ghost = new Player(id, "Ghost", 0);
+            var ghost = new Player(null, "Ghost", 0);
             ghost.Health = 0;
             ghost.IsActive = false;
             return ghost;
@@ -1786,8 +1785,7 @@ namespace PokeChess.Server.Services
 
         private Player GetNewBot(int botNumber)
         {
-            var id = Guid.NewGuid().ToString();
-            var bot = new Player(id, "Bot " + botNumber);
+            var bot = new Player(null, "Bot " + botNumber);
             bot.IsBot = true;
             return bot;
         }
@@ -2101,7 +2099,7 @@ namespace PokeChess.Server.Services
             {
                 var hero = heroesList[ThreadSafeRandom.ThisThreadsRandom.Next(heroesList.Count())];
                 player.Hero = hero;
-                player.Armor = hero.Armor;
+                player.Armor = player.IsActive ? hero.BaseArmor : 0;
                 heroesList.Remove(hero);
             }
 

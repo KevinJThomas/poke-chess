@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        public int Armor { get; set; }
+        public int BaseArmor { get; set; }
         public HeroPower HeroPower { get; set; } = new HeroPower();
     }
 }

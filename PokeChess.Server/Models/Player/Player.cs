@@ -14,9 +14,17 @@ namespace PokeChess.Server.Models.Player
         private List<Card> _hand;
         private int _rockTypeDeaths = 0;
 
-        public Player(string id, string name, int armor = 0, int refreshCost = 1)
+        public Player(string socketId, string name, int armor = 0, int refreshCost = 1)
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString();
+            if (socketId != null)
+            {
+                SocketIds = new List<string> { socketId };
+            }
+            else
+            {
+                SocketIds = new List<string>();
+            }
             Name = name;
             IsActive = true;
             Health = 30;
@@ -49,6 +57,7 @@ namespace PokeChess.Server.Models.Player
         }
 
         public string? Id { get; set; }
+        public List<string> SocketIds { get; set; }
         public string? Name { get; set; }
         public bool IsActive { get; set; }
         public bool IsBot { get; set; }

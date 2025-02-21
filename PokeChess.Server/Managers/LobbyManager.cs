@@ -88,12 +88,17 @@ namespace PokeChess.Server.Managers
             return _lobbies[id];
         }
 
+        public Lobby GetLobbyBySocketId(string socketId)
+        {
+            return _lobbies.Where(x => x.Value.Players.Any(y => y.SocketIds.Contains(socketId))).FirstOrDefault().Value;
+        }
+
         public Lobby GetLobbyByPlayerId(string playerId)
         {
             return _lobbies.Where(x => x.Value.Players.Any(y => y.Id == playerId)).FirstOrDefault().Value;
         }
 
-        public Lobby StartGame(string playerId)
+        public Lobby StartGame(string socketId)
         {
             if (!Initialized())
             {
@@ -101,25 +106,25 @@ namespace PokeChess.Server.Managers
                 return null;
             }
 
-            if (string.IsNullOrWhiteSpace(playerId))
+            if (string.IsNullOrWhiteSpace(socketId))
             {
-                _logger.LogError($"StartGame received null or empty playerId");
+                _logger.LogError($"StartGame received null or empty socketId");
                 return null;
             }
 
             try
             {
-                _logger.LogInformation($"StartGame. playerId: {playerId}");
-                var lobby = GetLobbyByPlayerId(playerId);
+                _logger.LogInformation($"StartGame. socketId: {socketId}");
+                var lobby = GetLobbyBySocketId(socketId);
                 if (lobby == null)
                 {
-                    _logger.LogError($"StartGame couldn't find lobby by player id: {playerId}");
+                    _logger.LogError($"StartGame couldn't find lobby by socket id: {socketId}");
                     return null;
                 }
 
                 if (!lobby.IsWaitingToStart)
                 {
-                    _logger.LogError($"StartGame failed because lobby is already started player id: {playerId}");
+                    _logger.LogError($"StartGame failed because lobby is already started socket id: {socketId}");
                     return null;
                 }
 
@@ -139,7 +144,7 @@ namespace PokeChess.Server.Managers
             }
         }
 
-        public Player GetNewShop(string playerId)
+        public Player GetNewShop(string socketId)
         {
             if (!Initialized())
             {
@@ -147,19 +152,19 @@ namespace PokeChess.Server.Managers
                 return null;
             }
 
-            if (string.IsNullOrWhiteSpace(playerId))
+            if (string.IsNullOrWhiteSpace(socketId))
             {
-                _logger.LogError($"GetNewShop received null or empty playerId");
+                _logger.LogError($"GetNewShop received null or empty socketId");
                 return null;
             }
 
             try
             {
-                _logger.LogInformation($"GetNewShop. playerId: {playerId}");
-                var lobby = GetLobbyByPlayerId(playerId);
+                _logger.LogInformation($"GetNewShop. socketId: {socketId}");
+                var lobby = GetLobbyBySocketId(socketId);
                 if (lobby == null)
                 {
-                    _logger.LogError($"GetNewShop couldn't find lobby by player id: {playerId}");
+                    _logger.LogError($"GetNewShop couldn't find lobby by socket id: {socketId}");
                     return null;
                 }
 
@@ -168,7 +173,7 @@ namespace PokeChess.Server.Managers
                     _gameService.Initialize(_logger);
                 }
 
-                (_lobbies[lobby.Id], var player) = _gameService.GetNewShop(_lobbies[lobby.Id], _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault(), true);
+                (_lobbies[lobby.Id], var player) = _gameService.GetNewShop(_lobbies[lobby.Id], _lobbies[lobby.Id].Players.Where(x => x.SocketIds.Contains(socketId)).FirstOrDefault(), true);
 
                 return player;
             }
@@ -179,7 +184,7 @@ namespace PokeChess.Server.Managers
             }
         }
 
-        public Player MoveCard(string playerId, string cardId, MoveCardAction action, int index, string? targetId)
+        public Player MoveCard(string socketId, string cardId, MoveCardAction action, int index, string? targetId)
         {
             if (!Initialized())
             {
@@ -187,19 +192,19 @@ namespace PokeChess.Server.Managers
                 return null;
             }
 
-            if (string.IsNullOrWhiteSpace(playerId))
+            if (string.IsNullOrWhiteSpace(socketId))
             {
-                _logger.LogError($"MoveCard received null or empty playerId");
+                _logger.LogError($"MoveCard received null or empty socketId");
                 return null;
             }
 
             try
             {
-                _logger.LogInformation($"MoveCard. playerId: {playerId}");
-                var lobby = GetLobbyByPlayerId(playerId);
+                _logger.LogInformation($"MoveCard. socketId: {socketId}");
+                var lobby = GetLobbyBySocketId(socketId);
                 if (lobby == null)
                 {
-                    _logger.LogError($"MoveCard couldn't find lobby by player id: {playerId}");
+                    _logger.LogError($"MoveCard couldn't find lobby by socket id: {socketId}");
                     return null;
                 }
 
@@ -208,12 +213,12 @@ namespace PokeChess.Server.Managers
                     _gameService.Initialize(_logger);
                 }
 
-                var player = _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                var player = _lobbies[lobby.Id].Players.Where(x => x.SocketIds.Contains(socketId)).FirstOrDefault();
                 var card = FindCard(player, cardId, action);
 
                 _lobbies[lobby.Id] = _gameService.MoveCard(lobby, player, card, action, index, targetId);
 
-                return _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                return _lobbies[lobby.Id].Players.Where(x => x.SocketIds.Contains(socketId)).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -256,13 +261,13 @@ namespace PokeChess.Server.Managers
             }
         }
 
-        public Lobby EndTurn(string playerId)
+        public Lobby EndTurn(string socketId)
         {
             foreach (var lobby in _lobbies)
             {
-                if (lobby.Value.Players.Any(p => p.Id == playerId))
+                if (lobby.Value.Players.Any(p => p.SocketIds.Contains(socketId)))
                 {
-                    var index = GetPlayerIndexById(lobby.Value, playerId);
+                    var index = GetPlayerIndexBySocketId(lobby.Value, socketId);
                     lobby.Value.Players[index].TurnEnded = true;
 
                     return lobby.Value;
@@ -277,27 +282,27 @@ namespace PokeChess.Server.Managers
             return _lobbies[lobbyId].Players.All(x => x.TurnEnded || x.IsDead || !x.IsActive || x.IsBot);
         }
 
-        public Player FreezeShop(string playerId)
+        public Player FreezeShop(string socketId)
         {
             if (!Initialized())
             {
-                _logger.LogError($"StartGame failed because LobbyManager was not initialized");
+                _logger.LogError($"FreezeShop failed because LobbyManager was not initialized");
                 return null;
             }
 
-            if (string.IsNullOrWhiteSpace(playerId))
+            if (string.IsNullOrWhiteSpace(socketId))
             {
-                _logger.LogError($"StartGame received null or empty playerId");
+                _logger.LogError($"FreezeShop received null or empty socketId");
                 return null;
             }
 
             try
             {
-                _logger.LogInformation($"StartGame. playerId: {playerId}");
-                var lobby = GetLobbyByPlayerId(playerId);
+                _logger.LogInformation($"FreezeShop. socketId: {socketId}");
+                var lobby = GetLobbyBySocketId(socketId);
                 if (lobby == null)
                 {
-                    _logger.LogError($"StartGame couldn't find lobby by player id: {playerId}");
+                    _logger.LogError($"FreezeShop couldn't find lobby by socket id: {socketId}");
                     return null;
                 }
 
@@ -306,19 +311,19 @@ namespace PokeChess.Server.Managers
                     _gameService.Initialize(_logger);
                 }
 
-                var player = _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                var player = _lobbies[lobby.Id].Players.Where(x => x.SocketIds.Contains(socketId)).FirstOrDefault();
                 _lobbies[lobby.Id] = _gameService.FreezeShop(lobby, player);
 
-                return _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                return _lobbies[lobby.Id].Players.Where(x => x.SocketIds.Contains(socketId)).FirstOrDefault();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"StartGame exception: {ex.Message}");
+                _logger.LogError($"FreezeShop exception: {ex.Message}");
                 return null;
             }
         }
 
-        public Player UpgradeTavern(string playerId)
+        public Player UpgradeTavern(string socketId)
         {
             if (!Initialized())
             {
@@ -326,19 +331,19 @@ namespace PokeChess.Server.Managers
                 return null;
             }
 
-            if (string.IsNullOrWhiteSpace(playerId))
+            if (string.IsNullOrWhiteSpace(socketId))
             {
-                _logger.LogError($"UpgradeTavern received null or empty playerId");
+                _logger.LogError($"UpgradeTavern received null or empty socketId");
                 return null;
             }
 
             try
             {
-                _logger.LogInformation($"UpgradeTavern. playerId: {playerId}");
-                var lobby = GetLobbyByPlayerId(playerId);
+                _logger.LogInformation($"UpgradeTavern. socketId: {socketId}");
+                var lobby = GetLobbyBySocketId(socketId);
                 if (lobby == null)
                 {
-                    _logger.LogError($"UpgradeTavern couldn't find lobby by player id: {playerId}");
+                    _logger.LogError($"UpgradeTavern couldn't find lobby by socket id: {socketId}");
                     return null;
                 }
 
@@ -347,10 +352,10 @@ namespace PokeChess.Server.Managers
                     _gameService.Initialize(_logger);
                 }
 
-                var player = _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                var player = _lobbies[lobby.Id].Players.Where(x => x.SocketIds.Contains(socketId)).FirstOrDefault();
                 _lobbies[lobby.Id] = _gameService.UpgradeTavern(lobby, player);
 
-                return _lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault();
+                return _lobbies[lobby.Id].Players.Where(x => x.SocketIds.Contains(socketId)).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -359,16 +364,16 @@ namespace PokeChess.Server.Managers
             }
         }
 
-        public Lobby PlayerLeft(string id)
+        public Lobby PlayerLeft(string socketId)
         {
             foreach (var lobby in _lobbies)
             {
-                if (lobby.Value.IsActive && lobby.Value.Players.Any(p => p.Id == id))
+                if (lobby.Value.IsActive && lobby.Value.Players.Any(x => x.SocketIds.Contains(socketId)))
                 {
                     if (lobby.Value.IsWaitingToStart)
                     {
                         // If the lobby hasn't started yet, remove the player from the lobby
-                        var index = GetPlayerIndexById(lobby.Value, id);
+                        var index = GetPlayerIndexBySocketId(lobby.Value, socketId);
                         lobby.Value.Players.RemoveAt(index);
                         if (!lobby.Value.Players.Any(x => x.IsActive))
                         {
@@ -376,13 +381,13 @@ namespace PokeChess.Server.Managers
                             ClearInactiveLobbies();
                         }
 
-                        _logger.LogInformation($"PlayerLeft lobby not started. id: {id}");
+                        _logger.LogInformation($"PlayerLeft lobby not started. socketId: {socketId}");
                         return lobby.Value;
                     }
                     else
                     {
                         // If the lobby has started, mark the player as inactive
-                        var index = GetPlayerIndexById(lobby.Value, id);
+                        var index = GetPlayerIndexBySocketId(lobby.Value, socketId);
                         lobby.Value.Players[index].IsActive = false;
 
                         if (!lobby.Value.Players.Any(x => x.IsActive))
@@ -391,7 +396,7 @@ namespace PokeChess.Server.Managers
                             ClearInactiveLobbies();
                         }
 
-                        _logger.LogInformation($"PlayerLeft lobby started. id: {id}");
+                        _logger.LogInformation($"PlayerLeft lobby started. socketId: {socketId}");
                         return lobby.Value;
                     }
                 }
@@ -449,7 +454,7 @@ namespace PokeChess.Server.Managers
             }
         }
 
-        public Lobby OnReconnected(string oldId, string newId)
+        public Lobby OnReconnected(string playerId, string newSocketId)
         {
             if (!Initialized())
             {
@@ -457,7 +462,7 @@ namespace PokeChess.Server.Managers
                 return null;
             }
 
-            if (string.IsNullOrWhiteSpace(oldId) || string.IsNullOrWhiteSpace(newId))
+            if (string.IsNullOrWhiteSpace(playerId) || string.IsNullOrWhiteSpace(newSocketId))
             {
                 _logger.LogError($"OnReconnected received null or empty id");
                 return null;
@@ -465,17 +470,17 @@ namespace PokeChess.Server.Managers
 
             try
             {
-                _logger.LogInformation($"OnReconnected. oldId: {oldId}, newId: {newId}");
-                var lobby = GetLobbyByPlayerId(oldId);
+                _logger.LogInformation($"OnReconnected. playerId: {playerId}, newSocketId: {newSocketId}");
+                var lobby = GetLobbyByPlayerId(playerId);
                 if (lobby == null)
                 {
-                    _logger.LogError($"OnReconnected couldn't find lobby by player id: {oldId}");
+                    _logger.LogError($"OnReconnected couldn't find lobby by player id: {playerId}");
                     return null;
                 }
 
-                if (_lobbies[lobby.Id].Players.Any(x => x.Id == oldId) && !_lobbies[lobby.Id].Players.Where(x => x.Id == oldId).FirstOrDefault().IsActive)
+                if (_lobbies[lobby.Id].Players.Any(x => x.Id == playerId) && !_lobbies[lobby.Id].Players.Where(x => x.Id == playerId).FirstOrDefault().IsActive)
                 {
-                    _lobbies[lobby.Id] = ScrubOldIdReferences(_lobbies[lobby.Id], oldId, newId);
+                    _lobbies[lobby.Id] = UpdatePlayerSocketIds(_lobbies[lobby.Id], playerId, newSocketId);
                     return _lobbies[lobby.Id];
                 }
 
@@ -532,9 +537,9 @@ namespace PokeChess.Server.Managers
             return lobby;
         }
 
-        private int GetPlayerIndexById(Lobby lobby, string id)
+        private int GetPlayerIndexBySocketId(Lobby lobby, string socketId)
         {
-            return lobby.Players.FindIndex(x => x.Id == id);
+            return lobby.Players.FindIndex(x => x.SocketIds.Contains(socketId));
         }
 
         private Card FindCard(Player player, string cardId, MoveCardAction action)
@@ -556,27 +561,13 @@ namespace PokeChess.Server.Managers
             return null;
         }
 
-        private Lobby ScrubOldIdReferences(Lobby lobby, string oldId, string newId)
+        private Lobby UpdatePlayerSocketIds(Lobby lobby, string playerId, string newSocketId)
         {
             foreach (var player in lobby.Players)
             {
-                if (player.Id == oldId)
+                if (player.Id == playerId && !player.SocketIds.Contains(newSocketId))
                 {
-                    player.Id = newId;
-                    player.IsActive = true;
-                }
-
-                if (player.OpponentId == oldId)
-                {
-                    player.OpponentId = newId;
-                }
-
-                for (var i = 0; i < player.PreviousOpponentIds.Count(); i++)
-                {
-                    if (player.PreviousOpponentIds[i] == oldId)
-                    {
-                        player.PreviousOpponentIds[i] = newId;
-                    }
+                    player.SocketIds.Add(newSocketId);
                 }
             }
 
