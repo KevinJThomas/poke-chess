@@ -53,8 +53,14 @@ export default function Hero({
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
-      {/* {hero && <div>{hero.name ?? "Unknown Hero"}</div>} */}
-      <div>{name}</div>
+      <div className="flex flex-col items-center">
+        {hero && (
+          <div className="text-sm font-medium">
+            {hero.name ?? "Unknown Hero"}
+          </div>
+        )}
+        <div className="text-xs">{name}</div>
+      </div>
       {!!health && <Health health={health} />}
       {!!armor && <Armor armor={armor} />}
       {!!tier && <Tier tier={tier} />}

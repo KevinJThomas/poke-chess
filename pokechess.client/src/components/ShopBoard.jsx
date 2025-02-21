@@ -1,6 +1,8 @@
 import Button from "./Button";
 import HandRow from "./HandRow";
 import Hero from "./Hero";
+import HeroPower from "./HeroPower";
+import HeroPowerTooltip from "./HeroPowerTooltip";
 import PlayerBoard from "./PlayerBoard";
 import Row from "./Row";
 import Shop from "./Shop";
@@ -40,7 +42,7 @@ export default function ShopBoard({
         >
           Upgrade ({player.upgradeCost})
         </Button>
-        <Shop player={player} isDropDisabled={disableSellDrop} />
+        <Shop tier={player.tier} isDropDisabled={disableSellDrop} />
         <Button onClick={refresh} disabled={player.refreshCost > player.gold}>
           Refresh ({player.refreshCost})
         </Button>
@@ -73,7 +75,7 @@ export default function ShopBoard({
           isDropDisabled={disableHeroDrop}
         />
         <div>
-          <Button className="h-16 w-16 rounded-full">hi</Button>
+          <HeroPower {...player.hero.heroPower} />
         </div>
       </Row>
       <HandRow

@@ -20,6 +20,7 @@ export default function Opponents({ playersMap, opponentId }) {
           key={playersMap[playerId].id}
           type="opponents"
           className={clsx(
+            "w-30",
             opponentId === playersMap[playerId].id && "ml-16",
             playersMap[playerId].isDead && "opacity-60",
           )}
