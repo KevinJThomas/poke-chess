@@ -270,6 +270,7 @@ namespace PokeChess.Server
                         Armor = player.Armor,
                         Tier = player.Tier,
                         WinStreak = player.WinStreak,
+                        Hero = player.Hero,
                         CombatHistory = player.CombatHistory
                     };
 
@@ -326,6 +327,7 @@ namespace PokeChess.Server
                             Armor = playerResponse.Armor,
                             Tier = playerResponse.Tier,
                             WinStreak = playerResponse.WinStreak,
+                            Hero = player.Hero,
                             CombatHistory = playerResponse.CombatHistory
                         };
                     }
@@ -362,6 +364,7 @@ namespace PokeChess.Server
                         Tier = opponent.Tier,
                         WinStreak = opponent.WinStreak,
                         Board = opponent.Board,
+                        Hero = player.Hero,
                         CombatHistory = opponent.CombatHistory
                     };
 

@@ -4,7 +4,9 @@ using PokeChess.Server.Helpers;
 using PokeChess.Server.Models;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
+using PokeChess.Server.Models.Player.Hero;
 using PokeChess.Server.Services.Interfaces;
+using System.Text.Json;
 
 namespace PokeChess.Server.Services
 {
@@ -15,6 +17,12 @@ namespace PokeChess.Server.Services
         private bool _initialized = false;
         private ILogger _logger;
         private Random _random = new Random();
+        private List<Hero> _allHeroes = new List<Hero>();
+        private readonly JsonSerializerOptions _options = new()
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
         private static readonly int _playersPerLobby = ConfigurationHelper.config.GetValue<int>("App:Game:PlayersPerLobby");
         private static readonly int _turnLengthInSecondsShort = ConfigurationHelper.config.GetValue<int>("App:Game:TurnLengthInSecondsShort");
         private static readonly int _turnLengthInSecondsMedium = ConfigurationHelper.config.GetValue<int>("App:Game:TurnLengthInSecondsMedium");
@@ -44,6 +52,7 @@ namespace PokeChess.Server.Services
 
         private GameService()
         {
+            LoadAllHeroes();
         }
 
         public static GameService Instance
@@ -123,7 +132,8 @@ namespace PokeChess.Server.Services
 
             lobby.IsWaitingToStart = false;
             lobby.GameState.MinionCardPool = _cardService.GetAllMinionsForPool();
-            lobby.GameState.SpellCardPool = _cardService.GetAllSpells().ToList();
+            lobby.GameState.SpellCardPool = _cardService.GetAllSpells();
+            lobby = AssignHeroes(lobby);
             lobby = NextRound(lobby);
             lobby = PlayBotTurns(lobby);
             return lobby;
@@ -360,6 +370,32 @@ namespace PokeChess.Server.Services
                 lobby.GameState.BotsPlayedThisTurn = true;
             }
 
+            return lobby;
+        }
+
+        public Lobby UseHeroPower(Lobby lobby, Player player)
+        {
+            if (!Initialized())
+            {
+                _logger.LogError("UseHeroPower failed because GameService was not initialized");
+                return lobby;
+            }
+
+            if (!IsLobbyValid(lobby))
+            {
+                _logger.LogError("UseHeroPower received invalid lobby");
+                return lobby;
+            }
+
+            if (player == null)
+            {
+                _logger.LogError("UseHeroPower received null player");
+                return lobby;
+            }
+
+            var playerIndex = lobby.Players.FindIndex(x => x == player);
+            player.HeroPower();
+            lobby.Players[playerIndex] = player;
             return lobby;
         }
 
@@ -1421,6 +1457,12 @@ namespace PokeChess.Server.Services
                             damage = source.CombatHealth;
                         }
                     }
+
+                    if (damage <= 0)
+                    {
+                        // Damage can't be 0 unless there's a divine shield
+                        damage = 1;
+                    }
                 }
 
                 source.CombatHealth -= damage;
@@ -1455,6 +1497,12 @@ namespace PokeChess.Server.Services
                     {
                         damage = target.CombatHealth;
                     }
+                }
+
+                if (damage <= 0)
+                {
+                    // Damage can't be 0 unless there's a divine shield
+                    damage = 1;
                 }
 
                 target.CombatHealth -= damage;
@@ -2022,6 +2070,42 @@ namespace PokeChess.Server.Services
             }
 
             return (lobby, player);
+        }
+
+        private void LoadAllHeroes()
+        {
+            _allHeroes = new List<Hero>();
+
+            if (_allHeroes.Count == 0)
+            {
+                var heroesJson = File.ReadAllText("heroes.json");
+                if (!string.IsNullOrWhiteSpace(heroesJson))
+                {
+                    var heroes = JsonSerializer.Deserialize<List<Hero>>(heroesJson, _options);
+                    if (heroes != null && heroes.Any())
+                    {
+                        foreach (var hero in heroes)
+                        {
+                            _allHeroes.Add(hero);
+                        }
+                    }
+                }
+            }
+        }
+
+        private Lobby AssignHeroes(Lobby lobby)
+        {
+            var heroesList = _allHeroes.Clone();
+
+            foreach (var player in lobby.Players)
+            {
+                var hero = heroesList[ThreadSafeRandom.ThisThreadsRandom.Next(heroesList.Count())];
+                player.Hero = hero;
+                player.Armor = hero.Armor;
+                heroesList.Remove(hero);
+            }
+
+            return lobby;
         }
 
         #endregion

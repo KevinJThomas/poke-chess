@@ -1130,6 +1130,7 @@ namespace PokeChess.Server.Extensions
                     card.Health += amount;
                     if (!card.IsDead)
                     {
+                        card.CombatAttack += amount;
                         card.CombatHealth += amount;
                     }
                     return;
@@ -1139,6 +1140,7 @@ namespace PokeChess.Server.Extensions
                     card.Health += amount * 5;
                     if (!card.IsDead)
                     {
+                        card.CombatAttack += amount * 5;
                         card.CombatHealth += amount * 5;
                     }
                     return;

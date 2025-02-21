@@ -14,7 +14,7 @@ namespace PokeChess.Server.Models.Player
         private List<Card> _hand;
         private int _rockTypeDeaths = 0;
 
-        public Player(string id, string name, int armor = 10, int refreshCost = 1)
+        public Player(string id, string name, int armor = 0, int refreshCost = 1)
         {
             Id = id;
             Name = name;
@@ -132,6 +132,7 @@ namespace PokeChess.Server.Models.Player
         }
         public int SpellsCasted { get; set; }
         public Discounts Discounts { get; set; }
+        public Hero.Hero Hero { get; set; }
         public List<Card> Board { get; set; }
         public List<Card> StartOfCombatBoard { get; set; }
         public List<Card> Hand

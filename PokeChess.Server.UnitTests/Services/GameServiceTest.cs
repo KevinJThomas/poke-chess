@@ -747,9 +747,11 @@ namespace PokeChess.Server.UnitTests.Services
             var cardIdToRemove = lobby.Players[0].Hand[0].Id;
             var cardPoolCountBeforeBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
             var armorBeforePlay = lobby.Players[0].Armor;
+            var healthBeforePlay = lobby.Players[0].Health;
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, null);
             var cardPoolCountAfterBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
             var armorAfterPlay = lobby.Players[0].Armor;
+            var healthAfterPlay = lobby.Players[0].Health;
 
             // Assert
             Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
@@ -757,7 +759,7 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(lobby.Players[0].Board.Count() > boardCount);
             Assert.IsTrue(lobby.Players[0].Hand.Count() < handCount);
             Assert.IsTrue(cardPoolCountBeforeBuy == cardPoolCountAfterBuy);
-            Assert.IsTrue(armorBeforePlay > armorAfterPlay);
+            Assert.IsTrue(armorBeforePlay > armorAfterPlay || healthBeforePlay > healthAfterPlay);
         }
 
         [TestMethod]
@@ -3751,7 +3753,7 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsNotNull(lobby.Players);
             Assert.IsTrue(lobby.Players.All(x => !x.IsDead));
             Assert.IsTrue(lobby.Players.All(x => x.Health == 30));
-            Assert.IsTrue(lobby.Players.All(x => x.Armor == 10));
+            Assert.IsTrue(lobby.Players.All(x => x.Armor == x.Hero.Armor));
         }
 
         [TestMethod]

@@ -15,6 +15,7 @@ namespace PokeChess.Server.Extensions
         private static readonly int _upgradeToFourCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Four");
         private static readonly int _upgradeToFiveCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Five");
         private static readonly int _upgradeToSixCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Six");
+        private static readonly int _combatHistoryLength = ConfigurationHelper.config.GetValue<int>("App:Player:CombatHistoryLength");
 
         public static void ApplyKeywords(this Player player)
         {
@@ -74,9 +75,7 @@ namespace PokeChess.Server.Extensions
 
         public static void TrimCombatHistory(this Player player)
         {
-            var historyLength = 3;
-
-            var historyLengthOverflow = player.CombatHistory.Count() - historyLength;
+            var historyLengthOverflow = player.CombatHistory.Count() - _combatHistoryLength;
             if (historyLengthOverflow > 0)
             {
                 for (var i = 0; i < historyLengthOverflow; i++)
@@ -719,6 +718,20 @@ namespace PokeChess.Server.Extensions
             }
 
             return hitValues;
+        }
+
+        public static void HeroPower(this Player player)
+        {
+            if (player.Hero.HeroPower.IsDisabled || player.Hero.HeroPower.IsPassive || player.Gold < player.Hero.HeroPower.Cost)
+            {
+                return;
+            }
+
+            switch (player.Hero.HeroPower.Id)
+            {
+                case 1:
+                    break;
+            }
         }
 
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)

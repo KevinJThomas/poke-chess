@@ -1,5 +1,6 @@
 ﻿using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
+using PokeChess.Server.Models.Player.Hero;
 
 namespace PokeChess.Server.Models.Response.Player
 {
@@ -11,6 +12,7 @@ namespace PokeChess.Server.Models.Response.Player
         public int Armor { get; set; }
         public int Tier { get; set; }
         public int WinStreak { get; set; }
+        public Hero Hero { get; set; } = new Hero();
         public List<Card> Board { get; set; } = new List<Card>();
         public List<CombatHistoryItem> CombatHistory { get; set; } = new List<CombatHistoryItem>();
         public bool IsDead
