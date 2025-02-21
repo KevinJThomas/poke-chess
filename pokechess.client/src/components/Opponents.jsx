@@ -1,7 +1,6 @@
 import Hero from "./Hero";
 import { orderBy } from "lodash";
-import clsx from "clsx";
-
+import { cn } from "../util";
 export default function Opponents({ playersMap, opponentId }) {
   const playerIds = Object.keys(playersMap);
   const sortedPlayers = orderBy(
@@ -19,7 +18,7 @@ export default function Opponents({ playersMap, opponentId }) {
           {...playersMap[playerId]}
           key={playersMap[playerId].id}
           type="opponents"
-          className={clsx(
+          className={cn(
             "w-30",
             opponentId === playersMap[playerId].id && "ml-16",
             playersMap[playerId].isDead && "opacity-60",

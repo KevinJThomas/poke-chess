@@ -2,7 +2,6 @@ import Button from "./Button";
 import HandRow from "./HandRow";
 import Hero from "./Hero";
 import HeroPower from "./HeroPower";
-import HeroPowerTooltip from "./HeroPowerTooltip";
 import PlayerBoard from "./PlayerBoard";
 import Row from "./Row";
 import Shop from "./Shop";
@@ -65,7 +64,7 @@ export default function ShopBoard({
         isShiftDisabled={disableBoardShift}
       />
       <Row>
-        <div className="w-16"></div>
+        <div className="w-20"></div>
         <Hero
           name={player.name}
           health={player.health}
@@ -75,7 +74,7 @@ export default function ShopBoard({
           isDropDisabled={disableHeroDrop}
         />
         <div>
-          <HeroPower {...player.hero.heroPower} />
+          <HeroPower {...player.hero.heroPower} connection={connection} />
         </div>
       </Row>
       <HandRow

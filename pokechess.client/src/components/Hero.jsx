@@ -1,7 +1,7 @@
 import Armor from "./Armor";
 import Health from "./Health";
 import Tier from "./Tier";
-import clsx from "clsx";
+import { cn } from "../util";
 import useAsyncEffect from "use-async-effect";
 import { useState } from "react";
 import { delay } from "../util";
@@ -45,7 +45,7 @@ export default function Hero({
   const heroPortrait = (
     <div
       id={id}
-      className={clsx(
+      className={cn(
         "relative flex h-24 w-24 items-center justify-center truncate rounded-xl bg-red-300 outline-2 outline-red-900 transition-all duration-400 ease-in-out",
         className,
       )}
