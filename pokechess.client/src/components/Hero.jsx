@@ -55,7 +55,9 @@ export default function Hero({
     >
       <div className="flex flex-col items-center">
         {hero && (
-          <div className="font-medium">{hero.name ?? "Unknown Hero"}</div>
+          <div className="text-sm font-medium">
+            {hero.name ?? "Unknown Hero"}
+          </div>
         )}
         <div className="text-xs">{name}</div>
       </div>
