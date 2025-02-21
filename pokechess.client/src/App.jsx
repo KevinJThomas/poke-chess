@@ -353,6 +353,7 @@ export default function App() {
     connection.on(
       "CombatStarted",
       (combatActions, opponentBoard, playerBoard) => {
+        console.log("CombatStarted", combatActions, opponentBoard, playerBoard)
         setCombatActions(combatActions);
         setGameStatus("battle");
         setPlayersMap((prev) => {
@@ -368,11 +369,10 @@ export default function App() {
       },
     );
 
-    connection.on("ReconnectSuccess", (lobby, playerId) => {
+    connection.on("ReconnectSuccess", (lobby) => {
       setReconnecting(false);
-      console.log("ReconnectSuccess", lobby, playerId);
+      console.log("ReconnectSuccess", lobby);
       setPlayersMap(lobby.players);
-      setPlayerId(playerId);
       if (gameStatus === "battle") {
         connection.invoke("CombatComplete");
       }
