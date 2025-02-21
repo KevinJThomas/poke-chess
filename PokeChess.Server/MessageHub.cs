@@ -229,7 +229,7 @@ namespace PokeChess.Server
             await base.OnDisconnectedAsync(exception);
         }
 
-        private LobbyResponse MapLobbyToResponse(Lobby lobby, string playerId)
+        private LobbyResponse MapLobbyToResponse(Lobby lobby, string socketId)
         {
             var response = new LobbyResponse();
             response.GameState.RoundNumber = lobby.GameState.RoundNumber;
@@ -237,7 +237,7 @@ namespace PokeChess.Server
 
             foreach (var player in lobby.Players)
             {
-                if (player.Id == playerId)
+                if (player.SocketIds.Contains(socketId))
                 {
                     var playerResponse = new PlayerResponse
                     {
@@ -331,7 +331,7 @@ namespace PokeChess.Server
                             Armor = playerResponse.Armor,
                             Tier = playerResponse.Tier,
                             WinStreak = playerResponse.WinStreak,
-                            Hero = player.Hero,
+                            Hero = playerResponse.Hero,
                             CombatHistory = playerResponse.CombatHistory
                         };
                     }
@@ -369,7 +369,7 @@ namespace PokeChess.Server
                         Tier = opponent.Tier,
                         WinStreak = opponent.WinStreak,
                         Board = opponent.Board,
-                        Hero = player.Hero,
+                        Hero = opponent.Hero,
                         CombatHistory = opponent.CombatHistory
                     };
 
