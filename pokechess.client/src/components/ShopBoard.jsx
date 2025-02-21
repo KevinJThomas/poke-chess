@@ -63,13 +63,18 @@ export default function ShopBoard({
         isShiftDisabled={disableBoardShift}
       />
       <Row>
+        <div className="w-16"></div>
         <Hero
           name={player.name}
           health={player.health}
           armor={player.armor}
+          hero={player.hero}
           type="player-shop"
           isDropDisabled={disableHeroDrop}
         />
+        <div>
+          <Button className="h-16 w-16 rounded-full">hi</Button>
+        </div>
       </Row>
       <HandRow
         player={player}

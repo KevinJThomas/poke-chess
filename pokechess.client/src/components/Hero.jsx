@@ -10,6 +10,7 @@ import OpponentTooltip from "./OpponentTooltip";
 import { Droppable } from "@hello-pangea/dnd";
 
 export default function Hero({
+  hero,
   health,
   name,
   armor,
@@ -41,7 +42,7 @@ export default function Hero({
     setShowDamage(false);
   }, [damage]);
 
-  const hero = (
+  const heroPortrait = (
     <div
       id={id}
       className={clsx(
@@ -52,7 +53,8 @@ export default function Hero({
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
-      <span>{name}</span>
+      {/* {hero && <div>{hero.name ?? "Unknown Hero"}</div>} */}
+      <div>{name}</div>
       {!!health && <Health health={health} />}
       {!!armor && <Armor armor={armor} />}
       {!!tier && <Tier tier={tier} />}
@@ -67,7 +69,7 @@ export default function Hero({
         showToolTip={showTooltip}
         winStreak={winStreak}
       >
-        {hero}
+        {heroPortrait}
       </OpponentTooltip>
     );
   }
@@ -86,7 +88,7 @@ export default function Hero({
               style={getListStyle(snapshot.isDraggingOver)}
               {...provided.droppableProps}
             >
-              {hero}
+              {heroPortrait}
             </div>
             <span className="hidden">{provided.placeholder}</span>
           </>
@@ -95,5 +97,5 @@ export default function Hero({
     );
   }
 
-  return hero;
+  return heroPortrait;
 }
