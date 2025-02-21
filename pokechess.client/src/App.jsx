@@ -37,7 +37,7 @@ export default function App() {
   const opponent = playersMap[player?.opponentId];
 
   console.log("playersMap", playersMap);
-  console.log("playersId", playerId);
+  console.log("playerId", playerId);
 
   function removeCardFromHand(cardId) {
     const clonedPlayersMap = cloneDeep(playersMap);
@@ -290,6 +290,15 @@ export default function App() {
       console.log("RECONNECTING", error);
     });
 
+    connection.onreconnected(() => {
+      console.log("ONRECONNECTED");
+      const id = document.getElementById("player-id")?.value;
+      if (id) {
+        console.log("invoking OnReconnected", id);
+        connection.invoke("OnReconnected", id);
+      }
+    });
+
     connection.onclose((error) => {
       console.log("CLOSED", error);
       // setError(error);
@@ -303,20 +312,6 @@ export default function App() {
       }
     };
   }, []);
-
-  useEffect(() => {
-    if (!connection) {
-      return;
-    }
-
-    connection.onreconnected(() => {
-      console.log("ONRECONNECTED");
-      if (playerId) {
-        console.log("invoking OnReconnected", playerId);
-        connection.invoke("OnReconnected", playerId);
-      }
-    });
-  }, [connection, playerId]);
 
   useEffect(() => {
     if (!connection) {
@@ -422,6 +417,7 @@ export default function App() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+      <input type="hidden" id="player-id" value={playerId} />
       {hasEndedTurn && (
         <div className="absolute top-0 right-0 bottom-0 left-0 z-10 flex items-center justify-center bg-black/50">
           <span className="rounded-md bg-gray-300 p-2">
