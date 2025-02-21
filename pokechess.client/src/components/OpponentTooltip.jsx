@@ -29,7 +29,12 @@ export default function OpponentTooltip({
           arrowClassName="popover-arrow"
         >
           <div className="flex flex-col items-center gap-2 rounded-md bg-gray-800 p-2 text-sm text-white">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-700 font-bold text-white">
+            <div
+              className={cn(
+                "flex h-6 w-6 items-center justify-center rounded-full bg-emerald-700 font-bold text-white",
+                winStreak === 0 && "bg-gray-500",
+              )}
+            >
               {winStreak}
             </div>
             {combatHistory.map((combat, index) => (

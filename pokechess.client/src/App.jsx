@@ -280,6 +280,8 @@ export default function App() {
       .withAutomaticReconnect()
       .build();
 
+    connection.serverTimeoutInMilliseconds = 500000;
+
     connection.start().catch((error) => {
       setError(error);
       setGameStatus("error");
