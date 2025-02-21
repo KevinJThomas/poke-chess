@@ -37,7 +37,7 @@ namespace PokeChess.Server
             {
                 var lobbyResponse = MapLobbyToResponse(lobby, id);
                 await Groups.AddToGroupAsync(id, lobby.Id);
-                await Clients.Caller.SendAsync("LobbyUpdated", lobbyResponse, Context.ConnectionId);
+                await Clients.Caller.SendAsync("LobbyUpdated", lobbyResponse, player.Id);
                 await Clients.Group(lobby.Id).SendAsync("LobbyUpdated", lobbyResponse);
             }
         }
