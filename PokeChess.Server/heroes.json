@@ -4,6 +4,8 @@
     "name": "Ash",
     "baseArmor": 8,
     "heroPower": {
+      "id": 1,
+      "name": "Pika!",
       "cost": 4,
       "text": "Get a Pikachu"
     }
@@ -14,6 +16,7 @@
     "baseArmor": 7,
     "heroPower": {
       "id": 2,
+      "name": "Riptide",
       "text": "__Passive.__\nAfter you play 3 Water types, reduce the cost of upgrading the tavern by 3",
       "isPassive": true,
       "triggers": {
@@ -27,6 +30,7 @@
     "baseArmor": 10,
     "heroPower": {
       "id": 3,
+      "name": "Jelly Doughnut",
       "cost": 3,
       "text": "Get a random minion from your tier"
     }
@@ -37,6 +41,7 @@
     "baseArmor": 15,
     "heroPower": {
       "id": 4,
+      "name": "Cut Corners",
       "cost": 1,
       "text": "Refresh the tavern and include 2 minions from a tier higher than yours"
     }
@@ -47,6 +52,7 @@
     "baseArmor": 14,
     "heroPower": {
       "id": 5,
+      "name": "Pokémon Savant",
       "cost": 3,
       "text": "If you have 2 copies of a minion, find the 3rd"
     }
@@ -57,6 +63,7 @@
     "baseArmor": 12,
     "heroPower": {
       "id": 6,
+      "name": "Mine!",
       "cost": 2,
       "text": "Steal a random minion from the tavern and give it +1/+1"
     }
@@ -67,6 +74,7 @@
     "baseArmor": 0,
     "heroPower": {
       "id": 7,
+      "name": "Punching Bag",
       "text": "__Passive.__\nStart with 30 extra health",
       "isPassive": true,
       "triggers": {
@@ -80,6 +88,7 @@
     "baseArmor": 14,
     "heroPower": {
       "id": 8,
+      "name": "See The Future",
       "text": "__Passive.__\nAfter you buy 4 __Battlecry__ minions, get a __Kadabra__",
       "isPassive": true,
       "triggers": {
