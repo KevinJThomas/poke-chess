@@ -16,5 +16,6 @@ namespace PokeChess.Server.Services.Interfaces
         Lobby FreezeShop(Lobby lobby, Player player);
         Lobby UpgradeTavern(Lobby lobby, Player player);
         Lobby PlayBotTurns(Lobby lobby);
+        Lobby HeroPower(Lobby lobby, Player player);
     }
 }

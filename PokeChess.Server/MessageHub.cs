@@ -166,12 +166,30 @@ namespace PokeChess.Server
 
             if (player != null)
             {
-                await Clients.Caller.SendAsync("PlayerUpdated", player);
+                var playerResponse = MapPlayerToResponse(player);
+                await Clients.Caller.SendAsync("PlayerUpdated", playerResponse);
             }
 
             if (lobby != null)
             {
                 await SendSafeLobbyAsync(lobby, "LobbyUpdated");
+            }
+        }
+
+        public async Task HeroPower()
+        {
+            if (!_lobbyManager.Initialized())
+            {
+                _lobbyManager.Initialize(_logger);
+            }
+
+            var id = Context.ConnectionId;
+            var player = _lobbyManager.HeroPower(id);
+
+            if (player != null)
+            {
+                var playerResponse = MapPlayerToResponse(player);
+                await Clients.Caller.SendAsync("PlayerUpdated", playerResponse);
             }
         }
 
@@ -255,7 +273,18 @@ namespace PokeChess.Server
                         RefreshCost = player.RefreshCost,
                         IsShopFrozen = player.IsShopFrozen,
                         OpponentId = player.OpponentId,
-                        Hero = player.Hero,
+                        Hero = new Models.Response.Player.Hero.HeroResponse
+                        {
+                            Name = player.Hero.Name,
+                            HeroPower = new Models.Response.Player.Hero.HeroPowerResponse
+                            {
+                                Name = player.Hero.HeroPower.Name,
+                                Cost = player.Hero.HeroPower.Cost,
+                                IsPassive = player.Hero.HeroPower.IsPassive,
+                                IsDisabled = player.Hero.HeroPower.IsDisabled,
+                                Text = player.Hero.HeroPower.Text
+                            }
+                        },
                         Hand = player.Hand,
                         Shop = player.Shop,
                         CombatActions = player.CombatActions
@@ -273,7 +302,18 @@ namespace PokeChess.Server
                         Armor = player.Armor,
                         Tier = player.Tier,
                         WinStreak = player.WinStreak,
-                        Hero = player.Hero,
+                        Hero = new Models.Response.Player.Hero.HeroResponse
+                        {
+                            Name = player.Hero.Name,
+                            HeroPower = new Models.Response.Player.Hero.HeroPowerResponse
+                            {
+                                Name = player.Hero.HeroPower.Name,
+                                Cost = player.Hero.HeroPower.Cost,
+                                IsPassive = player.Hero.HeroPower.IsPassive,
+                                IsDisabled = player.Hero.HeroPower.IsDisabled,
+                                Text = player.Hero.HeroPower.Text
+                            }
+                        },
                         CombatHistory = player.CombatHistory
                     };
 
@@ -302,7 +342,18 @@ namespace PokeChess.Server
                 RefreshCost = player.RefreshCost,
                 IsShopFrozen = player.IsShopFrozen,
                 OpponentId = player.OpponentId,
-                Hero = player.Hero,
+                Hero = new Models.Response.Player.Hero.HeroResponse
+                {
+                    Name = player.Hero.Name,
+                    HeroPower = new Models.Response.Player.Hero.HeroPowerResponse
+                    {
+                        Name = player.Hero.HeroPower.Name,
+                        Cost = player.Hero.HeroPower.Cost,
+                        IsPassive = player.Hero.HeroPower.IsPassive,
+                        IsDisabled = player.Hero.HeroPower.IsDisabled,
+                        Text = player.Hero.HeroPower.Text
+                    }
+                },
                 Hand = player.Hand,
                 Shop = player.Shop,
                 CombatActions = player.CombatActions
@@ -331,7 +382,18 @@ namespace PokeChess.Server
                             Armor = playerResponse.Armor,
                             Tier = playerResponse.Tier,
                             WinStreak = playerResponse.WinStreak,
-                            Hero = playerResponse.Hero,
+                            Hero = new Models.Response.Player.Hero.HeroResponse
+                            {
+                                Name = playerResponse.Hero.Name,
+                                HeroPower = new Models.Response.Player.Hero.HeroPowerResponse
+                                {
+                                    Name = playerResponse.Hero.HeroPower.Name,
+                                    Cost = playerResponse.Hero.HeroPower.Cost,
+                                    IsPassive = playerResponse.Hero.HeroPower.IsPassive,
+                                    IsDisabled = playerResponse.Hero.HeroPower.IsDisabled,
+                                    Text = playerResponse.Hero.HeroPower.Text
+                                }
+                            },
                             CombatHistory = playerResponse.CombatHistory
                         };
                     }
@@ -352,7 +414,18 @@ namespace PokeChess.Server
                         RefreshCost = player.RefreshCost,
                         IsShopFrozen = player.IsShopFrozen,
                         OpponentId = player.OpponentId,
-                        Hero = player.Hero,
+                        Hero = new Models.Response.Player.Hero.HeroResponse
+                        {
+                            Name = player.Hero.Name,
+                            HeroPower = new Models.Response.Player.Hero.HeroPowerResponse
+                            {
+                                Name = player.Hero.HeroPower.Name,
+                                Cost = player.Hero.HeroPower.Cost,
+                                IsPassive = player.Hero.HeroPower.IsPassive,
+                                IsDisabled = player.Hero.HeroPower.IsDisabled,
+                                Text = player.Hero.HeroPower.Text
+                            }
+                        },
                         Hand = player.Hand,
                         Shop = player.Shop,
                         CombatActions = player.CombatActions
@@ -369,7 +442,18 @@ namespace PokeChess.Server
                         Tier = opponent.Tier,
                         WinStreak = opponent.WinStreak,
                         Board = opponent.Board,
-                        Hero = opponent.Hero,
+                        Hero = new Models.Response.Player.Hero.HeroResponse
+                        {
+                            Name = opponent.Hero.Name,
+                            HeroPower = new Models.Response.Player.Hero.HeroPowerResponse
+                            {
+                                Name = opponent.Hero.HeroPower.Name,
+                                Cost = opponent.Hero.HeroPower.Cost,
+                                IsPassive = opponent.Hero.HeroPower.IsPassive,
+                                IsDisabled = opponent.Hero.HeroPower.IsDisabled,
+                                Text = opponent.Hero.HeroPower.Text
+                            }
+                        },
                         CombatHistory = opponent.CombatHistory
                     };
 

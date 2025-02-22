@@ -4,6 +4,7 @@ using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services.Interfaces;
 using PokeChess.Server.Services;
+using PokeChess.Server.Models;
 
 namespace PokeChess.Server.Extensions
 {
@@ -16,6 +17,13 @@ namespace PokeChess.Server.Extensions
         private static readonly int _upgradeToFiveCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Five");
         private static readonly int _upgradeToSixCost = ConfigurationHelper.config.GetValue<int>("App:Player:UpgradeCosts:Six");
         private static readonly int _combatHistoryLength = ConfigurationHelper.config.GetValue<int>("App:Player:CombatHistoryLength");
+        private static readonly string _copyStamp = ConfigurationHelper.config.GetValue<string>("App:Game:CardIdCopyStamp");
+        private static readonly int _shopSizeTierOne = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:One");
+        private static readonly int _shopSizeTierTwo = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:Two");
+        private static readonly int _shopSizeTierThree = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:Three");
+        private static readonly int _shopSizeTierFour = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:Four");
+        private static readonly int _shopSizeTierFive = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:Five");
+        private static readonly int _shopSizeTierSix = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:Six");
 
         public static void ApplyKeywords(this Player player)
         {
@@ -620,6 +628,8 @@ namespace PokeChess.Server.Extensions
 
         public static void CardAddedToHand(this Player player)
         {
+            player.EvolveCheck();
+
             if (player.Board.Any())
             {
                 foreach (var minion in player.Board)
@@ -636,6 +646,18 @@ namespace PokeChess.Server.Extensions
                             minion.CardsToHandInterval--;
                         }
                     }
+                }
+            }
+
+            if (player.Hero.HeroPower.Id == 5)
+            {
+                var pokemonIdList = new List<int>();
+                pokemonIdList.AddRange(player.Hand.Where(x => x.CardType == CardType.Minion && x.PokemonId != 0).Select(x => x.PokemonId));
+                pokemonIdList.AddRange(player.Board.Where(x => x.PokemonId != 0).Select(x => x.PokemonId));
+                var duplicateList = pokemonIdList.GroupBy(x => x).Where(y => y.Count() == 2).Select(z => z.Key).ToList();
+                if (duplicateList != null && duplicateList.Any())
+                {
+                    // triple one
                 }
             }
         }
@@ -730,8 +752,108 @@ namespace PokeChess.Server.Extensions
             switch (player.Hero.HeroPower.Id)
             {
                 case 1:
+                    if (player.Hand.Count() < player.MaxHandSize)
+                    {
+                        var pikachu = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 25).FirstOrDefault();
+                        if (pikachu != null)
+                        {
+                            pikachu.Id = Guid.NewGuid().ToString() + _copyStamp;
+                            player.Hand.Add(pikachu);
+                            player.HeroPowerUsedSuccessfully();
+                        }
+                    }
+
+                    break;
+                case 3:
+                    if (player.Hand.Count() < player.MaxHandSize)
+                    {
+                        var randomMinions3 = CardService.Instance.GetAllMinions().Where(x => x.Tier == player.Tier).ToList();
+                        var randomMinion3 = randomMinions3[ThreadSafeRandom.ThisThreadsRandom.Next(randomMinions3.Count())];
+                        if (randomMinion3 != null)
+                        {
+                            randomMinion3.Id = Guid.NewGuid().ToString() + _copyStamp;
+                            player.Hand.Add(randomMinion3);
+                            player.HeroPowerUsedSuccessfully();
+                        }
+                    }
+
+                    break;
+                case 4:
+                    var shopSize = 0;
+                    switch (player.Tier)
+                    {
+                        case 1:
+                            shopSize = _shopSizeTierOne - 2;
+                            break;
+                        case 2:
+                            shopSize = _shopSizeTierTwo - 2;
+                            break;
+                        case 3:
+                            shopSize = _shopSizeTierThree - 2;
+                            break;
+                        case 4:
+                            shopSize = _shopSizeTierFour - 2;
+                            break;
+                        case 5:
+                            shopSize = _shopSizeTierFive - 2;
+                            break;
+                        case 6:
+                            shopSize = _shopSizeTierSix - 2;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (player.Shop.Any())
+                    {
+                        foreach (var card in player.Shop)
+                        {
+                            player.CardsToReturnToPool.Add(card);
+                        }
+
+                        player.Shop = new List<Card>();
+                    }
+
+                    var tierToSearch = player.Tier + 1;
+                    if (tierToSearch > 6)
+                    {
+                        tierToSearch = 6;
+                    }
+                    var randomMinions4 = CardService.Instance.GetAllMinions().Where(x => x.Tier <= player.Tier).ToList();
+                    var randomSpells4 = CardService.Instance.GetAllSpells().Where(x => x.Tier <= player.Tier).ToList();
+                    var randomMinionsFromHigherTier = CardService.Instance.GetAllMinions().Where(x => x.Tier == tierToSearch).ToList();
+
+                    for (var i = 0; i < shopSize; i++)
+                    {
+                        // Start populating shop as normal, but leave 2 minion slots open
+                        var minion = randomMinions4[randomMinions4.Count()];
+                        minion.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        player.Shop.Add(minion);
+                        randomMinions4.Remove(minion);
+                    }
+
+                    // Add the spell
+                    var randomSpell4 = randomSpells4[randomSpells4.Count()];
+                    randomSpell4.Id = Guid.NewGuid().ToString();
+                    player.Shop.Add(randomSpell4);
+
+                    for (var i = 0; i < 2; i++)
+                    {
+                        // Finish populating shop with 2 minions from a higher tier
+                        var minion = randomMinionsFromHigherTier[randomMinionsFromHigherTier.Count()];
+                        minion.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        player.Shop.Add(minion);
+                        randomMinionsFromHigherTier.Remove(minion);
+                    }
+                    
+                    if (player.Shop.Count() == shopSize + 3)
+                    {
+                        player.HeroPowerUsedSuccessfully();
+                    }
+
                     break;
             }
+
         }
 
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
@@ -959,7 +1081,6 @@ namespace PokeChess.Server.Extensions
                                 return false;
                             }
                         }
-                        player.EvolveCheck();
 
                         return true;
                     }
@@ -988,7 +1109,6 @@ namespace PokeChess.Server.Extensions
                                 return false;
                             }
                         }
-                        player.EvolveCheck();
 
                         return true;
                     }
@@ -1014,7 +1134,6 @@ namespace PokeChess.Server.Extensions
                                 player.Shop.Remove(card);
                             }
                         }
-                        player.EvolveCheck();
 
                         return true;
                     }
@@ -1022,6 +1141,17 @@ namespace PokeChess.Server.Extensions
                     return false;
                 default:
                     return false;
+            }
+        }
+
+        private static void HeroPowerUsedSuccessfully(this Player player)
+        {
+            player.Gold -= player.Hero.HeroPower.Cost;
+            player.Hero.HeroPower.UsesThisTurn++;
+            player.Hero.HeroPower.UsesThisGame++;
+            if (player.Hero.HeroPower.UsesThisTurn >= player.Hero.HeroPower.UsesPerTurn)
+            {
+                player.Hero.HeroPower.IsDisabled = true;
             }
         }
     }

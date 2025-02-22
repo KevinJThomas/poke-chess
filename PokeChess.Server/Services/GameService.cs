@@ -373,7 +373,7 @@ namespace PokeChess.Server.Services
             return lobby;
         }
 
-        public Lobby UseHeroPower(Lobby lobby, Player player)
+        public Lobby HeroPower(Lobby lobby, Player player)
         {
             if (!Initialized())
             {
@@ -636,7 +636,6 @@ namespace PokeChess.Server.Services
                 player.ConsumeShopDiscounts(card);
                 player.CardBought(card);
                 player.CardAddedToHand();
-                player.EvolveCheck();
 
                 if (player.CardsToReturnToPool.Any())
                 {
@@ -778,6 +777,10 @@ namespace PokeChess.Server.Services
                 lobby.Players[i].TurnEnded = false;
                 lobby.Players[i].SpellsCastTwiceThisTurn = false;
                 lobby.Players[i].GoldSpentThisTurn = 0;
+                if (!lobby.Players[i].Hero.HeroPower.IsOncePerGame)
+                {
+                    lobby.Players[i].Hero.HeroPower.IsDisabled = false;
+                }
 
                 foreach (var minion in lobby.Players[i].Board)
                 {

@@ -493,6 +493,47 @@ namespace PokeChess.Server.Managers
             }
         }
 
+        public Player HeroPower(string socketId)
+        {
+            if (!Initialized())
+            {
+                _logger.LogError($"HeroPower failed because LobbyManager was not initialized");
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(socketId))
+            {
+                _logger.LogError($"HeroPower received null or empty socketId");
+                return null;
+            }
+
+            try
+            {
+                _logger.LogInformation($"HeroPower. socketId: {socketId}");
+                var lobby = GetLobbyBySocketId(socketId);
+                if (lobby == null)
+                {
+                    _logger.LogError($"HeroPower couldn't find lobby by socket id: {socketId}");
+                    return null;
+                }
+
+                if (!_gameService.Initialized())
+                {
+                    _gameService.Initialize(_logger);
+                }
+
+                var player = _lobbies[lobby.Id].Players.Where(x => x.SocketIds.Contains(socketId)).FirstOrDefault();
+                _lobbies[lobby.Id] = _gameService.HeroPower(lobby, player);
+
+                return _lobbies[lobby.Id].Players.Where(x => x.SocketIds.Contains(socketId)).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"HeroPower exception: {ex.Message}");
+                return null;
+            }
+        }
+
         #endregion
 
         #region private methods

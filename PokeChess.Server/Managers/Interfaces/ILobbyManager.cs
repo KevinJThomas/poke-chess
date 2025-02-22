@@ -23,5 +23,6 @@ namespace PokeChess.Server.Managers.Interfaces
         Player UpgradeTavern(string playerId);
         void PlayBotTurns(string lobbyId);
         Lobby OnReconnected(string oldId, string newId);
+        Player HeroPower(string socketId);
     }
 }

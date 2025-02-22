@@ -46,6 +46,7 @@ namespace PokeChess.Server.Models.Player
             RockTypeDeaths = 0;
             SpellsCasted = 0;
             Discounts = new Discounts();
+            Hero = new Hero.Hero();
             Board = new List<Card>();
             Hand = new List<Card>();
             Shop = new List<Card>();

@@ -6,7 +6,7 @@
     "heroPower": {
       "id": 1,
       "name": "Pika!",
-      "cost": 4,
+      "cost": 3,
       "text": "Get a Pikachu"
     }
   },
