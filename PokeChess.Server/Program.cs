@@ -58,5 +58,6 @@ app.UseCors(options =>
 
 ConfigurationHelper.Initialize(app.Configuration);
 CardService.Instance.LoadAllCards();
+HeroService.Instance.LoadAllHeroes();
 
 app.Run();

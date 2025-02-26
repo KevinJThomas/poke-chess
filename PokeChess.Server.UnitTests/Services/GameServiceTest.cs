@@ -1,5 +1,7 @@
-﻿using PokeChess.Server.Enums;
+﻿using Microsoft.Extensions.Configuration;
+using PokeChess.Server.Enums;
 using PokeChess.Server.Extensions;
+using PokeChess.Server.Helpers;
 using PokeChess.Server.Models;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
@@ -3559,7 +3561,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsNotNull(lobby);
-            Assert.IsTrue(playerArmorAfterCombat != playerArmorBeforeCombat || playerHealthAfterCombat == playerHealthBeforeCombat);
+            Assert.IsTrue(playerArmorAfterCombat != playerArmorBeforeCombat || playerHealthAfterCombat != playerHealthBeforeCombat);
         }
 
         [TestMethod]
@@ -3860,6 +3862,89 @@ namespace PokeChess.Server.UnitTests.Services
             // Assert
             Assert.IsNotNull(lobby);
             Assert.IsTrue(lobby.Players[0].Tier > lobby.Players[1].Tier);
+        }
+
+        [TestMethod]
+        public void TestHeroPower_1()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(1);
+            lobby = instance.HeroPower(lobby, lobby.Players[0]);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+        }
+
+        [TestMethod]
+        public void TestHeroPower_3()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(3);
+            lobby.Players[0].Tier = 4;
+            lobby = instance.HeroPower(lobby, lobby.Players[0]);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+            Assert.IsTrue(lobby.Players[0].Hand[0].Tier == lobby.Players[0].Tier);
+        }
+
+        [TestMethod]
+        public void TestHeroPower_4()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+            var shopSize = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:Four");
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(4);
+            lobby.Players[0].Tier = 4;
+            lobby = instance.HeroPower(lobby, lobby.Players[0]);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 1);
+            Assert.IsTrue(lobby.Players[0].Shop.Count(x => x.Tier == lobby.Players[0].Tier + 1) == 2);
+            Assert.IsTrue(lobby.Players[0].Shop.Count() == shopSize + 1); // +1 because shopSize doesn't account for the spell
+        }
+
+        [TestMethod]
+        public void TestHeroPower_5()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(5);
+            var bulbasaurList = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 1).ToList();
+            lobby.Players[0].Board.Add(bulbasaurList[0]);
+            lobby.Players[0].Hand.Add(bulbasaurList[1]);
+            lobby = instance.CombatRound(lobby); // Invoking a combat round to make sure hero power is enabled
+            lobby = instance.HeroPower(lobby, lobby.Players[0]);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
+            Assert.IsFalse(lobby.Players[0].Board.Any());
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+            Assert.IsTrue(lobby.Players[0].Hand[0].PokemonId == 2);
         }
     }
 }

@@ -18,6 +18,19 @@ namespace PokeChess.Server.Extensions
             return card;
         }
 
+        public static Card DrawCardByTier(this List<Card> cards, int tier)
+        {
+            var eligibleCards = cards.Where(x => x.Tier == tier).ToList();
+            if (!eligibleCards.Any())
+            {
+                return null;
+            }
+
+            var card = eligibleCards[ThreadSafeRandom.ThisThreadsRandom.Next(eligibleCards.Count)];
+            cards.Remove(card);
+            return card;
+        }
+
         public static void Shuffle<T>(this IList<T> list)
         {
             int n = list.Count;

@@ -25,6 +25,7 @@ namespace PokeChess.Server.UnitTests
             {
                 cardService.LoadAllCards();
             }
+            HeroService.Instance.LoadAllHeroes();
             var lobby = new Lobby(Guid.NewGuid().ToString());
             lobby.Players = new List<Player>
             {

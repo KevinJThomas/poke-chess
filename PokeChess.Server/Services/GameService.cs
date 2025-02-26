@@ -52,7 +52,6 @@ namespace PokeChess.Server.Services
 
         private GameService()
         {
-            LoadAllHeroes();
         }
 
         public static GameService Instance
@@ -189,7 +188,7 @@ namespace PokeChess.Server.Services
                 }
             }
 
-            (lobby, player.Shop) = PopulatePlayerShop(lobby, player);
+            lobby = player.PopulatePlayerShop(lobby);
 
             lobby.Players[playerIndex] = player;
             return (lobby, player);
@@ -394,7 +393,7 @@ namespace PokeChess.Server.Services
             }
 
             var playerIndex = lobby.Players.FindIndex(x => x == player);
-            player.HeroPower();
+            lobby = player.HeroPower(lobby);
             lobby.Players[playerIndex] = player;
             return lobby;
         }
@@ -516,84 +515,6 @@ namespace PokeChess.Server.Services
             }
 
             return true;
-        }
-
-        private (Lobby, List<Card>) PopulatePlayerShop(Lobby lobby, Player player)
-        {
-            var shopSize = 0;
-            switch (player.Tier)
-            {
-                case 1:
-                    shopSize = _shopSizeTierOne;
-                    break;
-                case 2:
-                    shopSize = _shopSizeTierTwo;
-                    break;
-                case 3:
-                    shopSize = _shopSizeTierThree;
-                    break;
-                case 4:
-                    shopSize = _shopSizeTierFour;
-                    break;
-                case 5:
-                    shopSize = _shopSizeTierFive;
-                    break;
-                case 6:
-                    shopSize = _shopSizeTierSix;
-                    break;
-                default:
-                    _logger.LogError($"PopulatePlayerShop received invalid tier: {player.Tier}");
-                    return (lobby, new List<Card>());
-            }
-
-            for (var i = player.Shop.Count(x => x.CardType == CardType.Minion); i < shopSize; i++)
-            {
-                // Add appropriate number of minions to shop
-                var minion = lobby.GameState.MinionCardPool.DrawCard(player.Tier);
-                player.Shop.Add(minion);
-            }
-
-            if (!player.Shop.Any(x => x.CardType == CardType.Spell))
-            {
-                // Add a single spell to the shop
-                player.Shop.Add(lobby.GameState.SpellCardPool.DrawCard(player.Tier));
-            }
-
-            var extraSpells = player.Board.Count(x => x.PokemonId == 118);
-            if (extraSpells > 0)
-            {
-                for (var i = 0; i < extraSpells; i++)
-                {
-                    if (player.Shop.Count() >= _boardsSlots)
-                    {
-                        var cardsToRemoveCount = player.Shop.Count() - _boardsSlots + 1;
-                        for (var j = cardsToRemoveCount; j > 0; j--)
-                        {
-                            player.Shop.RemoveAt(0);
-                        }
-                    }
-
-                    player.Shop.Add(lobby.GameState.SpellCardPool.DrawCard(player.Tier));
-                }
-            }
-
-            // Account for player's shop buffs
-            foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion))
-            {
-                minion.Attack += player.ShopBuffAttack;
-                minion.Health += player.ShopBuffHealth;
-                if (minion.HasRockMinionBuffTrigger)
-                {
-                    minion.RockMinionBuffTrigger(player.RockTypeDeaths);
-                }
-                if (minion.Attack > minion.BaseAttack || minion.Health > minion.BaseHealth)
-                {
-                    player = minion.GainedStatsTrigger(player);
-                }
-            }
-            player.ApplyShopDiscounts();
-
-            return (lobby, player.Shop);
         }
 
         private Lobby ReturnCardToPool(Lobby lobby, Card card)
@@ -781,6 +702,7 @@ namespace PokeChess.Server.Services
                 {
                     lobby.Players[i].Hero.HeroPower.IsDisabled = false;
                 }
+                lobby.Players[i].UpdateHeroPowerStatus();
 
                 foreach (var minion in lobby.Players[i].Board)
                 {
@@ -2073,30 +1995,9 @@ namespace PokeChess.Server.Services
             return (lobby, player);
         }
 
-        private void LoadAllHeroes()
-        {
-            _allHeroes = new List<Hero>();
-
-            if (_allHeroes.Count == 0)
-            {
-                var heroesJson = File.ReadAllText("heroes.json");
-                if (!string.IsNullOrWhiteSpace(heroesJson))
-                {
-                    var heroes = JsonSerializer.Deserialize<List<Hero>>(heroesJson, _options);
-                    if (heroes != null && heroes.Any())
-                    {
-                        foreach (var hero in heroes)
-                        {
-                            _allHeroes.Add(hero);
-                        }
-                    }
-                }
-            }
-        }
-
         private Lobby AssignHeroes(Lobby lobby)
         {
-            var heroesList = _allHeroes.Clone();
+            var heroesList = HeroService.Instance.GetAllHeroes();
 
             foreach (var player in lobby.Players)
             {

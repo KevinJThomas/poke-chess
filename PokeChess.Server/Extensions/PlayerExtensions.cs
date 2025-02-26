@@ -24,6 +24,7 @@ namespace PokeChess.Server.Extensions
         private static readonly int _shopSizeTierFour = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:Four");
         private static readonly int _shopSizeTierFive = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:Five");
         private static readonly int _shopSizeTierSix = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:Six");
+        private static readonly int _boardsSlots = ConfigurationHelper.config.GetValue<int>("App:Game:BoardsSlots");
 
         public static void ApplyKeywords(this Player player)
         {
@@ -649,17 +650,7 @@ namespace PokeChess.Server.Extensions
                 }
             }
 
-            if (player.Hero.HeroPower.Id == 5)
-            {
-                var pokemonIdList = new List<int>();
-                pokemonIdList.AddRange(player.Hand.Where(x => x.CardType == CardType.Minion && x.PokemonId != 0).Select(x => x.PokemonId));
-                pokemonIdList.AddRange(player.Board.Where(x => x.PokemonId != 0).Select(x => x.PokemonId));
-                var duplicateList = pokemonIdList.GroupBy(x => x).Where(y => y.Count() == 2).Select(z => z.Key).ToList();
-                if (duplicateList != null && duplicateList.Any())
-                {
-                    // triple one
-                }
-            }
+            player.UpdateHeroPowerStatus();
         }
 
         public static void CardBought(this Player player, Card card)
@@ -742,11 +733,11 @@ namespace PokeChess.Server.Extensions
             return hitValues;
         }
 
-        public static void HeroPower(this Player player)
+        public static Lobby HeroPower(this Player player, Lobby lobby)
         {
             if (player.Hero.HeroPower.IsDisabled || player.Hero.HeroPower.IsPassive || player.Gold < player.Hero.HeroPower.Cost)
             {
-                return;
+                return lobby;
             }
 
             switch (player.Hero.HeroPower.Id)
@@ -763,7 +754,7 @@ namespace PokeChess.Server.Extensions
                         }
                     }
 
-                    break;
+                    return lobby;
                 case 3:
                     if (player.Hand.Count() < player.MaxHandSize)
                     {
@@ -777,83 +768,136 @@ namespace PokeChess.Server.Extensions
                         }
                     }
 
-                    break;
+                    return lobby;
                 case 4:
-                    var shopSize = 0;
-                    switch (player.Tier)
+                    player.Shop.Clear();
+                    lobby = player.PopulatePlayerShop(lobby, true);
+                    player.HeroPowerUsedSuccessfully();
+                    return lobby;
+                case 5:
+                    var pokemonIdList = new List<int>();
+                    pokemonIdList.AddRange(player.Hand.Where(x => x.CardType == CardType.Minion && x.PokemonId != 0).Select(x => x.PokemonId));
+                    pokemonIdList.AddRange(player.Board.Where(x => x.PokemonId != 0).Select(x => x.PokemonId));
+                    var duplicateList = pokemonIdList.GroupBy(x => x).Where(y => y.Count() == 2).Select(z => z.Key).ToList();
+                    if (duplicateList != null && duplicateList.Any())
                     {
-                        case 1:
-                            shopSize = _shopSizeTierOne - 2;
-                            break;
-                        case 2:
-                            shopSize = _shopSizeTierTwo - 2;
-                            break;
-                        case 3:
-                            shopSize = _shopSizeTierThree - 2;
-                            break;
-                        case 4:
-                            shopSize = _shopSizeTierFour - 2;
-                            break;
-                        case 5:
-                            shopSize = _shopSizeTierFive - 2;
-                            break;
-                        case 6:
-                            shopSize = _shopSizeTierSix - 2;
-                            break;
-                        default:
-                            break;
-                    }
-
-                    if (player.Shop.Any())
-                    {
-                        foreach (var card in player.Shop)
-                        {
-                            player.CardsToReturnToPool.Add(card);
-                        }
-
-                        player.Shop = new List<Card>();
-                    }
-
-                    var tierToSearch = player.Tier + 1;
-                    if (tierToSearch > 6)
-                    {
-                        tierToSearch = 6;
-                    }
-                    var randomMinions4 = CardService.Instance.GetAllMinions().Where(x => x.Tier <= player.Tier).ToList();
-                    var randomSpells4 = CardService.Instance.GetAllSpells().Where(x => x.Tier <= player.Tier).ToList();
-                    var randomMinionsFromHigherTier = CardService.Instance.GetAllMinions().Where(x => x.Tier == tierToSearch).ToList();
-
-                    for (var i = 0; i < shopSize; i++)
-                    {
-                        // Start populating shop as normal, but leave 2 minion slots open
-                        var minion = randomMinions4[randomMinions4.Count()];
-                        minion.Id = Guid.NewGuid().ToString() + _copyStamp;
-                        player.Shop.Add(minion);
-                        randomMinions4.Remove(minion);
-                    }
-
-                    // Add the spell
-                    var randomSpell4 = randomSpells4[randomSpells4.Count()];
-                    randomSpell4.Id = Guid.NewGuid().ToString();
-                    player.Shop.Add(randomSpell4);
-
-                    for (var i = 0; i < 2; i++)
-                    {
-                        // Finish populating shop with 2 minions from a higher tier
-                        var minion = randomMinionsFromHigherTier[randomMinionsFromHigherTier.Count()];
-                        minion.Id = Guid.NewGuid().ToString() + _copyStamp;
-                        player.Shop.Add(minion);
-                        randomMinionsFromHigherTier.Remove(minion);
-                    }
-                    
-                    if (player.Shop.Count() == shopSize + 3)
-                    {
+                        var pokemonIdToEvolve = duplicateList[ThreadSafeRandom.ThisThreadsRandom.Next(duplicateList.Count())];
+                        var extraPokemon = CardService.Instance.GetAllMinions().Where(x => x.PokemonId ==  pokemonIdToEvolve).FirstOrDefault();
+                        extraPokemon.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        player.Hand.Add(extraPokemon);
+                        player.EvolveCheck();
                         player.HeroPowerUsedSuccessfully();
                     }
 
+                    return lobby;
+                default:
+                    return lobby;
+            }
+        }
+
+        public static void UpdateHeroPowerStatus(this Player player)
+        {
+            switch (player.Hero.HeroPower.Id)
+            {
+                case 5:
+                    var pokemonIdList = new List<int>();
+                    pokemonIdList.AddRange(player.Hand.Where(x => x.CardType == CardType.Minion && x.PokemonId != 0).Select(x => x.PokemonId));
+                    pokemonIdList.AddRange(player.Board.Where(x => x.PokemonId != 0).Select(x => x.PokemonId));
+                    var duplicateList = pokemonIdList.GroupBy(x => x).Where(y => y.Count() == 2).Select(z => z.Key).ToList();
+                    player.Hero.HeroPower.IsDisabled = duplicateList == null || !duplicateList.Any();
                     break;
             }
+        }
 
+        public static Lobby PopulatePlayerShop(this Player player, Lobby lobby, bool isGaryHeroPower = false)
+        {
+            var shopSize = 0;
+            switch (player.Tier)
+            {
+                case 1:
+                    shopSize = _shopSizeTierOne;
+                    break;
+                case 2:
+                    shopSize = _shopSizeTierTwo;
+                    break;
+                case 3:
+                    shopSize = _shopSizeTierThree;
+                    break;
+                case 4:
+                    shopSize = _shopSizeTierFour;
+                    break;
+                case 5:
+                    shopSize = _shopSizeTierFive;
+                    break;
+                case 6:
+                    shopSize = _shopSizeTierSix;
+                    break;
+                default:
+                    return lobby;
+            }
+
+            if (isGaryHeroPower)
+            {
+                shopSize -= 2;
+            }
+
+            for (var i = player.Shop.Count(x => x.CardType == CardType.Minion); i < shopSize; i++)
+            {
+                // Add appropriate number of minions to shop
+                var minion = lobby.GameState.MinionCardPool.DrawCard(player.Tier);
+                player.Shop.Add(minion);
+            }
+
+            if (!player.Shop.Any(x => x.CardType == CardType.Spell))
+            {
+                // Add a single spell to the shop
+                player.Shop.Add(lobby.GameState.SpellCardPool.DrawCard(player.Tier));
+            }
+
+            if (isGaryHeroPower)
+            {
+                var tierToDraw = player.Tier >= 6 ? 6 : player.Tier + 1;
+                var minion1 = lobby.GameState.MinionCardPool.DrawCardByTier(tierToDraw);
+                var minion2 = lobby.GameState.MinionCardPool.DrawCardByTier(tierToDraw);
+                player.Shop.Add(minion1);
+                player.Shop.Add(minion2);
+            }
+
+            var extraSpells = player.Board.Count(x => x.PokemonId == 118);
+            if (extraSpells > 0)
+            {
+                for (var i = 0; i < extraSpells; i++)
+                {
+                    if (player.Shop.Count() >= _boardsSlots)
+                    {
+                        var cardsToRemoveCount = player.Shop.Count() - _boardsSlots + 1;
+                        for (var j = cardsToRemoveCount; j > 0; j--)
+                        {
+                            player.Shop.RemoveAt(0);
+                        }
+                    }
+
+                    player.Shop.Add(lobby.GameState.SpellCardPool.DrawCard(player.Tier));
+                }
+            }
+
+            // Account for player's shop buffs
+            foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion))
+            {
+                minion.Attack += player.ShopBuffAttack;
+                minion.Health += player.ShopBuffHealth;
+                if (minion.HasRockMinionBuffTrigger)
+                {
+                    minion.RockMinionBuffTrigger(player.RockTypeDeaths);
+                }
+                if (minion.Attack > minion.BaseAttack || minion.Health > minion.BaseHealth)
+                {
+                    player = minion.GainedStatsTrigger(player);
+                }
+            }
+            player.ApplyShopDiscounts();
+
+            return lobby;
         }
 
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
