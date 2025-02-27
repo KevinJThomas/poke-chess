@@ -29,9 +29,9 @@
     "name": "Brock",
     "baseArmor": 10,
     "heroPower": {
-      "id": 2,
+      "id": 3,
       "name": "Jelly Doughnut",
-      "cost": 3,
+      "cost": 2,
       "text": "Get a random minion from your tier"
     }
   },
