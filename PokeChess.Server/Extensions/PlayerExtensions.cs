@@ -860,7 +860,7 @@ namespace PokeChess.Server.Extensions
                         if (player.Hero.HeroPower.UsesThisGame == 4)
                         {
                             var kadabra = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 64).FirstOrDefault();
-                            kadabra.Id = Guid.NewGuid().ToString();
+                            kadabra.Id = Guid.NewGuid().ToString() + _copyStamp;
                             if (player.Hand.Count() < player.MaxHandSize)
                             {
                                 player.Hand.Add(kadabra);
