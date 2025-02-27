@@ -554,6 +554,11 @@ namespace PokeChess.Server.Extensions
 
         public static void CardPlayed(this Player player, Card card)
         {
+            if (player.Hero.HeroPower.Triggers.PlayCard)
+            {
+                player.HeroPower_PlayCard(card);
+            }
+
             if (player.Board.Any())
             {
                 foreach (var minion in player.Board)
@@ -611,6 +616,8 @@ namespace PokeChess.Server.Extensions
                     }
                 }
             }
+
+            player.UpdateHeroPowerStatus();
         }
 
         public static void GoldSpent(this Player player)
@@ -655,6 +662,11 @@ namespace PokeChess.Server.Extensions
 
         public static void CardBought(this Player player, Card card)
         {
+            if (player.Hero.HeroPower.Triggers.BuyCard)
+            {
+                player.HeroPower_BuyCard(card);
+            }
+
             if (player.Board.Any())
             {
                 foreach (var minion in player.Board)
@@ -750,6 +762,7 @@ namespace PokeChess.Server.Extensions
                         {
                             pikachu.Id = Guid.NewGuid().ToString() + _copyStamp;
                             player.Hand.Add(pikachu);
+                            player.CardAddedToHand();
                             player.HeroPowerUsedSuccessfully();
                         }
                     }
@@ -764,6 +777,7 @@ namespace PokeChess.Server.Extensions
                         {
                             randomMinion3.Id = Guid.NewGuid().ToString() + _copyStamp;
                             player.Hand.Add(randomMinion3);
+                            player.CardAddedToHand();
                             player.HeroPowerUsedSuccessfully();
                         }
                     }
@@ -785,7 +799,26 @@ namespace PokeChess.Server.Extensions
                         var extraPokemon = CardService.Instance.GetAllMinions().Where(x => x.PokemonId ==  pokemonIdToEvolve).FirstOrDefault();
                         extraPokemon.Id = Guid.NewGuid().ToString() + _copyStamp;
                         player.Hand.Add(extraPokemon);
-                        player.EvolveCheck();
+                        player.CardAddedToHand();
+                        player.HeroPowerUsedSuccessfully();
+                    }
+
+                    return lobby;
+                case 6:
+                    if (!player.Shop.Any(x => x.CardType == CardType.Minion))
+                    {
+                        return lobby;
+                    }
+
+                    var minionsInTavern = player.Shop.Where(x => x.CardType == CardType.Minion).ToList();
+                    var minionToSteal = minionsInTavern[ThreadSafeRandom.ThisThreadsRandom.Next(minionsInTavern.Count())];
+                    if (minionToSteal != null)
+                    {
+                        player.Hand.Add(minionToSteal);
+                        player.CardAddedToHand();
+                        player.Shop.Remove(minionToSteal);
+                        minionToSteal.Attack += 1;
+                        minionToSteal.Health += 1;
                         player.HeroPowerUsedSuccessfully();
                     }
 
@@ -795,16 +828,93 @@ namespace PokeChess.Server.Extensions
             }
         }
 
+        public static void HeroPower_StartOfGame(this Player player)
+        {
+            if (!player.Hero.HeroPower.Triggers.StartOfGame)
+            {
+                return;
+            }
+
+            switch (player.Hero.HeroPower.Id)
+            {
+                case 7:
+                    player.Health = 60;
+                    break;
+            }
+        }
+
+        public static void HeroPower_BuyCard(this Player player, Card card)
+        {
+            if (!player.Hero.HeroPower.Triggers.BuyCard || player.Hero.HeroPower.IsDisabled)
+            {
+                return;
+            }
+
+            switch (player.Hero.HeroPower.Id)
+            {
+                case 8:
+                    if (card.CardType == CardType.Minion && card.HasBattlecry)
+                    {
+                        player.Hero.HeroPower.UsesThisGame++;
+                        player.Hero.HeroPower.Cost++;
+                        if (player.Hero.HeroPower.UsesThisGame == 4)
+                        {
+                            var kadabra = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 64).FirstOrDefault();
+                            kadabra.Id = Guid.NewGuid().ToString();
+                            if (player.Hand.Count() < player.MaxHandSize)
+                            {
+                                player.Hand.Add(kadabra);
+                            }
+
+                            player.Hero.HeroPower.IsDisabled = true;
+                            player.Hero.HeroPower.Cost = 0;
+                        }
+                    }
+
+                    break;
+            }
+        }
+
+        public static void HeroPower_PlayCard(this Player player, Card card)
+        {
+            if (!player.Hero.HeroPower.Triggers.PlayCard || player.Hero.HeroPower.IsDisabled)
+            {
+                return;
+            }
+
+            switch (player.Hero.HeroPower.Id)
+            {
+                case 2:
+                    if (card.CardType == CardType.Minion && card.MinionTypes.Contains(MinionType.Water))
+                    {
+                        player.Hero.HeroPower.UsesThisGame++;
+                        player.Hero.HeroPower.Cost++;
+                        if (player.Hero.HeroPower.UsesThisGame == 3)
+                        {
+                            player.UpgradeCost -= 3;
+                            player.Hero.HeroPower.UsesThisGame = 0;
+                            player.Hero.HeroPower.Cost = 0;
+                        }
+                    }
+
+                    break;
+            }
+        }
+
         public static void UpdateHeroPowerStatus(this Player player)
         {
             switch (player.Hero.HeroPower.Id)
             {
                 case 5:
-                    var pokemonIdList = new List<int>();
-                    pokemonIdList.AddRange(player.Hand.Where(x => x.CardType == CardType.Minion && x.PokemonId != 0).Select(x => x.PokemonId));
-                    pokemonIdList.AddRange(player.Board.Where(x => x.PokemonId != 0).Select(x => x.PokemonId));
-                    var duplicateList = pokemonIdList.GroupBy(x => x).Where(y => y.Count() == 2).Select(z => z.Key).ToList();
-                    player.Hero.HeroPower.IsDisabled = duplicateList == null || !duplicateList.Any();
+                    if (player.Hero.HeroPower.UsesThisTurn == 0)
+                    {
+                        var pokemonIdList = new List<int>();
+                        pokemonIdList.AddRange(player.Hand.Where(x => x.CardType == CardType.Minion && x.PokemonId != 0).Select(x => x.PokemonId));
+                        pokemonIdList.AddRange(player.Board.Where(x => x.PokemonId != 0).Select(x => x.PokemonId));
+                        var duplicateList = pokemonIdList.GroupBy(x => x).Where(y => y.Count() == 2).Select(z => z.Key).ToList();
+                        player.Hero.HeroPower.IsDisabled = duplicateList == null || !duplicateList.Any();
+                    }
+
                     break;
             }
         }

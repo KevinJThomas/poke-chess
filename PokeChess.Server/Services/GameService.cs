@@ -129,9 +129,9 @@ namespace PokeChess.Server.Services
             }
 #endif
 
-            lobby.IsWaitingToStart = false;
             lobby.GameState.MinionCardPool = _cardService.GetAllMinionsForPool();
             lobby.GameState.SpellCardPool = _cardService.GetAllSpells();
+            lobby.IsWaitingToStart = false;
             lobby = AssignHeroes(lobby);
             lobby = NextRound(lobby);
             lobby = PlayBotTurns(lobby);
@@ -2004,6 +2004,11 @@ namespace PokeChess.Server.Services
                 var hero = heroesList[ThreadSafeRandom.ThisThreadsRandom.Next(heroesList.Count())];
                 player.Hero = hero;
                 player.Armor = player.IsActive ? hero.BaseArmor : 0;
+                if (!player.IsDead && hero.HeroPower.Triggers.StartOfGame)
+                {
+                    player.HeroPower_StartOfGame();
+                }
+
                 heroesList.Remove(hero);
             }
 

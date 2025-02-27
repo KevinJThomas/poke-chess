@@ -20,7 +20,7 @@
       "text": "__Passive.__\nAfter you play 3 Water types, reduce the cost of upgrading the tavern by 3",
       "isPassive": true,
       "triggers": {
-        "buyMinion": true
+        "playCard": true
       }
     }
   },
@@ -92,7 +92,7 @@
       "text": "__Passive.__\nAfter you buy 4 __Battlecry__ minions, get a __Kadabra__",
       "isPassive": true,
       "triggers": {
-        "buyMinion": true
+        "buyCard": true
       }
     }
   }

@@ -3580,7 +3580,6 @@ namespace PokeChess.Server.UnitTests.Services
                 new Player(Guid.NewGuid().ToString(), "Player 2", zeroArmor)
             };
             lobby.Players[0].Tier = 6;
-            lobby.Players[0].Health = 15;
             lobby.Players[0].Board = new List<Card>
             {
                 CardService.Instance.BuildTestMinion(false, 20, 5),
@@ -3592,7 +3591,6 @@ namespace PokeChess.Server.UnitTests.Services
                 CardService.Instance.BuildTestMinion(false, 20, 5)
             };
             lobby.Players[1].Tier = 6;
-            lobby.Players[1].Health = 15;
             lobby.Players[1].Board = new List<Card>
             {
                 CardService.Instance.BuildTestMinion(false, 7, 5),
@@ -3608,6 +3606,8 @@ namespace PokeChess.Server.UnitTests.Services
             // Act
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
+            lobby.Players[0].Health = 15;
+            lobby.Players[1].Health = 15;
             lobby = instance.CombatRound(lobby);
 
             // Assert
@@ -3673,6 +3673,13 @@ namespace PokeChess.Server.UnitTests.Services
             // Act
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
+            foreach (var player in lobby.Players)
+            {
+                if (!player.IsDead)
+                {
+                    player.Health = 15;
+                }
+            }
             lobby = instance.CombatRound(lobby);
 
             // Assert
@@ -3753,7 +3760,7 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsNotNull(lobby);
             Assert.IsNotNull(lobby.Players);
             Assert.IsTrue(lobby.Players.All(x => !x.IsDead));
-            Assert.IsTrue(lobby.Players.All(x => x.Health == 30));
+            Assert.IsTrue(lobby.Players.All(x => x.Health == 30 || x.Health == 60));
             Assert.IsTrue(lobby.Players.All(x => x.Armor == x.Hero.BaseArmor));
         }
 
@@ -3812,7 +3819,6 @@ namespace PokeChess.Server.UnitTests.Services
             }
             // Give the last player 7/7 minions instead to ensure they die the first combat
             lobby.Players[3].Tier = 6;
-            lobby.Players[3].Health = 1;
             lobby.Players[3].Board = new List<Card>
             {
                     CardService.Instance.BuildTestMinion(false, 7, 5),
@@ -3828,6 +3834,7 @@ namespace PokeChess.Server.UnitTests.Services
             // Act
             instance.Initialize(logger);
             lobby = instance.StartGame(lobby);
+            lobby.Players[3].Health = 1;
             lobby = instance.CombatRound(lobby);
             lobby = instance.CombatRound(lobby);
             lobby = instance.CombatRound(lobby);
@@ -3880,6 +3887,31 @@ namespace PokeChess.Server.UnitTests.Services
             // Assert
             Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
             Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+        }
+
+        [TestMethod]
+        public void TestHeroPower_2()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(2);
+            var upgradeCostBefore = lobby.Players[0].UpgradeCost;
+            for (var i = 0; i < 3; i ++)
+            {
+                lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<MinionType> { MinionType.Water }));
+                lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], MoveCardAction.Play, lobby.Players[0].Board.Count(), null);
+            }
+            var upgradeCostAfter = lobby.Players[0].UpgradeCost;
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 0);
+            Assert.IsTrue(upgradeCostBefore == upgradeCostAfter + 3);
         }
 
         [TestMethod]
@@ -3945,6 +3977,69 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsFalse(lobby.Players[0].Board.Any());
             Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
             Assert.IsTrue(lobby.Players[0].Hand[0].PokemonId == 2);
+        }
+
+        [TestMethod]
+        public void TestHeroPower_6()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(6);
+            var shopCountBefore = lobby.Players[0].Shop.Count();
+            lobby = instance.HeroPower(lobby, lobby.Players[0]);
+            var shopCountAfter = lobby.Players[0].Shop.Count();
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 2);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+            Assert.IsTrue(shopCountBefore == shopCountAfter + 1);
+            Assert.IsTrue(lobby.Players[0].Hand[0].Attack == lobby.Players[0].Hand[0].BaseAttack + 1);
+            Assert.IsTrue(lobby.Players[0].Hand[0].Health == lobby.Players[0].Hand[0].BaseHealth + 1);
+        }
+
+        [TestMethod]
+        public void TestHeroPower_7()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+
+            // Assert
+            Assert.IsTrue(lobby.Players.Count(x => x.Health == 60 && x.Armor == 0) == lobby.Players.Count(x => x.Hero.HeroPower.Id == 7));
+        }
+
+        [TestMethod]
+        public void TestHeroPower_8()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(8);
+            lobby.Players[0].Shop.Clear();
+            for (var i = 0; i < 4; i++)
+            {
+                lobby.Players[0].Shop.Add(CardService.Instance.BuildTestMinion(false, 5, 1, true));
+                lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], MoveCardAction.Buy, -1, null);
+            }
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 12);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 5);
+            Assert.IsTrue(lobby.Players[0].Hand.Count(x => x.PokemonId == 64) == 1);
+            Assert.IsTrue(lobby.Players[0].Hero.HeroPower.IsDisabled);
         }
     }
 }
