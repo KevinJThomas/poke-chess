@@ -919,6 +919,16 @@ namespace PokeChess.Server.Extensions
             }
         }
 
+        public static void ResetHeroPower(this Player player)
+        {
+            if (!player.Hero.HeroPower.IsOncePerGame)
+            {
+                player.Hero.HeroPower.IsDisabled = false;
+            }
+
+            player.Hero.HeroPower.UsesThisTurn = 0;
+        }
+
         public static Lobby PopulatePlayerShop(this Player player, Lobby lobby, bool isGaryHeroPower = false)
         {
             var shopSize = 0;

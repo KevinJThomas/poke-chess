@@ -698,10 +698,7 @@ namespace PokeChess.Server.Services
                 lobby.Players[i].TurnEnded = false;
                 lobby.Players[i].SpellsCastTwiceThisTurn = false;
                 lobby.Players[i].GoldSpentThisTurn = 0;
-                if (!lobby.Players[i].Hero.HeroPower.IsOncePerGame)
-                {
-                    lobby.Players[i].Hero.HeroPower.IsDisabled = false;
-                }
+                lobby.Players[i].ResetHeroPower();
                 lobby.Players[i].UpdateHeroPowerStatus();
 
                 foreach (var minion in lobby.Players[i].Board)
