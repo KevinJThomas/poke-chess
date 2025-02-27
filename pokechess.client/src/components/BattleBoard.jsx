@@ -300,6 +300,7 @@ export default function BattleBoard({
     await delay(3000);
 
     connection.invoke("CombatComplete");
+    console.log("CombatComplete");
   }, []);
 
   return (
