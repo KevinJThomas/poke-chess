@@ -183,10 +183,11 @@ namespace PokeChess.Server.Extensions
                 return;
             }
 
+            var eeveeFailed = false;
             var fallback = player.Clone();
             var pokemonIdList = new List<int>();
-            pokemonIdList.AddRange(player.Hand.Where(x => x.CardType == CardType.Minion && x.PokemonId != 0).Select(x => x.PokemonId));
-            pokemonIdList.AddRange(player.Board.Where(x => x.PokemonId != 0).Select(x => x.PokemonId));
+            pokemonIdList.AddRange(player.Hand.Where(x => x.PokemonId != 0 && ((x.CardType == CardType.Minion && x.NextEvolutions.Any()) || x.CardType == CardType.Spell)).Select(x => x.PokemonId));
+            pokemonIdList.AddRange(player.Board.Where(x => x.PokemonId != 0 && x.NextEvolutions.Any()).Select(x => x.PokemonId));
             var evolveList = pokemonIdList.GroupBy(x => x).Where(y => y.Count() >= 3).Select(z => z.Key).ToList();
 
             if (evolveList != null && evolveList.Any())
@@ -196,7 +197,7 @@ namespace PokeChess.Server.Extensions
                     var minionToEvolve = new Card();
                     if (player.Hand != null && player.Hand.Any())
                     {
-                        minionToEvolve = player.Hand.Where(x => x.PokemonId == pokemonId).FirstOrDefault();
+                        minionToEvolve = player.Hand.Where(x => x.PokemonId == pokemonId && x.CardType == CardType.Minion).FirstOrDefault();
                     }
 
                     if (minionToEvolve == null || string.IsNullOrWhiteSpace(minionToEvolve.Id))
@@ -204,10 +205,59 @@ namespace PokeChess.Server.Extensions
                         minionToEvolve = player.Board.Where(x => x.PokemonId == pokemonId).FirstOrDefault();
                     }
 
+                    if (pokemonId == 133 && minionToEvolve == null)
+                    {
+                        eeveeFailed = true;
+                    }
+
                     if (minionToEvolve != null && minionToEvolve.NextEvolutions.Any())
                     {
-                        var minionsRemoved = 0;
-                        var evolvedMinion = _cardService.GetMinionCopyByNum(minionToEvolve.NextEvolutions.FirstOrDefault().Num);
+                        var cardsRemoved = 0;
+                        var num = string.Empty;
+                        var isEeveeWithStone = false;
+                        if (pokemonId == 133)
+                        {
+                            var eeveeCards = new List<Card>();
+                            foreach (var card in player.Hand)
+                            {
+                                if (card.PokemonId == 133 && (card.CardType == CardType.Minion || !eeveeCards.Any(x => x.CardType == CardType.Spell)))
+                                {
+                                    eeveeCards.Add(card);
+                                }
+                            }
+                            foreach (var card in player.Board)
+                            {
+                                if (pokemonId == 133)
+                                {
+                                    eeveeCards.Add(card);
+                                }
+                            }
+
+                            if (eeveeCards.Count() < 3)
+                            {
+                                // This can happen if the player has 2 stones and 1 eevee
+                                // Only 1 stone can be used per evolution
+                                eeveeFailed = true;
+                                continue;
+                            }
+
+                            if (eeveeCards.Any(x => x.CardType == CardType.Spell))
+                            {
+                                isEeveeWithStone = true;
+                                var type = (MinionType)eeveeCards.Where(x => x.CardType == CardType.Spell).FirstOrDefault().Amount[0];
+                                num = eeveeCards.Where(x => x.CardType == CardType.Minion).FirstOrDefault().NextEvolutions.Where(x => x.Type.ToLower() == type.ToString().ToLower()).FirstOrDefault().Num;
+                            }
+                            else
+                            {
+                                num = eeveeCards.FirstOrDefault().NextEvolutions[ThreadSafeRandom.ThisThreadsRandom.Next(eeveeCards.FirstOrDefault().NextEvolutions.Count())].Num;
+                            }
+                        }
+                        else
+                        {
+                            num = minionToEvolve.NextEvolutions.FirstOrDefault().Num;
+                        }
+
+                        var evolvedMinion = _cardService.GetMinionCopyByNum(num);
                         var extraAttack = 0;
                         var extraHealth = 0;
                         if (evolvedMinion != null)
@@ -220,8 +270,16 @@ namespace PokeChess.Server.Extensions
                                 }
                             }
 
-                            while (minionsRemoved < 3)
+                            while (cardsRemoved < 3)
                             {
+                                if (isEeveeWithStone)
+                                {
+                                    var id = player.Hand.Where(x => x.PokemonId == 133 && x.CardType == CardType.Spell).FirstOrDefault().Id;
+                                    player.CardsToReturnToPool.Add(player.Hand.Where(x => x.Id == id).FirstOrDefault());
+                                    player.Hand = player.Hand.Where(x => x.Id != id).ToList();
+                                    cardsRemoved++;
+                                    isEeveeWithStone = false;
+                                }
                                 if (player.Board.Any(x => x.PokemonId == pokemonId))
                                 {
                                     var id = player.Board.Where(x => x.PokemonId == pokemonId).FirstOrDefault().Id;
@@ -229,21 +287,21 @@ namespace PokeChess.Server.Extensions
                                     extraHealth += player.Board.Where(x => x.Id == id).FirstOrDefault().Health - player.Board.Where(x => x.Id == id).FirstOrDefault().BaseHealth;
                                     player.CardsToReturnToPool.Add(player.Board.Where(x => x.Id == id).FirstOrDefault());
                                     player.Board = player.Board.Where(x => x.Id != id).ToList();
-                                    minionsRemoved++;
+                                    cardsRemoved++;
                                 }
-                                else if (player.Hand.Any(x => x.PokemonId == pokemonId))
+                                else if (player.Hand.Any(x => x.PokemonId == pokemonId && x.CardType == CardType.Minion))
                                 {
                                     var id = player.Hand.Where(x => x.PokemonId == pokemonId).FirstOrDefault().Id;
                                     extraAttack += player.Hand.Where(x => x.Id == id).FirstOrDefault().Attack - player.Hand.Where(x => x.Id == id).FirstOrDefault().BaseAttack;
                                     extraHealth += player.Hand.Where(x => x.Id == id).FirstOrDefault().Health - player.Hand.Where(x => x.Id == id).FirstOrDefault().BaseHealth;
                                     player.CardsToReturnToPool.Add(player.Hand.Where(x => x.Id == id).FirstOrDefault());
                                     player.Hand = player.Hand.Where(x => x.Id != id).ToList();
-                                    minionsRemoved++;
+                                    cardsRemoved++;
                                 }
                                 else
                                 {
                                     player = fallback;
-                                    return;
+                                    continue;
                                 }
                             }
 
@@ -253,6 +311,12 @@ namespace PokeChess.Server.Extensions
                             player.CardAddedToHand();
                         }
                     }
+                }
+
+                if (evolveList.Count() == 1 && evolveList[0] == 133 && eeveeFailed)
+                {
+                    // If there in an invalid eevee scenario getting flagged and eevee is the only evolution left to do, return to avoid a stack overflow
+                    return;
                 }
 
                 // Keep trying to evolve until there are no more triples in play
@@ -634,9 +698,12 @@ namespace PokeChess.Server.Extensions
             }
         }
 
-        public static void CardAddedToHand(this Player player)
+        public static void CardAddedToHand(this Player player, bool isEndOfTurn = false)
         {
-            player.EvolveCheck();
+            if (!isEndOfTurn)
+            {
+                player.EvolveCheck();
+            }
 
             if (player.Board.Any())
             {
@@ -796,7 +863,7 @@ namespace PokeChess.Server.Extensions
                     if (duplicateList != null && duplicateList.Any())
                     {
                         var pokemonIdToEvolve = duplicateList[ThreadSafeRandom.ThisThreadsRandom.Next(duplicateList.Count())];
-                        var extraPokemon = CardService.Instance.GetAllMinions().Where(x => x.PokemonId ==  pokemonIdToEvolve).FirstOrDefault();
+                        var extraPokemon = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == pokemonIdToEvolve).FirstOrDefault();
                         extraPokemon.Id = Guid.NewGuid().ToString() + _copyStamp;
                         player.Hand.Add(extraPokemon);
                         player.CardAddedToHand();
@@ -1018,6 +1085,19 @@ namespace PokeChess.Server.Extensions
             player.ApplyShopDiscounts();
 
             return lobby;
+        }
+
+        public static Card BotFindMinionToSell(this Player player)
+        {
+            if (player.Board.Count() < _boardsSlots)
+            {
+                return null;
+            }
+
+            // Right now this is just returning the lowest tier minion board
+            // This can be updated later to take in more factors like types etc.
+            var minionToSell = player.Board.Where(x => x.Tier == player.Board.Min(y => y.Tier)).FirstOrDefault();
+            return minionToSell;
         }
 
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
@@ -1297,6 +1377,21 @@ namespace PokeChess.Server.Extensions
                             {
                                 player.Shop.Remove(card);
                             }
+                        }
+
+                        return true;
+                    }
+
+                    return false;
+                case SpellType.GetRandomMinionByType:
+                    var randomMinions = CardService.Instance.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains((MinionType)amount)).DistinctBy(x => x.PokemonId).ToList();
+                    var randomMinion = randomMinions[ThreadSafeRandom.ThisThreadsRandom.Next(randomMinions.Count())];
+                    if (randomMinion != null)
+                    {
+                        if (player.Hand.Count() <= player.MaxHandSize)
+                        {
+                            randomMinion.Id = Guid.NewGuid().ToString() + _copyStamp;
+                            player.Hand.Add(randomMinion);
                         }
 
                         return true;

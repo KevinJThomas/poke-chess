@@ -126,13 +126,22 @@ namespace PokeChess.Server
             }
 
             var id = Context.ConnectionId;
+            _logger.LogInformation($"CombatComplete starting for connection id: {id}");
             var lobby = _lobbyManager.GetLobbyBySocketId(id);
-            _lobbyManager.PlayBotTurns(lobby.Id);
 
             if (lobby != null && !string.IsNullOrWhiteSpace(lobby.Id))
             {
+                _lobbyManager.PlayBotTurns(lobby.Id);
+
+                _logger.LogInformation($"CombatComplete mapping lobby for connection id: {id}");
                 var lobbyResponse = MapLobbyToResponse(lobby, id);
+
+                _logger.LogInformation($"CombatComplete returning LobbyUpdated for connection id: {id}");
                 await Clients.Caller.SendAsync("LobbyUpdated", lobbyResponse);
+            }
+            else
+            {
+                _logger.LogError($"CombatComplete could not find lobby by socket id: {id}");
             }
         }
 
@@ -249,79 +258,87 @@ namespace PokeChess.Server
 
         private LobbyResponse MapLobbyToResponse(Lobby lobby, string socketId)
         {
-            var response = new LobbyResponse();
-            response.GameState.RoundNumber = lobby.GameState.RoundNumber;
-            response.GameState.TimeLimitToNextCombat = lobby.GameState.TimeLimitToNextCombat;
-
-            foreach (var player in lobby.Players)
+            try
             {
-                if (player.SocketIds.Contains(socketId))
-                {
-                    var playerResponse = new PlayerResponse
-                    {
-                        Id = player.Id,
-                        Name = player.Name,
-                        Health = player.Health,
-                        Armor = player.Armor,
-                        Tier = player.Tier,
-                        WinStreak = player.WinStreak,
-                        Board = player.Board,
-                        CombatHistory = player.CombatHistory,
-                        BaseGold = player.BaseGold,
-                        Gold = player.Gold,
-                        UpgradeCost = player.UpgradeCost,
-                        RefreshCost = player.RefreshCost,
-                        IsShopFrozen = player.IsShopFrozen,
-                        OpponentId = player.OpponentId,
-                        Hero = new Models.Response.Player.Hero.HeroResponse
-                        {
-                            Name = player.Hero.Name,
-                            HeroPower = new Models.Response.Player.Hero.HeroPowerResponse
-                            {
-                                Name = player.Hero.HeroPower.Name,
-                                Cost = player.Hero.HeroPower.Cost,
-                                IsPassive = player.Hero.HeroPower.IsPassive,
-                                IsDisabled = player.Hero.HeroPower.IsDisabled,
-                                Text = player.Hero.HeroPower.Text
-                            }
-                        },
-                        Hand = player.Hand,
-                        Shop = player.Shop,
-                        CombatActions = player.CombatActions
-                    };
+                var response = new LobbyResponse();
+                response.GameState.RoundNumber = lobby.GameState.RoundNumber;
+                response.GameState.TimeLimitToNextCombat = lobby.GameState.TimeLimitToNextCombat;
 
-                    response.Players.Add(player.Id ?? string.Empty, playerResponse);
-                }
-                else
+                foreach (var player in lobby.Players)
                 {
-                    var opponentResponse = new OpponentResponse
+                    if (player.SocketIds.Contains(socketId))
                     {
-                        Id = player.Id,
-                        Name = player.Name,
-                        Health = player.Health,
-                        Armor = player.Armor,
-                        Tier = player.Tier,
-                        WinStreak = player.WinStreak,
-                        Hero = new Models.Response.Player.Hero.HeroResponse
+                        var playerResponse = new PlayerResponse
                         {
-                            Name = player.Hero.Name,
-                            HeroPower = new Models.Response.Player.Hero.HeroPowerResponse
+                            Id = player.Id,
+                            Name = player.Name,
+                            Health = player.Health,
+                            Armor = player.Armor,
+                            Tier = player.Tier,
+                            WinStreak = player.WinStreak,
+                            Board = player.Board,
+                            CombatHistory = player.CombatHistory,
+                            BaseGold = player.BaseGold,
+                            Gold = player.Gold,
+                            UpgradeCost = player.UpgradeCost,
+                            RefreshCost = player.RefreshCost,
+                            IsShopFrozen = player.IsShopFrozen,
+                            OpponentId = player.OpponentId,
+                            Hero = new Models.Response.Player.Hero.HeroResponse
                             {
-                                Name = player.Hero.HeroPower.Name,
-                                Cost = player.Hero.HeroPower.Cost,
-                                IsPassive = player.Hero.HeroPower.IsPassive,
-                                IsDisabled = player.Hero.HeroPower.IsDisabled,
-                                Text = player.Hero.HeroPower.Text
-                            }
-                        },
-                        CombatHistory = player.CombatHistory
-                    };
+                                Name = player.Hero.Name,
+                                HeroPower = new Models.Response.Player.Hero.HeroPowerResponse
+                                {
+                                    Name = player.Hero.HeroPower.Name,
+                                    Cost = player.Hero.HeroPower.Cost,
+                                    IsPassive = player.Hero.HeroPower.IsPassive,
+                                    IsDisabled = player.Hero.HeroPower.IsDisabled,
+                                    Text = player.Hero.HeroPower.Text
+                                }
+                            },
+                            Hand = player.Hand,
+                            Shop = player.Shop,
+                            CombatActions = player.CombatActions
+                        };
 
-                    response.Players.Add(player.Id ?? string.Empty, opponentResponse);
+                        response.Players.Add(player.Id ?? string.Empty, playerResponse);
+                    }
+                    else
+                    {
+                        var opponentResponse = new OpponentResponse
+                        {
+                            Id = player.Id,
+                            Name = player.Name,
+                            Health = player.Health,
+                            Armor = player.Armor,
+                            Tier = player.Tier,
+                            WinStreak = player.WinStreak,
+                            Hero = new Models.Response.Player.Hero.HeroResponse
+                            {
+                                Name = player.Hero.Name,
+                                HeroPower = new Models.Response.Player.Hero.HeroPowerResponse
+                                {
+                                    Name = player.Hero.HeroPower.Name,
+                                    Cost = player.Hero.HeroPower.Cost,
+                                    IsPassive = player.Hero.HeroPower.IsPassive,
+                                    IsDisabled = player.Hero.HeroPower.IsDisabled,
+                                    Text = player.Hero.HeroPower.Text
+                                }
+                            },
+                            CombatHistory = player.CombatHistory
+                        };
+
+                        response.Players.Add(player.Id ?? string.Empty, opponentResponse);
+                    }
                 }
+
+                return response;
             }
-
-            return response;
+            catch (Exception e)
+            {
+                _logger.LogError($"MapLobbyToResponse exception caught. Message: {e.Message}");
+                return null;
+            }
         }
 
         private PlayerResponse MapPlayerToResponse(Player player)

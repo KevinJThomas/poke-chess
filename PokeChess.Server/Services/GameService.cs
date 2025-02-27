@@ -183,8 +183,10 @@ namespace PokeChess.Server.Services
                 // Remove shop buffs from minions temporarily. These will get reapplied in PopulatePlayerShop below
                 foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion))
                 {
-                    minion.Attack = minion.BaseAttack;
-                    minion.Health = minion.BaseHealth;
+                    var attackToKeep = minion.Attack - minion.BaseAttack - player.ShopBuffAttack;
+                    var healthToKeep = minion.Health - minion.BaseHealth - player.ShopBuffHealth;
+                    minion.Attack = minion.BaseAttack + attackToKeep;
+                    minion.Health = minion.BaseHealth + healthToKeep;
                 }
             }
 
@@ -699,6 +701,7 @@ namespace PokeChess.Server.Services
                 lobby.Players[i].SpellsCastTwiceThisTurn = false;
                 lobby.Players[i].GoldSpentThisTurn = 0;
                 lobby.Players[i].ResetHeroPower();
+                lobby.Players[i].EvolveCheck();
                 lobby.Players[i].UpdateHeroPowerStatus();
 
                 foreach (var minion in lobby.Players[i].Board)
@@ -1738,231 +1741,246 @@ namespace PokeChess.Server.Services
 
         private (Lobby, Player) PlayTurnAsBot(Lobby lobby, Player player, int roundNumber)
         {
-            switch (roundNumber)
+            try
             {
-                case 1:
-                    // Buy and play a random minion
-                    if (player.Shop.Any(x => x.CardType == CardType.Minion))
-                    {
-                        (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
-
-                        // If the bot bought Sandshrew, hold it to play on turn 2 instead
-                        if (player.Hand[0].PokemonId != 27)
+                switch (roundNumber)
+                {
+                    case 1:
+                        // Buy and play a random minion
+                        if (player.Shop.Any(x => x.CardType == CardType.Minion))
                         {
-                            (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                            (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
 
-                            // Freeze shop if there's a pair
-                            if (player.Shop.Any(x => x.PokemonId == player.Board[0].PokemonId))
+                            // If the bot bought Sandshrew, hold it to play on turn 2 instead
+                            if (player.Hand[0].PokemonId != 27)
                             {
-                                player.IsShopFrozen = true;
+                                (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+
+                                // Freeze shop if there's a pair
+                                if (player.Shop.Any(x => x.PokemonId == player.Board[0].PokemonId))
+                                {
+                                    player.IsShopFrozen = true;
+                                }
                             }
                         }
-                    }
-                    break;
-                case 2:
-                    // If there's a pair in the shop, buy it, otherwise upgrade to tier 2
-                    if (player.Board.Any() && player.Shop.Any(x => x.PokemonId == player.Board[0].PokemonId))
-                    {
-                        var minionsToBuy = player.Shop.Where(x => x.PokemonId == player.Board[0].PokemonId).ToList();
-                        if (minionsToBuy.Count() >= 1)
+                        break;
+                    case 2:
+                        // If there's a pair in the shop, buy it, otherwise upgrade to tier 2
+                        if (player.Board.Any() && player.Shop.Any(x => x.PokemonId == player.Board[0].PokemonId))
                         {
-                            (lobby, player) = BuyCard(lobby, player, minionsToBuy[0]);
-
-                            // If the triple is in the shop, freeze again
-                            if (minionsToBuy.Count() > 1)
+                            var minionsToBuy = player.Shop.Where(x => x.PokemonId == player.Board[0].PokemonId).ToList();
+                            if (minionsToBuy.Count() >= 1)
                             {
-                                player.IsShopFrozen = true;
-                            }
-                        }
+                                (lobby, player) = BuyCard(lobby, player, minionsToBuy[0]);
 
-                        var spellInShop = player.Shop.Where(x => x.CardType == CardType.Spell).FirstOrDefault();
-                        if (spellInShop != null && spellInShop.Cost <= player.Gold)
-                        {
-                            (lobby, player) = BuyCard(lobby, player, spellInShop);
-                            if (spellInShop.Name != "Discover Treasure")
+                                // If the triple is in the shop, freeze again
+                                if (minionsToBuy.Count() > 1)
+                                {
+                                    player.IsShopFrozen = true;
+                                }
+                            }
+
+                            var spellInShop = player.Shop.Where(x => x.CardType == CardType.Spell).FirstOrDefault();
+                            if (spellInShop != null && spellInShop.Cost <= player.Gold)
                             {
-                                var targetId = spellInShop.TargetOptions != TargetType.None.ToString().ToLower() ? player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())].Id : null;
-                                (lobby, player) = PlayCard(lobby, player, spellInShop, -1, targetId);
+                                (lobby, player) = BuyCard(lobby, player, spellInShop);
+                                if (spellInShop.Name != "Discover Treasure")
+                                {
+                                    var targetId = spellInShop.TargetOptions != TargetType.None.ToString().ToLower() ? player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())].Id : null;
+                                    (lobby, player) = PlayCard(lobby, player, spellInShop, -1, targetId);
+                                }
                             }
-                        }
-                    }
-                    else
-                    {
-                        // If holding a minion from turn 1, play it now
-                        if (player.Hand.Any())
-                        {
-                            (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
-                        }
-
-                        var playerIndex2 = lobby.Players.FindIndex(x => x == player);
-                        player.UpgradeTavern();
-                        lobby.Players[playerIndex2] = player;
-                    }
-
-                    break;
-                case 3:
-                    if (player.Tier == 1)
-                    {
-                        var minionToBuy = player.Shop.Where(x => x.PokemonId == player.Board[0].PokemonId).FirstOrDefault();
-                        if (minionToBuy != null)
-                        {
-                            // If there is a triple in the shop, buy it and play the newly evolved pokemon
-                            (lobby, player) = BuyCard(lobby, player, minionToBuy);
-                            (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
-                        }
-
-                        if (player.Gold >= player.UpgradeCost)
-                        {
-                            var playerIndex3 = lobby.Players.FindIndex(x => x == player);
-                            player.UpgradeTavern();
-                            lobby.Players[playerIndex3] = player;
                         }
                         else
                         {
-                            var discoverTreasure = player.Hand.Where(x => x.Name == "Discover Treasure").FirstOrDefault();
-                            if (discoverTreasure != null)
+                            // If holding a minion from turn 1, play it now
+                            if (player.Hand.Any())
                             {
-                                (lobby, player) = PlayCard(lobby, player, discoverTreasure, -1, null);
+                                (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                            }
+
+                            var playerIndex2 = lobby.Players.FindIndex(x => x == player);
+                            player.UpgradeTavern();
+                            lobby.Players[playerIndex2] = player;
+                        }
+
+                        break;
+                    case 3:
+                        if (player.Tier == 1)
+                        {
+                            var minionToBuy = player.Shop.Where(x => x.PokemonId == player.Board[0].PokemonId).FirstOrDefault();
+                            if (minionToBuy != null)
+                            {
+                                // If there is a triple in the shop, buy it and play the newly evolved pokemon
+                                (lobby, player) = BuyCard(lobby, player, minionToBuy);
+                                (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                            }
+
+                            if (player.Gold >= player.UpgradeCost)
+                            {
                                 var playerIndex3 = lobby.Players.FindIndex(x => x == player);
                                 player.UpgradeTavern();
                                 lobby.Players[playerIndex3] = player;
                             }
                             else
                             {
-                                var spellInShop = player.Shop.Where(x => x.CardType == CardType.Spell).FirstOrDefault();
-                                if (spellInShop != null && spellInShop.Cost <= player.Gold)
+                                var discoverTreasure = player.Hand.Where(x => x.Name == "Discover Treasure").FirstOrDefault();
+                                if (discoverTreasure != null)
                                 {
-                                    (lobby, player) = BuyCard(lobby, player, spellInShop);
-                                    if (spellInShop.Name != "Discover Treasure")
+                                    (lobby, player) = PlayCard(lobby, player, discoverTreasure, -1, null);
+                                    var playerIndex3 = lobby.Players.FindIndex(x => x == player);
+                                    player.UpgradeTavern();
+                                    lobby.Players[playerIndex3] = player;
+                                }
+                                else
+                                {
+                                    var spellInShop = player.Shop.Where(x => x.CardType == CardType.Spell).FirstOrDefault();
+                                    if (spellInShop != null && spellInShop.Cost <= player.Gold)
                                     {
-                                        var targetId = spellInShop.TargetOptions != TargetType.None.ToString().ToLower() ? player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())].Id : null;
-                                        (lobby, player) = PlayCard(lobby, player, spellInShop, -1, targetId);
+                                        (lobby, player) = BuyCard(lobby, player, spellInShop);
+                                        if (spellInShop.Name != "Discover Treasure")
+                                        {
+                                            var targetId = spellInShop.TargetOptions != TargetType.None.ToString().ToLower() ? player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())].Id : null;
+                                            (lobby, player) = PlayCard(lobby, player, spellInShop, -1, targetId);
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        if (player.Shop.Any(x => x.CardType == CardType.Minion && x.Tier > 1))
+                        else
                         {
-                            // Check for a minion that gives a discover treasure
-                            var discoverTreasureBattlecry = player.Shop.Where(x => x.PokemonId == 7 || x.PokemonId == 54).FirstOrDefault();
-                            if (discoverTreasureBattlecry != null)
+                            if (player.Shop.Any(x => x.CardType == CardType.Minion && x.Tier > 1))
                             {
-                                // If there is a minion that gives a discover treasure, buy it, play it, and play the discover treasure too
-                                (lobby, player) = BuyCard(lobby, player, discoverTreasureBattlecry);
+                                // Check for a minion that gives a discover treasure
+                                var discoverTreasureBattlecry = player.Shop.Where(x => x.PokemonId == 7 || x.PokemonId == 54).FirstOrDefault();
+                                if (discoverTreasureBattlecry != null)
+                                {
+                                    // If there is a minion that gives a discover treasure, buy it, play it, and play the discover treasure too
+                                    (lobby, player) = BuyCard(lobby, player, discoverTreasureBattlecry);
+                                    (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                                    (lobby, player) = PlayCard(lobby, player, player.Hand[0], -1, null);
+
+                                }
+
+                                // Buy and play a random tier 2 minion
+                                (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion && x.Tier > 1).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion && x.Tier > 1).Count())]);
                                 (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
-                                (lobby, player) = PlayCard(lobby, player, player.Hand[0], -1, null);
 
+                                // Buy and play a spell if able
+                                if (player.Shop.Any(x => x.CardType == CardType.Spell && x.Cost <= player.Gold))
+                                {
+                                    (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Spell && x.Cost <= player.Gold).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Spell && x.Cost <= player.Gold).Count())]);
+                                    var targetId = player.Hand[0].TargetOptions != TargetType.None.ToString().ToLower() ? player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())].Id : null;
+                                    (lobby, player) = PlayCard(lobby, player, player.Hand[0], -1, targetId);
+                                }
                             }
-
-                            // Buy and play a random tier 2 minion
-                            (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion && x.Tier > 1).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion && x.Tier > 1).Count())]);
-                            (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
-
-                            // Buy and play a spell if able
-                            if (player.Shop.Any(x => x.CardType == CardType.Spell && x.Cost <= player.Gold))
+                            else
                             {
-                                (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Spell && x.Cost <= player.Gold).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Spell && x.Cost <= player.Gold).Count())]);
-                                var targetId = player.Hand[0].TargetOptions != TargetType.None.ToString().ToLower() ? player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())].Id : null;
-                                (lobby, player) = PlayCard(lobby, player, player.Hand[0], -1, targetId);
+                                // If the shop only has tier 1 minions, don't buy and go to tier 3 instead
+                                if (player.Gold < player.UpgradeCost)
+                                {
+                                    (lobby, player) = SellMinion(lobby, player, player.Board[0]);
+                                }
+
+                                var playerIndex3 = lobby.Players.FindIndex(x => x == player);
+                                player.UpgradeTavern();
+                                lobby.Players[playerIndex3] = player;
+                            }
+                        }
+
+                        break;
+                    case 4:
+                        if (player.Tier == 1)
+                        {
+                            var playerIndex4 = lobby.Players.FindIndex(x => x == player);
+                            player.UpgradeTavern();
+                            lobby.Players[playerIndex4] = player;
+
+                            (lobby, player) = GetNewShop(lobby, player, true);
+
+                            var minionToBuy = player.Shop.Where(x => x.Tier == player.Board.Max(y => y.Tier)).FirstOrDefault();
+                            if (minionToBuy != null)
+                            {
+                                (lobby, player) = BuyCard(lobby, player, minionToBuy);
+                                (lobby, player) = PlayCard(lobby, player, minionToBuy, player.Board.Count(), null);
                             }
                         }
                         else
                         {
-                            // If the shop only has tier 1 minions, don't buy and go to tier 3 instead
-                            if (player.Gold < player.UpgradeCost)
+                            // Buy and play 2 random minions
+                            if (player.Shop.Any(x => x.CardType == CardType.Minion))
                             {
-                                (lobby, player) = SellMinion(lobby, player, player.Board[0]);
+                                (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
+                                (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
+                                (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                                (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
                             }
-
-                            var playerIndex3 = lobby.Players.FindIndex(x => x == player);
-                            player.UpgradeTavern();
-                            lobby.Players[playerIndex3] = player;
                         }
-                    }
 
-                    break;
-                case 4:
-                    if (player.Tier == 1)
-                    {
-                        var playerIndex4 = lobby.Players.FindIndex(x => x == player);
+                        break;
+                    case 5:
+                        // Upgrade to tier 3
+                        var playerIndex5 = lobby.Players.FindIndex(x => x == player);
                         player.UpgradeTavern();
-                        lobby.Players[playerIndex4] = player;
+                        lobby.Players[playerIndex5] = player;
 
-                        (lobby, player) = GetNewShop(lobby, player, true);
-
-                        var minionToBuy = player.Shop.Where(x => x.Tier == player.Board.Max(y => y.Tier)).FirstOrDefault();
-                        if (minionToBuy != null)
-                        {
-                            (lobby, player) = BuyCard(lobby, player, minionToBuy);
-                            (lobby, player) = PlayCard(lobby, player, minionToBuy, player.Board.Count(), null);
-                        }
-                    }
-                    else
-                    {
-                        // Buy and play 2 random minions
-                        if (player.Shop.Any(x => x.CardType == CardType.Minion))
+                        // Buy and play a random minion
+                        if (player.Gold >= 3 && player.Shop.Any(x => x.CardType == CardType.Minion))
                         {
                             (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
-                            (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
-                            (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
                             (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
                         }
-                    }
 
-                    break;
-                case 5:
-                    // Upgrade to tier 3
-                    var playerIndex5 = lobby.Players.FindIndex(x => x == player);
-                    player.UpgradeTavern();
-                    lobby.Players[playerIndex5] = player;
-
-                    // Buy and play a random minion
-                    if (player.Gold >= 3 && player.Shop.Any(x => x.CardType == CardType.Minion))
-                    {
-                        (lobby, player) = BuyCard(lobby, player, player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Where(x => x.CardType == CardType.Minion).Count())]);
-                        (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
-                    }
-
-                    break;
-                default:
-                    // If there are any discover treasures in hand, play them
-                    var discoverTreasures = player.Hand.Where(x => x.Name == "Discover Treasure").ToList();
-                    if (discoverTreasures != null && discoverTreasures.Any())
-                    {
-                        foreach (var spell in discoverTreasures)
+                        break;
+                    default:
+                        // If there are any discover treasures in hand, play them
+                        var discoverTreasures = player.Hand.Where(x => x.Name == "Discover Treasure").ToList();
+                        if (discoverTreasures != null && discoverTreasures.Any())
                         {
-                            (lobby, player) = PlayCard(lobby, player, spell, -1, null);
-                        }
-                    }
-
-                    // If they can afford to tier up, flip a coin to see if they do
-                    if (player.Gold >= player.UpgradeCost && ThreadSafeRandom.ThisThreadsRandom.Next(2) == 1)
-                    {
-                        var playerIndex = lobby.Players.FindIndex(x => x == player);
-                        player.UpgradeTavern();
-                        lobby.Players[playerIndex] = player;
-                    }
-
-                    while (player.Gold >= 3)
-                    {
-                        var minionsToBuy = player.Shop.Where(x => x.Tier == player.Tier).ToList();
-                        if (minionsToBuy.Any())
-                        {
-                            (lobby, player) = BuyCard(lobby, player, minionsToBuy[0]);
-                            if (player.Board.Count() >= _boardsSlots)
+                            foreach (var spell in discoverTreasures)
                             {
-                                for (var i = 0; i < player.Board.Count() - _boardsSlots + 1; i++)
+                                (lobby, player) = PlayCard(lobby, player, spell, -1, null);
+                            }
+                        }
+
+                        // If they can afford to tier up, flip a coin to see if they do
+                        if (player.Gold >= player.UpgradeCost && ThreadSafeRandom.ThisThreadsRandom.Next(2) == 1)
+                        {
+                            var playerIndex = lobby.Players.FindIndex(x => x == player);
+                            player.UpgradeTavern();
+                            lobby.Players[playerIndex] = player;
+                        }
+
+                        while (player.Gold >= 3)
+                        {
+                            (lobby, player) = BotPlayAllCardsInHand(lobby, player);
+
+                            var minionsToBuy = player.Shop.Where(x => x.Tier == player.Tier).ToList();
+                            if (minionsToBuy.Any())
+                            {
+                                (lobby, player) = BuyCard(lobby, player, minionsToBuy[0]);
+                                if (player.Board.Count() >= _boardsSlots)
                                 {
-                                    // Sell the lowest tier minion off of the board
-                                    (lobby, player) = SellMinion(lobby, player, player.Board.Where(x => x.Tier == player.Board.Min(y => y.Tier)).FirstOrDefault());
+                                    for (var i = 0; i < player.Board.Count() - _boardsSlots + 1; i++)
+                                    {
+                                        (lobby, player) = SellMinion(lobby, player, player.BotFindMinionToSell());
+                                    }
+                                }
+                                (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+
+                                if (minionsToBuy.Count() == 1)
+                                {
+                                    if (player.Gold >= player.RefreshCost)
+                                    {
+                                        (lobby, player) = GetNewShop(lobby, player, true);
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
                                 }
                             }
-                            (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
-
-                            if (minionsToBuy.Count() == 1)
+                            else
                             {
                                 if (player.Gold >= player.RefreshCost)
                                 {
@@ -1974,19 +1992,43 @@ namespace PokeChess.Server.Services
                                 }
                             }
                         }
-                        else
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"PlayTurnAsBot exception caught. Message: {e.Message}");
+            }
+
+            return (lobby, player);
+        }
+
+        public (Lobby, Player) BotPlayAllCardsInHand(Lobby lobby, Player player)
+        {
+            while (player.Hand.Any())
+            {
+                var targetId = string.Empty;
+                if (player.Hand[0].TargetOptions != TargetType.None.ToString().ToLower())
+                {
+                    targetId = player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())].Id;
+                }
+
+                if (player.Hand[0].CardType == CardType.Spell)
+                {
+                    lobby = MoveCard(lobby, player, player.Hand[0], MoveCardAction.Play, -1, targetId);
+                }
+                else if (player.Hand[0].CardType == CardType.Minion)
+                {
+                    if (player.Board.Count() >= _boardsSlots)
+                    {
+                        for (var i = 0; i < player.Board.Count() - _boardsSlots + 1; i++)
                         {
-                            if (player.Gold >= player.RefreshCost)
-                            {
-                                (lobby, player) = GetNewShop(lobby, player, true);
-                            }
-                            else
-                            {
-                                break;
-                            }
+                            (lobby, player) = SellMinion(lobby, player, player.BotFindMinionToSell());
                         }
                     }
-                    break;
+
+                    (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                }
             }
 
             return (lobby, player);

@@ -1879,7 +1879,7 @@
     "pokemonId": 73,
     "num": "073",
     "tier": 4,
-    "text": "__Battlecry:__ Spells cast an extra time this turn",
+    "text": "__Battlecry:__ Spells cast twice this turn",
     "name": "Tentacruel",
     "baseAttack": 9,
     "baseHealth": 6,
@@ -2428,7 +2428,7 @@
     "pokemonId": 96,
     "num": "096",
     "tier": 2,
-    "text": "__Battlecry:__ Give a Psychic type +5/+5",
+    "text": "__Battlecry:__ Give a friendly minion +5/+5",
     "name": "Drowzee",
     "baseAttack": 1,
     "baseHealth": 1,
@@ -2446,13 +2446,14 @@
       }
     ],
     "hasBattlecry": true,
-    "isBattlecryTargeted": true
+    "isBattlecryTargeted": true,
+    "isBattlecryTargetFriendlyOnly": true
   },
   {
     "pokemonId": 97,
     "num": "097",
     "tier": 5,
-    "text": "__Battlecry:__ Give a friendly Psychic type stats equal to how many __Battlecries__ you've played this game",
+    "text": "__Battlecry:__ Give a friendly minion stats equal to how many __Battlecries__ you've played this game",
     "name": "Hypno",
     "baseAttack": 3,
     "baseHealth": 3,
@@ -3201,15 +3202,18 @@
     "nextEvolutions": [
       {
         "num": "134",
-        "name": "Vaporeon"
+        "name": "Vaporeon",
+        "type": "Water"
       },
       {
         "num": "135",
-        "name": "Jolteon"
+        "name": "Jolteon",
+        "type": "Electric"
       },
       {
         "num": "136",
-        "name": "Flareon"
+        "name": "Flareon",
+        "type": "Fire"
       }
     ]
   },

@@ -9,22 +9,12 @@
     "amount": [ 1 ]
   },
   {
-    "tier": 2,
-    "name": "Examine Treasure Map",
-    "text": "Gain 2 gold next turn",
+    "tier": 1,
+    "name": "Poké Ball",
+    "text": "Steal a random minion from the tavern",
     "cardType": 1,
-    "baseCost": 1,
-    "spellTypes": [ 0 ],
-    "amount": [ 2 ],
-    "baseDelay": 1
-  },
-  {
-    "tier": 2,
-    "name": "Gym Fight Prestige",
-    "text": "Gain 1 max gold",
-    "cardType": 1,
-    "baseCost": 3,
-    "spellTypes": [ 1 ],
+    "baseCost": 2,
+    "spellTypes": [ 13 ],
     "amount": [ 1 ]
   },
   {
@@ -55,15 +45,6 @@
     "amount": [ 2, 2 ]
   },
   {
-    "tier": 2,
-    "name": "Motivational Speech",
-    "text": "Give all friendly minions +1/+1",
-    "cardType": 1,
-    "baseCost": 2,
-    "spellTypes": [ 6, 7 ],
-    "amount": [ 1, 1 ]
-  },
-  {
     "tier": 1,
     "name": "Poké Snacks",
     "text": "Give minions in the shop +1/+2",
@@ -71,6 +52,34 @@
     "baseCost": 1,
     "spellTypes": [ 8, 9 ],
     "amount": [ 1, 2 ]
+  },
+  {
+    "tier": 2,
+    "name": "Examine Treasure Map",
+    "text": "Gain 2 gold next turn",
+    "cardType": 1,
+    "baseCost": 1,
+    "spellTypes": [ 0 ],
+    "amount": [ 2 ],
+    "baseDelay": 1
+  },
+  {
+    "tier": 2,
+    "name": "Gym Fight Prestige",
+    "text": "Gain 1 max gold",
+    "cardType": 1,
+    "baseCost": 3,
+    "spellTypes": [ 1 ],
+    "amount": [ 1 ]
+  },
+  {
+    "tier": 2,
+    "name": "Motivational Speech",
+    "text": "Give all friendly minions +1/+1",
+    "cardType": 1,
+    "baseCost": 2,
+    "spellTypes": [ 6, 7 ],
+    "amount": [ 1, 1 ]
   },
   {
     "tier": 2,
@@ -82,13 +91,13 @@
     "amount": [ 1, 2 ]
   },
   {
-    "tier": 1,
-    "name": "Poké Ball",
-    "text": "Steal a random minion from the tavern",
+    "tier": 2,
+    "name": "Poké Lunch",
+    "text": "Give a minion stats equal to your tier",
     "cardType": 1,
-    "baseCost": 2,
-    "spellTypes": [ 13 ],
-    "amount": [ 1 ]
+    "baseCost": 1,
+    "spellTypes": [ 2, 4 ],
+    "amount": [ -1, -1 ]
   },
   {
     "tier": 4,
@@ -98,6 +107,36 @@
     "baseCost": 4,
     "spellTypes": [ 13 ],
     "amount": [ 2 ]
+  },
+  {
+    "tier": 4,
+    "name": "Fire Stone",
+    "text": "Get a random Fire type",
+    "cardType": 1,
+    "baseCost": 3,
+    "spellTypes": [ 16 ],
+    "amount": [ 1 ],
+    "pokemonId": 133
+  },
+  {
+    "tier": 4,
+    "name": "Water Stone",
+    "text": "Get a random Water type",
+    "cardType": 1,
+    "baseCost": 3,
+    "spellTypes": [ 16 ],
+    "amount": [ 2 ],
+    "pokemonId": 133
+  },
+  {
+    "tier": 4,
+    "name": "Thunder Stone",
+    "text": "Get a random Electric type",
+    "cardType": 1,
+    "baseCost": 3,
+    "spellTypes": [ 16 ],
+    "amount": [ 7 ],
+    "pokemonId": 133
   },
   {
     "tier": 6,
@@ -117,14 +156,5 @@
     "spellTypes": [ 15 ],
     "amount": [ -1 ],
     "baseDelay": 1
-  },
-  {
-    "tier": 2,
-    "name": "Poké Lunch",
-    "text": "Give a minion stats equal to your tier",
-    "cardType": 1,
-    "baseCost": 1,
-    "spellTypes": [ 2, 4 ],
-    "amount": [ -1, -1 ]
   }
 ]

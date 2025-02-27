@@ -398,11 +398,36 @@ namespace PokeChess.Server.Extensions
                 case 96:
                     if (!string.IsNullOrWhiteSpace(targetId) && targetId != card.Id)
                     {
-                        var minionOnBoard96 = player.Board.Any(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
-                        var minionInShop96 = player.Shop.Any(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                        // Keeping the below code commented out in case we want to return to this being a psychic only target in the future
+
+                        //var minionOnBoard96 = player.Board.Any(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                        //var minionInShop96 = player.Shop.Any(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                        //if (minionOnBoard96)
+                        //{
+                        //    var index96 = player.Board.FindIndex(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                        //    if (index96 >= 0 && index96 < player.Board.Count())
+                        //    {
+                        //        player.Board[index96].Attack += 5;
+                        //        player.Board[index96].Health += 5;
+                        //        player = player.Board[index96].GainedStatsTrigger(player);
+                        //    }
+                        //}
+                        //if (minionInShop96)
+                        //{
+                        //    var index96 = player.Shop.FindIndex(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                        //    if (index96 >= 0 && index96 < player.Shop.Count())
+                        //    {
+                        //        player.Shop[index96].Attack += 5;
+                        //        player.Shop[index96].Health += 5;
+                        //        player = player.Shop[index96].GainedStatsTrigger(player);
+                        //    }
+                        //}
+
+                        var minionOnBoard96 = player.Board.Any(x => x.Id == targetId);
+                        var minionInShop96 = player.Shop.Any(x => x.Id == targetId);
                         if (minionOnBoard96)
                         {
-                            var index96 = player.Board.FindIndex(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                            var index96 = player.Board.FindIndex(x => x.Id == targetId);
                             if (index96 >= 0 && index96 < player.Board.Count())
                             {
                                 player.Board[index96].Attack += 5;
@@ -412,7 +437,7 @@ namespace PokeChess.Server.Extensions
                         }
                         if (minionInShop96)
                         {
-                            var index96 = player.Shop.FindIndex(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                            var index96 = player.Shop.FindIndex(x => x.Id == targetId);
                             if (index96 >= 0 && index96 < player.Shop.Count())
                             {
                                 player.Shop[index96].Attack += 5;
@@ -425,9 +450,22 @@ namespace PokeChess.Server.Extensions
                     player.BattlecriesPlayed++;
                     return player;
                 case 97:
+                    // Keeping the below code commented out in case we want to return to this being a psychic only target in the future
+
+                    //if (!string.IsNullOrWhiteSpace(targetId) && targetId != card.Id)
+                    //{
+                    //    var index97 = player.Board.FindIndex(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                    //    if (index97 >= 0 && index97 < player.Board.Count())
+                    //    {
+                    //        player.Board[index97].Attack += player.BattlecriesPlayed;
+                    //        player.Board[index97].Health += player.BattlecriesPlayed;
+                    //        player = player.Board[index97].GainedStatsTrigger(player);
+                    //    }
+                    //}
+
                     if (!string.IsNullOrWhiteSpace(targetId) && targetId != card.Id)
                     {
-                        var index97 = player.Board.FindIndex(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
+                        var index97 = player.Board.FindIndex(x => x.Id == targetId);
                         if (index97 >= 0 && index97 < player.Board.Count())
                         {
                             player.Board[index97].Attack += player.BattlecriesPlayed;
@@ -507,7 +545,7 @@ namespace PokeChess.Server.Extensions
                             var spell = possibleSpells[ThreadSafeRandom.ThisThreadsRandom.Next(possibleSpells.Count)];
                             spell.Id = Guid.NewGuid().ToString() + _copyStamp;
                             player.Hand.Add(spell);
-                            player.CardAddedToHand();
+                            player.CardAddedToHand(true);
                         }
 
                         return player;
@@ -535,7 +573,7 @@ namespace PokeChess.Server.Extensions
                             var flyingMinion = flyingMinions[ThreadSafeRandom.ThisThreadsRandom.Next(flyingMinions.Count)];
                             flyingMinion.Id = Guid.NewGuid().ToString() + _copyStamp;
                             player.Hand.Add(flyingMinion);
-                            player.CardAddedToHand();
+                            player.CardAddedToHand(true);
                         }
 
                         return player;
@@ -605,7 +643,7 @@ namespace PokeChess.Server.Extensions
                             var pokeLunch = CardService.Instance.GetAllSpells().Where(x => x.Name == "Poké Lunch").FirstOrDefault();
                             pokeLunch.Id = Guid.NewGuid().ToString() + _copyStamp;
                             player.Hand.Add(pokeLunch);
-                            player.CardAddedToHand();
+                            player.CardAddedToHand(true);
                         }
 
                         return player;
@@ -613,7 +651,7 @@ namespace PokeChess.Server.Extensions
                         if (player.Hand.Count() < player.MaxHandSize)
                         {
                             player.Hand.Add(CardService.Instance.GetFertilizer());
-                            player.CardAddedToHand();
+                            player.CardAddedToHand(true);
                         }
 
                         return player;
@@ -633,7 +671,7 @@ namespace PokeChess.Server.Extensions
                             var discoverTreasure = CardService.Instance.GetNewDiscoverTreasure();
                             discoverTreasure.Id = Guid.NewGuid().ToString() + _copyStamp;
                             player.Hand.Add(discoverTreasure);
-                            player.CardAddedToHand();
+                            player.CardAddedToHand(true);
                         }
 
                         return player;
@@ -657,7 +695,7 @@ namespace PokeChess.Server.Extensions
                             var waterMinion = waterMinions[ThreadSafeRandom.ThisThreadsRandom.Next(waterMinions.Count)];
                             waterMinion.Id = Guid.NewGuid().ToString() + _copyStamp;
                             player.Hand.Add(waterMinion);
-                            player.CardAddedToHand();
+                            player.CardAddedToHand(true);
                         }
 
                         return player;

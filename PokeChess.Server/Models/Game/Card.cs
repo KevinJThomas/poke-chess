@@ -12,7 +12,7 @@ namespace PokeChess.Server.Models.Game
         public int BaseHealth { get; set; }
         public int BaseCost { get; set; }
         public int BaseDelay { get; set; }
-        public int BaseSellValue { get; set; }
+        public int BaseSellValue { get; set; } = 1;
         public int Attack { get; set; }
         public int Health { get; set; }
         public int Cost { get; set; }

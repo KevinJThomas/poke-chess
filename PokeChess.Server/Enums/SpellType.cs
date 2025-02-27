@@ -18,7 +18,7 @@
         GetRandomMinionsFromTavern,
         GetRandomCardsFromTavern,
         GetTavern,
-        GetRandomCards,
+        GetRandomMinionByType,
         Consume,
         Discover,
         Quest,

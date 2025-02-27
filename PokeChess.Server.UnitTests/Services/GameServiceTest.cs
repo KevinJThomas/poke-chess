@@ -1141,39 +1141,40 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(minionToBuffHealthBeforePlay == minionToBuffHealthAfterPlay - 5);
         }
 
-        [TestMethod]
-        public void TestPlayMinion_Battlecry_96_Fail()
-        {
-            // Arrange
-            (var lobby, var logger) = InitializeSetup();
-            var instance = GameService.Instance;
+        // This is not valid at the moment, because the battlecry was changed to target any type
+        //[TestMethod]
+        //public void TestPlayMinion_Battlecry_96_Fail()
+        //{
+        //    // Arrange
+        //    (var lobby, var logger) = InitializeSetup();
+        //    var instance = GameService.Instance;
 
-            // Act
-            instance.Initialize(logger);
-            lobby = instance.StartGame(lobby);
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 96).FirstOrDefault());
-            var minionToBuff = CardService.Instance.BuildTestMinion();
-            lobby.Players[0].Shop.Add(minionToBuff);
-            var boardCount = lobby.Players[0].Board.Count();
-            var handCount = lobby.Players[0].Hand.Count();
-            var cardIdToRemove = lobby.Players[0].Hand[0].Id;
-            var cardPoolCountBeforeBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
-            var minionToBuffAttackBeforePlay = minionToBuff.Attack;
-            var minionToBuffHealthBeforePlay = minionToBuff.Health;
-            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, minionToBuff.Id);
-            var cardPoolCountAfterBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
-            var minionToBuffAttackAfterPlay = lobby.Players[0].Shop.Where(x => x.Id == minionToBuff.Id).FirstOrDefault().Attack;
-            var minionToBuffHealthAfterPlay = lobby.Players[0].Shop.Where(x => x.Id == minionToBuff.Id).FirstOrDefault().Health;
+        //    // Act
+        //    instance.Initialize(logger);
+        //    lobby = instance.StartGame(lobby);
+        //    lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 96).FirstOrDefault());
+        //    var minionToBuff = CardService.Instance.BuildTestMinion();
+        //    lobby.Players[0].Shop.Add(minionToBuff);
+        //    var boardCount = lobby.Players[0].Board.Count();
+        //    var handCount = lobby.Players[0].Hand.Count();
+        //    var cardIdToRemove = lobby.Players[0].Hand[0].Id;
+        //    var cardPoolCountBeforeBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+        //    var minionToBuffAttackBeforePlay = minionToBuff.Attack;
+        //    var minionToBuffHealthBeforePlay = minionToBuff.Health;
+        //    lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, minionToBuff.Id);
+        //    var cardPoolCountAfterBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+        //    var minionToBuffAttackAfterPlay = lobby.Players[0].Shop.Where(x => x.Id == minionToBuff.Id).FirstOrDefault().Attack;
+        //    var minionToBuffHealthAfterPlay = lobby.Players[0].Shop.Where(x => x.Id == minionToBuff.Id).FirstOrDefault().Health;
 
-            // Assert
-            Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
-            Assert.IsTrue(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
-            Assert.IsTrue(lobby.Players[0].Board.Count() > boardCount);
-            Assert.IsTrue(lobby.Players[0].Hand.Count() < handCount);
-            Assert.IsTrue(cardPoolCountBeforeBuy == cardPoolCountAfterBuy);
-            Assert.IsTrue(minionToBuffAttackBeforePlay == minionToBuffAttackAfterPlay);
-            Assert.IsTrue(minionToBuffHealthBeforePlay == minionToBuffHealthAfterPlay);
-        }
+        //    // Assert
+        //    Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
+        //    Assert.IsTrue(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
+        //    Assert.IsTrue(lobby.Players[0].Board.Count() > boardCount);
+        //    Assert.IsTrue(lobby.Players[0].Hand.Count() < handCount);
+        //    Assert.IsTrue(cardPoolCountBeforeBuy == cardPoolCountAfterBuy);
+        //    Assert.IsTrue(minionToBuffAttackBeforePlay == minionToBuffAttackAfterPlay);
+        //    Assert.IsTrue(minionToBuffHealthBeforePlay == minionToBuffHealthAfterPlay);
+        //}
 
         [TestMethod]
         public void TestPlayMinion_Battlecry_97()
@@ -1211,41 +1212,43 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(minionToBuffHealthBeforePlay == minionToBuffHealthAfterPlay - battlecriesPlayed);
         }
 
-        [TestMethod]
-        public void TestPlayMinion_Battlecry_97_Fail()
-        {
-            // Arrange
-            (var lobby, var logger) = InitializeSetup();
-            var instance = GameService.Instance;
-            var battlecriesPlayed = 12;
 
-            // Act
-            instance.Initialize(logger);
-            lobby = instance.StartGame(lobby);
-            lobby.Players[0].BattlecriesPlayed = battlecriesPlayed;
-            lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 97).FirstOrDefault());
-            var minionToBuff = CardService.Instance.BuildTestMinion();
-            lobby.Players[0].Board.Add(minionToBuff);
-            var boardCount = lobby.Players[0].Board.Count();
-            var handCount = lobby.Players[0].Hand.Count();
-            var cardIdToRemove = lobby.Players[0].Hand[0].Id;
-            var cardPoolCountBeforeBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
-            var minionToBuffAttackBeforePlay = minionToBuff.Attack;
-            var minionToBuffHealthBeforePlay = minionToBuff.Health;
-            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, minionToBuff.Id);
-            var cardPoolCountAfterBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
-            var minionToBuffAttackAfterPlay = lobby.Players[0].Board.Where(x => x.Id == minionToBuff.Id).FirstOrDefault().Attack;
-            var minionToBuffHealthAfterPlay = lobby.Players[0].Board.Where(x => x.Id == minionToBuff.Id).FirstOrDefault().Health;
+        // This is not valid at the moment, because the battlecry was changed to target any type
+        //[TestMethod]
+        //public void TestPlayMinion_Battlecry_97_Fail()
+        //{
+        //    // Arrange
+        //    (var lobby, var logger) = InitializeSetup();
+        //    var instance = GameService.Instance;
+        //    var battlecriesPlayed = 12;
 
-            // Assert
-            Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
-            Assert.IsTrue(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
-            Assert.IsTrue(lobby.Players[0].Board.Count() > boardCount);
-            Assert.IsTrue(lobby.Players[0].Hand.Count() < handCount);
-            Assert.IsTrue(cardPoolCountBeforeBuy == cardPoolCountAfterBuy);
-            Assert.IsTrue(minionToBuffAttackBeforePlay == minionToBuffAttackAfterPlay);
-            Assert.IsTrue(minionToBuffHealthBeforePlay == minionToBuffHealthAfterPlay);
-        }
+        //    // Act
+        //    instance.Initialize(logger);
+        //    lobby = instance.StartGame(lobby);
+        //    lobby.Players[0].BattlecriesPlayed = battlecriesPlayed;
+        //    lobby.Players[0].Hand.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 97).FirstOrDefault());
+        //    var minionToBuff = CardService.Instance.BuildTestMinion();
+        //    lobby.Players[0].Board.Add(minionToBuff);
+        //    var boardCount = lobby.Players[0].Board.Count();
+        //    var handCount = lobby.Players[0].Hand.Count();
+        //    var cardIdToRemove = lobby.Players[0].Hand[0].Id;
+        //    var cardPoolCountBeforeBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+        //    var minionToBuffAttackBeforePlay = minionToBuff.Attack;
+        //    var minionToBuffHealthBeforePlay = minionToBuff.Health;
+        //    lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 0, minionToBuff.Id);
+        //    var cardPoolCountAfterBuy = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+        //    var minionToBuffAttackAfterPlay = lobby.Players[0].Board.Where(x => x.Id == minionToBuff.Id).FirstOrDefault().Attack;
+        //    var minionToBuffHealthAfterPlay = lobby.Players[0].Board.Where(x => x.Id == minionToBuff.Id).FirstOrDefault().Health;
+
+        //    // Assert
+        //    Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
+        //    Assert.IsTrue(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
+        //    Assert.IsTrue(lobby.Players[0].Board.Count() > boardCount);
+        //    Assert.IsTrue(lobby.Players[0].Hand.Count() < handCount);
+        //    Assert.IsTrue(cardPoolCountBeforeBuy == cardPoolCountAfterBuy);
+        //    Assert.IsTrue(minionToBuffAttackBeforePlay == minionToBuffAttackAfterPlay);
+        //    Assert.IsTrue(minionToBuffHealthBeforePlay == minionToBuffHealthAfterPlay);
+        //}
 
         [TestMethod]
         public void TestPlayMinion_Battlecry_100()
@@ -3510,6 +3513,38 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
+        public void TestPlaySpell_GetRandomMinionByType()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Tier = 3;
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.CardType == Enums.CardType.Spell && x.SpellTypes.Contains(Enums.SpellType.GetRandomMinionByType) && x.Delay == 0).FirstOrDefault());
+            var cardIdToRemove = lobby.Players[0].Hand[0].Id;
+            var cardPoolCountBeforePlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var handSizeBeforePlay = lobby.Players[0].Hand.Count();
+            var shopSizeBeforePlay = lobby.Players[0].Shop.Count();
+            var minionTypeToGet = (MinionType)lobby.Players[0].Hand[0].Amount[0];
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            var cardPoolCountAfterPlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var handSizeAfterPlay = lobby.Players[0].Hand.Count();
+            var shopSizeAfterPlay = lobby.Players[0].Shop.Count();
+
+            // Assert
+            Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
+            Assert.IsFalse(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(cardPoolCountBeforePlay < cardPoolCountAfterPlay);
+            Assert.IsTrue(handSizeBeforePlay == handSizeAfterPlay);
+            Assert.IsTrue(shopSizeBeforePlay == shopSizeAfterPlay);
+            Assert.IsTrue(lobby.Players[0].Hand[0].Tier <= lobby.Players[0].Tier);
+            Assert.IsTrue(lobby.Players[0].Hand[0].MinionTypes.Contains(minionTypeToGet));
+        }
+
+        [TestMethod]
         public void TestCombatRound_AllTies()
         {
             // Arrange
@@ -3885,7 +3920,7 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.HeroPower(lobby, lobby.Players[0]);
 
             // Assert
-            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - lobby.Players[0].Hero.HeroPower.Cost);
             Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
         }
 
@@ -3901,7 +3936,7 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(2);
             var upgradeCostBefore = lobby.Players[0].UpgradeCost;
-            for (var i = 0; i < 3; i ++)
+            for (var i = 0; i < 3; i++)
             {
                 lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<MinionType> { MinionType.Water }));
                 lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], MoveCardAction.Play, lobby.Players[0].Board.Count(), null);
@@ -3929,7 +3964,7 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.HeroPower(lobby, lobby.Players[0]);
 
             // Assert
-            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - lobby.Players[0].Hero.HeroPower.Cost);
             Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
             Assert.IsTrue(lobby.Players[0].Hand[0].Tier == lobby.Players[0].Tier);
         }
@@ -3950,7 +3985,7 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.HeroPower(lobby, lobby.Players[0]);
 
             // Assert
-            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 1);
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - lobby.Players[0].Hero.HeroPower.Cost);
             Assert.IsTrue(lobby.Players[0].Shop.Count(x => x.Tier == lobby.Players[0].Tier + 1) == 2);
             Assert.IsTrue(lobby.Players[0].Shop.Count() == shopSize + 1); // +1 because shopSize doesn't account for the spell
         }
@@ -3973,7 +4008,7 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.HeroPower(lobby, lobby.Players[0]);
 
             // Assert
-            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - lobby.Players[0].Hero.HeroPower.Cost);
             Assert.IsFalse(lobby.Players[0].Board.Any());
             Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
             Assert.IsTrue(lobby.Players[0].Hand[0].PokemonId == 2);
@@ -3995,7 +4030,7 @@ namespace PokeChess.Server.UnitTests.Services
             var shopCountAfter = lobby.Players[0].Shop.Count();
 
             // Assert
-            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 2);
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - lobby.Players[0].Hero.HeroPower.Cost);
             Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
             Assert.IsTrue(shopCountBefore == shopCountAfter + 1);
             Assert.IsTrue(lobby.Players[0].Hand[0].Attack == lobby.Players[0].Hand[0].BaseAttack + 1);
@@ -4040,6 +4075,177 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(lobby.Players[0].Hand.Count() == 5);
             Assert.IsTrue(lobby.Players[0].Hand.Count(x => x.PokemonId == 64) == 1);
             Assert.IsTrue(lobby.Players[0].Hero.HeroPower.IsDisabled);
+        }
+
+        [TestMethod]
+        public void TestEeveeEvolution_FireStone_Success()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            var eeveeList = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 133).ToList();
+            lobby.Players[0].Board.Add(eeveeList[0]);
+            lobby.Players[0].Board.Add(eeveeList[1]);
+            var fireStone = CardService.Instance.GetAllSpells().Where(x => x.Name == "Fire Stone").FirstOrDefault();
+            lobby.Players[0].Shop.Add(fireStone);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[lobby.Players[0].Shop.Count() - 1], MoveCardAction.Buy, -1, null);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+            Assert.IsTrue(lobby.Players[0].Board.Count() == 0);
+            Assert.IsTrue(lobby.Players[0].Hand[0].PokemonId == 136);
+        }
+
+        [TestMethod]
+        public void TestEeveeEvolution_WaterStone_Success()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            var eeveeList = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 133).ToList();
+            lobby.Players[0].Board.Add(eeveeList[0]);
+            lobby.Players[0].Board.Add(eeveeList[1]);
+            var waterStone = CardService.Instance.GetAllSpells().Where(x => x.Name == "Water Stone").FirstOrDefault();
+            lobby.Players[0].Shop.Add(waterStone);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[lobby.Players[0].Shop.Count() - 1], MoveCardAction.Buy, -1, null);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+            Assert.IsTrue(lobby.Players[0].Board.Count() == 0);
+            Assert.IsTrue(lobby.Players[0].Hand[0].PokemonId == 134);
+        }
+
+        [TestMethod]
+        public void TestEeveeEvolution_ThunderStone_Success()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            var eeveeList = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 133).ToList();
+            lobby.Players[0].Board.Add(eeveeList[0]);
+            lobby.Players[0].Board.Add(eeveeList[1]);
+            var thunderStone = CardService.Instance.GetAllSpells().Where(x => x.Name == "Thunder Stone").FirstOrDefault();
+            lobby.Players[0].Shop.Add(thunderStone);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[lobby.Players[0].Shop.Count() - 1], MoveCardAction.Buy, -1, null);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+            Assert.IsTrue(lobby.Players[0].Board.Count() == 0);
+            Assert.IsTrue(lobby.Players[0].Hand[0].PokemonId == 135);
+        }
+
+        [TestMethod]
+        public void TestEeveeEvolution_1Eevee2Stones_Fail()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            var thunderStones = CardService.Instance.GetAllSpells().Where(x => x.Name == "Thunder Stone").ToList();
+            lobby.Players[0].Hand.Add(thunderStones[0]);
+            lobby.Players[0].Hand.Add(thunderStones[1]);
+            var eevee = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 133).FirstOrDefault();
+            lobby.Players[0].Shop.Add(eevee);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[lobby.Players[0].Shop.Count() - 1], MoveCardAction.Buy, -1, null);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 3);
+            Assert.IsTrue(lobby.Players[0].Board.Count() == 0);
+        }
+
+        [TestMethod]
+        public void TestEeveeEvolution_3Stones_Fail()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            var thunderStones = CardService.Instance.GetAllSpells().Where(x => x.Name == "Thunder Stone").ToList();
+            lobby.Players[0].Hand.Add(thunderStones[0]);
+            lobby.Players[0].Hand.Add(thunderStones[1]);
+            var thunderStone = CardService.Instance.GetAllSpells().Where(x => x.Name == "Thunder Stone").FirstOrDefault();
+            thunderStone.Id = Guid.NewGuid().ToString();
+            lobby.Players[0].Shop.Add(thunderStone);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[lobby.Players[0].Shop.Count() - 1], MoveCardAction.Buy, -1, null);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 3);
+            Assert.IsTrue(lobby.Players[0].Board.Count() == 0);
+        }
+
+        [TestMethod]
+        public void TestEeveeEvolution_2Stones2Eevees_Success()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            var fireStone = CardService.Instance.GetAllSpells().Where(x => x.Name == "Fire Stone").FirstOrDefault();
+            lobby.Players[0].Hand.Add(fireStone);
+            var thunderStone = CardService.Instance.GetAllSpells().Where(x => x.Name == "Thunder Stone").FirstOrDefault();
+            lobby.Players[0].Hand.Add(thunderStone);
+            var eeveeList = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 133).ToList();
+            lobby.Players[0].Shop.Add(eeveeList[0]);
+            lobby.Players[0].Shop.Add(eeveeList[1]);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[lobby.Players[0].Shop.Count() - 1], MoveCardAction.Buy, -1, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[lobby.Players[0].Shop.Count() - 1], MoveCardAction.Buy, -1, null);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 6);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 2);
+            Assert.IsTrue(lobby.Players[0].Board.Count() == 0);
+            Assert.IsTrue(lobby.Players[0].Hand.Count(x => x.PokemonId == 136) == 1);
+        }
+
+        [TestMethod]
+        public void TestEeveeEvolution_3Eevees_Success()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            var eeveeList = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 133).ToList();
+            lobby.Players[0].Shop.Add(eeveeList[0]);
+            lobby.Players[0].Shop.Add(eeveeList[1]);
+            lobby.Players[0].Shop.Add(eeveeList[2]);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[lobby.Players[0].Shop.Count() - 1], MoveCardAction.Buy, -1, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[lobby.Players[0].Shop.Count() - 1], MoveCardAction.Buy, -1, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[lobby.Players[0].Shop.Count() - 1], MoveCardAction.Buy, -1, null);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 9);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+            Assert.IsTrue(lobby.Players[0].Board.Count() == 0);
+            Assert.IsTrue(lobby.Players[0].Hand[0].PokemonId == 134 || lobby.Players[0].Hand[0].PokemonId == 135 || lobby.Players[0].Hand[0].PokemonId == 136);
         }
     }
 }
