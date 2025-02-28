@@ -12,6 +12,7 @@
         public int UsesThisTurn { get; set; }
         public int UsesThisGame { get; set; }
         public bool IsOncePerGame { get; set; }
-        public PassiveHeroPowerTriggers Triggers { get; set; } = new PassiveHeroPowerTriggers();
+        public int Amount { get; set; }
+        public HeroPowerTriggers Triggers { get; set; } = new HeroPowerTriggers();
     }
 }

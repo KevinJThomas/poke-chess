@@ -161,6 +161,37 @@ namespace PokeChess.Server.Extensions
                                 }
 
                                 return false;
+                            case "Miracle Grow":
+                                var miracleGrowSuccess = player.EvolveMinion(targetId);
+                                return miracleGrowSuccess;
+                            case "Raichu Snack":
+                                if (string.IsNullOrWhiteSpace(targetId) || !player.Board.Any(x => x.PokemonId == 26) || player.Board.Count() <= 1)
+                                {
+                                    return false;
+                                }
+
+                                var target = player.Board.Where(x => x.Id == targetId).FirstOrDefault();
+                                if (target != null && player.Board.Where(x => x.Id != targetId).Any(x => x.PokemonId == 26))
+                                {
+                                    var raichuToBuff = player.Board.Where(x => x.Id != targetId && x.PokemonId == 26).FirstOrDefault();
+                                    if (player.Board.Where(x => x.Id != targetId && x.PokemonId == 26).Count() > 1)
+                                    {
+                                        // If there is more than 1 valid raichu to receive the buff, pick one randomly
+                                        var allRaichus = player.Board.Where(x => x.Id != targetId && x.PokemonId == 26).ToList();
+                                        raichuToBuff = allRaichus[ThreadSafeRandom.ThisThreadsRandom.Next(allRaichus.Count())];
+                                    }
+
+                                    if (raichuToBuff != null)
+                                    {
+                                        raichuToBuff.Attack += target.Attack * 2;
+                                        raichuToBuff.Health += target.Health * 2;
+                                        player.Board.Remove(target);
+                                        player.CardsToReturnToPool.Add(target);
+                                        return true;
+                                    }
+                                }    
+
+                                return false;
                         }
                     }
 
@@ -724,6 +755,7 @@ namespace PokeChess.Server.Extensions
                 }
             }
 
+            player.UpdateFertilizerText();
             player.UpdateHeroPowerStatus();
         }
 
@@ -746,7 +778,7 @@ namespace PokeChess.Server.Extensions
             }
         }
 
-        public static List<HitValues> MinionDiedInCombat(this Player player, Card card)
+        public static List<HitValues> FriendlyMinionDiedInCombat(this Player player, Card card)
         {
             var hitValues = new List<HitValues>();
 
@@ -793,9 +825,26 @@ namespace PokeChess.Server.Extensions
             return hitValues;
         }
 
+        public static void KilledMinionInCombat(this Player player, Card card)
+        {
+            if (player.Hero.HeroPower.Triggers.KilledMinionInCombat)
+            {
+                player.HeroPower_KilledMinionInCombat(card);
+            }
+        }
+
         public static List<HitValues> StartOfCombat(this Player player)
         {
             var hitValues = new List<HitValues>();
+
+            if (player.Hero.HeroPower.Triggers.StartOfCombat)
+            {
+                var heroPowerHitValues = player.HeroPower_StartOfCombat();
+                if (heroPowerHitValues != null && heroPowerHitValues.Any())
+                {
+                    hitValues.AddRange(heroPowerHitValues);
+                }
+            }
 
             if (player.Board.Any(x => x.HasStartOfCombat))
             {
@@ -890,6 +939,54 @@ namespace PokeChess.Server.Extensions
                     }
 
                     return lobby;
+                case 9:
+                    if (player.Board.Any())
+                    {
+                        var minionToBuff = player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())];
+                        if (minionToBuff != null)
+                        {
+                            var index = player.Board.IndexOf(minionToBuff);
+                            player.Board[index].Attack += player.Hero.HeroPower.Amount;
+                            player.Board[index].Health += player.Hero.HeroPower.Amount;
+                            player = player.Board[index].GainedStatsTrigger(player);
+                            player.HeroPowerUsedSuccessfully();
+                        }
+                    }
+
+                    return lobby;
+                case 10:
+                    for (var i = 0; i < 2; i++)
+                    {
+                        if (player.Hand.Count < player.MaxHandSize)
+                        {
+                            player.Hand.Add(CardService.Instance.GetFertilizer());
+                            player.CardAddedToHand();
+                        }
+                    }
+
+                    player.HeroPowerUsedSuccessfully();
+                    return lobby;
+                case 11:
+                    if (player.Hand.Count() < player.MaxHandSize)
+                    {
+                        player.Hand.Add(CardService.Instance.GetMiracleGrow());
+                        player.CardAddedToHand();
+                    }
+
+                    player.HeroPowerUsedSuccessfully();
+                    return lobby;
+                case 14:
+                    player.HeroPowerUsedSuccessfully();
+                    return lobby;
+                case 16:
+                    if (player.Hand.Count() < player.MaxHandSize)
+                    {
+                        player.Hand.Add(CardService.Instance.GetRaichuSnack());
+                        player.CardAddedToHand();
+                    }
+
+                    player.HeroPowerUsedSuccessfully();
+                    return lobby;
                 default:
                     return lobby;
             }
@@ -962,6 +1059,82 @@ namespace PokeChess.Server.Extensions
                             player.Hero.HeroPower.UsesThisGame = 0;
                             player.Hero.HeroPower.Cost = 0;
                         }
+                    }
+
+                    break;
+            }
+        }
+
+        public static void HeroPower_EndOfTurn(this Player player)
+        {
+            if (!player.Hero.HeroPower.Triggers.EndOfTurn)
+            {
+                return;
+            }
+
+            switch (player.Hero.HeroPower.Id)
+            {
+                case 9:
+                    player.Hero.HeroPower.Amount++;
+                    player.Hero.HeroPower.Text = player.Hero.HeroPower.Text.Replace(
+                        $"+{player.Hero.HeroPower.Amount - 1}/+{player.Hero.HeroPower.Amount - 1}",
+                        $"+{player.Hero.HeroPower.Amount}/+{player.Hero.HeroPower.Amount}");
+                    break;
+            }
+        }
+
+        public static List<HitValues> HeroPower_StartOfCombat(this Player player)
+        {
+            var hitValues = new List<HitValues>();
+
+            if (!player.Hero.HeroPower.Triggers.StartOfCombat)
+            {
+                return hitValues;
+            }
+
+            switch (player.Hero.HeroPower.Id)
+            {
+                case 12:
+                    if (player.Board.Any(x => x.MinionTypes.Contains(MinionType.Water)))
+                    {
+                        foreach (var waterMinion in player.Board.Where(x => x.MinionTypes.Contains(MinionType.Water)))
+                        {
+                            waterMinion.CombatAttack += waterMinion.Tier;
+                            waterMinion.CombatHealth += waterMinion.Tier;
+                            hitValues.Add(new HitValues
+                            {
+                                Id = waterMinion.Id,
+                                Attack = waterMinion.CombatAttack,
+                                Health = waterMinion.CombatHealth,
+                                Keywords = waterMinion.CombatKeywords
+                            });
+                        }
+                    }
+
+                    return hitValues;
+                default:
+                    return hitValues;
+            }
+        }
+
+        public static void HeroPower_KilledMinionInCombat(this Player player, Card card)
+        {
+            if (!player.Hero.HeroPower.Triggers.KilledMinionInCombat)
+            {
+                return;
+            }
+
+            switch (player.Hero.HeroPower.Id)
+            {
+                case 14:
+                    if (player.Hero.HeroPower.IsDisabled && player.Hero.HeroPower.UsesThisTurn == 1 && player.Hand.Count() < player.MaxHandSize)
+                    {
+                        var cardCopy = card.Clone();
+                        cardCopy.ScrubModifiers();
+                        cardCopy.Id = Guid.NewGuid().ToString();
+                        player.Hand.Add(cardCopy);
+                        player.CardAddedToHand();
+                        player.Hero.HeroPower.IsDisabled = false;
                     }
 
                     break;
@@ -1098,6 +1271,36 @@ namespace PokeChess.Server.Extensions
             // This can be updated later to take in more factors like types etc.
             var minionToSell = player.Board.Where(x => x.Tier == player.Board.Min(y => y.Tier)).FirstOrDefault();
             return minionToSell;
+        }
+
+        public static Lobby ReturnCardsToPool(this Player player, Lobby lobby)
+        {
+            if (player.CardsToReturnToPool.Any())
+            {
+                foreach (var card in player.CardsToReturnToPool)
+                {
+                    if (card == null || card.Id.Contains(_copyStamp))
+                    {
+                        continue;
+                    }
+
+                    card.ScrubModifiers();
+
+                    if (card.CardType == CardType.Minion)
+                    {
+                        lobby.GameState.MinionCardPool.Add(card);
+                    }
+
+                    if (card.CardType == CardType.Spell)
+                    {
+                        lobby.GameState.SpellCardPool.Add(card);
+                    }
+                }
+
+                player.CardsToReturnToPool = new List<Card>();
+            }
+
+            return lobby;
         }
 
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
@@ -1398,6 +1601,9 @@ namespace PokeChess.Server.Extensions
                     }
 
                     return false;
+                case SpellType.EvolveMinion:
+                    var success = player.EvolveMinion(targetId);
+                    return success;
                 default:
                     return false;
             }
@@ -1412,6 +1618,40 @@ namespace PokeChess.Server.Extensions
             {
                 player.Hero.HeroPower.IsDisabled = true;
             }
+        }
+
+        private static bool EvolveMinion(this Player player, string targetId)
+        {
+            if (string.IsNullOrWhiteSpace(targetId))
+            {
+                return false;
+            }
+
+            var target = player.Board.Where(x => x.Id == targetId).FirstOrDefault();
+            if (target != null && target.NextEvolutions.Any())
+            {
+                var num = string.Empty;
+                if (target.PokemonId == 133)
+                {
+                    num = target.NextEvolutions[ThreadSafeRandom.ThisThreadsRandom.Next(target.NextEvolutions.Count())].Num;
+                }
+                else
+                {
+                    num = target.NextEvolutions[0].Num;
+                }
+
+                var evolvedMinion = CardService.Instance.GetMinionCopyByNum(num);
+                if (evolvedMinion != null)
+                {
+                    var index = player.Board.IndexOf(target);
+                    player.Board.Remove(target);
+                    player.CardsToReturnToPool.Add(target);
+                    player.Board.Insert(index, evolvedMinion);
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

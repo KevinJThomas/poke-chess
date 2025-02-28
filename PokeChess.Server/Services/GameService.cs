@@ -6,6 +6,7 @@ using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Models.Player.Hero;
 using PokeChess.Server.Services.Interfaces;
+using System.Numerics;
 using System.Text.Json;
 
 namespace PokeChess.Server.Services
@@ -121,16 +122,43 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
+            lobby.GameState.MinionCardPool = _cardService.GetAllMinionsForPool();
+            lobby.GameState.SpellCardPool = _cardService.GetAllSpells();
+
 #if DEBUG
             foreach (var player in lobby.Players)
             {
                 player.Gold = 100;
                 player.BaseGold = 100;
+
+                if (player.Name.Length > 6 && player.Name.Substring(0, 6).ToLower() == "minion")
+                {
+                    var success = int.TryParse(player.Name.Substring(6), out var pokemonId);
+                    if (success)
+                    {
+                        var minionChosen = lobby.GameState.MinionCardPool.Where(x => x.PokemonId == pokemonId).FirstOrDefault();
+                        if (minionChosen != null)
+                        {
+                            var minion = minionChosen.Clone();
+                            minion.Id = Guid.NewGuid().ToString() + _copyStamp;
+                            player.Hand.Add(minion);
+                        }
+                    }
+                }
+
+                if (lobby.GameState.SpellCardPool.Any(x => x.Name.ToLower() == player.Name.ToLower()))
+                {
+                    var spellChosen = lobby.GameState.SpellCardPool.Where(x => x.Name.ToLower() == player.Name.ToLower()).FirstOrDefault();
+                    if (spellChosen != null)
+                    {
+                        var spell = spellChosen.Clone();
+                        spell.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        player.Hand.Add(spell);
+                    }
+                }
             }
 #endif
 
-            lobby.GameState.MinionCardPool = _cardService.GetAllMinionsForPool();
-            lobby.GameState.SpellCardPool = _cardService.GetAllSpells();
             lobby.IsWaitingToStart = false;
             lobby = AssignHeroes(lobby);
             lobby = NextRound(lobby);
@@ -263,9 +291,16 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
+            // End of turn triggers
             for (var i = 0; i < lobby.Players.Count(); i++)
             {
-                var endOfTurnTriggerCount = lobby.Players[i].BattlecryTriggerCount();
+                var endOfTurnTriggerCount = lobby.Players[i].EndOfTurnTriggerCount();
+
+                for (var j = 0; j < endOfTurnTriggerCount; j++)
+                {
+                    lobby.Players[i].HeroPower_EndOfTurn();
+                }
+
                 foreach (var minion in lobby.Players[i].Board)
                 {
                     for (var j = 0; j < endOfTurnTriggerCount; j++)
@@ -273,6 +308,8 @@ namespace PokeChess.Server.Services
                         lobby.Players[i] = minion.TriggerEndOfTurn(lobby.Players[i]);
                     }
                 }
+
+                lobby.Players[i].Hand = lobby.Players[i].Hand.Where(x => !x.Temporary).ToList();
             }
 
             lobby = CalculateCombat(lobby);
@@ -559,16 +596,8 @@ namespace PokeChess.Server.Services
                 player.ConsumeShopDiscounts(card);
                 player.CardBought(card);
                 player.CardAddedToHand();
-
-                if (player.CardsToReturnToPool.Any())
-                {
-                    foreach (var cardToReturn in player.CardsToReturnToPool)
-                    {
-                        lobby = ReturnCardToPool(lobby, cardToReturn);
-                    }
-
-                    player.CardsToReturnToPool = new List<Card>();
-                }
+                lobby = player.ReturnCardsToPool(lobby);
+                
             }
 
             return (lobby, player);
@@ -612,16 +641,7 @@ namespace PokeChess.Server.Services
                 {
                     player.Hand.Remove(card);
                     lobby = ReturnCardToPool(lobby, card);
-
-                    if (player.CardsToReturnToPool.Any())
-                    {
-                        foreach (var cardToReturn in player.CardsToReturnToPool)
-                        {
-                            lobby = ReturnCardToPool(lobby, cardToReturn);
-                        }
-
-                        player.CardsToReturnToPool = new List<Card>();
-                    }
+                    lobby = player.ReturnCardsToPool(lobby);
                 }
             }
 
@@ -742,16 +762,6 @@ namespace PokeChess.Server.Services
                     }
 
                     lobby.Players[i].DelayedSpells = lobby.Players[i].DelayedSpells.Where(x => x.Delay > 0).ToList();
-
-                    if (lobby.Players[i].CardsToReturnToPool.Any())
-                    {
-                        foreach (var cardToReturn in lobby.Players[i].CardsToReturnToPool)
-                        {
-                            lobby = ReturnCardToPool(lobby, cardToReturn);
-                        }
-
-                        lobby.Players[i].CardsToReturnToPool = new List<Card>();
-                    }
                 }
 
                 if (lobby.Players[i].Board.Any(x => x.HasDiscountMechanism && x.OncePerTurn))
@@ -761,6 +771,8 @@ namespace PokeChess.Server.Services
                         minion.DiscountMechanism(lobby.Players[i]);
                     }
                 }
+
+                lobby = lobby.Players[i].ReturnCardsToPool(lobby);
             }
 
             return lobby;
@@ -832,11 +844,11 @@ namespace PokeChess.Server.Services
                 var player1HitValues = new List<HitValues>();
                 var player2HitValues = new List<HitValues>();
 
-                if (player1.Board.Any(x => x.HasStartOfCombat))
+                if (player1.Board.Any(x => x.HasStartOfCombat) || player1.Hero.HeroPower.Triggers.StartOfCombat)
                 {
                     player1HitValues = player1.StartOfCombat();
                 }
-                if (player2.Board.Any(x => x.HasStartOfCombat))
+                if (player2.Board.Any(x => x.HasStartOfCombat) || player2.Hero.HeroPower.Triggers.StartOfCombat)
                 {
                     player2HitValues = player2.StartOfCombat();
                 }
@@ -968,7 +980,8 @@ namespace PokeChess.Server.Services
 
                 if (player1.Board[nextSourceIndex].IsDead)
                 {
-                    var hitValues = player1.MinionDiedInCombat(player1.Board[nextSourceIndex]);
+                    var hitValues = player1.FriendlyMinionDiedInCombat(player1.Board[nextSourceIndex]);
+                    player2.KilledMinionInCombat(player1.Board[nextSourceIndex]);
                     if (hitValues != null && hitValues.Any())
                     {
                         player1HitValues.AddRange(hitValues);
@@ -994,7 +1007,8 @@ namespace PokeChess.Server.Services
                 }
                 if (player2.Board[nextTargetIndex].IsDead)
                 {
-                    var hitValues = player2.MinionDiedInCombat(player2.Board[nextTargetIndex]);
+                    var hitValues = player2.FriendlyMinionDiedInCombat(player2.Board[nextTargetIndex]);
+                    player1.KilledMinionInCombat(player2.Board[nextTargetIndex]);
                     if (hitValues != null && hitValues.Any())
                     {
                         player2HitValues.AddRange(hitValues);
@@ -1023,7 +1037,8 @@ namespace PokeChess.Server.Services
                     var burnedMinion = player2.Board.Where(x => x.Id == burnedMinionId).FirstOrDefault();
                     if (burnedMinion != null && burnedMinion.IsDead)
                     {
-                        var hitValues = player2.MinionDiedInCombat(burnedMinion);
+                        var hitValues = player2.FriendlyMinionDiedInCombat(burnedMinion);
+                        player1.KilledMinionInCombat(burnedMinion);
                         if (hitValues != null && hitValues.Any())
                         {
                             player2HitValues.AddRange(hitValues);
@@ -1152,7 +1167,8 @@ namespace PokeChess.Server.Services
 
                 if (player2.Board[nextSourceIndex].IsDead)
                 {
-                    var hitValues = player2.MinionDiedInCombat(player2.Board[nextSourceIndex]);
+                    var hitValues = player2.FriendlyMinionDiedInCombat(player2.Board[nextSourceIndex]);
+                    player1.KilledMinionInCombat(player2.Board[nextSourceIndex]);
                     if (hitValues != null && hitValues.Any())
                     {
                         player2HitValues.AddRange(hitValues);
@@ -1178,7 +1194,8 @@ namespace PokeChess.Server.Services
                 }
                 if (player1.Board[nextTargetIndex].IsDead)
                 {
-                    var hitValues = player1.MinionDiedInCombat(player1.Board[nextTargetIndex]);
+                    var hitValues = player1.FriendlyMinionDiedInCombat(player1.Board[nextTargetIndex]);
+                    player2.KilledMinionInCombat(player1.Board[nextTargetIndex]);
                     if (hitValues != null && hitValues.Any())
                     {
                         player1HitValues.AddRange(hitValues);
@@ -1207,7 +1224,8 @@ namespace PokeChess.Server.Services
                     var burnedMinion = player1.Board.Where(x => x.Id == burnedMinionId).FirstOrDefault();
                     if (burnedMinion != null && burnedMinion.IsDead)
                     {
-                        var hitValues = player1.MinionDiedInCombat(burnedMinion);
+                        var hitValues = player1.FriendlyMinionDiedInCombat(burnedMinion);
+                        player2.KilledMinionInCombat(burnedMinion);
                         if (hitValues != null && hitValues.Any())
                         {
                             player1HitValues.AddRange(hitValues);
@@ -2040,6 +2058,29 @@ namespace PokeChess.Server.Services
 
             foreach (var player in lobby.Players)
             {
+#if DEBUG
+                if (player.Name.Length > 4 && player.Name.Substring(0, 4).ToLower() == "hero")
+                {
+                    var success = int.TryParse(player.Name.Substring(4), out var heroId);
+                    if (success)
+                    {
+                        var heroChosen = heroesList.Where(x => x.Id == heroId).FirstOrDefault();
+                        if (heroChosen != null)
+                        {
+                            player.Hero = heroChosen;
+                            player.Armor = heroChosen.BaseArmor;
+                            if (heroChosen.HeroPower.Triggers.StartOfGame)
+                            {
+                                player.HeroPower_StartOfGame();
+                            }
+
+                            heroesList.Remove(heroChosen);
+                            continue;
+                        }
+                    }
+                }
+#endif
+
                 var hero = heroesList[ThreadSafeRandom.ThisThreadsRandom.Next(heroesList.Count())];
                 player.Hero = hero;
                 player.Armor = player.IsActive ? hero.BaseArmor : 0;

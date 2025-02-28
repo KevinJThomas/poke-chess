@@ -1856,7 +1856,7 @@
     "pokemonId": 72,
     "num": "072",
     "tier": 2,
-    "text": "__Battlecry:__ Your next spell casts twice",
+    "text": "__Battlecry:__ Your next tavern spell casts twice",
     "name": "Tentacool",
     "baseAttack": 3,
     "baseHealth": 2,
@@ -1879,7 +1879,7 @@
     "pokemonId": 73,
     "num": "073",
     "tier": 4,
-    "text": "__Battlecry:__ Spells cast twice this turn",
+    "text": "__Battlecry:__ Tavern spells cast twice this turn",
     "name": "Tentacruel",
     "baseAttack": 9,
     "baseHealth": 6,
@@ -3341,7 +3341,9 @@
     "baseHealth": 12,
     "baseCost": 3,
     "cardType": 0,
-    "baseKeywords": {},
+    "baseKeywords": {
+      "taunt": true
+    },
     "type": [ "Rock", "Water" ],
     "height": "0.99 m",
     "weight": "35.0 kg",

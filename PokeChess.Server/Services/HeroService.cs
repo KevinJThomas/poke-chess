@@ -51,8 +51,11 @@ namespace PokeChess.Server.Services
                     {
                         foreach (var hero in heroes)
                         {
-                            _allHeroes.Add(hero);
-                            _allHeroPowers.Add(hero.HeroPower);
+                            if (hero.Include)
+                            {
+                                _allHeroes.Add(hero);
+                                _allHeroPowers.Add(hero.HeroPower);
+                            }
                         }
                     }
                 }

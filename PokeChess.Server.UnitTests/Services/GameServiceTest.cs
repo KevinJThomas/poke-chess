@@ -4078,6 +4078,59 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
+        public void TestHeroPower_9()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(9);
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
+            var attackBefore = lobby.Players[0].Board[0].Attack;
+            var healthBefore = lobby.Players[0].Board[0].Health;
+            lobby = instance.HeroPower(lobby, lobby.Players[0]);
+            var attackAfter = lobby.Players[0].Board[0].Attack;
+            var healthAfter = lobby.Players[0].Board[0].Health;
+            lobby = instance.CombatRound(lobby);
+            lobby = instance.HeroPower(lobby, lobby.Players[0]);
+            var attackAfter2 = lobby.Players[0].Board[0].Attack;
+            var healthAfter2 = lobby.Players[0].Board[0].Health;
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - lobby.Players[0].Hero.HeroPower.Cost);
+            Assert.IsTrue(attackBefore == attackAfter - 1);
+            Assert.IsTrue(healthBefore == healthAfter - 1);
+            Assert.IsTrue(attackAfter == attackAfter2 - 2);
+            Assert.IsTrue(healthAfter == healthAfter2 - 2);
+        }
+
+        [TestMethod]
+        public void TestHeroPower_10()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(10);
+            lobby = instance.HeroPower(lobby, lobby.Players[0]);
+            var isDisabledBefore = lobby.Players[0].Hero.HeroPower.IsDisabled;
+            lobby = instance.HeroPower(lobby, lobby.Players[0]);
+            var isDisabledAfter = lobby.Players[0].Hero.HeroPower.IsDisabled;
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - lobby.Players[0].Hero.HeroPower.Cost * 2);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 4);
+            Assert.IsFalse(isDisabledBefore);
+            Assert.IsTrue(isDisabledAfter);
+        }
+
+        [TestMethod]
         public void TestEeveeEvolution_FireStone_Success()
         {
             // Arrange

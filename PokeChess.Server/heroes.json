@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Ash",
+    "name": "Ash Ketchum",
     "baseArmor": 8,
     "heroPower": {
       "id": 1,
@@ -94,6 +94,114 @@
       "triggers": {
         "buyCard": true
       }
+    }
+  },
+  {
+    "id": 9,
+    "name": "Nurse Joy",
+    "baseArmor": 18,
+    "heroPower": {
+      "id": 9,
+      "name": "Healing Touch",
+      "cost": 1,
+      "text": "Give a random friendly minion +1/+1 (upgrades each turn)",
+      "triggers": {
+        "endOfTurn": true
+      },
+      "amount": 1
+    }
+  },
+  {
+    "id": 10,
+    "name": "Gardenia",
+    "baseArmor": 12,
+    "heroPower": {
+      "id": 10,
+      "name": "Plant Food",
+      "cost": 1,
+      "text": "Get 2 __Fertilizers__ (twice per turn)",
+      "usesPerTurn": 2
+    }
+  },
+  {
+    "id": 11,
+    "name": "Magikarp Salesman",
+    "baseArmor": 16,
+    "heroPower": {
+      "id": 11,
+      "name": "Miracle Grow",
+      "cost": 0,
+      "text": "Add a __Miracle Grow__ to your hand until the end of your turn (once per game)",
+      "isOncePerGame": true
+    }
+  },
+  {
+    "id": 12,
+    "name": "Squirtle Squad",
+    "baseArmor": 12,
+    "heroPower": {
+      "id": 12,
+      "name": "Squirtle Squirtle",
+      "text": "__Passive.__\n__Start of Combat:__ Give friendly Water types stats equal to their tier",
+      "isPassive": true,
+      "triggers": {
+        "startOfCombat": true
+      }
+    }
+  },
+  {
+    "id": 13,
+    "name": "Officer Jenny",
+    "baseArmor": 10,
+    "heroPower": {
+      "id": 13,
+      "name": "Freeze!",
+      "text": "__Passive.__\nAfter the tavern is refreshed, copy its highest tier minion and freeze them both",
+      "isPassive": true,
+      "triggers": {
+        "tavernRefresh": true
+      }
+    },
+    "include": false
+  },
+  {
+    "id": 14,
+    "name": "Mimey",
+    "baseArmor": 10,
+    "heroPower": {
+      "id": 14,
+      "name": "Mimic",
+      "cost": 1,
+      "text": "Next combat, get a plain copy of the first minion you kill",
+      "triggers": {
+        "killedMinionInCombat": true
+      }
+    }
+  },
+  {
+    "id": 15,
+    "name": "Professor Elm",
+    "baseArmor": 5,
+    "heroPower": {
+      "id": 15,
+      "name": "Egg-cellent",
+      "text": "__Passive.__\nStart the game with a 0/3 __Pokemon Egg__",
+      "isPassive": true,
+      "triggers": {
+        "startOfGame": true
+      }
+    },
+    "include": false
+  },
+  {
+    "id": 16,
+    "name": "Lt. Surge",
+    "baseArmor": 19,
+    "heroPower": {
+      "id": 16,
+      "name": "Eat Babies",
+      "cost": 0,
+      "text": "Add a __Raichu Snack__ to your hand until the end of your turn"
     }
   }
 ]

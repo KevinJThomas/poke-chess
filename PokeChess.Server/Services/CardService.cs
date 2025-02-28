@@ -43,6 +43,40 @@ namespace PokeChess.Server.Services
             }
         };
 
+        private static readonly Card _miracleGrow = new Card
+        {
+            Name = "Miracle Grow",
+            Text = "Evolve a friendly minion",
+            Temporary = true,
+            CardType = CardType.Spell,
+            SpellTypes = new List<SpellType>
+            {
+                SpellType.EvolveMinion
+            },
+            Amount = new List<int>
+            {
+                -1
+            }
+        };
+
+        private static readonly Card _raichuSnack = new Card
+        {
+            Name = "Raichu Snack",
+            Text = "Consume a friendly minion and give double its stats to a friendly Raichu",
+            Temporary = true,
+            CardType = CardType.Spell,
+            SpellTypes = new List<SpellType>
+            {
+                SpellType.BuffFriendlyTargetAttack,
+                SpellType.BuffFriendlyTargetHealth
+            },
+            Amount = new List<int>
+            {
+                -1,
+                -1
+            }
+        };
+
 
         #region class setup
 
@@ -270,6 +304,20 @@ namespace PokeChess.Server.Services
         public Card GetFertilizer()
         {
             var card = _fertilizer.Clone();
+            card.Id = Guid.NewGuid().ToString() + _copyStamp;
+            return card;
+        }
+
+        public Card GetMiracleGrow()
+        {
+            var card = _miracleGrow.Clone();
+            card.Id = Guid.NewGuid().ToString() + _copyStamp;
+            return card;
+        }
+
+        public Card GetRaichuSnack()
+        {
+            var card = _raichuSnack.Clone();
             card.Id = Guid.NewGuid().ToString() + _copyStamp;
             return card;
         }

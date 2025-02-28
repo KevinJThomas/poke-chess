@@ -55,11 +55,12 @@ namespace PokeChess.Server.Models.Game
         public bool HasRockMinionBuffTrigger { get; set; }
         public bool HasAvenge { get; set; }
         public int BaseAvengeInterval { get; set; }
-        public int AvengeInterval { get; set; } 
+        public int AvengeInterval { get; set; }
         public bool HasDeathTrigger { get; set; }
-        public bool HasShopRefresh { get; set; }
         public bool HasDeathrattle { get; set; }
         public bool HasStartOfCombat { get; set; }
+        public bool Temporary { get; set; }
+        public bool Frozen { get; set; }
         public PlayCardTriggerType PlayCardTriggerType { get; set; } = PlayCardTriggerType.Either;
         public CardType CardType { get; set; } = CardType.Unknown;
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();
@@ -91,7 +92,7 @@ namespace PokeChess.Server.Models.Game
                         return TargetType.Any.ToString().ToLower();
                     }
 
-                    if (SpellTypes.Contains(SpellType.BuffFriendlyTargetAttack) || SpellTypes.Contains(SpellType.BuffFriendlyTargetHealth))
+                    if (SpellTypes.Contains(SpellType.BuffFriendlyTargetAttack) || SpellTypes.Contains(SpellType.BuffFriendlyTargetHealth) || SpellTypes.Contains(SpellType.EvolveMinion))
                     {
                         return TargetType.Friendly.ToString().ToLower();
                     }

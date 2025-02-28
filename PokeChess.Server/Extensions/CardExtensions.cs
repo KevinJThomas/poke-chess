@@ -79,6 +79,7 @@ namespace PokeChess.Server.Extensions
         {
             if (card.IsDead && card.CombatKeywords.Reborn)
             {
+                card.CombatKeywords = card.BaseKeywords;
                 card.Attack = card.BaseAttack;
                 card.CombatHealth = 1;
                 card.CombatKeywords.Reborn = false;
@@ -1035,10 +1036,14 @@ namespace PokeChess.Server.Extensions
             switch (card.PokemonId)
             {
                 case 43:
-                    player.Hand.Add(CardService.Instance.GetFertilizer());
-                    player.CardAddedToHand();
-                    player.Hand.Add(CardService.Instance.GetFertilizer());
-                    player.CardAddedToHand();
+                    for (var i = 0; i < 2; i++)
+                    {
+                        if (player.Hand.Count() < player.MaxHandSize)
+                        {
+                            player.Hand.Add(CardService.Instance.GetFertilizer());
+                            player.CardAddedToHand();
+                        }
+                    }
 
                     return player;
                 case 134:
