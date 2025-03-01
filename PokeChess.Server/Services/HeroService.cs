@@ -1,10 +1,11 @@
 ﻿using PokeChess.Server.Extensions;
 using PokeChess.Server.Models.Player.Hero;
+using PokeChess.Server.Services.Interfaces;
 using System.Text.Json;
 
 namespace PokeChess.Server.Services
 {
-    public class HeroService
+    public class HeroService : IHeroService
     {
         private static HeroService _instance;
         private readonly JsonSerializerOptions _options = new()

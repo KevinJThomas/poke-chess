@@ -6,7 +6,6 @@ using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Models.Player.Hero;
 using PokeChess.Server.Services.Interfaces;
-using System.Numerics;
 using System.Text.Json;
 
 namespace PokeChess.Server.Services
@@ -15,6 +14,7 @@ namespace PokeChess.Server.Services
     {
         private static GameService _instance;
         private readonly ICardService _cardService = CardService.Instance;
+        private readonly IHeroService _heroService = HeroService.Instance;
         private bool _initialized = false;
         private ILogger _logger;
         private Random _random = new Random();
@@ -272,8 +272,8 @@ namespace PokeChess.Server.Services
                 }
             }
 
+            player.UpdateFertilizerText();
             lobby.Players[playerIndex] = player;
-            lobby.UpdateFertilizerText();
             return lobby;
         }
 
@@ -2057,7 +2057,7 @@ namespace PokeChess.Server.Services
 
         private Lobby AssignHeroes(Lobby lobby)
         {
-            var heroesList = HeroService.Instance.GetAllHeroes();
+            var heroesList = _heroService.GetAllHeroes();
 
             foreach (var player in lobby.Players)
             {

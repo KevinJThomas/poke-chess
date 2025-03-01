@@ -1132,7 +1132,7 @@ namespace PokeChess.Server.Extensions
                     {
                         var cardCopy = card.Clone();
                         cardCopy.ScrubModifiers();
-                        cardCopy.Id = Guid.NewGuid().ToString();
+                        cardCopy.Id = Guid.NewGuid().ToString() + _copyStamp;
                         player.Hand.Add(cardCopy);
                         player.CardAddedToHand();
                         player.Hero.HeroPower.IsDisabled = false;
@@ -1268,7 +1268,7 @@ namespace PokeChess.Server.Extensions
                 return null;
             }
 
-            // Right now this is just returning the lowest tier minion board
+            // Right now this is just returning the lowest tier minion on board
             // This can be updated later to take in more factors like types etc.
             var minionToSell = player.Board.Where(x => x.Tier == player.Board.Min(y => y.Tier)).FirstOrDefault();
             return minionToSell;
@@ -1554,10 +1554,8 @@ namespace PokeChess.Server.Extensions
 
                     return false;
                 case SpellType.GetRandomCardsFromTavern:
-                    if (player.Shop.Any() && player.Shop.Count() >= amount)
+                    if (player.Shop.Any())
                     {
-                        var hand = player.Hand.Clone();
-                        var shop = player.Shop.Clone();
                         for (var i = 0; i < amount; i++)
                         {
                             var cardToSteal = player.Shop[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Count())];
@@ -1566,14 +1564,6 @@ namespace PokeChess.Server.Extensions
                                 player.Hand.Add(cardToSteal);
                                 player.CardAddedToHand();
                                 player.Shop.Remove(cardToSteal);
-                            }
-                            else
-                            {
-                                // If a minion steal fails, revert the hand and shop to their original states and return false
-                                player.Hand = hand;
-                                player.Shop = shop;
-
-                                return false;
                             }
                         }
 

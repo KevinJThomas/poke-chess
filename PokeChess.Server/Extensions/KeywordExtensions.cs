@@ -1,6 +1,5 @@
 ﻿using PokeChess.Server.Models.Game;
 using System.Reflection;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace PokeChess.Server.Extensions
 {

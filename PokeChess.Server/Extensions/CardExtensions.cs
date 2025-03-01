@@ -81,7 +81,7 @@ namespace PokeChess.Server.Extensions
             if (card.IsDead && card.CombatKeywords.Reborn)
             {
                 card.CombatKeywords = card.BaseKeywords;
-                card.Attack = card.BaseAttack;
+                card.CombatAttack = card.BaseAttack;
                 card.CombatHealth = 1;
                 card.CombatKeywords.Reborn = false;
             }
@@ -1528,7 +1528,7 @@ namespace PokeChess.Server.Extensions
             switch (card.PokemonId)
             {
                 case 96:
-                    if (player.Board.Any(x => x.Id != card.Id && x.MinionTypes.Contains(MinionType.Psychic)))
+                    if (player.Board.Any(x => x.Id != card.Id))
                     {
                         foreach (var minion in player.Board.Where(x => x.Id != card.Id && x.MinionTypes.Contains(MinionType.Psychic)))
                         {
@@ -1536,22 +1536,16 @@ namespace PokeChess.Server.Extensions
                         }
                     }
 
-                    if (player.Shop.Any(x => x.Id != card.Id && x.MinionTypes.Contains(MinionType.Psychic)))
-                    {
-                        foreach (var minion in player.Shop.Where(x => x.Id != card.Id && x.MinionTypes.Contains(MinionType.Psychic)))
-                        {
-                            idList.Add(minion.Id);
-                        }
-                    }
                     break;
                 case 97:
-                    if (player.Board.Any(x => x.Id != card.Id && x.MinionTypes.Contains(MinionType.Psychic)))
+                    if (player.Board.Any(x => x.Id != card.Id))
                     {
                         foreach (var minion in player.Board.Where(x => x.Id != card.Id && x.MinionTypes.Contains(MinionType.Psychic)))
                         {
                             idList.Add(minion.Id);
                         }
                     }
+
                     break;
                 case 104:
                     if (player.Board.Any(x => x.Id != card.Id))
@@ -1561,6 +1555,7 @@ namespace PokeChess.Server.Extensions
                             idList.Add(minion.Id);
                         }
                     }
+
                     break;
             }
 
