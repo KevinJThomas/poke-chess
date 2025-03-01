@@ -1303,6 +1303,35 @@ namespace PokeChess.Server.Extensions
             return lobby;
         }
 
+        public static Lobby ReturnBoardToPool(this Player player, Lobby lobby)
+        {
+            if (player.Board.Any())
+            {
+                foreach (var card in player.Board)
+                {
+                    if (card == null || card.Id.Contains(_copyStamp))
+                    {
+                        continue;
+                    }
+
+                    card.ScrubModifiers();
+
+                    if (card.CardType == CardType.Minion)
+                    {
+                        lobby.GameState.MinionCardPool.Add(card);
+                    }
+
+                    if (card.CardType == CardType.Spell)
+                    {
+                        lobby.GameState.SpellCardPool.Add(card);
+                    }
+                }
+            }
+
+            player.BoardReturnedToPool = true;
+            return lobby;
+        }
+
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
         {
             if (amount < 0)
@@ -1505,10 +1534,8 @@ namespace PokeChess.Server.Extensions
 
                     return false;
                 case SpellType.GetRandomMinionsFromTavern:
-                    if (player.Shop.Any() && player.Shop.Count(x => x.CardType == CardType.Minion) >= amount)
+                    if (player.Shop.Any(x => x.CardType == CardType.Minion))
                     {
-                        var hand = player.Hand.Clone();
-                        var shop = player.Shop.Clone();
                         for (var i = 0; i < amount; i++)
                         {
                             var minionsInTavern = player.Shop.Where(x => x.CardType == CardType.Minion).ToList();
@@ -1518,14 +1545,6 @@ namespace PokeChess.Server.Extensions
                                 player.Hand.Add(minionToSteal);
                                 player.CardAddedToHand();
                                 player.Shop.Remove(minionToSteal);
-                            }
-                            else
-                            {
-                                // If a minion steal fails, revert the hand and shop to their original states and return false
-                                player.Hand = hand;
-                                player.Shop = shop;
-
-                                return false;
                             }
                         }
 

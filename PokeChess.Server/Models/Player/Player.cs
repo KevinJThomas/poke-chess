@@ -13,6 +13,7 @@ namespace PokeChess.Server.Models.Player
         private int _gold = 0;
         private List<Card> _hand;
         private int _rockTypeDeaths = 0;
+        private int _upgradeCost = 0;
 
         public Player(string socketId, string name, int armor = 0, int refreshCost = 1)
         {
@@ -45,6 +46,7 @@ namespace PokeChess.Server.Models.Player
             GoldSpentThisTurn = 0;
             RockTypeDeaths = 0;
             SpellsCasted = 0;
+            BoardReturnedToPool = false;
             Discounts = new Discounts();
             Hero = new Hero.Hero();
             Board = new List<Card>();
@@ -86,7 +88,24 @@ namespace PokeChess.Server.Models.Player
                 }
             }
         }
-        public int UpgradeCost { get; set; }
+        public int UpgradeCost
+        {
+            get
+            {
+                return _upgradeCost;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    _upgradeCost = 0;
+                }
+                else
+                {
+                    _upgradeCost = value;
+                }
+            }
+        }
         public int RefreshCost { get; set; }
         public bool IsShopFrozen { get; set; }
         public int WinStreak { get; set; }
@@ -141,6 +160,7 @@ namespace PokeChess.Server.Models.Player
             }
         }
         public int SpellsCasted { get; set; }
+        public bool BoardReturnedToPool { get; set; }
         public Discounts Discounts { get; set; }
         public Hero.Hero Hero { get; set; }
         public List<Card> Board { get; set; }

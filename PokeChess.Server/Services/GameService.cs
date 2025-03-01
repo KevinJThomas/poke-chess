@@ -894,6 +894,11 @@ namespace PokeChess.Server.Services
                         Type = CombatActionType.GameOver.ToString().ToLower(),
                         Placement = lobby.Players.Count(x => !x.IsDead) + 1
                     });
+
+                    if (!player.BoardReturnedToPool)
+                    {
+                        lobby = player.ReturnBoardToPool(lobby);
+                    }
                 }
             }
 

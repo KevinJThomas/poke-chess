@@ -185,7 +185,7 @@
     "heroPower": {
       "id": 15,
       "name": "Egg-cellent",
-      "text": "__Passive.__\nStart the game with a 0/3 __Pokemon Egg__",
+      "text": "__Passive.__\nStart the game with a 0/3 __Pokémon Egg__",
       "isPassive": true,
       "triggers": {
         "startOfGame": true
