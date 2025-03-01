@@ -907,9 +907,6 @@ namespace PokeChess.Server.Services
 
         private (Player, Player) SwingMinions(Player player1, Player player2, int damageCap)
         {
-            var player1Board = player1.Board;
-            var player2Board = player2.Board;
-
             // If either player has a board of all dead minions
             if (player1.Board.All(x => x.IsDead) || player2.Board.All(x => x.IsDead))
             {
@@ -1092,7 +1089,7 @@ namespace PokeChess.Server.Services
                 {
                     return ScoreCombatRound(player1, player2, damageCap);
                 }
-                else if (!player1.Board[nextSourceIndex].IsDead && player1.Board[nextSourceIndex].Keywords.Windfury && !player1.Board[nextSourceIndex].Attacked)
+                else if (!player1.Board[nextSourceIndex].IsDead && player1.Board[nextSourceIndex].CombatKeywords.Windfury && !player1.Board[nextSourceIndex].Attacked)
                 {
                     // If the source is a windfury minion that has only swung once and is still alive, make it swing again
                     return SwingMinions(player1, player2, damageCap);
@@ -1112,6 +1109,7 @@ namespace PokeChess.Server.Services
                     foreach (var attacker in player2.Board)
                     {
                         attacker.Attacked = false;
+                        attacker.AttackedOnceWindfury = false;
                     }
                     nextSourceIndex = GetNextSourceIndex(player2.Board);
 
@@ -1279,7 +1277,7 @@ namespace PokeChess.Server.Services
                 {
                     return ScoreCombatRound(player1, player2, damageCap);
                 }
-                else if (!player2.Board[nextSourceIndex].IsDead && player2.Board[nextSourceIndex].Keywords.Windfury && !player2.Board[nextSourceIndex].Attacked)
+                else if (!player2.Board[nextSourceIndex].IsDead && player2.Board[nextSourceIndex].CombatKeywords.Windfury && !player2.Board[nextSourceIndex].Attacked)
                 {
                     // If the source is a winfury minion that has only swung once and is still alive, make it swing again
                     return SwingMinions(player1, player2, damageCap);

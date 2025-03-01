@@ -19,6 +19,7 @@ namespace PokeChess.Server.Extensions
                 card.Keywords = card.BaseKeywords;
                 card.SellValue = card.BaseSellValue;
                 card.Attacked = false;
+                card.AttackedOnceWindfury = false;
                 card.CombatKeywords = new Keywords();
             }
 

@@ -32,6 +32,7 @@ namespace PokeChess.Server.Extensions
             {
                 minion.CombatKeywords = minion.Keywords.Clone();
                 minion.Attacked = false;
+                minion.AttackedOnceWindfury = false;
             }
         }
 
