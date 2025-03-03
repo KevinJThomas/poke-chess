@@ -744,7 +744,6 @@ namespace PokeChess.Server.Services
                 lobby.Players[i].SpellsCastTwiceThisTurn = false;
                 lobby.Players[i].GoldSpentThisTurn = 0;
                 lobby.Players[i].ResetHeroPower();
-                lobby.Players[i].ResetHeroPower();
                 lobby.Players[i].EvolveCheck();
                 lobby.Players[i].UpdateHeroPowerStatus();
 
