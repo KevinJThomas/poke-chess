@@ -685,6 +685,8 @@ namespace PokeChess.Server.Extensions
             {
                 player = card.DiscountMechanism(player);
             }
+
+            player.CleanHandStatus();
         }
 
         public static void MinionSold(this Player player, Card card)
@@ -777,6 +779,8 @@ namespace PokeChess.Server.Extensions
                     }
                 }
             }
+
+            player.CleanHandStatus();
         }
 
         public static List<HitValues> FriendlyMinionDiedInCombat(this Player player, Card card)
@@ -1005,6 +1009,10 @@ namespace PokeChess.Server.Extensions
                 case 7:
                     player.Health = 60;
                     break;
+                case 15:
+                    var pokemonEgg = CardService.Instance.GetPokemonEgg();
+                    player.Board.Add(pokemonEgg);
+                    break;
             }
         }
 
@@ -1080,6 +1088,46 @@ namespace PokeChess.Server.Extensions
                     player.Hero.HeroPower.Text = player.Hero.HeroPower.Text.Replace(
                         $"+{player.Hero.HeroPower.Amount - 1}/+{player.Hero.HeroPower.Amount - 1}",
                         $"+{player.Hero.HeroPower.Amount}/+{player.Hero.HeroPower.Amount}");
+                    break;
+            }
+        }
+
+        public static void HeroPower_TavernRefresh(this Player player)
+        {
+            if (!player.Hero.HeroPower.Triggers.TavernRefresh)
+            {
+                return;
+            }
+
+            switch (player.Hero.HeroPower.Id)
+            {
+                case 13:
+                    var minionsToCopy = player.Shop.Where(x => x.Tier == player.Shop.Max(y => y.Tier) && x.CardType == CardType.Minion).ToList();
+                    var minionToCopy = minionsToCopy[ThreadSafeRandom.ThisThreadsRandom.Next(minionsToCopy.Count())];
+                    if (minionToCopy != null)
+                    {
+                        if (player.Shop.Count() >= _boardsSlots)
+                        {
+                            for (var i = player.Shop.Count(); i >= _boardsSlots; i--)
+                            {
+                                for (var j = player.Shop.Count(x => x.CardType == CardType.Minion) - 1; j >= 0; j--)
+                                {
+                                    if (player.Shop[j] != minionToCopy && !player.Shop[j].IsFrozen)
+                                    {
+                                        player.Shop.RemoveAt(j);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        var index = player.Shop.IndexOf(minionToCopy);
+                        minionToCopy.IsFrozen = true;
+                        var copy = minionToCopy.Clone();
+                        copy.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        player.Shop.Insert(index, copy);
+                    }
+
                     break;
             }
         }
@@ -1190,6 +1238,7 @@ namespace PokeChess.Server.Extensions
 
         public static Lobby PopulatePlayerShop(this Player player, Lobby lobby, bool isGaryHeroPower = false)
         {
+            var isShopChanging = false;
             var shopSize = 0;
             switch (player.Tier)
             {
@@ -1213,6 +1262,11 @@ namespace PokeChess.Server.Extensions
                     break;
                 default:
                     return lobby;
+            }
+
+            if (player.Shop.Count(x => x.CardType == CardType.Minion) < shopSize || !player.Shop.Any(x => x.CardType == CardType.Spell))
+            {
+                isShopChanging = true;
             }
 
             if (isGaryHeroPower)
@@ -1258,6 +1312,11 @@ namespace PokeChess.Server.Extensions
 
                     player.Shop.Add(lobby.GameState.SpellCardPool.DrawCard(player.Tier));
                 }
+            }
+
+            if (isShopChanging)
+            {
+                player.HeroPower_TavernRefresh();
             }
 
             // Account for player's shop buffs
@@ -1701,6 +1760,17 @@ namespace PokeChess.Server.Extensions
             }
 
             return false;
+        }
+
+        private static void CleanHandStatus(this Player player)
+        {
+            foreach (var cardInHand in player.Hand)
+            {
+                if (cardInHand.IsFrozen)
+                {
+                    cardInHand.IsFrozen = false;
+                }
+            }
         }
     }
 }

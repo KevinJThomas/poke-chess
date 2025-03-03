@@ -156,6 +156,17 @@ namespace PokeChess.Server.Services
                         player.Hand.Add(spell);
                     }
                 }
+
+                if (lobby.GameState.MinionCardPool.Any(x => x.Name.ToLower() == player.Name.ToLower()))
+                {
+                    var minionChosen = lobby.GameState.MinionCardPool.Where(x => x.Name.ToLower() == player.Name.ToLower()).FirstOrDefault();
+                    if (minionChosen != null)
+                    {
+                        var minion = minionChosen.Clone();
+                        minion.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        player.Hand.Add(minion);
+                    }
+                }
             }
 #endif
 
@@ -191,6 +202,13 @@ namespace PokeChess.Server.Services
                 else
                 {
                     player.Gold -= player.RefreshCost;
+                    foreach (var card in player.Shop)
+                    {
+                        if (card.IsFrozen)
+                        {
+                            card.IsFrozen = false;
+                        }
+                    }
                 }
             }
 
@@ -209,13 +227,17 @@ namespace PokeChess.Server.Services
             if (player.Shop.Any(x => x.CardType == CardType.Minion))
             {
                 // Remove shop buffs from minions temporarily. These will get reapplied in PopulatePlayerShop below
-                foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion))
+                foreach (var card in player.Shop)
                 {
-                    var attackToKeep = minion.Attack - minion.BaseAttack - player.ShopBuffAttack;
-                    var healthToKeep = minion.Health - minion.BaseHealth - player.ShopBuffHealth;
-                    minion.Attack = minion.BaseAttack + attackToKeep;
-                    minion.Health = minion.BaseHealth + healthToKeep;
-                    minion.IsFrozen = false;
+                    if (card.CardType == CardType.Minion)
+                    {
+                        var attackToKeep = card.Attack - card.BaseAttack - player.ShopBuffAttack;
+                        var healthToKeep = card.Health - card.BaseHealth - player.ShopBuffHealth;
+                        card.Attack = card.BaseAttack + attackToKeep;
+                        card.Health = card.BaseHealth + healthToKeep;
+                    }
+
+                    card.IsFrozen = false;
                 }
             }
 
@@ -922,7 +944,7 @@ namespace PokeChess.Server.Services
                     // If nextSourceIndex is still -1, player 1 likely only has paralyzed minions
                     if (nextSourceIndex == -1)
                     {
-                        if (player1.Board.Any(x => !x.IsDead && !x.CombatKeywords.Paralyzed) || player2.Board.Any(x => !x.IsDead && !x.CombatKeywords.Paralyzed))
+                        if (player1.Board.Any(x => !x.IsDead && !x.CombatKeywords.Paralyzed && x.Attack > 0) || player2.Board.Any(x => !x.IsDead && !x.CombatKeywords.Paralyzed && x.Attack > 0))
                         {
                             player1.Attacking = false;
                             player2.Attacking = true;
@@ -1307,7 +1329,7 @@ namespace PokeChess.Server.Services
             {
                 if (!board[i].Attacked && !board[i].IsDead)
                 {
-                    if (!board[i].CombatKeywords.Paralyzed)
+                    if (!board[i].CombatKeywords.Paralyzed && board[i].Attack > 0)
                     {
                         return i;
                     }
@@ -1406,9 +1428,9 @@ namespace PokeChess.Server.Services
                         }
                     }
 
-                    if (damage <= 0)
+                    if (damage <= 0 && target.CombatAttack > 0)
                     {
-                        // Damage can't be 0 unless there's a divine shield
+                        // Damage can't be 0 unless there's a divine shield or the minion actually has 0 attack
                         damage = 1;
                     }
                 }
@@ -1447,9 +1469,9 @@ namespace PokeChess.Server.Services
                     }
                 }
 
-                if (damage <= 0)
+                if (damage <= 0 && source.CombatAttack > 0)
                 {
-                    // Damage can't be 0 unless there's a divine shield
+                    // Damage can't be 0 unless there's a divine shield or the minion actually has 0 attack
                     damage = 1;
                 }
 

@@ -77,6 +77,38 @@ namespace PokeChess.Server.Services
             }
         };
 
+        private static readonly Card _pokemonEgg = new Card
+        {
+            PokemonId = 152,
+            Num = "152",
+            Tier = 1,
+            Text = "When you sell this, get a random tier 1 minion (upgrades each turn)",
+            Name = "Pokémon Egg",
+            BaseAttack = 0,
+            Attack = 0,
+            BaseHealth = 3,
+            Health = 3,
+            BaseCost = 3,
+            Cost = 3,
+            BaseSellValue = 1,
+            SellValue = 1,
+            Height = "0.15 m",
+            Weight = "0.51 kg",
+            HasSellSelfTrigger = true,
+            HasEndOfTurn = true,
+            CardType = CardType.Minion,
+            BaseKeywords = new Keywords(),
+            Keywords = new Keywords(),
+            Type = new List<string>(),
+            MinionTypes = new List<MinionType>(),
+            Weaknesses = new List<string>(),
+            WeaknessTypes = new List<MinionType>(),
+            Amount = new List<int>
+            {
+                1
+            }
+        };
+
 
         #region class setup
 
@@ -318,6 +350,13 @@ namespace PokeChess.Server.Services
         public Card GetRaichuSnack()
         {
             var card = _raichuSnack.Clone();
+            card.Id = Guid.NewGuid().ToString() + _copyStamp;
+            return card;
+        }
+
+        public Card GetPokemonEgg()
+        {
+            var card = _pokemonEgg.Clone();
             card.Id = Guid.NewGuid().ToString() + _copyStamp;
             return card;
         }

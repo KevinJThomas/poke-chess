@@ -736,6 +736,15 @@ namespace PokeChess.Server.Extensions
                         }
 
                         return player;
+                    case 152:
+                        card.Amount[0]++;
+                        if (card.Amount[0] > 6)
+                        {
+                            card.Amount[0] = 6;
+                        }
+
+                        card.Text = card.Text.Replace($"{card.Amount[0] - 1}", $"{card.Amount[0]}");
+                        return player;
                     default:
                         return player;
                 }
@@ -1053,6 +1062,20 @@ namespace PokeChess.Server.Extensions
                         var index = player.Board.FindIndex(x => x.Id == minionToBuff.Id);
                         player.Board[index].Attack += card.Attack;
                         player.Board[index].Health += card.Health;
+                    }
+
+                    return player;
+                case 152:
+                    if (player.Hand.Count() < player.MaxHandSize)
+                    {
+                        var possibleMinions = CardService.Instance.GetAllMinions().Where(x => x.Tier == card.Amount[0]).ToList();
+                        var randomMinion = possibleMinions[ThreadSafeRandom.ThisThreadsRandom.Next(possibleMinions.Count())];
+                        if (randomMinion != null)
+                        {
+                            randomMinion.Id = Guid.NewGuid().ToString() + _copyStamp;
+                            player.Hand.Add(randomMinion);
+                            player.CardAddedToHand();
+                        }
                     }
 
                     return player;

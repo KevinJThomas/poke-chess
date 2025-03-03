@@ -17,7 +17,7 @@
     "heroPower": {
       "id": 2,
       "name": "Riptide",
-      "text": "__Passive.__\nAfter you play 3 Water types, reduce the cost of upgrading the tavern by 3",
+      "text": "__Passive.__  \nAfter you play 3 Water types, reduce the cost of upgrading the tavern by 3",
       "isPassive": true,
       "triggers": {
         "playCard": true
@@ -75,7 +75,7 @@
     "heroPower": {
       "id": 7,
       "name": "Punching Bag",
-      "text": "__Passive.__\nStart with 30 extra health",
+      "text": "__Passive.__  \nStart with 30 extra health",
       "isPassive": true,
       "triggers": {
         "startOfGame": true
@@ -89,7 +89,7 @@
     "heroPower": {
       "id": 8,
       "name": "See The Future",
-      "text": "__Passive.__\nAfter you buy 4 __Battlecry__ minions, get a __Kadabra__",
+      "text": "__Passive.__  \nAfter you buy 4 __Battlecry__ minions, get a __Kadabra__",
       "isPassive": true,
       "triggers": {
         "buyCard": true
@@ -142,7 +142,7 @@
     "heroPower": {
       "id": 12,
       "name": "Squirtle Squirtle",
-      "text": "__Passive.__\n__Start of Combat:__ Give friendly Water types stats equal to their tier",
+      "text": "__Passive.__  \n__Start of Combat:__ Give friendly Water types stats equal to their tier",
       "isPassive": true,
       "triggers": {
         "startOfCombat": true
@@ -156,13 +156,12 @@
     "heroPower": {
       "id": 13,
       "name": "Freeze!",
-      "text": "__Passive.__\nAfter the tavern is refreshed, copy its highest tier minion and freeze them both",
+      "text": "__Passive.__  \nAfter the tavern is refreshed, copy its highest tier minion and freeze them both",
       "isPassive": true,
       "triggers": {
         "tavernRefresh": true
       }
-    },
-    "include": false
+    }
   },
   {
     "id": 14,
@@ -181,17 +180,16 @@
   {
     "id": 15,
     "name": "Professor Elm",
-    "baseArmor": 5,
+    "baseArmor": 2,
     "heroPower": {
       "id": 15,
       "name": "Egg-cellent",
-      "text": "__Passive.__\nStart the game with a 0/3 __Pokémon Egg__",
+      "text": "__Passive.__  \nStart the game with a 0/3 __Pokémon Egg__",
       "isPassive": true,
       "triggers": {
         "startOfGame": true
       }
-    },
-    "include": false
+    }
   },
   {
     "id": 16,

@@ -63,6 +63,46 @@ namespace PokeChess.Server.Services
             }
         }
 
+        public void LoadTestHeroes()
+        {
+            _allHeroes.Clear();
+            _allHeroPowers.Clear();
+
+            if (!_allHeroes.Any())
+            {
+                for (var i = 0; i < 8; i++)
+                {
+                    _allHeroes.Add(new Hero
+                    {
+                        Id = 0,
+                        Name = "Test Hero",
+                        BaseArmor = 10,
+                        HeroPower = new HeroPower
+                        {
+                            Id = 0,
+                            Name = "Test Hero Power"
+                        }
+                    });
+                }
+            }
+
+            if (!_allHeroPowers.Any())
+            {
+                var heroesJson = File.ReadAllText("heroes.json");
+                if (!string.IsNullOrWhiteSpace(heroesJson))
+                {
+                    var heroes = JsonSerializer.Deserialize<List<Hero>>(heroesJson, _options);
+                    if (heroes != null && heroes.Any())
+                    {
+                        foreach (var hero in heroes)
+                        {
+                            _allHeroPowers.Add(hero.HeroPower);
+                        }
+                    }
+                }
+            }
+        }
+
         public List<Hero> GetAllHeroes()
         {
             return _allHeroes.Select(x => x.Clone()).ToList();
