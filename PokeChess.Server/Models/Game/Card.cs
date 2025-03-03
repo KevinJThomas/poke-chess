@@ -17,7 +17,6 @@ namespace PokeChess.Server.Models.Game
         public int Health { get; set; }
         public int Cost { get; set; }
         public int SellValue { get; set; }
-        public bool CanPlay { get; set; }
         public int PokemonId { get; set; }
         public string Num { get; set; }
         public bool Attacked { get; set; }
@@ -59,8 +58,8 @@ namespace PokeChess.Server.Models.Game
         public bool HasDeathTrigger { get; set; }
         public bool HasDeathrattle { get; set; }
         public bool HasStartOfCombat { get; set; }
-        public bool Temporary { get; set; }
-        public bool Frozen { get; set; }
+        public bool IsTemporary { get; set; }
+        public bool IsFrozen { get; set; }
         public PlayCardTriggerType PlayCardTriggerType { get; set; } = PlayCardTriggerType.Either;
         public CardType CardType { get; set; } = CardType.Unknown;
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();

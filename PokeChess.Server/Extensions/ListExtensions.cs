@@ -1,5 +1,6 @@
 ﻿using PokeChess.Server.Helpers;
 using PokeChess.Server.Models.Game;
+using PokeChess.Server.Models.Response.Game;
 
 namespace PokeChess.Server.Extensions
 {
@@ -42,6 +43,40 @@ namespace PokeChess.Server.Extensions
                 list[k] = list[n];
                 list[n] = value;
             }
+        }
+
+        public static List<CardResponse> MapToResponse(this List<Card> cards)
+        {
+            var response = new List<CardResponse>();
+            foreach (var card in cards)
+            {
+                response.Add(new CardResponse
+                {
+                    Id = card.Id,
+                    Tier = card.Tier,
+                    Name = card.Name,
+                    Text = card.Text,
+                    Attack = card.Attack,
+                    Health = card.Health,
+                    Cost = card.Cost,
+                    Num = card.Num,
+                    CombatAttack = card.CombatAttack,
+                    CombatHealth = card.CombatHealth,
+                    BaseAttack = card.BaseAttack,
+                    BaseHealth = card.BaseHealth,
+                    HasDeathrattle = card.HasDeathrattle,
+                    IsTemporary = card.IsTemporary,
+                    IsFrozen = card.IsFrozen,
+                    CardType = card.CardType,
+                    Type = card.Type,
+                    Weaknesses = card.Weaknesses,
+                    Keywords = card.Keywords,
+                    CombatKeywords = card.CombatKeywords,
+                    TargetOptions = card.TargetOptions
+                });
+            }
+
+            return response;
         }
     }
 }

@@ -215,8 +215,8 @@ namespace PokeChess.Server.UnitTests.Managers
             // Assert
             Assert.IsNotNull(player1);
             Assert.IsNotNull(player2);
-            Assert.IsTrue(player1.IsShopFrozen);
-            Assert.IsFalse(player2.IsShopFrozen);
+            Assert.IsTrue(player1.Shop.All(x => x.IsFrozen));
+            Assert.IsFalse(player2.Shop.Any(x => x.IsFrozen));
         }
 
         [TestMethod]

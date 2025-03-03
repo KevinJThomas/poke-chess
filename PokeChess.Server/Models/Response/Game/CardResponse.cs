@@ -9,11 +9,17 @@ namespace PokeChess.Server.Models.Response.Game
         public int Tier { get; set; }
         public string? Name { get; set; }
         public string? Text { get; set; }
-        public int Attack { get; set; }
-        public int Health { get; set; }
         public int Cost { get; set; }
         public string Num { get; set; }
+        public int Attack { get; set; }
+        public int Health { get; set; }
+        public int CombatAttack { get; set; }
         public int CombatHealth { get; set; }
+        public int BaseAttack { get; set; }
+        public int BaseHealth { get; set; }
+        public bool HasDeathrattle { get; set; }
+        public bool IsTemporary { get; set; }
+        public bool IsFrozen { get; set; }
         public CardType CardType { get; set; }
         public List<string> Type { get; set; }
         public List<string> Weaknesses { get; set; }

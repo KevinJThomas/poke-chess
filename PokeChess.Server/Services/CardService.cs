@@ -47,7 +47,7 @@ namespace PokeChess.Server.Services
         {
             Name = "Miracle Grow",
             Text = "Evolve a friendly minion",
-            Temporary = true,
+            IsTemporary = true,
             CardType = CardType.Spell,
             SpellTypes = new List<SpellType>
             {
@@ -63,7 +63,7 @@ namespace PokeChess.Server.Services
         {
             Name = "Raichu Snack",
             Text = "Consume a friendly minion and give double its stats to a friendly Raichu",
-            Temporary = true,
+            IsTemporary = true,
             CardType = CardType.Spell,
             SpellTypes = new List<SpellType>
             {

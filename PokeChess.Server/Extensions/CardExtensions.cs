@@ -29,7 +29,6 @@ namespace PokeChess.Server.Extensions
             }
 
             card.Cost = card.BaseCost;
-            card.CanPlay = false;
         }
 
         public static void ApplyKeyword(this Card card, Keyword keyword)

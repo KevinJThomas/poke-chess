@@ -190,7 +190,7 @@ namespace PokeChess.Server.Extensions
                                         player.CardsToReturnToPool.Add(target);
                                         return true;
                                     }
-                                }    
+                                }
 
                                 return false;
                         }
@@ -1128,7 +1128,7 @@ namespace PokeChess.Server.Extensions
             switch (player.Hero.HeroPower.Id)
             {
                 case 14:
-                    if (player.Hero.HeroPower.IsDisabled && player.Hero.HeroPower.UsesThisTurn == 1 && player.Hand.Count() < player.MaxHandSize)
+                    if (player.Hero.HeroPower.IsDisabled && player.Hero.HeroPower.UsesThisTurn >= 1 && player.Hand.Count() < player.MaxHandSize)
                     {
                         var cardCopy = card.Clone();
                         cardCopy.ScrubModifiers();
@@ -1162,6 +1162,24 @@ namespace PokeChess.Server.Extensions
 
         public static void ResetHeroPower(this Player player)
         {
+            switch (player.Hero.HeroPower.Id)
+            {
+                case 14:
+                    if (player.Hero.HeroPower.UsesThisTurn >= 1 && player.Hero.HeroPower.IsDisabled)
+                    {
+                        // Mimey hero powered but did not kill anything in combat
+                        // Give a discover treasure instead
+                        if (player.Hand.Count() < player.MaxHandSize)
+                        {
+                            var discoverTreasure = CardService.Instance.GetNewDiscoverTreasure();
+                            player.Hand.Add(discoverTreasure);
+                            player.CardAddedToHand();
+                        }
+                    }
+
+                    break;
+            }
+
             if (!player.Hero.HeroPower.IsOncePerGame)
             {
                 player.Hero.HeroPower.IsDisabled = false;
@@ -1331,6 +1349,27 @@ namespace PokeChess.Server.Extensions
 
             player.BoardReturnedToPool = true;
             return lobby;
+        }
+
+        public static void FreezeShop(this Player player)
+        {
+            if (player.Shop.Any(x => !x.IsFrozen))
+            {
+                foreach (var card in player.Shop)
+                {
+                    if (!card.IsFrozen)
+                    {
+                        card.IsFrozen = true;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var card in player.Shop)
+                {
+                    card.IsFrozen = false;
+                }
+            }
         }
 
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)

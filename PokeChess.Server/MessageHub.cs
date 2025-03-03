@@ -276,13 +276,12 @@ namespace PokeChess.Server
                             Armor = player.Armor,
                             Tier = player.Tier,
                             WinStreak = player.WinStreak,
-                            Board = player.Board,
+                            Board = player.Board.MapToResponse(),
                             CombatHistory = player.CombatHistory,
                             BaseGold = player.BaseGold,
                             Gold = player.Gold,
                             UpgradeCost = player.UpgradeCost,
                             RefreshCost = player.RefreshCost,
-                            IsShopFrozen = player.IsShopFrozen,
                             OpponentId = player.OpponentId,
                             Hero = new Models.Response.Player.Hero.HeroResponse
                             {
@@ -296,8 +295,8 @@ namespace PokeChess.Server
                                     Text = player.Hero.HeroPower.Text
                                 }
                             },
-                            Hand = player.Hand,
-                            Shop = player.Shop,
+                            Hand = player.Hand.MapToResponse(),
+                            Shop = player.Shop.MapToResponse(),
                             CombatActions = player.CombatActions
                         };
 
@@ -351,13 +350,12 @@ namespace PokeChess.Server
                 Armor = player.Armor,
                 Tier = player.Tier,
                 WinStreak = player.WinStreak,
-                Board = player.Board,
+                Board = player.Board.MapToResponse(),
                 CombatHistory = player.CombatHistory,
                 BaseGold = player.BaseGold,
                 Gold = player.Gold,
                 UpgradeCost = player.UpgradeCost,
                 RefreshCost = player.RefreshCost,
-                IsShopFrozen = player.IsShopFrozen,
                 OpponentId = player.OpponentId,
                 Hero = new Models.Response.Player.Hero.HeroResponse
                 {
@@ -371,8 +369,8 @@ namespace PokeChess.Server
                         Text = player.Hero.HeroPower.Text
                     }
                 },
-                Hand = player.Hand,
-                Shop = player.Shop,
+                Hand = player.Hand.MapToResponse(),
+                Shop = player.Shop.MapToResponse(),
                 CombatActions = player.CombatActions
             };
         }
@@ -423,13 +421,12 @@ namespace PokeChess.Server
                         Armor = player.Armor,
                         Tier = player.Tier,
                         WinStreak = player.WinStreak,
-                        Board = player.Board,
+                        Board = player.Board.MapToResponse(),
                         CombatHistory = player.CombatHistory,
                         BaseGold = player.BaseGold,
                         Gold = player.Gold,
                         UpgradeCost = player.UpgradeCost,
                         RefreshCost = player.RefreshCost,
-                        IsShopFrozen = player.IsShopFrozen,
                         OpponentId = player.OpponentId,
                         Hero = new Models.Response.Player.Hero.HeroResponse
                         {
@@ -443,8 +440,8 @@ namespace PokeChess.Server
                                 Text = player.Hero.HeroPower.Text
                             }
                         },
-                        Hand = player.Hand,
-                        Shop = player.Shop,
+                        Hand = player.Hand.MapToResponse(),
+                        Shop = player.Shop.MapToResponse(),
                         CombatActions = player.CombatActions
                     };
 
@@ -458,7 +455,7 @@ namespace PokeChess.Server
                         Armor = opponent.Armor,
                         Tier = opponent.Tier,
                         WinStreak = opponent.WinStreak,
-                        Board = opponent.Board,
+                        Board = opponent.Board.MapToResponse(),
                         Hero = new Models.Response.Player.Hero.HeroResponse
                         {
                             Name = opponent.Hero.Name,

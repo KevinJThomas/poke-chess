@@ -166,7 +166,7 @@ namespace PokeChess.Server.Services
             return lobby;
         }
 
-        public (Lobby, Player) GetNewShop(Lobby lobby, Player player, bool spendRefreshCost = false, bool wasShopFrozen = false)
+        public (Lobby, Player) GetNewShop(Lobby lobby, Player player, bool spendRefreshCost = false)
         {
             if (!Initialized())
             {
@@ -194,19 +194,19 @@ namespace PokeChess.Server.Services
                 }
             }
 
-            if (player.Shop.Any() && !wasShopFrozen)
+            if (player.Shop.Any(x => !x.IsFrozen))
             {
                 // Return old shop back into card pool
-                foreach (var card in player.Shop)
+                foreach (var card in player.Shop.Where(x => !x.IsFrozen))
                 {
                     lobby = ReturnCardToPool(lobby, card);
                 }
 
                 // Empty player's shop before repopulating it
-                player.Shop = new List<Card>();
+                player.Shop = player.Shop.Where(x => x.IsFrozen).ToList();
             }
 
-            if (wasShopFrozen && player.Shop.Any(x => x.CardType == CardType.Minion))
+            if (player.Shop.Any(x => x.CardType == CardType.Minion))
             {
                 // Remove shop buffs from minions temporarily. These will get reapplied in PopulatePlayerShop below
                 foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion))
@@ -215,6 +215,7 @@ namespace PokeChess.Server.Services
                     var healthToKeep = minion.Health - minion.BaseHealth - player.ShopBuffHealth;
                     minion.Attack = minion.BaseAttack + attackToKeep;
                     minion.Health = minion.BaseHealth + healthToKeep;
+                    minion.IsFrozen = false;
                 }
             }
 
@@ -309,7 +310,7 @@ namespace PokeChess.Server.Services
                     }
                 }
 
-                lobby.Players[i].Hand = lobby.Players[i].Hand.Where(x => !x.Temporary).ToList();
+                lobby.Players[i].Hand = lobby.Players[i].Hand.Where(x => !x.IsTemporary).ToList();
             }
 
             lobby = CalculateCombat(lobby);
@@ -362,7 +363,7 @@ namespace PokeChess.Server.Services
             }
 
             var playerIndex = lobby.Players.FindIndex(x => x == player);
-            player.IsShopFrozen = !player.IsShopFrozen;
+            player.FreezeShop();
             lobby.Players[playerIndex] = player;
             return lobby;
         }
@@ -721,6 +722,7 @@ namespace PokeChess.Server.Services
                 lobby.Players[i].SpellsCastTwiceThisTurn = false;
                 lobby.Players[i].GoldSpentThisTurn = 0;
                 lobby.Players[i].ResetHeroPower();
+                lobby.Players[i].ResetHeroPower();
                 lobby.Players[i].EvolveCheck();
                 lobby.Players[i].UpdateHeroPowerStatus();
 
@@ -740,15 +742,7 @@ namespace PokeChess.Server.Services
                     lobby.Players[i].UpgradeCost -= 1;
                 }
 
-                if (!lobby.Players[i].IsShopFrozen)
-                {
-                    (lobby, lobby.Players[i]) = GetNewShop(lobby, lobby.Players[i]);
-                }
-                else
-                {
-                    lobby.Players[i].IsShopFrozen = false;
-                    (lobby, lobby.Players[i]) = GetNewShop(lobby, lobby.Players[i], false, true);
-                }
+                (lobby, lobby.Players[i]) = GetNewShop(lobby, lobby.Players[i]);
 
                 if (lobby.Players[i].DelayedSpells.Any())
                 {
@@ -1311,9 +1305,17 @@ namespace PokeChess.Server.Services
         {
             for (var i = 0; i < board.Count; i++)
             {
-                if (!board[i].Attacked && !board[i].IsDead && !board[i].CombatKeywords.Paralyzed)
+                if (!board[i].Attacked && !board[i].IsDead)
                 {
-                    return i;
+                    if (!board[i].CombatKeywords.Paralyzed)
+                    {
+                        return i;
+                    }
+                    else
+                    {
+                        // If it's a paralyzed minion's turn to attack, mark them as attacked and continue looking for a valid attacker
+                        board[i].Attacked = true;
+                    }
                 }
             }
 
@@ -1780,7 +1782,7 @@ namespace PokeChess.Server.Services
                                 // Freeze shop if there's a pair
                                 if (player.Shop.Any(x => x.PokemonId == player.Board[0].PokemonId))
                                 {
-                                    player.IsShopFrozen = true;
+                                    player.FreezeShop();
                                 }
                             }
                         }
@@ -1793,11 +1795,12 @@ namespace PokeChess.Server.Services
                             if (minionsToBuy.Count() >= 1)
                             {
                                 (lobby, player) = BuyCard(lobby, player, minionsToBuy[0]);
+                                (lobby, player) = PlayCard(lobby, player, minionsToBuy[0], player.Board.Count(), null);
 
                                 // If the triple is in the shop, freeze again
                                 if (minionsToBuy.Count() > 1)
                                 {
-                                    player.IsShopFrozen = true;
+                                    player.FreezeShop();
                                 }
                             }
 
@@ -1972,8 +1975,10 @@ namespace PokeChess.Server.Services
                             lobby.Players[playerIndex] = player;
                         }
 
-                        while (player.Gold >= 3)
+                        var actions = 0;
+                        while (player.Gold >= 3 && actions < 50)
                         {
+                            actions++;
                             (lobby, player) = BotPlayAllCardsInHand(lobby, player);
 
                             var minionsToBuy = player.Shop.Where(x => x.Tier == player.Tier).ToList();

@@ -2155,7 +2155,7 @@ namespace PokeChess.Server.UnitTests.Services
             var goldAfterFirstBuy = lobby.Players[0].Gold;
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
             var goldAfterSecondBuy = lobby.Players[0].Gold;
-            lobby.Players[0].IsShopFrozen = true;
+            lobby.Players[0].FreezeShop();
             lobby = instance.CombatRound(lobby);
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
             var goldAfterThirdBuy = lobby.Players[0].Gold;
@@ -2193,7 +2193,7 @@ namespace PokeChess.Server.UnitTests.Services
             var goldAfterFirstBuy = lobby.Players[0].Gold;
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
             var goldAfterSecondBuy = lobby.Players[0].Gold;
-            lobby.Players[0].IsShopFrozen = true;
+            lobby.Players[0].FreezeShop();
             lobby = instance.CombatRound(lobby);
             lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Buy, -1, null);
             var goldAfterThirdBuy = lobby.Players[0].Gold;
@@ -3815,8 +3815,8 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsNotNull(lobby);
-            Assert.IsTrue(lobby.Players[0].IsShopFrozen);
-            Assert.IsFalse(lobby.Players[1].IsShopFrozen);
+            Assert.IsTrue(lobby.Players[0].Shop.All(x => x.IsFrozen));
+            Assert.IsFalse(lobby.Players[1].Shop.Any(x => x.IsFrozen));
         }
 
         [TestMethod]
