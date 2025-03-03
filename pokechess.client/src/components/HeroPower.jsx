@@ -6,6 +6,7 @@ export default function HeroPower({
   cost,
   text,
   isDisabled,
+  isPassive,
   connection,
   name,
 }) {
@@ -22,7 +23,7 @@ export default function HeroPower({
         onMouseLeave={() => setShowToolTip(false)}
       >
         <Button
-          disabled={isDisabled}
+          disabled={isDisabled || isPassive}
           className="h-20 w-20 rounded-full"
           onClick={onClick}
         >
