@@ -36,6 +36,7 @@ export default function Pokemon({
   type,
   location,
   isFrozen,
+  isTemporary,
 }) {
   const isMinion = cardType === 0;
   const [showDamage, setShowDamage] = useState(false);
@@ -76,6 +77,7 @@ export default function Pokemon({
           minionStatus === "dying" && "opacity-0 duration-750",
           isFrozen && "outline-5 outline-blue-100",
           isFrozen && isMinion && "bg-blue-100",
+          isTemporary && "border-red-800 bg-red-200 text-gray-800",
           className,
         )}
         onMouseEnter={() => setShowToolTip(true)}
