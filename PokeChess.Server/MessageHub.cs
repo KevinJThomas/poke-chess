@@ -224,20 +224,19 @@ namespace PokeChess.Server
             }
         }
 
-        public async Task OnReconnected(string id)
+        public async Task OnReconnected(string playerId)
         {
-            if (!string.IsNullOrWhiteSpace(id))
+            if (!string.IsNullOrWhiteSpace(playerId))
             {
-                var lobby = _lobbyManager.GetLobbyBySocketId(id);
+                var lobby = _lobbyManager.GetLobbyByPlayerId(playerId);
 
                 if (lobby != null)
                 {
-                    lobby = _lobbyManager.OnReconnected(id, Context.ConnectionId);
+                    lobby = _lobbyManager.OnReconnected(playerId, Context.ConnectionId);
                     if (lobby != null)
                     {
                         var lobbyResponse = MapLobbyToResponse(lobby, Context.ConnectionId);
                         await Groups.AddToGroupAsync(Context.ConnectionId, lobby.Id);
-                        //await Groups.RemoveFromGroupAsync(id, lobby.Id);
                         await Clients.Caller.SendAsync("ReconnectSuccess", lobbyResponse);
                     }
                 }

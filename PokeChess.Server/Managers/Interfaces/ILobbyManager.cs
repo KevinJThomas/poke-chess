@@ -9,7 +9,8 @@ namespace PokeChess.Server.Managers.Interfaces
         void Initialize(ILogger logger);
         bool Initialized();
         Lobby GetLobbyById(string id);
-        Lobby GetLobbyBySocketId(string playerId);
+        Lobby GetLobbyBySocketId(string socketId);
+        Lobby GetLobbyByPlayerId(string playerId);
         Lobby PlayerJoined(Player player);
         Lobby StartGame(string playerId);
         Player GetNewShop(string playerId);

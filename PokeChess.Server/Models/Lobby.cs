@@ -22,5 +22,6 @@ namespace PokeChess.Server.Models
         public bool IsWaitingToStart { get; set; }
         public bool FailedToStart { get; set; }
         public List<Message> Messages { get; set; }
+        public DateTime TimeMarkedInactive { get; set; }
     }
 }

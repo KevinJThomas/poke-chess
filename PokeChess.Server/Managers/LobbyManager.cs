@@ -375,7 +375,7 @@ namespace PokeChess.Server.Managers
                         // If the lobby hasn't started yet, remove the player from the lobby
                         var index = GetPlayerIndexBySocketId(lobby.Value, socketId);
                         lobby.Value.Players.RemoveAt(index);
-                        if (!lobby.Value.Players.Any(x => x.IsActive))
+                        if (!lobby.Value.Players.Any(x => x.IsActive && !x.IsBot))
                         {
                             lobby.Value.IsActive = false;
                             ClearInactiveLobbies();
@@ -390,9 +390,10 @@ namespace PokeChess.Server.Managers
                         var index = GetPlayerIndexBySocketId(lobby.Value, socketId);
                         lobby.Value.Players[index].IsActive = false;
 
-                        if (!lobby.Value.Players.Any(x => x.IsActive))
+                        if (!lobby.Value.Players.Any(x => x.IsActive && !x.IsBot))
                         {
                             lobby.Value.IsActive = false;
+                            lobby.Value.TimeMarkedInactive = DateTime.Now;
                             ClearInactiveLobbies();
                         }
 
@@ -544,7 +545,7 @@ namespace PokeChess.Server.Managers
 
             foreach (var lobby in _lobbies)
             {
-                if (lobby.Value.IsActive)
+                if (lobby.Value.IsActive || lobby.Value.TimeMarkedInactive - DateTime.Now < TimeSpan.FromMinutes(5))
                 {
                     newLobbiesList.Add(lobby.Key, lobby.Value);
                 }

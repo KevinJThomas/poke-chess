@@ -1113,9 +1113,9 @@ namespace PokeChess.Server.Extensions
                             {
                                 for (var i = player.Shop.Count(); i >= _boardsSlots; i--)
                                 {
-                                    for (var j = player.Shop.Count(x => x.CardType == CardType.Minion) - 1; j >= 0; j--)
+                                    for (var j = 0; j < player.Shop.Count(x => x.CardType == CardType.Minion); j++)
                                     {
-                                        if (player.Shop[j] != minionToCopy && !player.Shop[j].IsFrozen)
+                                        if (player.Shop[j].CardType == CardType.Minion && player.Shop[j].Name != minionToCopy.Name && !player.Shop[j].IsFrozen)
                                         {
                                             player.Shop.RemoveAt(j);
                                             break;
