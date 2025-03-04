@@ -13,6 +13,10 @@ export default function HeroPower({
   const [showToolTip, setShowToolTip] = useState();
 
   function onClick() {
+    if (isPassive) {
+      return;
+    }
+
     connection.invoke("HeroPower");
   }
 
@@ -23,7 +27,7 @@ export default function HeroPower({
         onMouseLeave={() => setShowToolTip(false)}
       >
         <Button
-          disabled={isDisabled || isPassive}
+          disabled={isDisabled}
           className="h-20 w-20 rounded-full"
           onClick={onClick}
         >
