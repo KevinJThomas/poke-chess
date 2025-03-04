@@ -754,13 +754,13 @@ namespace PokeChess.Server.Services
 
                 if (lobby.Players[i].BaseGold < lobby.Players[i].MaxGold)
                 {
-                    lobby.Players[i].BaseGold += 1;
+                    lobby.Players[i].BaseGold++;
                 }
                 lobby.Players[i].Gold = lobby.Players[i].BaseGold;
 
                 if (lobby.Players[i].UpgradeCost > 0)
                 {
-                    lobby.Players[i].UpgradeCost -= 1;
+                    lobby.Players[i].UpgradeCost--;
                 }
 
                 (lobby, lobby.Players[i]) = GetNewShop(lobby, lobby.Players[i]);
@@ -769,10 +769,10 @@ namespace PokeChess.Server.Services
                 {
                     foreach (var spell in lobby.Players[i].DelayedSpells)
                     {
-                        spell.Delay -= 1;
+                        spell.Delay--;
                         if (spell.Delay <= 0)
                         {
-                            var success = lobby.Players[i].PlaySpell(spell);
+                            lobby.Players[i].PlaySpell(spell);
                         }
                     }
 
