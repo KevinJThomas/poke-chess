@@ -126,7 +126,7 @@ namespace PokeChess.Server.Services
             lobby.GameState.SpellCardPool = _cardService.GetAllSpells();
 
 #if DEBUG
-            foreach (var player in lobby.Players)
+            foreach (var player in lobby.Players.Where(x => !x.IsBot && !x.IsDead))
             {
                 player.Gold = 100;
                 player.BaseGold = 100;
@@ -1997,25 +1997,19 @@ namespace PokeChess.Server.Services
                         }
 
                         var actions = 0;
+                        var tieredThisTurn = false;
                         while (player.Gold >= 3 && actions < 50)
                         {
                             actions++;
                             (lobby, player) = BotPlayAllCardsInHand(lobby, player);
 
-                            var minionsToBuy = player.Shop.Where(x => x.Tier == player.Tier).ToList();
-                            if (minionsToBuy.Any())
+                            var cardsToBuy = player.BotFindCardsToBuy();
+                            if (cardsToBuy.Any())
                             {
-                                (lobby, player) = BuyCard(lobby, player, minionsToBuy[0]);
-                                if (player.Board.Count() >= _boardsSlots)
-                                {
-                                    for (var i = 0; i < player.Board.Count() - _boardsSlots + 1; i++)
-                                    {
-                                        (lobby, player) = SellMinion(lobby, player, player.BotFindMinionToSell());
-                                    }
-                                }
-                                (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                                (lobby, player) = BuyCard(lobby, player, cardsToBuy[0]);
+                                (lobby, player) = BotPlayAllCardsInHand(lobby, player);
 
-                                if (minionsToBuy.Count() == 1)
+                                if (cardsToBuy.Count() == 1)
                                 {
                                     if (player.Gold >= player.RefreshCost)
                                     {
@@ -2029,6 +2023,14 @@ namespace PokeChess.Server.Services
                             }
                             else
                             {
+                                if (!tieredThisTurn && player.Gold >= player.UpgradeCost)
+                                {
+                                    var playerIndex = lobby.Players.FindIndex(x => x == player);
+                                    player.UpgradeTavern();
+                                    lobby.Players[playerIndex] = player;
+                                    tieredThisTurn = true;
+                                }
+
                                 if (player.Gold >= player.RefreshCost)
                                 {
                                     (lobby, player) = GetNewShop(lobby, player, true);
@@ -2039,6 +2041,7 @@ namespace PokeChess.Server.Services
                                 }
                             }
                         }
+
                         break;
                 }
             }
@@ -2050,7 +2053,7 @@ namespace PokeChess.Server.Services
             return (lobby, player);
         }
 
-        public (Lobby, Player) BotPlayAllCardsInHand(Lobby lobby, Player player)
+        private (Lobby, Player) BotPlayAllCardsInHand(Lobby lobby, Player player)
         {
             while (player.Hand.Any())
             {

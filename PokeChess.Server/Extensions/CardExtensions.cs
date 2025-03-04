@@ -9,6 +9,8 @@ namespace PokeChess.Server.Extensions
     public static class CardExtensions
     {
         private static readonly string _copyStamp = ConfigurationHelper.config.GetValue<string>("App:Game:CardIdCopyStamp");
+        private static readonly decimal _botPriorityAttack = ConfigurationHelper.config.GetValue<decimal>("App:Bot:Priorities:Attack");
+        private static readonly decimal _botPriorityHealth = ConfigurationHelper.config.GetValue<decimal>("App:Bot:Priorities:Health");
 
         public static void ScrubModifiers(this Card card)
         {
@@ -29,6 +31,7 @@ namespace PokeChess.Server.Extensions
             }
 
             card.Cost = card.BaseCost;
+            card.Priority = 0;
         }
 
         public static void ApplyKeyword(this Card card, Keyword keyword)
@@ -1537,6 +1540,35 @@ namespace PokeChess.Server.Extensions
                 default:
                     return player;
             }
+        }
+
+        public static decimal GetAttackPriority(this Card card)
+        {
+            var priority = _botPriorityAttack;
+
+            if (card.Keywords.DivineShield)
+            {
+                priority += _botPriorityAttack * 1.5m;
+            }
+
+            if (card.Keywords.Burning)
+            {
+                priority += _botPriorityAttack * 1.5m;
+            }
+
+            return priority;
+        }
+
+        public static decimal GetHealthPriority(this Card card)
+        {
+            var priority = _botPriorityHealth;
+
+            if (card.Keywords.Shock)
+            {
+                priority += _botPriorityHealth * 1.5m;
+            }
+
+            return priority;
         }
 
         private static string GetTargetId(Player player, Card card)

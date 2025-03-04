@@ -16,6 +16,7 @@
         Rock,
         Ice,
         Ghost,
-        Dragon
+        Dragon,
+        None
     }
 }

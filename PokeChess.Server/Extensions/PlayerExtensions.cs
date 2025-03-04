@@ -1,10 +1,10 @@
 ﻿using PokeChess.Server.Enums;
 using PokeChess.Server.Helpers;
+using PokeChess.Server.Models;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
-using PokeChess.Server.Services.Interfaces;
 using PokeChess.Server.Services;
-using PokeChess.Server.Models;
+using PokeChess.Server.Services.Interfaces;
 
 namespace PokeChess.Server.Extensions
 {
@@ -25,6 +25,7 @@ namespace PokeChess.Server.Extensions
         private static readonly int _shopSizeTierFive = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:Five");
         private static readonly int _shopSizeTierSix = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:Six");
         private static readonly int _boardsSlots = ConfigurationHelper.config.GetValue<int>("App:Game:BoardsSlots");
+        private static readonly decimal _botBuyingThreshold = ConfigurationHelper.config.GetValue<decimal>("App:Bot:Priorities:BuyingThreshold");
 
         public static void ApplyKeywords(this Player player)
         {
@@ -1345,10 +1346,17 @@ namespace PokeChess.Server.Extensions
                 return null;
             }
 
-            // Right now this is just returning the lowest tier minion on board
-            // This can be updated later to take in more factors like types etc.
-            var minionToSell = player.Board.Where(x => x.Tier == player.Board.Min(y => y.Tier)).FirstOrDefault();
+            player.Board.PrioritizeCards(player.GetPrimaryTypeOnBoard(), player.Hero.HeroPower.Id);
+            var minionToSell = player.Board.Where(x => x.Priority == player.Board.Min(y => y.Priority)).FirstOrDefault();
             return minionToSell;
+        }
+
+        public static List<Card> BotFindCardsToBuy(this Player player)
+        {
+            var cards = new List<Card>();
+            player.Shop.PrioritizeCards(player.GetPrimaryTypeOnBoard(), player.Hero.HeroPower.Id);
+            cards = player.Shop.Where(x => x.Priority > player.Tier * _botBuyingThreshold).OrderByDescending(x => x.Priority).ToList();
+            return cards;
         }
 
         public static Lobby ReturnCardsToPool(this Player player, Lobby lobby)
@@ -1770,6 +1778,31 @@ namespace PokeChess.Server.Extensions
                 {
                     cardInHand.IsFrozen = false;
                 }
+            }
+        }
+
+        private static MinionType GetPrimaryTypeOnBoard(this Player player)
+        {
+            var typesOnBoard = new List<MinionType>();
+
+            foreach (var minion in player.Board)
+            {
+                if (minion.CardType == CardType.Minion && minion.MinionTypes.Any())
+                {
+                    foreach (var type in minion.MinionTypes)
+                    {
+                        typesOnBoard.Add(type);
+                    }
+                }
+            }
+
+            if (typesOnBoard.Any())
+            {
+                return typesOnBoard.Max();
+            }
+            else
+            {
+                return MinionType.None;
             }
         }
     }

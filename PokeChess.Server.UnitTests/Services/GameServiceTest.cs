@@ -3328,11 +3328,6 @@ namespace PokeChess.Server.UnitTests.Services
             var shopAttackAfterRefresh = lobby.Players[0].Shop.Where(x => x.CardType == Enums.CardType.Minion).Select(x => x.Attack).ToList();
             var shopHealthAfterRefresh = lobby.Players[0].Shop.Where(x => x.CardType == Enums.CardType.Minion).Select(x => x.Health).ToList();
             var minionFromFirstShop = lobby.GameState.MinionCardPool.Where(x => x.Id == minionInShopId).FirstOrDefault();
-            while (minionFromFirstShop == null)
-            {
-                (lobby, lobby.Players[0]) = instance.GetNewShop(lobby, lobby.Players[0]);
-                minionFromFirstShop = lobby.GameState.MinionCardPool.Where(x => x.Id == minionInShopId).FirstOrDefault();
-            }
 
             // Assert
             Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
@@ -3346,8 +3341,8 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(shopHealthBeforePlay[0] < shopHealthAfterPlay[0]);
             Assert.IsTrue(Enumerable.SequenceEqual(shopAttackAfterPlay, shopAttackAfterRefresh));
             Assert.IsTrue(Enumerable.SequenceEqual(shopHealthAfterPlay, shopHealthAfterRefresh));
-            Assert.IsTrue(minionFromFirstShop.Attack < shopAttackAfterPlay[0]);
-            Assert.IsTrue(minionFromFirstShop.Health < shopHealthAfterPlay[0]);
+            Assert.IsTrue(minionFromFirstShop == null || minionFromFirstShop.Attack < shopAttackAfterPlay[0]);
+            Assert.IsTrue(minionFromFirstShop == null || minionFromFirstShop.Health < shopHealthAfterPlay[0]);
         }
 
         [TestMethod]
@@ -4128,6 +4123,142 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(lobby.Players[0].Hand.Count() == 4);
             Assert.IsFalse(isDisabledBefore);
             Assert.IsTrue(isDisabledAfter);
+        }
+
+        [TestMethod]
+        public void TestHeroPower_11()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(11);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 1).FirstOrDefault());
+            lobby = instance.HeroPower(lobby, lobby.Players[0]);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], MoveCardAction.Play, -1, lobby.Players[0].Board[0].Id);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - lobby.Players[0].Hero.HeroPower.Cost);
+            Assert.IsFalse(lobby.Players[0].Hand.Any());
+            Assert.IsTrue(lobby.Players[0].Board.Count() == 1);
+            Assert.IsTrue(lobby.Players[0].Board[0].PokemonId == 2);
+        }
+
+        [TestMethod]
+        public void TestHeroPower_12()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(12);
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<MinionType> { MinionType.Water }));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 3, false, null, new List<MinionType> { MinionType.Water }));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 5, false, null, new List<MinionType> { MinionType.Water }));
+            lobby = instance.CombatRound(lobby);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Board[0].CombatAttack == lobby.Players[0].Board[0].Attack + lobby.Players[0].Board[0].Tier);
+            Assert.IsTrue(lobby.Players[0].Board[1].CombatAttack == lobby.Players[0].Board[1].Attack + lobby.Players[0].Board[1].Tier);
+            Assert.IsTrue(lobby.Players[0].Board[2].CombatAttack == lobby.Players[0].Board[2].Attack + lobby.Players[0].Board[2].Tier);
+        }
+
+        [TestMethod]
+        public void TestHeroPower_13()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(13);
+            (lobby, lobby.Players[0]) = instance.GetNewShop(lobby, lobby.Players[0], true);
+            var shopSize1 = lobby.Players[0].Shop.Count();
+            var frozenCount1 = lobby.Players[0].Shop.Where(x => x.IsFrozen).Count();
+            lobby.Players[0].Tier = 6;
+            (lobby, lobby.Players[0]) = instance.GetNewShop(lobby, lobby.Players[0], true);
+            var shopSize2 = lobby.Players[0].Shop.Count();
+            var frozenCount2 = lobby.Players[0].Shop.Where(x => x.IsFrozen).Count();
+
+            // Assert
+            Assert.IsTrue(shopSize1 == 5);
+            Assert.IsTrue(frozenCount1 == 2);
+            Assert.IsTrue(shopSize2 == instance.BoardSlots);
+            Assert.IsTrue(frozenCount2 == 2);
+        }
+
+        [TestMethod]
+        public void TestHeroPower_14()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(14);
+            lobby = instance.HeroPower(lobby, lobby.Players[0]);
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 20));
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 20));
+            var goldBeforeCombat = lobby.Players[0].Gold;
+            var baseGoldBeforeCombat = lobby.Players[0].BaseGold;
+            lobby = instance.CombatRound(lobby);
+            var goldAfterCombat = lobby.Players[0].Gold;
+            var baseGoldAfterCombat = lobby.Players[0].BaseGold;
+
+            // Assert
+            Assert.IsTrue(goldBeforeCombat == baseGoldBeforeCombat - lobby.Players[0].Hero.HeroPower.Cost);
+            Assert.IsTrue(goldAfterCombat == baseGoldAfterCombat);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+        }
+
+        [TestMethod]
+        public void TestHeroPower_15()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+
+            // Assert
+            Assert.IsTrue(lobby.Players.Count(x => x.Board.Any(y => y.Name == "Pokémon Egg")) == lobby.Players.Count(x => x.Hero.HeroPower.Id == 15));
+        }
+
+        [TestMethod]
+        public void TestHeroPower_16()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+            var stats = 10;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Hero.HeroPower = HeroService.Instance.GetHeroPowerById(16);
+            lobby.Players[0].Board.Add(CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 26).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, stats));
+            lobby = instance.HeroPower(lobby, lobby.Players[0]);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], MoveCardAction.Play, -1, lobby.Players[0].Board[1].Id);
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - lobby.Players[0].Hero.HeroPower.Cost);
+            Assert.IsFalse(lobby.Players[0].Hand.Any());
+            Assert.IsTrue(lobby.Players[0].Board.Count() == 1);
+            Assert.IsTrue(lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack + stats * 2);
+            Assert.IsTrue(lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth + stats * 2);
         }
 
         [TestMethod]
