@@ -1103,30 +1103,33 @@ namespace PokeChess.Server.Extensions
             switch (player.Hero.HeroPower.Id)
             {
                 case 13:
-                    var minionsToCopy = player.Shop.Where(x => x.Tier == player.Shop.Max(y => y.Tier) && x.CardType == CardType.Minion).ToList();
-                    var minionToCopy = minionsToCopy[ThreadSafeRandom.ThisThreadsRandom.Next(minionsToCopy.Count())];
-                    if (minionToCopy != null)
+                    var minionsToCopy = player.Shop.Where(x => x.Tier == player.Shop.Where(y => y.CardType == CardType.Minion).Max(y => y.Tier) && x.CardType == CardType.Minion).ToList();
+                    if (minionsToCopy != null && minionsToCopy.Any())
                     {
-                        if (player.Shop.Count() >= _boardsSlots)
+                        var minionToCopy = minionsToCopy[ThreadSafeRandom.ThisThreadsRandom.Next(minionsToCopy.Count())];
+                        if (minionToCopy != null)
                         {
-                            for (var i = player.Shop.Count(); i >= _boardsSlots; i--)
+                            if (player.Shop.Count() >= _boardsSlots)
                             {
-                                for (var j = player.Shop.Count(x => x.CardType == CardType.Minion) - 1; j >= 0; j--)
+                                for (var i = player.Shop.Count(); i >= _boardsSlots; i--)
                                 {
-                                    if (player.Shop[j] != minionToCopy && !player.Shop[j].IsFrozen)
+                                    for (var j = player.Shop.Count(x => x.CardType == CardType.Minion) - 1; j >= 0; j--)
                                     {
-                                        player.Shop.RemoveAt(j);
-                                        break;
+                                        if (player.Shop[j] != minionToCopy && !player.Shop[j].IsFrozen)
+                                        {
+                                            player.Shop.RemoveAt(j);
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        var index = player.Shop.IndexOf(minionToCopy);
-                        minionToCopy.IsFrozen = true;
-                        var copy = minionToCopy.Clone();
-                        copy.Id = Guid.NewGuid().ToString() + _copyStamp;
-                        player.Shop.Insert(index, copy);
+                            var index = player.Shop.IndexOf(minionToCopy);
+                            minionToCopy.IsFrozen = true;
+                            var copy = minionToCopy.Clone();
+                            copy.Id = Guid.NewGuid().ToString() + _copyStamp;
+                            player.Shop.Insert(index, copy);
+                        }
                     }
 
                     break;

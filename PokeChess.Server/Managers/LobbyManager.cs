@@ -256,7 +256,7 @@ namespace PokeChess.Server.Managers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"StartGame exception: {ex.Message}");
+                _logger.LogError($"CombatRound exception: {ex.Message}");
                 return null;
             }
         }

@@ -94,7 +94,7 @@ namespace PokeChess.Server.Extensions
             {
                 card.Priority = 0;
                 card.Priority += card.Tier * _botPriorityTier;
-                card.Priority += AddPriorityForHeroPower(card, heroPowerId);
+                card.Priority += GetPriorityForHeroPower(card, heroPowerId);
 
                 if (card.CardType == CardType.Minion)
                 {
@@ -108,7 +108,8 @@ namespace PokeChess.Server.Extensions
                         }
                     }
 
-                    card.Priority += AddPriorityForKeyMinions(card, primaryType);
+                    card.Priority += GetPriorityForKeyMinions(card, primaryType);
+                    // If it's a pair, increase priority
                 }
 
                 if (card.CardType == CardType.Spell)
@@ -126,7 +127,7 @@ namespace PokeChess.Server.Extensions
             }
         }
 
-        private static decimal AddPriorityForKeyMinions(Card minion, MinionType primaryType)
+        private static decimal GetPriorityForKeyMinions(Card minion, MinionType primaryType)
         {
             switch (primaryType)
             {
@@ -146,7 +147,7 @@ namespace PokeChess.Server.Extensions
             return 0;
         }
 
-        private static decimal AddPriorityForHeroPower(Card card, int heroPowerId)
+        private static decimal GetPriorityForHeroPower(Card card, int heroPowerId)
         {
             switch (heroPowerId)
             {

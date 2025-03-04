@@ -1548,12 +1548,12 @@ namespace PokeChess.Server.Extensions
 
             if (card.Keywords.DivineShield)
             {
-                priority += _botPriorityAttack * 1.5m;
+                priority += _botPriorityAttack * 0.5m;
             }
 
             if (card.Keywords.Burning)
             {
-                priority += _botPriorityAttack * 1.5m;
+                priority += _botPriorityAttack * 0.5m;
             }
 
             return priority;
@@ -1565,7 +1565,7 @@ namespace PokeChess.Server.Extensions
 
             if (card.Keywords.Shock)
             {
-                priority += _botPriorityHealth * 1.5m;
+                priority += _botPriorityHealth * 0.5m;
             }
 
             return priority;

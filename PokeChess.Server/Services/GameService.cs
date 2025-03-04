@@ -128,8 +128,8 @@ namespace PokeChess.Server.Services
 #if DEBUG
             foreach (var player in lobby.Players.Where(x => !x.IsBot && !x.IsDead))
             {
-                player.Gold = 100;
-                player.BaseGold = 100;
+                //player.Gold = 100;
+                //player.BaseGold = 100;
 
                 if (player.Name.Length > 6 && player.Name.Substring(0, 6).ToLower() == "minion")
                 {
@@ -1570,11 +1570,12 @@ namespace PokeChess.Server.Services
             return -1;
         }
 
-        private static int GetPlayerIndexById(string id, Lobby lobby)
+        private int GetPlayerIndexById(string id, Lobby lobby)
         {
             var player = lobby.Players.Where(x => x.Id == id).FirstOrDefault();
             if (player == null)
             {
+                _logger.LogError($"GetPlayerIndexById failed. Could not find id: {id}");
                 return -1;
             }
 
