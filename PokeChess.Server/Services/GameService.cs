@@ -745,7 +745,6 @@ namespace PokeChess.Server.Services
                 lobby.Players[i].GoldSpentThisTurn = 0;
                 lobby.Players[i].ResetHeroPower();
                 lobby.Players[i].EvolveCheck();
-                lobby.Players[i].UpdateHeroPowerStatus();
 
                 foreach (var minion in lobby.Players[i].Board)
                 {
@@ -788,6 +787,7 @@ namespace PokeChess.Server.Services
                 }
 
                 lobby = lobby.Players[i].ReturnCardsToPool(lobby);
+                lobby.Players[i].UpdateHeroPowerStatus();
             }
 
             return lobby;
@@ -1435,8 +1435,6 @@ namespace PokeChess.Server.Services
                 }
 
                 source.CombatHealth -= damage;
-
-                source.TriggerReborn();
             }
 
             // Update target's state
@@ -1491,13 +1489,14 @@ namespace PokeChess.Server.Services
                     }
                 }
 
-                target.TriggerReborn();
-
                 if (!targetStartedParalyzed && !target.IsDead && source.CombatKeywords.Shock)
                 {
                     target.CombatKeywords.Paralyzed = true;
                 }
             }
+
+            source.TriggerReborn();
+            target.TriggerReborn();
 
             if (source.Keywords.Windfury && !source.AttackedOnceWindfury)
             {
@@ -2004,14 +2003,41 @@ namespace PokeChess.Server.Services
                             actions++;
                             (lobby, player) = BotPlayAllCardsInHand(lobby, player);
 
-                            var cardsToBuy = player.BotFindCardsToBuy();
-                            if (cardsToBuy.Any())
+                            if (!player.Hero.HeroPower.IsPassive && !player.Hero.HeroPower.IsDisabled && player.Gold >= player.Hero.HeroPower.Cost)
                             {
-                                (lobby, player) = BuyCard(lobby, player, cardsToBuy[0]);
+                                lobby = player.BotUseHeroPower(lobby);
                                 (lobby, player) = BotPlayAllCardsInHand(lobby, player);
-
-                                if (cardsToBuy.Count() == 1)
+                            }
+                            else
+                            {
+                                var cardsToBuy = player.BotFindCardsToBuy();
+                                if (cardsToBuy.Any())
                                 {
+                                    (lobby, player) = BuyCard(lobby, player, cardsToBuy[0]);
+                                    (lobby, player) = BotPlayAllCardsInHand(lobby, player);
+
+                                    if (cardsToBuy.Count() == 1)
+                                    {
+                                        if (player.Gold >= player.RefreshCost)
+                                        {
+                                            (lobby, player) = GetNewShop(lobby, player, true);
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (!tieredThisTurn && player.Gold >= player.UpgradeCost)
+                                    {
+                                        var playerIndex = lobby.Players.FindIndex(x => x == player);
+                                        player.UpgradeTavern();
+                                        lobby.Players[playerIndex] = player;
+                                        tieredThisTurn = true;
+                                    }
+
                                     if (player.Gold >= player.RefreshCost)
                                     {
                                         (lobby, player) = GetNewShop(lobby, player, true);
@@ -2020,25 +2046,6 @@ namespace PokeChess.Server.Services
                                     {
                                         break;
                                     }
-                                }
-                            }
-                            else
-                            {
-                                if (!tieredThisTurn && player.Gold >= player.UpgradeCost)
-                                {
-                                    var playerIndex = lobby.Players.FindIndex(x => x == player);
-                                    player.UpgradeTavern();
-                                    lobby.Players[playerIndex] = player;
-                                    tieredThisTurn = true;
-                                }
-
-                                if (player.Gold >= player.RefreshCost)
-                                {
-                                    (lobby, player) = GetNewShop(lobby, player, true);
-                                }
-                                else
-                                {
-                                    break;
                                 }
                             }
                         }

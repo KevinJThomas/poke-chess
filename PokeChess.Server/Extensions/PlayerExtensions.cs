@@ -687,6 +687,7 @@ namespace PokeChess.Server.Extensions
                 player = card.DiscountMechanism(player);
             }
 
+            player.UpdateHeroPowerStatus();
             player.CleanHandStatus();
         }
 
@@ -1198,6 +1199,12 @@ namespace PokeChess.Server.Extensions
         {
             switch (player.Hero.HeroPower.Id)
             {
+                case 1:
+                case 3:
+                case 10:
+                case 16:
+                    player.Hero.HeroPower.IsDisabled = player.Hand.Count() >= player.MaxHandSize || player.Hero.HeroPower.UsesThisTurn >= player.Hero.HeroPower.UsesPerTurn;
+                    break;
                 case 5:
                     if (player.Hero.HeroPower.UsesThisTurn == 0)
                     {
@@ -1208,6 +1215,12 @@ namespace PokeChess.Server.Extensions
                         player.Hero.HeroPower.IsDisabled = duplicateList == null || !duplicateList.Any();
                     }
 
+                    break;
+                case 6:
+                    player.Hero.HeroPower.IsDisabled = (player.Hand.Count() >= player.MaxHandSize || player.Hero.HeroPower.UsesThisTurn >= player.Hero.HeroPower.UsesPerTurn) || !player.Shop.Any(x => x.CardType == CardType.Minion);
+                    break;
+                case 11:
+                    player.Hero.HeroPower.IsDisabled = player.Hand.Count() >= player.MaxHandSize || player.Hero.HeroPower.UsesThisGame > 0;
                     break;
             }
         }
@@ -1232,7 +1245,7 @@ namespace PokeChess.Server.Extensions
                     break;
             }
 
-            if (!player.Hero.HeroPower.IsOncePerGame)
+            if ((!player.Hero.HeroPower.IsOncePerGame || player.Hero.HeroPower.UsesThisGame == 0) && !player.Hero.HeroPower.IsPassive)
             {
                 player.Hero.HeroPower.IsDisabled = false;
             }
@@ -1338,6 +1351,7 @@ namespace PokeChess.Server.Extensions
                 }
             }
             player.ApplyShopDiscounts();
+            player.UpdateHeroPowerStatus();
 
             return lobby;
         }
@@ -1349,17 +1363,55 @@ namespace PokeChess.Server.Extensions
                 return null;
             }
 
-            player.Board.PrioritizeCards(player.GetPrimaryTypeOnBoard(), player.Hero.HeroPower.Id);
+            var cardsOnScreen = new List<Card>();
+            cardsOnScreen.AddRange(player.Shop);
+            cardsOnScreen.AddRange(player.Board);
+            cardsOnScreen.AddRange(player.Hand);
+
+            player.Board.PrioritizeCards(player.GetPrimaryTypeOnBoard(), player.Hero.HeroPower.Id, cardsOnScreen);
             var minionToSell = player.Board.Where(x => x.Priority == player.Board.Min(y => y.Priority)).FirstOrDefault();
             return minionToSell;
         }
 
         public static List<Card> BotFindCardsToBuy(this Player player)
         {
-            var cards = new List<Card>();
-            player.Shop.PrioritizeCards(player.GetPrimaryTypeOnBoard(), player.Hero.HeroPower.Id);
-            cards = player.Shop.Where(x => x.Priority > player.Tier * _botBuyingThreshold).OrderByDescending(x => x.Priority).ToList();
-            return cards;
+            var cardsToBuy = new List<Card>();
+            var cardsOnScreen = new List<Card>();
+            cardsOnScreen.AddRange(player.Shop);
+            cardsOnScreen.AddRange(player.Board);
+            cardsOnScreen.AddRange(player.Hand);
+
+            // If the player's board isn't full yet, reduce the buying threshold to fill the board faster
+            var fillBoardPriorityModifier = player.Board.Count() < _boardsSlots ? 1 : 0;
+
+            // Assign the Priority property to all cards in the shop
+            player.Shop.PrioritizeCards(player.GetPrimaryTypeOnBoard(), player.Hero.HeroPower.Id, cardsOnScreen);
+
+            // Only return cards that have a priority above the buying threshold
+            cardsToBuy = player.Shop.Where(x => x.Priority > player.Tier * _botBuyingThreshold - fillBoardPriorityModifier).OrderByDescending(x => x.Priority).ToList();
+            return cardsToBuy;
+        }
+
+        public static Lobby BotUseHeroPower(this Player player, Lobby lobby)
+        {
+            switch (player.Hero.HeroPower.Id)
+            {
+                case 11:
+                    if (player.Hand.Count() < player.MaxHandSize && player.Board.Any(x => x.Tier >= 4 && x.NextEvolutions.Any()))
+                    {
+                        // Since this is only once per game, only evolve a tier 4 or higher
+                        player.HeroPower(lobby);
+                        var targetId = player.Board.Where(x => x.Tier >= 4 && x.NextEvolutions.Any()).FirstOrDefault().Id;
+                        player.PlaySpell(player.Hand[player.Hand.Count() - 1], targetId);
+                    }
+
+                    break;
+                default:
+                    player.HeroPower(lobby);
+                    break;
+            }
+
+            return lobby;
         }
 
         public static Lobby ReturnCardsToPool(this Player player, Lobby lobby)
