@@ -5,10 +5,8 @@ using PokeChess.Server.Managers;
 using PokeChess.Server.Managers.Interfaces;
 using PokeChess.Server.Models;
 using PokeChess.Server.Models.Player;
-using PokeChess.Server.Models.Player.Hero;
 using PokeChess.Server.Models.Response;
 using PokeChess.Server.Models.Response.Player;
-using System.Reflection;
 
 namespace PokeChess.Server
 {
@@ -247,9 +245,16 @@ namespace PokeChess.Server
         {
             var lobby = _lobbyManager.PlayerLeft(Context.ConnectionId);
 
-            if (lobby != null && lobby.IsActive && !string.IsNullOrWhiteSpace(lobby.Id) && lobby.Players != null && lobby.Players.Any())
+            if (lobby != null)
             {
-                await SendSafeLobbyAsync(lobby, "LobbyUpdated");
+                if (lobby.IsActive && !string.IsNullOrWhiteSpace(lobby.Id) && lobby.Players != null && lobby.Players.Any(x => x.IsActive && !x.IsBot))
+                {
+                    await SendSafeLobbyAsync(lobby, "LobbyUpdated");
+                }
+                if (lobby.IsWaitingToStart)
+                {
+                    await Clients.Caller.SendAsync("GameError");
+                }
             }
 
             await base.OnDisconnectedAsync(exception);
