@@ -1842,6 +1842,11 @@ namespace PokeChess.Server.Extensions
                         type = (MinionType)amount;
                     }
 
+                    if (type == MinionType.None)
+                    {
+                        type = (MinionType)ThreadSafeRandom.ThisThreadsRandom.Next(Enum.GetNames(typeof(MinionType)).Length);
+                    }
+
                     var possibleDiscoversByType = _cardService.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains(type)).DistinctBy(x => x.PokemonId).ToList();
                     if (possibleDiscoversByType == null || possibleDiscoversByType.Count() < _discoverAmount)
                     {
