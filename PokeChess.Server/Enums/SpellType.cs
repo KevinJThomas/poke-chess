@@ -22,7 +22,12 @@
         GetRandomMinionByTier,
         EvolveMinion,
         Consume,
-        Discover,
+        DiscoverMinion,
+        DiscoverMinionByType,
+        DiscoverMinionByTier,
+        DiscoverSpell,
+        DiscoverSpellByTier,
+        DiscoverCard,
         Quest,
         Secret
     }

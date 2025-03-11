@@ -25,6 +25,7 @@ namespace PokeChess.Server.Extensions
         private static readonly int _shopSizeTierFive = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:Five");
         private static readonly int _shopSizeTierSix = ConfigurationHelper.config.GetValue<int>("App:Game:ShopSizeByTier:Six");
         private static readonly int _boardsSlots = ConfigurationHelper.config.GetValue<int>("App:Game:BoardsSlots");
+        private static readonly int _discoverAmount = ConfigurationHelper.config.GetValue<int>("App:Game:DiscoverAmount");
         private static readonly decimal _botBuyingThreshold = ConfigurationHelper.config.GetValue<decimal>("App:Bot:Priorities:BuyingThreshold");
 
         public static void ApplyKeywords(this Player player)
@@ -880,7 +881,7 @@ namespace PokeChess.Server.Extensions
                 case 1:
                     if (player.Hand.Count() < player.MaxHandSize)
                     {
-                        var pikachu = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 25).FirstOrDefault();
+                        var pikachu = _cardService.GetAllMinions().Where(x => x.PokemonId == 25).FirstOrDefault();
                         if (pikachu != null)
                         {
                             pikachu.Id = Guid.NewGuid().ToString() + _copyStamp;
@@ -894,7 +895,7 @@ namespace PokeChess.Server.Extensions
                 case 3:
                     if (player.Hand.Count() < player.MaxHandSize)
                     {
-                        var randomMinions3 = CardService.Instance.GetAllMinions().Where(x => x.Tier == player.Tier).ToList();
+                        var randomMinions3 = _cardService.GetAllMinions().Where(x => x.Tier == player.Tier).ToList();
                         var randomMinion3 = randomMinions3[ThreadSafeRandom.ThisThreadsRandom.Next(randomMinions3.Count())];
                         if (randomMinion3 != null)
                         {
@@ -919,7 +920,7 @@ namespace PokeChess.Server.Extensions
                     if (duplicateList != null && duplicateList.Any())
                     {
                         var pokemonIdToEvolve = duplicateList[ThreadSafeRandom.ThisThreadsRandom.Next(duplicateList.Count())];
-                        var extraPokemon = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == pokemonIdToEvolve).FirstOrDefault();
+                        var extraPokemon = _cardService.GetAllMinions().Where(x => x.PokemonId == pokemonIdToEvolve).FirstOrDefault();
                         extraPokemon.Id = Guid.NewGuid().ToString() + _copyStamp;
                         player.Hand.Add(extraPokemon);
                         player.CardAddedToHand();
@@ -966,7 +967,7 @@ namespace PokeChess.Server.Extensions
                     {
                         if (player.Hand.Count < player.MaxHandSize)
                         {
-                            player.Hand.Add(CardService.Instance.GetFertilizer());
+                            player.Hand.Add(_cardService.GetFertilizer());
                             player.CardAddedToHand();
                         }
                     }
@@ -976,7 +977,7 @@ namespace PokeChess.Server.Extensions
                 case 11:
                     if (player.Hand.Count() < player.MaxHandSize)
                     {
-                        player.Hand.Add(CardService.Instance.GetMiracleGrow());
+                        player.Hand.Add(_cardService.GetMiracleGrow());
                         player.CardAddedToHand();
                     }
 
@@ -988,7 +989,7 @@ namespace PokeChess.Server.Extensions
                 case 16:
                     if (player.Hand.Count() < player.MaxHandSize)
                     {
-                        player.Hand.Add(CardService.Instance.GetRaichuSnack());
+                        player.Hand.Add(_cardService.GetRaichuSnack());
                         player.CardAddedToHand();
                     }
 
@@ -1012,7 +1013,7 @@ namespace PokeChess.Server.Extensions
                     player.Health = 60;
                     break;
                 case 15:
-                    var pokemonEgg = CardService.Instance.GetPokemonEgg();
+                    var pokemonEgg = _cardService.GetPokemonEgg();
                     player.Board.Add(pokemonEgg);
                     break;
             }
@@ -1034,7 +1035,7 @@ namespace PokeChess.Server.Extensions
                         player.Hero.HeroPower.Cost++;
                         if (player.Hero.HeroPower.UsesThisGame == 4)
                         {
-                            var kadabra = CardService.Instance.GetAllMinions().Where(x => x.PokemonId == 64).FirstOrDefault();
+                            var kadabra = _cardService.GetAllMinions().Where(x => x.PokemonId == 64).FirstOrDefault();
                             kadabra.Id = Guid.NewGuid().ToString() + _copyStamp;
                             if (player.Hand.Count() < player.MaxHandSize)
                             {
@@ -1236,7 +1237,7 @@ namespace PokeChess.Server.Extensions
                         // Give a discover treasure instead
                         if (player.Hand.Count() < player.MaxHandSize)
                         {
-                            var discoverTreasure = CardService.Instance.GetNewDiscoverTreasure();
+                            var discoverTreasure = _cardService.GetNewDiscoverTreasure();
                             player.Hand.Add(discoverTreasure);
                             player.CardAddedToHand();
                         }
@@ -1496,11 +1497,6 @@ namespace PokeChess.Server.Extensions
 
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
         {
-            if (amount < 0)
-            {
-                amount = player.Tier;
-            }
-
             switch (spellType)
             {
                 case SpellType.GainGold:
@@ -1514,6 +1510,10 @@ namespace PokeChess.Server.Extensions
                     if (string.IsNullOrWhiteSpace(targetId))
                     {
                         return false;
+                    }
+                    if (amount < 0)
+                    {
+                        amount = player.Tier;
                     }
 
                     var targetOnBoardAttack = player.Board.Any(x => x.Id == targetId);
@@ -1549,6 +1549,10 @@ namespace PokeChess.Server.Extensions
                     {
                         return false;
                     }
+                    if (amount < 0)
+                    {
+                        amount = player.Tier;
+                    }
 
                     var targetIndexFriendlyAttack = player.Board.FindIndex(x => x.Id == targetId);
                     if (targetIndexFriendlyAttack >= 0 && targetIndexFriendlyAttack < player.Board.Count())
@@ -1565,6 +1569,10 @@ namespace PokeChess.Server.Extensions
                     if (string.IsNullOrWhiteSpace(targetId))
                     {
                         return false;
+                    }
+                    if (amount < 0)
+                    {
+                        amount = player.Tier;
                     }
 
                     var targetOnBoardHealth = player.Board.Any(x => x.Id == targetId);
@@ -1600,6 +1608,10 @@ namespace PokeChess.Server.Extensions
                     {
                         return false;
                     }
+                    if (amount < 0)
+                    {
+                        amount = player.Tier;
+                    }
 
                     var targetIndexFriendlyHealth = player.Board.FindIndex(x => x.Id == targetId);
                     if (targetIndexFriendlyHealth >= 0 && targetIndexFriendlyHealth < player.Board.Count())
@@ -1613,6 +1625,11 @@ namespace PokeChess.Server.Extensions
 
                     return false;
                 case SpellType.BuffBoardAttack:
+                    if (amount < 0)
+                    {
+                        amount = player.Tier;
+                    }
+
                     foreach (var minion in player.Board)
                     {
                         minion.Attack += amount;
@@ -1621,6 +1638,11 @@ namespace PokeChess.Server.Extensions
 
                     return true;
                 case SpellType.BuffBoardHealth:
+                    if (amount < 0)
+                    {
+                        amount = player.Tier;
+                    }
+
                     foreach (var minion in player.Board)
                     {
                         minion.Health += amount;
@@ -1629,6 +1651,11 @@ namespace PokeChess.Server.Extensions
 
                     return true;
                 case SpellType.BuffCurrentShopAttack:
+                    if (amount < 0)
+                    {
+                        amount = player.Tier;
+                    }
+
                     foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
                     {
                         minion.Attack += amount;
@@ -1637,6 +1664,11 @@ namespace PokeChess.Server.Extensions
 
                     return true;
                 case SpellType.BuffCurrentShopHealth:
+                    if (amount < 0)
+                    {
+                        amount = player.Tier;
+                    }
+
                     foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
                     {
                         minion.Health += amount;
@@ -1645,6 +1677,11 @@ namespace PokeChess.Server.Extensions
 
                     return true;
                 case SpellType.BuffShopAttack:
+                    if (amount < 0)
+                    {
+                        amount = player.Tier;
+                    }
+
                     foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
                     {
                         minion.Attack += amount;
@@ -1654,6 +1691,11 @@ namespace PokeChess.Server.Extensions
 
                     return true;
                 case SpellType.BuffShopHealth:
+                    if (amount < 0)
+                    {
+                        amount = player.Tier;
+                    }
+
                     foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion).ToList())
                     {
                         minion.Health += amount;
@@ -1758,7 +1800,7 @@ namespace PokeChess.Server.Extensions
 
                     return false;
                 case SpellType.GetRandomMinionByType:
-                    var randomMinions = CardService.Instance.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains((MinionType)amount)).DistinctBy(x => x.PokemonId).ToList();
+                    var randomMinions = _cardService.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains((MinionType)amount)).DistinctBy(x => x.PokemonId).ToList();
                     var randomMinion = randomMinions[ThreadSafeRandom.ThisThreadsRandom.Next(randomMinions.Count())];
                     if (randomMinion != null)
                     {
@@ -1775,6 +1817,44 @@ namespace PokeChess.Server.Extensions
                 case SpellType.EvolveMinion:
                     var success = player.EvolveMinion(targetId);
                     return success;
+                case SpellType.DiscoverMinion:
+                    var possibleDiscovers = _cardService.GetAllMinions().Where(x => x.Tier <= player.Tier).DistinctBy(x => x.PokemonId).ToList();
+                    if (possibleDiscovers == null || possibleDiscovers.Count() < _discoverAmount)
+                    {
+                        return false;
+                    }
+                    player.DiscoverOptions.Clear();
+
+                    for (var i = 0; i < _discoverAmount; i++)
+                    {
+                        player.DiscoverOptions.Add(possibleDiscovers[ThreadSafeRandom.ThisThreadsRandom.Next(possibleDiscovers.Count())]);
+                    }
+
+                    return true;
+                case SpellType.DiscoverMinionByType:
+                    var type = MinionType.None;
+                    if (amount < 0)
+                    {
+                        type = player.GetPrimaryTypeOnBoard();
+                    }
+                    else
+                    {
+                        type = (MinionType)amount;
+                    }
+
+                    var possibleDiscoversByType = _cardService.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains(type)).DistinctBy(x => x.PokemonId).ToList();
+                    if (possibleDiscoversByType == null || possibleDiscoversByType.Count() < _discoverAmount)
+                    {
+                        return false;
+                    }
+                    player.DiscoverOptions.Clear();
+
+                    for (var i = 0; i < _discoverAmount; i++)
+                    {
+                        player.DiscoverOptions.Add(possibleDiscoversByType[ThreadSafeRandom.ThisThreadsRandom.Next(possibleDiscoversByType.Count())]);
+                    }
+
+                    return true;
                 default:
                     return false;
             }
@@ -1811,7 +1891,7 @@ namespace PokeChess.Server.Extensions
                     num = target.NextEvolutions[0].Num;
                 }
 
-                var evolvedMinion = CardService.Instance.GetMinionCopyByNum(num);
+                var evolvedMinion = _cardService.GetMinionCopyByNum(num);
                 if (evolvedMinion != null)
                 {
                     var index = player.Board.IndexOf(target);

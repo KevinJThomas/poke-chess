@@ -57,6 +57,7 @@ namespace PokeChess.Server.Models.Player
             CombatActions = new List<CombatAction>();
             CardsToReturnToPool = new List<Card>();
             CombatHistory = new List<CombatHistoryItem>();
+            DiscoverOptions = new List<Card>();
         }
 
         public string? Id { get; set; }
@@ -188,6 +189,7 @@ namespace PokeChess.Server.Models.Player
         public List<string> PreviousOpponentIds { get; set; }
         public List<CombatAction> CombatActions { get; set; }
         public List<CombatHistoryItem> CombatHistory { get; set; }
+        public List<Card> DiscoverOptions { get; set; }
         public bool IsDead
         {
             get

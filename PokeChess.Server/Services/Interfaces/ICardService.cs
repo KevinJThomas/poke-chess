@@ -13,5 +13,9 @@ namespace PokeChess.Server.Services.Interfaces
         List<Card> GetAllMinionsAtBaseEvolution();
         List<Card> GetAllMinionsForPool();
         Card GetFertilizer();
+        Card GetMiracleGrow();
+        Card GetRaichuSnack();
+        Card GetPokemonEgg();
+        Card GetNewDiscoverTreasure();
     }
 }

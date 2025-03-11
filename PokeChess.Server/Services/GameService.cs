@@ -290,6 +290,9 @@ namespace PokeChess.Server.Services
                     case MoveCardAction.RepositionShop:
                         (lobby, player) = RepositionShop(lobby, player, card, index);
                         break;
+                    case MoveCardAction.Discover:
+                        (lobby, player) = Discover(lobby, player, card);
+                        break;
                     default:
                         return lobby;
                 }
@@ -712,6 +715,22 @@ namespace PokeChess.Server.Services
                     player.Shop = newShop;
                 }
             }
+
+            return (lobby, player);
+        }
+
+        private (Lobby, Player) Discover(Lobby lobby, Player player, Card card)
+        {
+            if (!player.DiscoverOptions.Any(x => x.Id == card.Id))
+            {
+                return (lobby, player);
+            }
+
+            if (player.Hand.Count() < player.MaxHandSize)
+            {
+                player.Hand.Add(card);
+            }
+            player.DiscoverOptions.Clear();
 
             return (lobby, player);
         }

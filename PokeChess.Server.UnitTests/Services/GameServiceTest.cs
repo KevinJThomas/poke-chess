@@ -3540,6 +3540,38 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
+        public void TestPlaySpell_DiscoverMinionByType()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+            var minionTypeToGet = MinionType.Water;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Tier = 4;
+            lobby.Players[0].Hand.Add(CardService.Instance.GetAllSpells().Where(x => x.CardType == Enums.CardType.Spell && x.SpellTypes.Contains(Enums.SpellType.DiscoverMinionByType) && x.Delay == 0 && x.Amount[0] == -1).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion(false, 5, 1, false, null, new List<MinionType> { minionTypeToGet }));
+            var cardIdToRemove = lobby.Players[0].Hand[0].Id;
+            var cardPoolCountBeforePlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var handSizeBeforePlay = lobby.Players[0].Hand.Count();
+            var shopSizeBeforePlay = lobby.Players[0].Shop.Count();
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, -1, null);
+            var cardPoolCountAfterPlay = lobby.GameState.MinionCardPool.Count() + lobby.GameState.SpellCardPool.Count();
+            var handSizeAfterPlay = lobby.Players[0].Hand.Count();
+            var shopSizeAfterPlay = lobby.Players[0].Shop.Count();
+
+            // Assert
+            Assert.IsFalse(lobby.Players[0].Hand.Any(x => x.Id == cardIdToRemove));
+            Assert.IsFalse(lobby.Players[0].Board.Any(x => x.Id == cardIdToRemove));
+            Assert.IsTrue(cardPoolCountBeforePlay < cardPoolCountAfterPlay);
+            Assert.IsTrue(handSizeBeforePlay == handSizeAfterPlay + 1);
+            Assert.IsTrue(shopSizeBeforePlay == shopSizeAfterPlay);
+            Assert.IsTrue(lobby.Players[0].DiscoverOptions.All(x => x.Tier <= lobby.Players[0].Tier && x.MinionTypes.Contains(minionTypeToGet)));
+        }
+
+        [TestMethod]
         public void TestCombatRound_AllTies()
         {
             // Arrange

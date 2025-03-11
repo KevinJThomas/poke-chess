@@ -598,6 +598,8 @@ namespace PokeChess.Server.Managers
                     return player.Board.Where(x => x.Id == cardId).FirstOrDefault();
                 case MoveCardAction.RepositionShop:
                     return player.Shop.Where(x => x.Id == cardId).FirstOrDefault();
+                case MoveCardAction.Discover:
+                    return player.DiscoverOptions.Where(x => x.Id == cardId).FirstOrDefault();
             }
 
             return null;

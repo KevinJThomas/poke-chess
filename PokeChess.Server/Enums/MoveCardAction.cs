@@ -6,6 +6,7 @@
         Sell,
         Play,
         RepositionBoard,
-        RepositionShop
+        RepositionShop,
+        Discover
     }
 }

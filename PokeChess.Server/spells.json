@@ -100,6 +100,15 @@
     "amount": [ -1, -1 ]
   },
   {
+    "tier": 3,
+    "name": "Team Building",
+    "text": "Discover a minion of your most common type",
+    "cardType": 1,
+    "baseCost": 4,
+    "spellTypes": [ 21 ],
+    "amount": [ -1 ]
+  },
+  {
     "tier": 4,
     "name": "Greater Ball",
     "text": "Steal 2 random minions from the tavern",
