@@ -13,5 +13,6 @@ namespace PokeChess.Server.Models.Response.Player
         public List<CardResponse> Hand { get; set; } = new List<CardResponse>();
         public List<CardResponse> Shop { get; set; } = new List<CardResponse>();
         public List<CombatAction> CombatActions { get; set; } = new List<CombatAction>();
+        public List<CardResponse> DiscoverOptions { get; set; } = new List<CardResponse>();
     }
 }

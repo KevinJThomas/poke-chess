@@ -301,7 +301,8 @@ namespace PokeChess.Server
                             },
                             Hand = player.Hand.MapToResponse(),
                             Shop = player.Shop.MapToResponse(),
-                            CombatActions = player.CombatActions
+                            CombatActions = player.CombatActions,
+                            DiscoverOptions = player.DiscoverOptions.MapToResponse()
                         };
 
                         response.Players.Add(player.Id ?? string.Empty, playerResponse);
@@ -375,7 +376,8 @@ namespace PokeChess.Server
                 },
                 Hand = player.Hand.MapToResponse(),
                 Shop = player.Shop.MapToResponse(),
-                CombatActions = player.CombatActions
+                CombatActions = player.CombatActions,
+                DiscoverOptions = player.DiscoverOptions.MapToResponse()
             };
         }
 
@@ -446,7 +448,8 @@ namespace PokeChess.Server
                         },
                         Hand = player.Hand.MapToResponse(),
                         Shop = player.Shop.MapToResponse(),
-                        CombatActions = player.CombatActions
+                        CombatActions = player.CombatActions,
+                        DiscoverOptions = player.DiscoverOptions.MapToResponse()
                     };
 
                     var opponent = lobby.Players.Where(x => x.Id == player.OpponentId).FirstOrDefault();

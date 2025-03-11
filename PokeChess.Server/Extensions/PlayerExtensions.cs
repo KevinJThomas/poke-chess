@@ -1848,7 +1848,7 @@ namespace PokeChess.Server.Extensions
                     }
 
                     var possibleDiscoversByType = _cardService.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains(type)).DistinctBy(x => x.PokemonId).ToList();
-                    if (possibleDiscoversByType == null || possibleDiscoversByType.Count() < _discoverAmount)
+                    if (possibleDiscoversByType == null || !possibleDiscoversByType.Any())
                     {
                         return false;
                     }
@@ -1856,7 +1856,12 @@ namespace PokeChess.Server.Extensions
 
                     for (var i = 0; i < _discoverAmount; i++)
                     {
-                        player.DiscoverOptions.Add(possibleDiscoversByType[ThreadSafeRandom.ThisThreadsRandom.Next(possibleDiscoversByType.Count())]);
+                        if (possibleDiscoversByType.Any())
+                        {
+                            var index = ThreadSafeRandom.ThisThreadsRandom.Next(possibleDiscoversByType.Count());
+                            player.DiscoverOptions.Add(possibleDiscoversByType[index]);
+                            possibleDiscoversByType.RemoveAt(index);
+                        }
                     }
 
                     return true;
