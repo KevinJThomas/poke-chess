@@ -729,6 +729,14 @@ namespace PokeChess.Server.Services
             if (player.Hand.Count() < player.MaxHandSize)
             {
                 player.Hand.Add(card);
+                if (card.CardType == CardType.Minion && lobby.GameState.MinionCardPool.Any(x => x.Id == card.Id))
+                {
+                    lobby.GameState.MinionCardPool.Remove(card);
+                }
+                if (card.CardType == CardType.Spell && lobby.GameState.SpellCardPool.Any(x => x.Id == card.Id))
+                {
+                    lobby.GameState.SpellCardPool.Remove(card);
+                }
             }
             player.DiscoverOptions.Clear();
 
