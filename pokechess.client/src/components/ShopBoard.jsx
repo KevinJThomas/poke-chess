@@ -1,4 +1,5 @@
 import Button from "./Button";
+import DiscoverModal from "./DiscoverModal";
 import HandRow from "./HandRow";
 import Hero from "./Hero";
 import HeroPower from "./HeroPower";
@@ -82,6 +83,7 @@ export default function ShopBoard({
         isDragDisabled={false}
         isDropDisabled={disableHandDrop}
       />
+      <DiscoverModal discoverOptions={player.discoverOptions} connection={connection} />
     </div>
   );
 }

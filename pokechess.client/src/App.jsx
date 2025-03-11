@@ -353,7 +353,6 @@ export default function App() {
     connection.on(
       "CombatStarted",
       (combatActions, opponentBoard, playerBoard) => {
-        console.log("CombatStarted", combatActions, opponentBoard, playerBoard)
         setCombatActions(combatActions);
         setGameStatus("battle");
         setPlayersMap((prev) => {
@@ -461,7 +460,7 @@ export default function App() {
         )}
         {gameStatus === "shop" && (
           <Button
-            className="absolute top-1/2 right-0"
+            className="absolute top-1/2 right-2"
             onClick={endTurn}
             disabled={hasEndedTurn}
           >
