@@ -116,7 +116,7 @@ namespace PokeChess.Server.Services
                 }
             }
 
-            if (!IsLobbyValid(lobby))
+            if (!lobby.IsValid())
             {
                 _logger.LogError("StartGame received invalid lobby");
                 return lobby;
@@ -185,7 +185,7 @@ namespace PokeChess.Server.Services
                 return (lobby, player);
             }
 
-            if (!IsLobbyValid(lobby))
+            if (!lobby.IsValid())
             {
                 _logger.LogError("GetNewShop received invalid lobby");
                 return (lobby, player);
@@ -255,7 +255,7 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
-            if (!IsLobbyValid(lobby))
+            if (!lobby.IsValid())
             {
                 _logger.LogError("MoveCard received invalid lobby");
                 return lobby;
@@ -311,7 +311,7 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
-            if (!IsLobbyValid(lobby))
+            if (!lobby.IsValid())
             {
                 _logger.LogError("CombatRound received invalid lobby");
                 return lobby;
@@ -375,7 +375,7 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
-            if (!IsLobbyValid(lobby))
+            if (!lobby.IsValid())
             {
                 _logger.LogError("FreezeShop received invalid lobby");
                 return lobby;
@@ -401,7 +401,7 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
-            if (!IsLobbyValid(lobby))
+            if (!lobby.IsValid())
             {
                 _logger.LogError("FreezeShop received invalid lobby");
                 return lobby;
@@ -445,7 +445,7 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
-            if (!IsLobbyValid(lobby))
+            if (!lobby.IsValid())
             {
                 _logger.LogError("UseHeroPower received invalid lobby");
                 return lobby;
@@ -570,16 +570,6 @@ namespace PokeChess.Server.Services
                 dictionary[dictionaryIndexList[index]] = true;
                 return (dictionary, dictionaryIndexList[index]);
             }
-        }
-
-        private bool IsLobbyValid(Lobby lobby)
-        {
-            if (lobby == null || lobby.GameState == null || lobby.Players == null || !lobby.Players.Any() || lobby.Players.Count != _playersPerLobby)
-            {
-                return false;
-            }
-
-            return true;
         }
 
         private Lobby ReturnCardToPool(Lobby lobby, Card card)
