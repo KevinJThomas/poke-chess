@@ -4,7 +4,7 @@ namespace PokeChess.Server.Models.Player
 {
     public class CombatAction
     {
-        [DebuggerDisplay("{PlayerMinionId}, {OpponentMinionId}, {Type}, Is Attacking: {PlayerIsAttacking}")]
+        [DebuggerDisplay("{Type}, {PlayerMinionId}, {OpponentMinionId}, Attacking: {PlayerIsAttacking}")]
         public string? PlayerMinionId { get; set; }
         public string? OpponentMinionId { get; set; }
         public List<HitValues> PlayerOnHitValues { get; set; }
