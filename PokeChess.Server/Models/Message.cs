@@ -1,5 +1,8 @@
-﻿namespace PokeChess.Server.Models
+﻿using System.Diagnostics;
+
+namespace PokeChess.Server.Models
 {
+    [DebuggerDisplay("{Name}: {Value}")]
     public class Message
     {
         public string Id { get; set; }

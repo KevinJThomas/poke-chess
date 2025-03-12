@@ -1,7 +1,9 @@
 ﻿using PokeChess.Server.Models.Game;
+using System.Diagnostics;
 
 namespace PokeChess.Server.Models
 {
+    [DebuggerDisplay("Active: {IsActive}")]
     public class Lobby
     {
         public Lobby(string id)

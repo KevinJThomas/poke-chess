@@ -1,5 +1,8 @@
-﻿namespace PokeChess.Server.Models.Player.Hero
+﻿using System.Diagnostics;
+
+namespace PokeChess.Server.Models.Player.Hero
 {
+    [DebuggerDisplay("{Name}, {Id}")]
     public class HeroPower
     {
         public int Id { get; set; }

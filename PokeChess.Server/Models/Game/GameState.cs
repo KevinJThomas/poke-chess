@@ -1,5 +1,8 @@
-﻿namespace PokeChess.Server.Models.Game
+﻿using System.Diagnostics;
+
+namespace PokeChess.Server.Models.Game
 {
+    [DebuggerDisplay("Round Number: {RoundNumber}, Damage Cap: {DamageCap}")]
     public class GameState
     {
         public int RoundNumber { get; set; } = 0;

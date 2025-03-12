@@ -1,5 +1,4 @@
 ﻿using PokeChess.Server.Models.Response.Game;
-using PokeChess.Server.Models.Response.Player;
 
 namespace PokeChess.Server.Models.Response
 {

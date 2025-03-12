@@ -1,8 +1,10 @@
 ﻿using PokeChess.Server.Enums;
 using PokeChess.Server.Models.Game;
+using System.Diagnostics;
 
 namespace PokeChess.Server.Models.Response.Game
 {
+    [DebuggerDisplay("{Name}, {CardType}, Tier: {Tier}")]
     public class CardResponse
     {
         public string? Id { get; set; }

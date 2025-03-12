@@ -1,5 +1,8 @@
-﻿namespace PokeChess.Server.Models.Response.Player.Hero
+﻿using System.Diagnostics;
+
+namespace PokeChess.Server.Models.Response.Player.Hero
 {
+    [DebuggerDisplay("{Name}")]
     public class HeroPowerResponse
     {
         public string? Name { get; set; }

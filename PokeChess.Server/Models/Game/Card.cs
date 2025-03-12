@@ -1,7 +1,9 @@
 ﻿using PokeChess.Server.Enums;
+using System.Diagnostics;
 
 namespace PokeChess.Server.Models.Game
 {
+    [DebuggerDisplay("{Name}, {CardType}, Tier: {Tier}, Priority: {Priority}")]
     public class Card
     {
         public string? Id { get; set; }

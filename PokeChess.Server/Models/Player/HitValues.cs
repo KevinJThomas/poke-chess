@@ -1,9 +1,11 @@
 ﻿using PokeChess.Server.Models.Game;
+using System.Diagnostics;
 
 namespace PokeChess.Server.Models.Player
 {
     public class HitValues
     {
+        [DebuggerDisplay("{Id}, {Damage}")]
         public string? Id { get; set; }
         public int Damage { get; set; }
         public int Attack { get; set; }

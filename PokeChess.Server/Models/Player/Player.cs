@@ -1,9 +1,11 @@
 ﻿using PokeChess.Server.Extensions;
 using PokeChess.Server.Helpers;
 using PokeChess.Server.Models.Game;
+using System.Diagnostics;
 
 namespace PokeChess.Server.Models.Player
 {
+    [DebuggerDisplay("{Name}, {Hero.Name}, Board Size: {Board.Count}, Hand Size: {Hand.Count}")]
     public class Player
     {
         private readonly int _startingGold = ConfigurationHelper.config.GetValue<int>("App:Player:StartingGold");
@@ -50,6 +52,7 @@ namespace PokeChess.Server.Models.Player
             Discounts = new Discounts();
             Hero = new Hero.Hero();
             Board = new List<Card>();
+            StartOfCombatBoard = new List<Card>();
             Hand = new List<Card>();
             Shop = new List<Card>();
             DelayedSpells = new List<Card>();

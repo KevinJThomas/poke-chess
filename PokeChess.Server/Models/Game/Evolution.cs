@@ -1,5 +1,8 @@
-﻿namespace PokeChess.Server.Models.Game
+﻿using System.Diagnostics;
+
+namespace PokeChess.Server.Models.Game
 {
+    [DebuggerDisplay("{Name}, {Num}")]
     public class Evolution
     {
         public string? Name { get; set; }

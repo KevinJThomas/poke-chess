@@ -1,10 +1,11 @@
-﻿using PokeChess.Server.Models.Game;
-using PokeChess.Server.Models.Player;
+﻿using PokeChess.Server.Models.Player;
 using PokeChess.Server.Models.Response.Game;
 using PokeChess.Server.Models.Response.Player.Hero;
+using System.Diagnostics;
 
 namespace PokeChess.Server.Models.Response.Player
 {
+    [DebuggerDisplay("{Name}, {Hero.Name}, Board Size: {Board.Count}")]
     public class OpponentResponse
     {
         public string? Id { get; set; }

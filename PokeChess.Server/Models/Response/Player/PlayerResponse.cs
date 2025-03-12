@@ -1,8 +1,10 @@
 ﻿using PokeChess.Server.Models.Player;
 using PokeChess.Server.Models.Response.Game;
+using System.Diagnostics;
 
 namespace PokeChess.Server.Models.Response.Player
 {
+    [DebuggerDisplay("{Name}, {Hero.Name}, Board Size: {Board.Count}, Hand Size: {Hand.Count}")]
     public class PlayerResponse : OpponentResponse
     {
         public int BaseGold { get; set; }
