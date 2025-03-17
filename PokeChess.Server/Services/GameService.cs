@@ -348,7 +348,7 @@ namespace PokeChess.Server.Services
                 var winnerName = lobby.Players.Where(x => x.Health > 0).FirstOrDefault().Name;
                 foreach (var player in lobby.Players)
                 {
-                    if (player.CombatActions.Any())
+                    if (player.CombatActions.Any(x => x.Type != CombatActionType.GameOver.ToString().ToLower()))
                     {
                         player.CombatActions.Add(new CombatAction
                         {
