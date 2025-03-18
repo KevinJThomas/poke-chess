@@ -3009,7 +3009,8 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.StartGame(lobby);
             lobby.Players[0].Hand.Add(CardService.Instance.GetFertilizer());
             var originalText = lobby.Players[0].Hand[0].Text;
-            lobby = instance.TestFertilizerText(lobby);
+            lobby.Players[0].FertilizerAttack = 2;
+            lobby.Players[0].UpdateFertilizerText();
             var updatedText = lobby.Players[0].Hand[0].Text;
 
             // Assert

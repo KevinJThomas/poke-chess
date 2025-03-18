@@ -82,14 +82,6 @@ namespace PokeChess.Server.Services
 
         #region public methods
 
-        public Lobby TestFertilizerText(Lobby lobby)
-        {
-            // This function reference can be replaced in GameServiceTest once there is a card that can do the same thing
-            lobby.Players[0].FertilizerAttack = 2;
-            lobby.Players[0].UpdateFertilizerText();
-            return lobby;
-        }
-
         public Lobby StartGame(Lobby lobby)
         {
             if (!Initialized())
@@ -729,6 +721,13 @@ namespace PokeChess.Server.Services
                 }
             }
             player.DiscoverOptions.Clear();
+
+            if (player.DiscoverOptionsQueue != null && player.DiscoverOptionsQueue.Any())
+            {
+                var nextDiscoverOptions = player.DiscoverOptionsQueue.FirstOrDefault();
+                player.DiscoverOptionsQueue.Remove(nextDiscoverOptions);
+                player.DiscoverOptions = nextDiscoverOptions;
+            }
 
             return (lobby, player);
         }

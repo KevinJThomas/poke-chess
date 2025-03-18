@@ -1852,7 +1852,16 @@ namespace PokeChess.Server.Extensions
                     {
                         return false;
                     }
-                    player.DiscoverOptions.Clear();
+
+                    if (player.DiscoverOptions == null)
+                    {
+                        player.DiscoverOptions = new List<Card>();
+                    }
+                    else if (player.DiscoverOptions.Any())
+                    {
+                        player.DiscoverOptionsQueue.Add(player.DiscoverOptions.Clone());
+                        player.DiscoverOptions.Clear();
+                    }
 
                     for (var i = 0; i < _discoverAmount; i++)
                     {
@@ -1943,7 +1952,9 @@ namespace PokeChess.Server.Extensions
 
             if (typesOnBoard.Any())
             {
-                return typesOnBoard.Max();
+                return typesOnBoard.GroupBy(x => x)
+                                    .OrderByDescending(x => x.Count())
+                                    .Select(x => x.Key).FirstOrDefault();
             }
             else
             {
