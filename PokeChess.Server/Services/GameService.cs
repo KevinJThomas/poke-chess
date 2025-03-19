@@ -934,6 +934,7 @@ namespace PokeChess.Server.Services
                         player.CombatActions = new List<CombatAction>();
                     }
 
+                    player.IsActive = false;
                     player.CombatActions.Add(new CombatAction
                     {
                         Type = CombatActionType.GameOver.ToString().ToLower(),
