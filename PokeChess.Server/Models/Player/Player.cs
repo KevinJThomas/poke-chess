@@ -47,8 +47,9 @@ namespace PokeChess.Server.Models.Player
             BattlecriesPlayed = 0;
             GoldSpentThisTurn = 0;
             RockTypeDeaths = 0;
-            SpellsCasted = 0;
+            TavernSpellsCasted = 0;
             BoardReturnedToPool = false;
+            FreeRefreshCount = 0;
             Discounts = new Discounts();
             Hero = new Hero.Hero();
             Board = new List<Card>();
@@ -164,8 +165,9 @@ namespace PokeChess.Server.Models.Player
                 _rockTypeDeaths = value;
             }
         }
-        public int SpellsCasted { get; set; }
+        public int TavernSpellsCasted { get; set; }
         public bool BoardReturnedToPool { get; set; }
+        public int FreeRefreshCount { get; set; }
         public Discounts Discounts { get; set; }
         public Hero.Hero Hero { get; set; }
         public List<Card> Board { get; set; }

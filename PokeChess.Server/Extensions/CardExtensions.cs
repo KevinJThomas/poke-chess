@@ -3,14 +3,17 @@ using PokeChess.Server.Helpers;
 using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services;
+using PokeChess.Server.Services.Interfaces;
 
 namespace PokeChess.Server.Extensions
 {
     public static class CardExtensions
     {
+        private static readonly ICardService _cardService = CardService.Instance;
         private static readonly string _copyStamp = ConfigurationHelper.config.GetValue<string>("App:Game:CardIdCopyStamp");
         private static readonly decimal _botPriorityAttack = ConfigurationHelper.config.GetValue<decimal>("App:Bot:Priorities:Attack");
         private static readonly decimal _botPriorityHealth = ConfigurationHelper.config.GetValue<decimal>("App:Bot:Priorities:Health");
+        private static readonly int _discoverAmount = ConfigurationHelper.config.GetValue<int>("App:Game:DiscoverAmount");
 
         public static void ScrubModifiers(this Card card)
         {
@@ -100,7 +103,7 @@ namespace PokeChess.Server.Extensions
             {
                 case 7:
                 case 54:
-                    var discoverTreasure = CardService.Instance.GetNewDiscoverTreasure();
+                    var discoverTreasure = _cardService.GetNewDiscoverTreasure();
                     discoverTreasure.Id = Guid.NewGuid().ToString() + _copyStamp;
                     player.Hand.Add(discoverTreasure);
                     player.CardAddedToHand();
@@ -183,6 +186,26 @@ namespace PokeChess.Server.Extensions
 
                     player.BattlecriesPlayed++;
                     return player;
+                case 23:
+                    var minionsToDiscover23 = _cardService.GetAllMinions().Where(x => x.CardType == CardType.Minion && x.Tier == 1 && !player.DiscoverOptions.Any(y => y.Id == x.Id)).DistinctBy(x => x.PokemonId).ToList();
+                    if (minionsToDiscover23 == null || !minionsToDiscover23.Any())
+                    {
+                        return player;
+                    }
+
+                    player.Discover(minionsToDiscover23, 1);
+                    player.BattlecriesPlayed++;
+                    return player;
+                case 24:
+                    var minionsToDiscover24 = _cardService.GetAllMinions().Where(x => x.CardType == CardType.Minion && x.Tier <= player.Tier && !player.DiscoverOptions.Any(y => y.Id == x.Id) && x.MinionTypes.Contains(player.GetPrimaryTypeOnBoard())).DistinctBy(x => x.PokemonId).ToList();
+                    if (minionsToDiscover24 == null || !minionsToDiscover24.Any())
+                    {
+                        return player;
+                    }
+
+                    player.Discover(minionsToDiscover24, 1);
+                    player.BattlecriesPlayed++;
+                    return player;
                 case 27:
                     player.DelayedSpells.Add(new Card
                     {
@@ -234,7 +257,7 @@ namespace PokeChess.Server.Extensions
                             if (!types.Contains(minion.MinionTypes[0]))
                             {
                                 types.Add(minion.MinionTypes[0]);
-                                minion.Attack += 2;
+                                minion.Attack += 3;
                                 minion.Health += 1;
                                 player = minion.GainedStatsTrigger(player);
                             }
@@ -244,14 +267,14 @@ namespace PokeChess.Server.Extensions
                             if (!types.Contains(minion.MinionTypes[0]))
                             {
                                 types.Add(minion.MinionTypes[0]);
-                                minion.Attack += 2;
+                                minion.Attack += 3;
                                 minion.Health += 1;
                                 player = minion.GainedStatsTrigger(player);
                             }
                             else if (!types.Contains(minion.MinionTypes[1]))
                             {
                                 types.Add(minion.MinionTypes[1]);
-                                minion.Attack += 2;
+                                minion.Attack += 3;
                                 minion.Health += 1;
                                 player = minion.GainedStatsTrigger(player);
                             }
@@ -263,7 +286,7 @@ namespace PokeChess.Server.Extensions
                 case 46:
                     if (player.Hand.Count() < player.MaxHandSize)
                     {
-                        player.Hand.Add(CardService.Instance.GetFertilizer());
+                        player.Hand.Add(_cardService.GetFertilizer());
                         player.CardAddedToHand();
                     }
 
@@ -304,31 +327,19 @@ namespace PokeChess.Server.Extensions
                     if (player.Board.Any())
                     {
                         var types = new List<MinionType>();
-                        foreach (var minion in player.Board.Where(x => x.CardType == CardType.Minion && card.MinionTypes.Count() == 1))
+                        foreach (var minion in player.Board.Where(x => x.CardType == CardType.Minion))
                         {
-                            if (!types.Contains(minion.MinionTypes[0]))
+                            foreach (var type in minion.MinionTypes)
                             {
-                                types.Add(minion.MinionTypes[0]);
-                                card.Attack += 1;
-                                card.Health += 1;
-                            }
-                        }
-                        foreach (var minion in player.Board.Where(x => x.CardType == CardType.Minion && card.MinionTypes.Count() == 2))
-                        {
-                            if (!types.Contains(minion.MinionTypes[0]))
-                            {
-                                types.Add(minion.MinionTypes[0]);
-                                card.Attack += 1;
-                                card.Health += 1;
-                            }
-                            else if (!types.Contains(minion.MinionTypes[1]))
-                            {
-                                types.Add(minion.MinionTypes[1]);
-                                card.Attack += 1;
-                                card.Health += 1;
+                                if (!types.Contains(type))
+                                {
+                                    types.Add(type);
+                                }
                             }
                         }
 
+                        card.Attack += 1 * types.Count();
+                        card.Health += 2 * types.Count();
                         player = card.GainedStatsTrigger(player);
                     }
 
@@ -345,8 +356,8 @@ namespace PokeChess.Server.Extensions
                     {
                         foreach (var fireMinion in player.Board.Where(x => x.CardType == CardType.Minion && x.MinionTypes.Contains(MinionType.Fire) && x.Id != card.Id))
                         {
-                            fireMinion.Attack += 2;
-                            fireMinion.Health += 1;
+                            fireMinion.Attack += 3;
+                            fireMinion.Health += 2;
                             player = fireMinion.GainedStatsTrigger(player);
                         }
                     }
@@ -354,7 +365,7 @@ namespace PokeChess.Server.Extensions
                     player.BattlecriesPlayed++;
                     return player;
                 case 60:
-                    var pokeLunch = CardService.Instance.GetAllSpells().Where(x => x.Name == "Poké Lunch").FirstOrDefault();
+                    var pokeLunch = _cardService.GetAllSpells().Where(x => x.Name == "Poké Lunch").FirstOrDefault();
                     pokeLunch.Id = Guid.NewGuid().ToString() + _copyStamp;
                     player.Hand.Add(pokeLunch);
                     player.CardAddedToHand();
@@ -386,13 +397,27 @@ namespace PokeChess.Server.Extensions
                     player.ApplyShopDiscounts();
                     player.BattlecriesPlayed++;
                     return player;
+                case 88:
+                    player.FreeRefreshCount += 2;
+                    player.BattlecriesPlayed++;
+                    return player;
+                case 89:
+                    var spellsToDiscover = _cardService.GetAllSpells().Where(x => x.CardType == CardType.Spell && x.Tier <= player.Tier && !player.DiscoverOptions.Any(y => y.Id == x.Id)).DistinctBy(x => x.Name).ToList();
+                    if (spellsToDiscover == null || !spellsToDiscover.Any())
+                    {
+                        return player;
+                    }
+
+                    player.Discover(spellsToDiscover);
+                    player.BattlecriesPlayed++;
+                    return player;
                 case 94:
                     if (player.Board.Any(x => x.Tier % 2 != 0 && x.Id != card.Id))
                     {
                         foreach (var minion in player.Board.Where(x => x.Tier % 2 != 0 && x.Id != card.Id))
                         {
-                            minion.Attack += 4;
-                            minion.Health += 4;
+                            minion.Attack += 6;
+                            minion.Health += 6;
                             player = minion.GainedStatsTrigger(player);
                         }
                     }
@@ -485,8 +510,8 @@ namespace PokeChess.Server.Extensions
                     {
                         foreach (var fireMinion in player.Board.Where(x => x.CardType == CardType.Minion && x.MinionTypes.Contains(MinionType.Electric) && x.Id != card.Id))
                         {
-                            fireMinion.Attack += 3;
-                            fireMinion.Health += 3;
+                            fireMinion.Attack += 4;
+                            fireMinion.Health += 4;
                             player = fireMinion.GainedStatsTrigger(player);
                         }
                     }
@@ -516,8 +541,8 @@ namespace PokeChess.Server.Extensions
                     {
                         foreach (var minion in player.Board.Where(x => x.Tier % 2 == 0 && x.Id != card.Id))
                         {
-                            minion.Attack += 4;
-                            minion.Health += 4;
+                            minion.Attack += 6;
+                            minion.Health += 6;
                             player = minion.GainedStatsTrigger(player);
                         }
                     }
@@ -545,7 +570,7 @@ namespace PokeChess.Server.Extensions
                     case 8:
                         if (player.Hand.Count() < player.MaxHandSize)
                         {
-                            var possibleSpells = CardService.Instance.GetAllSpells().Where(x => x.Tier <= player.Tier).Distinct().ToList();
+                            var possibleSpells = _cardService.GetAllSpells().Where(x => x.Tier <= player.Tier).Distinct().ToList();
                             var spell = possibleSpells[ThreadSafeRandom.ThisThreadsRandom.Next(possibleSpells.Count)];
                             spell.Id = Guid.NewGuid().ToString() + _copyStamp;
                             player.Hand.Add(spell);
@@ -573,23 +598,11 @@ namespace PokeChess.Server.Extensions
                     case 22:
                         if (player.Hand.Count() < player.MaxHandSize)
                         {
-                            var flyingMinions = CardService.Instance.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains(MinionType.Flying)).Distinct().ToList();
+                            var flyingMinions = _cardService.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains(MinionType.Flying)).Distinct().ToList();
                             var flyingMinion = flyingMinions[ThreadSafeRandom.ThisThreadsRandom.Next(flyingMinions.Count)];
                             flyingMinion.Id = Guid.NewGuid().ToString() + _copyStamp;
                             player.Hand.Add(flyingMinion);
                             player.CardAddedToHand(true);
-                        }
-
-                        return player;
-                    case 45:
-                        if (player.Board.Any(x => x.Id != card.Id))
-                        {
-                            foreach (var minion in player.Board.Where(x => x.Id != card.Id))
-                            {
-                                minion.Attack += player.FertilizerAttack;
-                                minion.Health += player.FertilizerHealth;
-                                player = minion.GainedStatsTrigger(player);
-                            }
                         }
 
                         return player;
@@ -644,7 +657,7 @@ namespace PokeChess.Server.Extensions
                     case 61:
                         if (player.Hand.Count() < player.MaxHandSize)
                         {
-                            var pokeLunch = CardService.Instance.GetAllSpells().Where(x => x.Name == "Poké Lunch").FirstOrDefault();
+                            var pokeLunch = _cardService.GetAllSpells().Where(x => x.Name == "Poké Lunch").FirstOrDefault();
                             pokeLunch.Id = Guid.NewGuid().ToString() + _copyStamp;
                             player.Hand.Add(pokeLunch);
                             player.CardAddedToHand(true);
@@ -654,8 +667,25 @@ namespace PokeChess.Server.Extensions
                     case 69:
                         if (player.Hand.Count() < player.MaxHandSize)
                         {
-                            player.Hand.Add(CardService.Instance.GetFertilizer());
+                            player.Hand.Add(_cardService.GetFertilizer());
                             player.CardAddedToHand(true);
+                        }
+                        if (player.Hand.Count() < player.MaxHandSize)
+                        {
+                            player.Hand.Add(_cardService.GetFertilizer());
+                            player.CardAddedToHand(true);
+                        }
+
+                        return player;
+                    case 71:
+                        if (player.Board.Any(x => x.Id != card.Id))
+                        {
+                            foreach (var minion in player.Board.Where(x => x.Id != card.Id))
+                            {
+                                minion.Attack += player.FertilizerAttack;
+                                minion.Health += player.FertilizerHealth;
+                                player = minion.GainedStatsTrigger(player);
+                            }
                         }
 
                         return player;
@@ -672,7 +702,7 @@ namespace PokeChess.Server.Extensions
                     case 90:
                         if (player.Hand.Count() < player.MaxHandSize)
                         {
-                            var discoverTreasure = CardService.Instance.GetNewDiscoverTreasure();
+                            var discoverTreasure = _cardService.GetNewDiscoverTreasure();
                             discoverTreasure.Id = Guid.NewGuid().ToString() + _copyStamp;
                             player.Hand.Add(discoverTreasure);
                             player.CardAddedToHand(true);
@@ -682,8 +712,8 @@ namespace PokeChess.Server.Extensions
                     case 101:
                         foreach (var minion in player.Board.Where(x => x.MinionTypes.Contains(MinionType.Electric)))
                         {
-                            minion.Attack += 3;
-                            minion.Health += 3;
+                            minion.Attack += 5;
+                            minion.Health += 5;
                             player = minion.GainedStatsTrigger(player);
                         }
                         return player;
@@ -695,7 +725,7 @@ namespace PokeChess.Server.Extensions
                     case 120:
                         if (player.Hand.Count() < player.MaxHandSize)
                         {
-                            var waterMinions = CardService.Instance.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains(MinionType.Water)).Distinct().ToList();
+                            var waterMinions = _cardService.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains(MinionType.Water)).Distinct().ToList();
                             var waterMinion = waterMinions[ThreadSafeRandom.ThisThreadsRandom.Next(waterMinions.Count)];
                             waterMinion.Id = Guid.NewGuid().ToString() + _copyStamp;
                             player.Hand.Add(waterMinion);
@@ -787,7 +817,7 @@ namespace PokeChess.Server.Extensions
                     {
                         foreach (var minion in player.Board.Where(x => x.Id != card.Id))
                         {
-                            minion.Attack += 1;
+                            minion.Attack += 2;
                             minion.Health += 1;
                             player = minion.GainedStatsTrigger(player);
                         }
@@ -807,7 +837,7 @@ namespace PokeChess.Server.Extensions
                     {
                         var minionToBuff = player.Board.Where(x => x.MinionTypes.Contains(MinionType.Electric)).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count(x => x.MinionTypes.Contains(MinionType.Electric)))];
                         var index = player.Board.FindIndex(x => x.Id == minionToBuff.Id);
-                        player.Board[index].Health += 1;
+                        player.Board[index].Health += 2;
                         player = player.Board[index].GainedStatsTrigger(player);
                     }
 
@@ -817,8 +847,8 @@ namespace PokeChess.Server.Extensions
                     {
                         var minionToBuff = player.Board.Where(x => x.MinionTypes.Contains(MinionType.Electric)).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count(x => x.MinionTypes.Contains(MinionType.Electric)))];
                         var index = player.Board.FindIndex(x => x.Id == minionToBuff.Id);
-                        player.Board[index].Attack += 1;
-                        player.Board[index].Health += 3;
+                        player.Board[index].Attack += 2;
+                        player.Board[index].Health += 5;
                         player = player.Board[index].GainedStatsTrigger(player);
                     }
 
@@ -843,7 +873,7 @@ namespace PokeChess.Server.Extensions
                             if (!typesOnBoard.Contains(type))
                             {
                                 card.Attack += 1;
-                                card.Health += 1;
+                                card.Health += 2;
                                 player = card.GainedStatsTrigger(player);
                                 break;
                             }
@@ -868,7 +898,7 @@ namespace PokeChess.Server.Extensions
 
                     return player;
                 case 50:
-                    var discoverTreasure = CardService.Instance.GetNewDiscoverTreasure();
+                    var discoverTreasure = _cardService.GetNewDiscoverTreasure();
                     discoverTreasure.Id = Guid.NewGuid().ToString() + _copyStamp;
                     player.Hand.Add(discoverTreasure);
                     player.CardAddedToHand();
@@ -890,7 +920,7 @@ namespace PokeChess.Server.Extensions
                         var minionToBuff = player.Board.Where(x => x.MinionTypes.Contains(MinionType.Flying) && x.Id != cardPlayed.Id).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Where(x => x.MinionTypes.Contains(MinionType.Flying) && x.Id != cardPlayed.Id).Count())];
                         var index = player.Board.FindIndex(x => x.Id == minionToBuff.Id);
                         player.Board[index].Attack += 2;
-                        player.Board[index].Health += 2;
+                        player.Board[index].Health += 3;
                         player = player.Board[index].GainedStatsTrigger(player);
                     }
 
@@ -909,8 +939,8 @@ namespace PokeChess.Server.Extensions
                 case 92:
                     if (cardPlayed.Tier % 2 != 0 && card.Id != cardPlayed.Id)
                     {
-                        card.Attack += 2;
-                        card.Health += 2;
+                        card.Attack += 3;
+                        card.Health += 3;
                         player = card.GainedStatsTrigger(player);
                     }
 
@@ -920,8 +950,8 @@ namespace PokeChess.Server.Extensions
                     {
                         foreach (var minion in player.Board.Where(x => x.Tier % 2 != 0))
                         {
-                            minion.Attack += 2;
-                            minion.Health += 1;
+                            minion.Attack += 3;
+                            minion.Health += 2;
                             player = minion.GainedStatsTrigger(player);
                         }
                     }
@@ -953,7 +983,7 @@ namespace PokeChess.Server.Extensions
                         foreach (var waterMinion in player.Board.Where(x => x.MinionTypes.Contains(MinionType.Water)))
                         {
                             waterMinion.Attack += 1;
-                            waterMinion.Health += 1;
+                            waterMinion.Health += 2;
                             player = waterMinion.GainedStatsTrigger(player);
                         }
                     }
@@ -965,7 +995,7 @@ namespace PokeChess.Server.Extensions
                         foreach (var waterMinion in player.Board.Where(x => x.MinionTypes.Contains(MinionType.Water)))
                         {
                             waterMinion.Attack += 2;
-                            waterMinion.Health += 2;
+                            waterMinion.Health += 4;
                             player = waterMinion.GainedStatsTrigger(player);
                         }
                     }
@@ -974,8 +1004,8 @@ namespace PokeChess.Server.Extensions
                 case 130:
                     if (cardPlayed.CardType == CardType.Minion && card.Id != cardPlayed.Id && (cardPlayed.MinionTypes.Contains(MinionType.Flying) || cardPlayed.MinionTypes.Contains(MinionType.Water)))
                     {
-                        card.Attack += player.SpellsCasted;
-                        card.Health += player.SpellsCasted;
+                        card.Attack += player.TavernSpellsCasted;
+                        card.Health += player.TavernSpellsCasted;
                         player = card.GainedStatsTrigger(player);
                     }
 
@@ -983,8 +1013,8 @@ namespace PokeChess.Server.Extensions
                 case 147:
                     if (cardPlayed.Tier % 2 == 0 && card.Id != cardPlayed.Id)
                     {
-                        card.Attack += 2;
-                        card.Health += 2;
+                        card.Attack += 3;
+                        card.Health += 3;
                         player = card.GainedStatsTrigger(player);
                     }
 
@@ -994,8 +1024,8 @@ namespace PokeChess.Server.Extensions
                     {
                         foreach (var minion in player.Board.Where(x => x.Tier % 2 == 0))
                         {
-                            minion.Attack += 1;
-                            minion.Health += 2;
+                            minion.Attack += 2;
+                            minion.Health += 3;
                             player = minion.GainedStatsTrigger(player);
                         }
                     }
@@ -1019,7 +1049,7 @@ namespace PokeChess.Server.Extensions
                     if (cardSold.MinionTypes.Contains(MinionType.Flying))
                     {
                         card.Attack += 2;
-                        card.Health += 2;
+                        card.Health += 3;
                         player = card.GainedStatsTrigger(player);
                     }
 
@@ -1028,7 +1058,7 @@ namespace PokeChess.Server.Extensions
                     if (cardSold.MinionTypes.Contains(MinionType.Flying))
                     {
                         card.Attack += 4;
-                        card.Health += 4;
+                        card.Health += 6;
                         player = card.GainedStatsTrigger(player);
                     }
 
@@ -1052,7 +1082,7 @@ namespace PokeChess.Server.Extensions
                     {
                         if (player.Hand.Count() < player.MaxHandSize)
                         {
-                            player.Hand.Add(CardService.Instance.GetFertilizer());
+                            player.Hand.Add(_cardService.GetFertilizer());
                             player.CardAddedToHand();
                         }
                     }
@@ -1071,7 +1101,7 @@ namespace PokeChess.Server.Extensions
                 case 152:
                     if (player.Hand.Count() < player.MaxHandSize)
                     {
-                        var possibleMinions = CardService.Instance.GetAllMinions().Where(x => x.Tier == card.Amount[0]).ToList();
+                        var possibleMinions = _cardService.GetAllMinions().Where(x => x.Tier == card.Amount[0]).ToList();
                         var randomMinion = possibleMinions[ThreadSafeRandom.ThisThreadsRandom.Next(possibleMinions.Count())];
                         if (randomMinion != null)
                         {
@@ -1229,7 +1259,7 @@ namespace PokeChess.Server.Extensions
             {
                 case 111:
                     card.SellValue += 2;
-                    card.Text = $"__Avenge (4):__ This minion sells for 2 more gold\nSells for {card.SellValue - 1} more gold!";
+                    card.Text = $"__Avenge (3):__ This minion sells for 2 more gold\nSells for {card.SellValue - 1} more gold!";
                     return;
             }
         }
@@ -1256,7 +1286,7 @@ namespace PokeChess.Server.Extensions
                             },
                             Amount = new List<int>
                             {
-                                1
+                                2
                             },
                             Delay = 1,
                             IsTavernSpell = true
@@ -1313,8 +1343,8 @@ namespace PokeChess.Server.Extensions
                     {
                         foreach (var fireMinion in player.Board.Where(x => !x.IsDead && x.MinionTypes.Contains(MinionType.Fire)))
                         {
-                            fireMinion.CombatAttack += 2;
-                            fireMinion.CombatHealth += 2;
+                            fireMinion.CombatAttack += 3;
+                            fireMinion.CombatHealth += 3;
                             hitValues.Add(new HitValues
                             {
                                 Id = fireMinion.Id,
@@ -1331,8 +1361,8 @@ namespace PokeChess.Server.Extensions
                     {
                         var minionToBuff = player.Board.Where(x => !x.IsDead && x.MinionTypes.Contains(MinionType.Water)).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count(x => !x.IsDead && x.MinionTypes.Contains(MinionType.Water)))];
                         var index = player.Board.FindIndex(x => x.Id == minionToBuff.Id);
-                        player.Board[index].CombatAttack += player.SpellsCasted;
-                        player.Board[index].CombatHealth += player.SpellsCasted;
+                        player.Board[index].CombatAttack += player.TavernSpellsCasted * 2;
+                        player.Board[index].CombatHealth += player.TavernSpellsCasted * 2;
                         hitValues.Add(new HitValues
                         {
                             Id = player.Board[index].Id,
@@ -1348,8 +1378,8 @@ namespace PokeChess.Server.Extensions
                     {
                         foreach (var waterMinion in player.Board.Where(x => !x.IsDead && x.MinionTypes.Contains(MinionType.Water)))
                         {
-                            waterMinion.CombatAttack += player.SpellsCasted;
-                            waterMinion.CombatHealth += player.SpellsCasted;
+                            waterMinion.CombatAttack += player.TavernSpellsCasted * 2;
+                            waterMinion.CombatHealth += player.TavernSpellsCasted * 2;
                             hitValues.Add(new HitValues
                             {
                                 Id = waterMinion.Id,
@@ -1364,7 +1394,7 @@ namespace PokeChess.Server.Extensions
                 case 138:
                     if (player.Hand.Count() < player.MaxHandSize)
                     {
-                        var possibleSpells = CardService.Instance.GetAllSpells().Where(x => x.Tier <= player.Tier).Distinct().ToList();
+                        var possibleSpells = _cardService.GetAllSpells().Where(x => x.Tier <= player.Tier).Distinct().ToList();
                         var spell = possibleSpells[ThreadSafeRandom.ThisThreadsRandom.Next(possibleSpells.Count)];
                         spell.Id = Guid.NewGuid().ToString() + _copyStamp;
                         player.Hand.Add(spell);
@@ -1375,7 +1405,7 @@ namespace PokeChess.Server.Extensions
                 case 139:
                     if (player.Hand.Count() < player.MaxHandSize)
                     {
-                        var possibleSpells = CardService.Instance.GetAllSpells().Where(x => x.Tier <= player.Tier).Distinct().ToList();
+                        var possibleSpells = _cardService.GetAllSpells().Where(x => x.Tier <= player.Tier).Distinct().ToList();
                         var spell = possibleSpells[ThreadSafeRandom.ThisThreadsRandom.Next(possibleSpells.Count)];
                         var spell2 = possibleSpells[ThreadSafeRandom.ThisThreadsRandom.Next(possibleSpells.Count)];
                         spell.Id = Guid.NewGuid().ToString() + _copyStamp;
@@ -1421,8 +1451,8 @@ namespace PokeChess.Server.Extensions
 
                     if (types.Count() >= 3)
                     {
-                        card.CombatAttack += 2;
-                        card.CombatHealth += 2;
+                        card.CombatAttack += 3;
+                        card.CombatHealth += 3;
                         hitValues.Add(new HitValues
                         {
                             Id = card.Id,

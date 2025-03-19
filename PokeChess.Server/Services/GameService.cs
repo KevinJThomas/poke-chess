@@ -186,19 +186,33 @@ namespace PokeChess.Server.Services
             var playerIndex = lobby.Players.FindIndex(x => x == player);
             if (spendRefreshCost)
             {
-                if (player.Gold < player.RefreshCost)
+                if (player.FreeRefreshCount > 0)
                 {
-                    _logger.LogError($"GetNewShop failed because player does not have enough gold. player.Gold: {player.Gold}, player.RefreshCost: {player.RefreshCost}");
-                    return (lobby, player);
-                }
-                else
-                {
-                    player.Gold -= player.RefreshCost;
+                    player.FreeRefreshCount--;
                     foreach (var card in player.Shop)
                     {
                         if (card.IsFrozen)
                         {
                             card.IsFrozen = false;
+                        }
+                    }
+                }
+                else
+                {
+                    if (player.Gold < player.RefreshCost)
+                    {
+                        _logger.LogError($"GetNewShop failed because player does not have enough gold. player.Gold: {player.Gold}, player.RefreshCost: {player.RefreshCost}");
+                        return (lobby, player);
+                    }
+                    else
+                    {
+                        player.Gold -= player.RefreshCost;
+                        foreach (var card in player.Shop)
+                        {
+                            if (card.IsFrozen)
+                            {
+                                card.IsFrozen = false;
+                            }
                         }
                     }
                 }
@@ -719,14 +733,6 @@ namespace PokeChess.Server.Services
             if (player.Hand.Count() < player.MaxHandSize)
             {
                 player.Hand.Add(card);
-                if (card.CardType == CardType.Minion && lobby.GameState.MinionCardPool.Any(x => x.Id == card.Id))
-                {
-                    lobby.GameState.MinionCardPool.Remove(card);
-                }
-                if (card.CardType == CardType.Spell && lobby.GameState.SpellCardPool.Any(x => x.Id == card.Id))
-                {
-                    lobby.GameState.SpellCardPool.Remove(card);
-                }
             }
             player.DiscoverOptions.Clear();
 

@@ -5,7 +5,6 @@ using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services;
 using PokeChess.Server.Services.Interfaces;
-using System.Numerics;
 
 namespace PokeChess.Server.Extensions
 {
@@ -132,40 +131,47 @@ namespace PokeChess.Server.Extensions
                         switch (spell.Name)
                         {
                             case "Fertilizer":
-                                if (string.IsNullOrWhiteSpace(targetId))
+                                var fertilizerSuccess = false;
+                                var fertilizerCastCount = player.Board.Count(x => x.PokemonId == 45) + 1;
+                                for (var j = 0; j < fertilizerCastCount; j++)
                                 {
-                                    return false;
-                                }
-
-                                var targetOnBoard = player.Board.Where(x => x.Id == targetId).FirstOrDefault();
-                                if (targetOnBoard != null)
-                                {
-                                    var targetIndex = player.Board.FindIndex(x => x.Id == targetId);
-                                    if (targetIndex >= 0 && targetIndex < player.Board.Count())
+                                    if (string.IsNullOrWhiteSpace(targetId))
                                     {
-                                        player.Board[targetIndex].Attack += player.FertilizerAttack;
-                                        player.Board[targetIndex].Health += player.FertilizerHealth;
-                                        player = player.Board[targetIndex].TargetedBySpell(player);
-                                        player = player.Board[targetIndex].GainedStatsTrigger(player);
-                                        return true;
+                                        return false;
+                                    }
+
+                                    var targetOnBoard = player.Board.Where(x => x.Id == targetId).FirstOrDefault();
+                                    if (targetOnBoard != null)
+                                    {
+                                        var targetIndex = player.Board.FindIndex(x => x.Id == targetId);
+                                        if (targetIndex >= 0 && targetIndex < player.Board.Count())
+                                        {
+                                            player.Board[targetIndex].Attack += player.FertilizerAttack;
+                                            player.Board[targetIndex].Health += player.FertilizerHealth;
+                                            player = player.Board[targetIndex].TargetedBySpell(player);
+                                            player = player.Board[targetIndex].GainedStatsTrigger(player);
+                                            fertilizerSuccess = true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var targetInShop = player.Shop.Where(x => x.Id == targetId).FirstOrDefault();
+                                        if (targetInShop != null)
+                                        {
+                                            var targetIndex = player.Shop.FindIndex(x => x.Id == targetId);
+                                            if (targetIndex >= 0 && targetIndex < player.Shop.Count())
+                                            {
+                                                player.Shop[targetIndex].Attack += player.FertilizerAttack;
+                                                player.Shop[targetIndex].Health += player.FertilizerHealth;
+                                                player = player.Shop[targetIndex].TargetedBySpell(player);
+                                                player = player.Shop[targetIndex].GainedStatsTrigger(player);
+                                                fertilizerSuccess = true;
+                                            }
+                                        }
                                     }
                                 }
 
-                                var targetInShop = player.Shop.Where(x => x.Id == targetId).FirstOrDefault();
-                                if (targetInShop != null)
-                                {
-                                    var targetIndex = player.Shop.FindIndex(x => x.Id == targetId);
-                                    if (targetIndex >= 0 && targetIndex < player.Shop.Count())
-                                    {
-                                        player.Shop[targetIndex].Attack += player.FertilizerAttack;
-                                        player.Shop[targetIndex].Health += player.FertilizerHealth;
-                                        player = player.Shop[targetIndex].TargetedBySpell(player);
-                                        player = player.Shop[targetIndex].GainedStatsTrigger(player);
-                                        return true;
-                                    }
-                                }
-
-                                return false;
+                                return fertilizerSuccess;
                             case "Miracle Grow":
                                 return player.EvolveMinion(targetId);
                             case "Raichu Snack":
@@ -201,12 +207,12 @@ namespace PokeChess.Server.Extensions
                         }
                     }
 
-                    player.SpellsCasted++;
                 }
             }
 
             if (success)
             {
+                player.TavernSpellsCasted++;
                 player.NextSpellCastsTwice = false;
             }
 
@@ -1500,6 +1506,70 @@ namespace PokeChess.Server.Extensions
             }
         }
 
+        public static MinionType GetPrimaryTypeOnBoard(this Player player)
+        {
+            var typesOnBoard = new List<MinionType>();
+
+            foreach (var minion in player.Board)
+            {
+                if (minion.CardType == CardType.Minion && minion.MinionTypes.Any())
+                {
+                    foreach (var type in minion.MinionTypes)
+                    {
+                        typesOnBoard.Add(type);
+                    }
+                }
+            }
+
+            if (typesOnBoard.Any())
+            {
+                return typesOnBoard.GroupBy(x => x)
+                                    .OrderByDescending(x => x.Count())
+                                    .Select(x => x.Key).FirstOrDefault();
+            }
+            else
+            {
+                return MinionType.None;
+            }
+        }
+
+        public static void Discover(this Player player, List<Card> discoverOptions, int stats = 0)
+        {
+            if (player.DiscoverOptions == null)
+            {
+                player.DiscoverOptions = new List<Card>();
+            }
+            else if (player.DiscoverOptions.Any())
+            {
+                player.DiscoverOptionsQueue.Add(player.DiscoverOptions.Clone());
+                player.DiscoverOptions.Clear();
+            }
+
+            for (var i = 0; i < _discoverAmount; i++)
+            {
+                if (discoverOptions.Any())
+                {
+                    var index = ThreadSafeRandom.ThisThreadsRandom.Next(discoverOptions.Count());
+                    player.DiscoverOptions.Add(discoverOptions[index]);
+                    discoverOptions.RemoveAt(index);
+                }
+            }
+
+            if (player.DiscoverOptions.Any())
+            {
+                foreach (var option in player.DiscoverOptions)
+                {
+                    option.Id += _copyStamp;
+
+                    if (option.CardType == CardType.Minion && stats > 0)
+                    {
+                        option.Attack = stats;
+                        option.Health = stats;
+                    }
+                }
+            }
+        }
+
         private static bool ExecuteSpell(this Player player, Card spell, SpellType spellType, int amount, string? targetId)
         {
             switch (spellType)
@@ -1907,26 +1977,7 @@ namespace PokeChess.Server.Extensions
                         return false;
                     }
 
-                    if (player.DiscoverOptions == null)
-                    {
-                        player.DiscoverOptions = new List<Card>();
-                    }
-                    else if (player.DiscoverOptions.Any())
-                    {
-                        player.DiscoverOptionsQueue.Add(player.DiscoverOptions.Clone());
-                        player.DiscoverOptions.Clear();
-                    }
-
-                    for (var i = 0; i < _discoverAmount; i++)
-                    {
-                        if (possibleDiscovers.Any())
-                        {
-                            var index = ThreadSafeRandom.ThisThreadsRandom.Next(possibleDiscovers.Count());
-                            player.DiscoverOptions.Add(possibleDiscovers[index]);
-                            possibleDiscovers.RemoveAt(index);
-                        }
-                    }
-
+                    player.Discover(possibleDiscovers);
                     return true;
                 case SpellType.DiscoverMinionByType:
                     var type = MinionType.None;
@@ -1950,26 +2001,7 @@ namespace PokeChess.Server.Extensions
                         return false;
                     }
 
-                    if (player.DiscoverOptions == null)
-                    {
-                        player.DiscoverOptions = new List<Card>();
-                    }
-                    else if (player.DiscoverOptions.Any())
-                    {
-                        player.DiscoverOptionsQueue.Add(player.DiscoverOptions.Clone());
-                        player.DiscoverOptions.Clear();
-                    }
-
-                    for (var i = 0; i < _discoverAmount; i++)
-                    {
-                        if (possibleDiscoversByType.Any())
-                        {
-                            var index = ThreadSafeRandom.ThisThreadsRandom.Next(possibleDiscoversByType.Count());
-                            player.DiscoverOptions.Add(possibleDiscoversByType[index]);
-                            possibleDiscoversByType.RemoveAt(index);
-                        }
-                    }
-
+                    player.Discover(possibleDiscoversByType);
                     return true;
                 case SpellType.DiscoverMinionByTier:
                     return player.DiscoverMinionByTier(amount);
@@ -2110,26 +2142,7 @@ namespace PokeChess.Server.Extensions
                         return false;
                     }
 
-                    if (player.DiscoverOptions == null)
-                    {
-                        player.DiscoverOptions = new List<Card>();
-                    }
-                    else if (player.DiscoverOptions.Any())
-                    {
-                        player.DiscoverOptionsQueue.Add(player.DiscoverOptions.Clone());
-                        player.DiscoverOptions.Clear();
-                    }
-
-                    for (var i = 0; i < _discoverAmount; i++)
-                    {
-                        if (possibleBattlecryDiscovers.Any())
-                        {
-                            var index = ThreadSafeRandom.ThisThreadsRandom.Next(possibleBattlecryDiscovers.Count());
-                            player.DiscoverOptions.Add(possibleBattlecryDiscovers[index]);
-                            possibleBattlecryDiscovers.RemoveAt(index);
-                        }
-                    }
-
+                    player.Discover(possibleBattlecryDiscovers);
                     return true;
                 case SpellType.CopyRightmostMinionInHand:
                     if (!player.Hand.Any())
@@ -2158,26 +2171,7 @@ namespace PokeChess.Server.Extensions
                         return false;
                     }
 
-                    if (player.DiscoverOptions == null)
-                    {
-                        player.DiscoverOptions = new List<Card>();
-                    }
-                    else if (player.DiscoverOptions.Any())
-                    {
-                        player.DiscoverOptionsQueue.Add(player.DiscoverOptions.Clone());
-                        player.DiscoverOptions.Clear();
-                    }
-
-                    for (var i = 0; i < _discoverAmount; i++)
-                    {
-                        if (possibleDeathrattleDiscovers.Any())
-                        {
-                            var index = ThreadSafeRandom.ThisThreadsRandom.Next(possibleDeathrattleDiscovers.Count());
-                            player.DiscoverOptions.Add(possibleDeathrattleDiscovers[index]);
-                            possibleDeathrattleDiscovers.RemoveAt(index);
-                        }
-                    }
-
+                    player.Discover(possibleDeathrattleDiscovers);
                     return true;
                 case SpellType.BugConsumeShopMinion:
                     if (string.IsNullOrWhiteSpace(targetId))
@@ -2507,33 +2501,6 @@ namespace PokeChess.Server.Extensions
             }
         }
 
-        private static MinionType GetPrimaryTypeOnBoard(this Player player)
-        {
-            var typesOnBoard = new List<MinionType>();
-
-            foreach (var minion in player.Board)
-            {
-                if (minion.CardType == CardType.Minion && minion.MinionTypes.Any())
-                {
-                    foreach (var type in minion.MinionTypes)
-                    {
-                        typesOnBoard.Add(type);
-                    }
-                }
-            }
-
-            if (typesOnBoard.Any())
-            {
-                return typesOnBoard.GroupBy(x => x)
-                                    .OrderByDescending(x => x.Count())
-                                    .Select(x => x.Key).FirstOrDefault();
-            }
-            else
-            {
-                return MinionType.None;
-            }
-        }
-
         private static bool DiscoverMinionByTier(this Player player, int amount)
         {
             if (amount <= 0)
@@ -2551,26 +2518,7 @@ namespace PokeChess.Server.Extensions
                 return false;
             }
 
-            if (player.DiscoverOptions == null)
-            {
-                player.DiscoverOptions = new List<Card>();
-            }
-            else if (player.DiscoverOptions.Any())
-            {
-                player.DiscoverOptionsQueue.Add(player.DiscoverOptions.Clone());
-                player.DiscoverOptions.Clear();
-            }
-
-            for (var i = 0; i < _discoverAmount; i++)
-            {
-                if (possibleDiscoversByTier.Any())
-                {
-                    var index = ThreadSafeRandom.ThisThreadsRandom.Next(possibleDiscoversByTier.Count());
-                    player.DiscoverOptions.Add(possibleDiscoversByTier[index]);
-                    possibleDiscoversByTier.RemoveAt(index);
-                }
-            }
-
+            player.Discover(possibleDiscoversByTier);
             return true;
         }
     }

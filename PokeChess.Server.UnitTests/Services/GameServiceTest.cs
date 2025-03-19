@@ -825,7 +825,7 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(lobby.Players[0].Hand.Count() < handCount);
             Assert.IsTrue(cardPoolCountBeforeBuy == cardPoolCountAfterBuy);
             Assert.IsTrue(lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack + 5);
-            Assert.IsTrue(lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth + 5);
+            Assert.IsTrue(lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth + 10);
         }
 
         [TestMethod]
@@ -1473,42 +1473,6 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
-        public void TestEndOfTurn_45()
-        {
-            // Arrange
-            (var lobby, var logger) = InitializeSetup();
-            var instance = GameService.Instance;
-            var minions = CardService.Instance.GetAllMinions();
-            var random = new Random();
-            var fertilizerAttack = 2;
-            var fertilizerHealth = 5;
-
-            // Act
-            instance.Initialize(logger);
-            lobby = instance.StartGame(lobby);
-            lobby.Players[0].Tier = 4;
-            lobby.Players[0].FertilizerAttack = fertilizerAttack;
-            lobby.Players[0].FertilizerHealth = fertilizerHealth;
-            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 45).FirstOrDefault());
-            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
-            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
-            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
-            var handCount = lobby.Players[0].Hand.Count();
-            var minionAttackListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 45).Select(y => y.Attack).ToList();
-            var minionHealthListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 45).Select(y => y.Health).ToList();
-            lobby = instance.CombatRound(lobby);
-            var minionAttackListAfter = lobby.Players[0].Board.Where(x => x.PokemonId != 45).Select(y => y.Attack).ToList();
-            var minionHealthListAfter = lobby.Players[0].Board.Where(x => x.PokemonId != 45).Select(y => y.Health).ToList();
-
-            // Assert
-            Assert.IsTrue(lobby.Players[0].Hand.Count() == handCount);
-            Assert.IsFalse(Enumerable.SequenceEqual(minionAttackListBefore, minionAttackListAfter));
-            Assert.IsFalse(Enumerable.SequenceEqual(minionHealthListBefore, minionHealthListAfter));
-            Assert.IsTrue(minionAttackListBefore[0] == minionAttackListAfter[0] - fertilizerAttack);
-            Assert.IsTrue(minionHealthListBefore[0] == minionHealthListAfter[0] - fertilizerHealth);
-        }
-
-        [TestMethod]
         public void TestEndOfTurn_47()
         {
             // Arrange
@@ -1605,6 +1569,42 @@ namespace PokeChess.Server.UnitTests.Services
         }
 
         [TestMethod]
+        public void TestEndOfTurn_71()
+        {
+            // Arrange
+            (var lobby, var logger) = InitializeSetup();
+            var instance = GameService.Instance;
+            var minions = CardService.Instance.GetAllMinions();
+            var random = new Random();
+            var fertilizerAttack = 2;
+            var fertilizerHealth = 5;
+
+            // Act
+            instance.Initialize(logger);
+            lobby = instance.StartGame(lobby);
+            lobby.Players[0].Tier = 4;
+            lobby.Players[0].FertilizerAttack = fertilizerAttack;
+            lobby.Players[0].FertilizerHealth = fertilizerHealth;
+            lobby.Players[0].Board.Add(minions.Where(x => x.PokemonId == 71).FirstOrDefault());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
+            lobby.Players[0].Board.Add(CardService.Instance.BuildTestMinion());
+            var handCount = lobby.Players[0].Hand.Count();
+            var minionAttackListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 71).Select(y => y.Attack).ToList();
+            var minionHealthListBefore = lobby.Players[0].Board.Where(x => x.PokemonId != 71).Select(y => y.Health).ToList();
+            lobby = instance.CombatRound(lobby);
+            var minionAttackListAfter = lobby.Players[0].Board.Where(x => x.PokemonId != 71).Select(y => y.Attack).ToList();
+            var minionHealthListAfter = lobby.Players[0].Board.Where(x => x.PokemonId != 71).Select(y => y.Health).ToList();
+
+            // Assert
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == handCount);
+            Assert.IsFalse(Enumerable.SequenceEqual(minionAttackListBefore, minionAttackListAfter));
+            Assert.IsFalse(Enumerable.SequenceEqual(minionHealthListBefore, minionHealthListAfter));
+            Assert.IsTrue(minionAttackListBefore[0] == minionAttackListAfter[0] - fertilizerAttack);
+            Assert.IsTrue(minionHealthListBefore[0] == minionHealthListAfter[0] - fertilizerHealth);
+        }
+
+        [TestMethod]
         public void TestEndOfTurn_78()
         {
             // Arrange
@@ -1671,8 +1671,8 @@ namespace PokeChess.Server.UnitTests.Services
             // Assert
             Assert.IsFalse(Enumerable.SequenceEqual(minionAttackListBefore, minionAttackListAfter));
             Assert.IsFalse(Enumerable.SequenceEqual(minionHealthListBefore, minionHealthListAfter));
-            Assert.IsTrue(minionAttackListBefore[0] == minionAttackListAfter[0] - 3);
-            Assert.IsTrue(minionHealthListBefore[0] == minionHealthListAfter[0] - 3);
+            Assert.IsTrue(minionAttackListBefore[0] == minionAttackListAfter[0] - 5);
+            Assert.IsTrue(minionHealthListBefore[0] == minionHealthListAfter[0] - 5);
         }
 
         [TestMethod]
@@ -1856,7 +1856,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsTrue(attackBefore == attackAfter - 2);
-            Assert.IsTrue(healthBefore == healthAfter - 2);
+            Assert.IsTrue(healthBefore == healthAfter - 3);
         }
 
         [TestMethod]
@@ -1879,7 +1879,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsTrue(attackBefore == attackAfter - 4);
-            Assert.IsTrue(healthBefore == healthAfter - 4);
+            Assert.IsTrue(healthBefore == healthAfter - 6);
         }
 
         [TestMethod]
@@ -1900,8 +1900,8 @@ namespace PokeChess.Server.UnitTests.Services
             Assert.IsTrue(lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack);
             Assert.IsTrue(lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack);
             Assert.IsTrue(
-                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth + 1) ||
-                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth + 1 && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth));
+                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth + 2) ||
+                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth + 2 && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth));
         }
 
         [TestMethod]
@@ -1920,11 +1920,11 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsTrue(
-                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth + 3) ||
-                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth + 3 && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth));
+                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth + 5) ||
+                (lobby.Players[0].Board[1].Health == lobby.Players[0].Board[1].BaseHealth + 5 && lobby.Players[0].Board[0].Health == lobby.Players[0].Board[0].BaseHealth));
             Assert.IsTrue(
-                (lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack && lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack + 1) ||
-                (lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack + 1 && lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack));
+                (lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack && lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack + 2) ||
+                (lobby.Players[0].Board[1].Attack == lobby.Players[0].Board[1].BaseAttack + 2 && lobby.Players[0].Board[0].Attack == lobby.Players[0].Board[0].BaseAttack));
         }
 
         [TestMethod]
@@ -1996,7 +1996,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsTrue(attackBefore == attackAfter - 1);
-            Assert.IsTrue(healthBefore == healthAfter - 1);
+            Assert.IsTrue(healthBefore == healthAfter - 2);
         }
 
         [TestMethod]
@@ -2015,11 +2015,11 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
             var attackBefore = lobby.Players[0].Board[0].Attack;
             var healthBefore = lobby.Players[0].Board[0].Health;
-            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
             var attackAfter1 = lobby.Players[0].Board[0].Attack;
             var healthAfter1 = lobby.Players[0].Board[0].Health;
-            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
-            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
             var attackAfter3 = lobby.Players[0].Board[0].Attack;
             var healthAfter3 = lobby.Players[0].Board[0].Health;
 
@@ -2046,11 +2046,11 @@ namespace PokeChess.Server.UnitTests.Services
             lobby.Players[0].Hand.Add(CardService.Instance.BuildTestMinion());
             var attackBefore = lobby.Players[0].Board[0].Attack;
             var healthBefore = lobby.Players[0].Board[0].Health;
-            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
             var attackAfter1 = lobby.Players[0].Board[0].Attack;
             var healthAfter1 = lobby.Players[0].Board[0].Health;
-            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
-            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Shop[0], Enums.MoveCardAction.Play, 1, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
+            lobby = instance.MoveCard(lobby, lobby.Players[0], lobby.Players[0].Hand[0], Enums.MoveCardAction.Play, 1, null);
             var attackAfter3 = lobby.Players[0].Board[0].Attack;
             var healthAfter3 = lobby.Players[0].Board[0].Health;
 
@@ -2379,7 +2379,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsTrue(attackBefore == attackAfter - 2);
-            Assert.IsTrue(healthBefore == healthAfter - 2);
+            Assert.IsTrue(healthBefore == healthAfter - 3);
         }
 
         [TestMethod]
@@ -2430,10 +2430,10 @@ namespace PokeChess.Server.UnitTests.Services
             var healthAfter2 = lobby.Players[0].Board[0].Health;
 
             // Assert
-            Assert.IsTrue(attackBefore == attackAfter - 2);
-            Assert.IsTrue(healthBefore == healthAfter - 2);
-            Assert.IsTrue(attackAfter == attackAfter2 - 2);
-            Assert.IsTrue(healthAfter == healthAfter2 - 2);
+            Assert.IsTrue(attackBefore == attackAfter - 3);
+            Assert.IsTrue(healthBefore == healthAfter - 3);
+            Assert.IsTrue(attackAfter == attackAfter2 - 3);
+            Assert.IsTrue(healthAfter == healthAfter2 - 3);
         }
 
         [TestMethod]
@@ -2464,12 +2464,12 @@ namespace PokeChess.Server.UnitTests.Services
             var bulbasaurHealthAfter = lobby.Players[0].Board[1].Health;
 
             // Assert
-            Assert.IsTrue(attackBefore == attackAfter - 2);
-            Assert.IsTrue(healthBefore == healthAfter - 1);
-            Assert.IsTrue(attackAfter == attackAfter2 - 2);
-            Assert.IsTrue(healthAfter == healthAfter2 - 1);
-            Assert.IsTrue(bulbasaurAttackBefore == bulbasaurAttackAfter - 2);
-            Assert.IsTrue(bulbasaurHealthBefore == bulbasaurHealthAfter - 1);
+            Assert.IsTrue(attackBefore == attackAfter - 3);
+            Assert.IsTrue(healthBefore == healthAfter - 2);
+            Assert.IsTrue(attackAfter == attackAfter2 - 3);
+            Assert.IsTrue(healthAfter == healthAfter2 - 2);
+            Assert.IsTrue(bulbasaurAttackBefore == bulbasaurAttackAfter - 3);
+            Assert.IsTrue(bulbasaurHealthBefore == bulbasaurHealthAfter - 2);
         }
 
         [TestMethod]
@@ -2570,7 +2570,7 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.CombatRound(lobby);
 
             // Assert
-            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold + 1);
+            Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold + 2);
         }
 
         [TestMethod]
@@ -2606,8 +2606,8 @@ namespace PokeChess.Server.UnitTests.Services
             {
                 Assert.IsTrue(attackBefore[i] == attackAfter[i] - 1);
                 Assert.IsTrue(attackAfter[i] == attackAfter2[i] - 1);
-                Assert.IsTrue(healthBefore[i] == healthAfter[i] - 1);
-                Assert.IsTrue(healthAfter[i] == healthAfter2[i] - 1);
+                Assert.IsTrue(healthBefore[i] == healthAfter[i] - 2);
+                Assert.IsTrue(healthAfter[i] == healthAfter2[i] - 2);
             }
         }
 
@@ -2644,8 +2644,8 @@ namespace PokeChess.Server.UnitTests.Services
             {
                 Assert.IsTrue(attackBefore[i] == attackAfter[i] - 2);
                 Assert.IsTrue(attackAfter[i] == attackAfter2[i] - 2);
-                Assert.IsTrue(healthBefore[i] == healthAfter[i] - 2);
-                Assert.IsTrue(healthAfter[i] == healthAfter2[i] - 2);
+                Assert.IsTrue(healthBefore[i] == healthAfter[i] - 4);
+                Assert.IsTrue(healthAfter[i] == healthAfter2[i] - 4);
             }
         }
 
@@ -2716,8 +2716,8 @@ namespace PokeChess.Server.UnitTests.Services
             // Assert
             Assert.IsTrue(attackBefore == attackAfter);
             Assert.IsTrue(healthBefore == healthAfter);
-            Assert.IsTrue(attackAfter == attackAfter2 - lobby.Players[0].SpellsCasted);
-            Assert.IsTrue(healthAfter == healthAfter2 - lobby.Players[0].SpellsCasted);
+            Assert.IsTrue(attackAfter == attackAfter2 - lobby.Players[0].TavernSpellsCasted);
+            Assert.IsTrue(healthAfter == healthAfter2 - lobby.Players[0].TavernSpellsCasted);
         }
 
         [TestMethod]
@@ -2769,10 +2769,10 @@ namespace PokeChess.Server.UnitTests.Services
             var healthAfter2 = lobby.Players[0].Board[0].Health;
 
             // Assert
-            Assert.IsTrue(attackBefore == attackAfter - 2);
-            Assert.IsTrue(healthBefore == healthAfter - 2);
-            Assert.IsTrue(attackAfter == attackAfter2 - 2);
-            Assert.IsTrue(healthAfter == healthAfter2 - 2);
+            Assert.IsTrue(attackBefore == attackAfter - 3);
+            Assert.IsTrue(healthBefore == healthAfter - 3);
+            Assert.IsTrue(attackAfter == attackAfter2 - 3);
+            Assert.IsTrue(healthAfter == healthAfter2 - 3);
         }
 
         [TestMethod]
@@ -2803,12 +2803,12 @@ namespace PokeChess.Server.UnitTests.Services
             var ivysaurHealthAfter = lobby.Players[0].Board[1].Health;
 
             // Assert
-            Assert.IsTrue(attackBefore == attackAfter - 1);
-            Assert.IsTrue(healthBefore == healthAfter - 2);
-            Assert.IsTrue(attackAfter == attackAfter2 - 1);
-            Assert.IsTrue(healthAfter == healthAfter2 - 2);
-            Assert.IsTrue(ivysaurAttackBefore == ivysaurAttackAfter - 1);
-            Assert.IsTrue(ivysaurHealthBefore == ivysaurHealthAfter - 2);
+            Assert.IsTrue(attackBefore == attackAfter - 2);
+            Assert.IsTrue(healthBefore == healthAfter - 3);
+            Assert.IsTrue(attackAfter == attackAfter2 - 2);
+            Assert.IsTrue(healthAfter == healthAfter2 - 3);
+            Assert.IsTrue(ivysaurAttackBefore == ivysaurAttackAfter - 2);
+            Assert.IsTrue(ivysaurHealthBefore == ivysaurHealthAfter - 3);
         }
 
         [TestMethod]
@@ -2897,7 +2897,7 @@ namespace PokeChess.Server.UnitTests.Services
             lobby = instance.CombatRound(lobby);
 
             // Assert
-            Assert.IsTrue(lobby.Players[0].Board[1].CombatAttack == lobby.Players[0].Board[1].Attack + 2);
+            Assert.IsTrue(lobby.Players[0].Board[1].CombatAttack == lobby.Players[0].Board[1].Attack + 3);
         }
 
         [TestMethod]
@@ -2964,7 +2964,7 @@ namespace PokeChess.Server.UnitTests.Services
             var combatAttackAfter = lobby.Players[0].Board[0].CombatAttack;
 
             // Assert
-            Assert.IsTrue(combatAttackBefore == combatAttackAfter - 2);
+            Assert.IsTrue(combatAttackBefore == combatAttackAfter - 3);
         }
 
         [TestMethod]

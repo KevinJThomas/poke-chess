@@ -285,7 +285,7 @@ namespace PokeChess.Server
                             BaseGold = player.BaseGold,
                             Gold = player.Gold,
                             UpgradeCost = player.UpgradeCost,
-                            RefreshCost = player.RefreshCost,
+                            RefreshCost = player.FreeRefreshCount > 0 ? 0 : player.RefreshCost,
                             OpponentId = player.OpponentId,
                             Hero = new Models.Response.Player.Hero.HeroResponse
                             {
@@ -360,7 +360,7 @@ namespace PokeChess.Server
                 BaseGold = player.BaseGold,
                 Gold = player.Gold,
                 UpgradeCost = player.UpgradeCost,
-                RefreshCost = player.RefreshCost,
+                RefreshCost = player.FreeRefreshCount > 0 ? 0 : player.RefreshCost,
                 OpponentId = player.OpponentId,
                 Hero = new Models.Response.Player.Hero.HeroResponse
                 {
@@ -432,7 +432,7 @@ namespace PokeChess.Server
                         BaseGold = player.BaseGold,
                         Gold = player.Gold,
                         UpgradeCost = player.UpgradeCost,
-                        RefreshCost = player.RefreshCost,
+                        RefreshCost = player.FreeRefreshCount > 0 ? 0 : player.RefreshCost,
                         OpponentId = player.OpponentId,
                         Hero = new Models.Response.Player.Hero.HeroResponse
                         {
