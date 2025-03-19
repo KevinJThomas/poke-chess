@@ -120,8 +120,8 @@ namespace PokeChess.Server.Services
 #if DEBUG
             foreach (var player in lobby.Players.Where(x => !x.IsBot && !x.IsDead))
             {
-                //player.Gold = 100;
-                //player.BaseGold = 100;
+                player.Gold = 100;
+                player.BaseGold = 100;
 
                 if (player.Name.Length > 6 && player.Name.Substring(0, 6).ToLower() == "minion")
                 {
