@@ -4038,7 +4038,7 @@ namespace PokeChess.Server.UnitTests.Services
             // Assert
             Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - lobby.Players[0].Hero.HeroPower.Cost);
             Assert.IsFalse(lobby.Players[0].Board.Any());
-            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 2);
             Assert.IsTrue(lobby.Players[0].Hand[0].PokemonId == 2);
         }
 
@@ -4313,7 +4313,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
-            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 2);
             Assert.IsTrue(lobby.Players[0].Board.Count() == 0);
             Assert.IsTrue(lobby.Players[0].Hand[0].PokemonId == 136);
         }
@@ -4337,7 +4337,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
-            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 2);
             Assert.IsTrue(lobby.Players[0].Board.Count() == 0);
             Assert.IsTrue(lobby.Players[0].Hand[0].PokemonId == 134);
         }
@@ -4361,7 +4361,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 3);
-            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 2);
             Assert.IsTrue(lobby.Players[0].Board.Count() == 0);
             Assert.IsTrue(lobby.Players[0].Hand[0].PokemonId == 135);
         }
@@ -4435,7 +4435,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 6);
-            Assert.IsTrue(lobby.Players[0].Hand.Count() == 2);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 3);
             Assert.IsTrue(lobby.Players[0].Board.Count() == 0);
             Assert.IsTrue(lobby.Players[0].Hand.Count(x => x.PokemonId == 136) == 1);
         }
@@ -4460,7 +4460,7 @@ namespace PokeChess.Server.UnitTests.Services
 
             // Assert
             Assert.IsTrue(lobby.Players[0].Gold == lobby.Players[0].BaseGold - 9);
-            Assert.IsTrue(lobby.Players[0].Hand.Count() == 1);
+            Assert.IsTrue(lobby.Players[0].Hand.Count() == 2);
             Assert.IsTrue(lobby.Players[0].Board.Count() == 0);
             Assert.IsTrue(lobby.Players[0].Hand[0].PokemonId == 134 || lobby.Players[0].Hand[0].PokemonId == 135 || lobby.Players[0].Hand[0].PokemonId == 136);
         }

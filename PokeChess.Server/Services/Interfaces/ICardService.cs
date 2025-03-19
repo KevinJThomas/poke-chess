@@ -17,5 +17,6 @@ namespace PokeChess.Server.Services.Interfaces
         Card GetRaichuSnack();
         Card GetPokemonEgg();
         Card GetNewDiscoverTreasure();
+        Card GetEvolveReward(int tier);
     }
 }

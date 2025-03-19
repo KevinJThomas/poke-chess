@@ -92,7 +92,7 @@ namespace PokeChess.Server.UnitTests.Extensions
             Assert.IsTrue(playerHandSizeBeforeEvolve < minionsToGenerate);
             Assert.IsTrue(playerBoardSizeBeforeEvolve < minionsToGenerate);
             Assert.IsTrue(playerBoardSizeBeforeEvolve > playerBoardSizeAfterEvolve);
-            Assert.IsTrue(playerHandSizeBeforeEvolve > playerHandSizeAfterEvolve);
+            Assert.IsTrue(playerHandSizeBeforeEvolve == playerHandSizeAfterEvolve);
             Assert.IsTrue(player.Hand.FirstOrDefault().Id.Contains("_copy"));
         }
 
@@ -126,8 +126,8 @@ namespace PokeChess.Server.UnitTests.Extensions
             Assert.IsTrue(playerHandSizeBeforeEvolve == minionsToGenerate);
             Assert.IsTrue(playerBoardSizeBeforeEvolve == minionsToGenerate);
             Assert.IsTrue(playerBoardSizeBeforeEvolve > playerBoardSizeAfterEvolve);
-            Assert.IsTrue(playerHandSizeBeforeEvolve > playerHandSizeAfterEvolve);
-            Assert.IsTrue(playerHandSizeAfterEvolve == 2);
+            Assert.IsTrue(playerHandSizeBeforeEvolve < playerHandSizeAfterEvolve);
+            Assert.IsTrue(playerHandSizeAfterEvolve == 4);
         }
     }
 }

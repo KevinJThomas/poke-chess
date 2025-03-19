@@ -54,6 +54,15 @@
     "amount": [ 1, 2 ]
   },
   {
+    "tier": 1,
+    "name": "Poké Trap",
+    "text": "Get a random tier 1 minion",
+    "cardType": 1,
+    "baseCost": 2,
+    "spellTypes": [ 17 ],
+    "amount": [ 1 ]
+  },
+  {
     "tier": 2,
     "name": "Examine Treasure Map",
     "text": "Gain 2 gold next turn",
@@ -75,20 +84,11 @@
   {
     "tier": 2,
     "name": "Motivational Speech",
-    "text": "Give all friendly minions +1/+1",
+    "text": "Give your minions +1/+1",
     "cardType": 1,
     "baseCost": 2,
     "spellTypes": [ 6, 7 ],
     "amount": [ 1, 1 ]
-  },
-  {
-    "tier": 2,
-    "name": "Inspiring Presence",
-    "text": "Minions in the shop have +1/+2 this game",
-    "cardType": 1,
-    "baseCost": 2,
-    "spellTypes": [ 10, 11 ],
-    "amount": [ 1, 2 ]
   },
   {
     "tier": 2,
@@ -101,12 +101,40 @@
   },
   {
     "tier": 3,
+    "name": "Inspiring Presence",
+    "text": "Minions in the shop have +1/+2 this game",
+    "cardType": 1,
+    "baseCost": 2,
+    "spellTypes": [ 10, 11 ],
+    "amount": [ 1, 2 ]
+  },
+  {
+    "tier": 3,
     "name": "Team Building",
-    "text": "Discover a minion of your most common type",
+    "text": "__Discover__ a minion of your most common type",
     "cardType": 1,
     "baseCost": 4,
     "spellTypes": [ 21 ],
     "amount": [ -1 ]
+  },
+  {
+    "tier": 3,
+    "name": "Overconfidence",
+    "text": "If you win your next combat, gain 3 gold. If you tie, gain 1",
+    "cardType": 1,
+    "baseCost": 1,
+    "spellTypes": [ 26, 27 ],
+    "amount": [ 3, 1 ],
+    "baseDelay": 1
+  },
+  {
+    "tier": 3,
+    "name": "Strength in Numbers",
+    "text": "Choose a minion. Give all minions that share a type with it +3/+3",
+    "cardType": 1,
+    "baseCost": 3,
+    "spellTypes": [ 28, 29 ],
+    "amount": [ 3, 3 ]
   },
   {
     "tier": 4,
@@ -120,7 +148,7 @@
   {
     "tier": 4,
     "name": "Fire Stone",
-    "text": "Get a random Fire type",
+    "text": "Get a random __Fire__ type",
     "cardType": 1,
     "baseCost": 3,
     "spellTypes": [ 16 ],
@@ -130,7 +158,7 @@
   {
     "tier": 4,
     "name": "Water Stone",
-    "text": "Get a random Water type",
+    "text": "Get a random __Water__ type",
     "cardType": 1,
     "baseCost": 3,
     "spellTypes": [ 16 ],
@@ -140,12 +168,102 @@
   {
     "tier": 4,
     "name": "Thunder Stone",
-    "text": "Get a random Electric type",
+    "text": "Get a random __Electric__ type",
     "cardType": 1,
     "baseCost": 3,
     "spellTypes": [ 16 ],
     "amount": [ 7 ],
     "pokemonId": 133
+  },
+  {
+    "tier": 4,
+    "name": "Hired Help",
+    "text": "__Discover__ a __Battlecry__ minion",
+    "cardType": 1,
+    "baseCost": 3,
+    "spellTypes": [ 30 ],
+    "amount": [ -1 ]
+  },
+  {
+    "tier": 4,
+    "name": "Death's Door",
+    "text": "__Discover__ a __Deathrattle__ minion",
+    "cardType": 1,
+    "baseCost": 3,
+    "spellTypes": [ 33 ],
+    "amount": [ -1 ]
+  },
+  {
+    "tier": 4,
+    "name": "Stand Your Ground",
+    "text": "Give a minion +12/+12 and __Taunt__",
+    "cardType": 1,
+    "baseCost": 3,
+    "spellTypes": [ 2, 4, 12 ],
+    "amount": [ 12, 12, 4 ]
+  },
+  {
+    "tier": 4,
+    "name": "Playing with Fire",
+    "text": "Get a random __Fire__ type and a copy of it",
+    "cardType": 1,
+    "baseCost": 4,
+    "spellTypes": [ 16, 31 ],
+    "amount": [ 1, -1 ]
+  },
+  {
+    "tier": 5,
+    "name": "Armory Visit",
+    "text": "Set your armor to 5",
+    "cardType": 1,
+    "baseCost": 3,
+    "spellTypes": [ 32 ],
+    "amount": [ 5 ]
+  },
+  {
+    "tier": 5,
+    "name": "Self-Destruct",
+    "text": "Remove a minion. Give its stats to a random friendly minion",
+    "cardType": 1,
+    "baseCost": 3,
+    "spellTypes": [ 19 ],
+    "amount": [ -1 ]
+  },
+  {
+    "tier": 5,
+    "name": "Nom Nom",
+    "text": "Choose a friendly __Bug__ type. It consumes 3 random minions in the tavern to gain their stats",
+    "cardType": 1,
+    "baseCost": 3,
+    "spellTypes": [ 34 ],
+    "amount": [ 3 ]
+  },
+  {
+    "tier": 5,
+    "name": "I'll Do It Myself",
+    "text": "Refresh the tavern with tavern spells",
+    "cardType": 1,
+    "baseCost": 2,
+    "spellTypes": [ 35 ],
+    "amount": [ -1 ]
+  },
+  {
+    "tier": 5,
+    "name": "Right Place, Right Time",
+    "text": "Evolve a random minion in the tavern",
+    "cardType": 1,
+    "baseCost": 5,
+    "spellTypes": [ 37 ],
+    "amount": [ -1 ]
+  },
+  {
+    "tier": 5,
+    "name": "Big Game",
+    "text": "__Discover__ a tier 6 minion",
+    "cardType": 1,
+    "baseCost": 5,
+    "spellTypes": [ 22 ],
+    "amount": [ 6 ]
   },
   {
     "tier": 6,
@@ -165,5 +283,32 @@
     "spellTypes": [ 15 ],
     "amount": [ -1 ],
     "baseDelay": 1
+  },
+  {
+    "tier": 6,
+    "name": "X Factor",
+    "text": "Give your minions +6/+6",
+    "cardType": 1,
+    "baseCost": 4,
+    "spellTypes": [ 6, 7 ],
+    "amount": [ 6, 6 ]
+  },
+  {
+    "tier": 6,
+    "name": "Poké Paradise",
+    "text": "Choose a minion. Refresh the tavern with minions of its type",
+    "cardType": 1,
+    "baseCost": 2,
+    "spellTypes": [ 38 ],
+    "amount": [ -1 ]
+  },
+  {
+    "tier": 6,
+    "name": "Substitute",
+    "text": "Set a minion's stats to 25/25",
+    "cardType": 1,
+    "baseCost": 2,
+    "spellTypes": [ 39, 40 ],
+    "amount": [ 25, 25 ]
   }
 ]

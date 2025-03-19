@@ -5,6 +5,7 @@ using PokeChess.Server.Models.Game;
 using PokeChess.Server.Models.Player;
 using PokeChess.Server.Services;
 using PokeChess.Server.Services.Interfaces;
+using System.Numerics;
 
 namespace PokeChess.Server.Extensions
 {
@@ -27,6 +28,7 @@ namespace PokeChess.Server.Extensions
         private static readonly int _boardsSlots = ConfigurationHelper.config.GetValue<int>("App:Game:BoardsSlots");
         private static readonly int _discoverAmount = ConfigurationHelper.config.GetValue<int>("App:Game:DiscoverAmount");
         private static readonly decimal _botBuyingThreshold = ConfigurationHelper.config.GetValue<decimal>("App:Bot:Priorities:BuyingThreshold");
+        private static readonly int _playerMaxTier = ConfigurationHelper.config.GetValue<int>("App:Player:MaxTier");
 
         public static void ApplyKeywords(this Player player)
         {
@@ -165,8 +167,7 @@ namespace PokeChess.Server.Extensions
 
                                 return false;
                             case "Miracle Grow":
-                                var miracleGrowSuccess = player.EvolveMinion(targetId);
-                                return miracleGrowSuccess;
+                                return player.EvolveMinion(targetId);
                             case "Raichu Snack":
                                 if (string.IsNullOrWhiteSpace(targetId) || !player.Board.Any(x => x.PokemonId == 26) || player.Board.Count() <= 1)
                                 {
@@ -195,6 +196,8 @@ namespace PokeChess.Server.Extensions
                                 }
 
                                 return false;
+                            case "Evolve Reward":
+                                return player.DiscoverMinionByTier(spell.Amount[0]);
                         }
                     }
 
@@ -342,6 +345,8 @@ namespace PokeChess.Server.Extensions
                             evolvedMinion.Attack += extraAttack;
                             evolvedMinion.Health += extraHealth;
                             player.Hand.Add(evolvedMinion);
+                            player.CardAddedToHand();
+                            player.Hand.Add(_cardService.GetEvolveReward(player.Tier + 1));
                             player.CardAddedToHand();
                         }
                     }
@@ -1814,20 +1819,112 @@ namespace PokeChess.Server.Extensions
                     }
 
                     return false;
-                case SpellType.EvolveMinion:
-                    var success = player.EvolveMinion(targetId);
-                    return success;
-                case SpellType.DiscoverMinion:
-                    var possibleDiscovers = _cardService.GetAllMinions().Where(x => x.Tier <= player.Tier).DistinctBy(x => x.PokemonId).ToList();
-                    if (possibleDiscovers == null || possibleDiscovers.Count() < _discoverAmount)
+                case SpellType.GetRandomMinionByTier:
+                    if (amount < 0)
+                    {
+                        amount = player.Tier;
+                    }
+
+                    var randomMinionsByTier = _cardService.GetAllMinions().Where(x => x.Tier == amount).DistinctBy(x => x.PokemonId).ToList();
+                    var randomMinionByTier = randomMinionsByTier[ThreadSafeRandom.ThisThreadsRandom.Next(randomMinionsByTier.Count())];
+                    if (randomMinionByTier != null)
+                    {
+                        if (player.Hand.Count() <= player.MaxHandSize)
+                        {
+                            randomMinionByTier.Id = Guid.NewGuid().ToString() + _copyStamp;
+                            player.Hand.Add(randomMinionByTier);
+                        }
+
+                        return true;
+                    }
+
+                    return false;
+                case SpellType.EvolveFriendlyMinion:
+                    if (string.IsNullOrEmpty(targetId) || !player.Board.Any(x => x.Id == targetId))
                     {
                         return false;
                     }
-                    player.DiscoverOptions.Clear();
+
+                    var success = player.EvolveMinion(targetId);
+                    return success;
+                case SpellType.ConsumeMinion:
+                    if (string.IsNullOrWhiteSpace(targetId))
+                    {
+                        return false;
+                    }
+
+                    var targetOnBoardConsume = player.Board.Any(x => x.Id == targetId);
+                    var targetInShopConsume = player.Shop.Any(x => x.Id == targetId);
+                    if (targetOnBoardConsume)
+                    {
+                        var targetIndexConsume = player.Board.FindIndex(x => x.Id == targetId);
+                        if (targetIndexConsume >= 0 && targetIndexConsume < player.Board.Count())
+                        {
+                            player = player.Board[targetIndexConsume].TargetedBySpell(player);
+                            var attack = player.Board[targetIndexConsume].Attack;
+                            var health = player.Board[targetIndexConsume].Health;
+                            player.Board.RemoveAt(targetIndexConsume);
+
+                            if (player.Board.Any())
+                            {
+                                var index = ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count());
+                                player.Board[index].Attack += attack;
+                                player.Board[index].Health += health;
+                                player = player.Board[index].GainedStatsTrigger(player);
+                            }
+
+                            return true;
+                        }
+                    }
+
+                    if (targetInShopConsume)
+                    {
+                        var targetIndexConsume = player.Shop.FindIndex(x => x.Id == targetId);
+                        if (targetIndexConsume >= 0 && targetIndexConsume < player.Shop.Count())
+                        {
+                            player = player.Shop[targetIndexConsume].TargetedBySpell(player);
+                            var attack = player.Shop[targetIndexConsume].Attack;
+                            var health = player.Shop[targetIndexConsume].Health;
+                            player.Shop.RemoveAt(targetIndexConsume);
+
+                            if (player.Board.Any())
+                            {
+                                var index = ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count());
+                                player.Board[index].Attack += attack;
+                                player.Board[index].Health += health;
+                                player = player.Board[index].GainedStatsTrigger(player);
+                            }
+
+                            return true;
+                        }
+                    }
+
+                    return false;
+                case SpellType.DiscoverMinion:
+                    var possibleDiscovers = _cardService.GetAllMinions().Where(x => x.CardType == CardType.Minion && x.Tier <= player.Tier && !player.DiscoverOptions.Any(y => y.Id == x.Id)).DistinctBy(x => x.PokemonId).ToList();
+                    if (possibleDiscovers == null || !possibleDiscovers.Any())
+                    {
+                        return false;
+                    }
+
+                    if (player.DiscoverOptions == null)
+                    {
+                        player.DiscoverOptions = new List<Card>();
+                    }
+                    else if (player.DiscoverOptions.Any())
+                    {
+                        player.DiscoverOptionsQueue.Add(player.DiscoverOptions.Clone());
+                        player.DiscoverOptions.Clear();
+                    }
 
                     for (var i = 0; i < _discoverAmount; i++)
                     {
-                        player.DiscoverOptions.Add(possibleDiscovers[ThreadSafeRandom.ThisThreadsRandom.Next(possibleDiscovers.Count())]);
+                        if (possibleDiscovers.Any())
+                        {
+                            var index = ThreadSafeRandom.ThisThreadsRandom.Next(possibleDiscovers.Count());
+                            player.DiscoverOptions.Add(possibleDiscovers[index]);
+                            possibleDiscovers.RemoveAt(index);
+                        }
                     }
 
                     return true;
@@ -1847,7 +1944,7 @@ namespace PokeChess.Server.Extensions
                         type = (MinionType)ThreadSafeRandom.ThisThreadsRandom.Next(Enum.GetNames(typeof(MinionType)).Length);
                     }
 
-                    var possibleDiscoversByType = _cardService.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains(type)).DistinctBy(x => x.PokemonId).ToList();
+                    var possibleDiscoversByType = _cardService.GetAllMinions().Where(x => x.CardType == CardType.Minion && x.Tier <= player.Tier && x.MinionTypes.Contains(type) && !player.DiscoverOptions.Any(y => y.Id == x.Id)).DistinctBy(x => x.PokemonId).ToList();
                     if (possibleDiscoversByType == null || !possibleDiscoversByType.Any())
                     {
                         return false;
@@ -1870,6 +1967,459 @@ namespace PokeChess.Server.Extensions
                             var index = ThreadSafeRandom.ThisThreadsRandom.Next(possibleDiscoversByType.Count());
                             player.DiscoverOptions.Add(possibleDiscoversByType[index]);
                             possibleDiscoversByType.RemoveAt(index);
+                        }
+                    }
+
+                    return true;
+                case SpellType.DiscoverMinionByTier:
+                    return player.DiscoverMinionByTier(amount);
+                case SpellType.GainGoldFromWin:
+                    if (player.CombatHistory != null && player.CombatHistory.Any() && player.CombatHistory[0].Damage > 0)
+                    {
+                        player.Gold += amount;
+                    }
+
+                    return true;
+                case SpellType.GainGoldFromTie:
+                    if (player.CombatHistory != null && player.CombatHistory.Any() && player.CombatHistory[0].Damage == 0)
+                    {
+                        player.Gold += amount;
+                    }
+
+                    return true;
+                case SpellType.BuffAttackByType:
+                    if (string.IsNullOrWhiteSpace(targetId))
+                    {
+                        return false;
+                    }
+
+                    var minionTypesAttack = new List<MinionType>();
+                    var targetOnBoardAttackByType = player.Board.Any(x => x.Id == targetId);
+                    var targetInShopAttackByType = player.Shop.Any(x => x.Id == targetId);
+                    if (targetOnBoardAttackByType)
+                    {
+                        var targetIndexAttackByType = player.Board.FindIndex(x => x.Id == targetId);
+                        if (targetIndexAttackByType >= 0 && targetIndexAttackByType < player.Board.Count())
+                        {
+                            minionTypesAttack = player.Board[targetIndexAttackByType].MinionTypes;
+                            player = player.Board[targetIndexAttackByType].TargetedBySpell(player);
+                        }
+                    }
+
+                    if (targetInShopAttackByType)
+                    {
+                        var targetIndexAttackByType = player.Shop.FindIndex(x => x.Id == targetId);
+                        if (targetIndexAttackByType >= 0 && targetIndexAttackByType < player.Shop.Count())
+                        {
+                            minionTypesAttack = player.Shop[targetIndexAttackByType].MinionTypes;
+                            player = player.Shop[targetIndexAttackByType].TargetedBySpell(player);
+                        }
+                    }
+
+                    if (minionTypesAttack.Any())
+                    {
+                        foreach (var minion in player.Board.Where(x => x.CardType == CardType.Minion))
+                        {
+                            foreach (var minionType in minion.MinionTypes)
+                            {
+                                if (minionTypesAttack.Contains(minionType))
+                                {
+                                    minion.Attack += amount;
+                                    break;
+                                }
+                            }
+                        }
+                        foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion))
+                        {
+                            foreach (var minionType in minion.MinionTypes)
+                            {
+                                if (minionTypesAttack.Contains(minionType))
+                                {
+                                    minion.Attack += amount;
+                                    break;
+                                }
+                            }
+                        }
+
+                        return true;
+                    }
+
+                    return false;
+                case SpellType.BuffHealthByType:
+                    if (string.IsNullOrWhiteSpace(targetId))
+                    {
+                        return false;
+                    }
+
+                    var minionTypesHealth = new List<MinionType>();
+                    var targetOnBoardHealthByType = player.Board.Any(x => x.Id == targetId);
+                    var targetInShopHealthByType = player.Shop.Any(x => x.Id == targetId);
+                    if (targetOnBoardHealthByType)
+                    {
+                        var targetIndexHealthByType = player.Board.FindIndex(x => x.Id == targetId);
+                        if (targetIndexHealthByType >= 0 && targetIndexHealthByType < player.Board.Count())
+                        {
+                            minionTypesHealth = player.Board[targetIndexHealthByType].MinionTypes;
+                            player = player.Board[targetIndexHealthByType].TargetedBySpell(player);
+                        }
+                    }
+
+                    if (targetInShopHealthByType)
+                    {
+                        var targetIndexHealthByType = player.Shop.FindIndex(x => x.Id == targetId);
+                        if (targetIndexHealthByType >= 0 && targetIndexHealthByType < player.Shop.Count())
+                        {
+                            minionTypesHealth = player.Shop[targetIndexHealthByType].MinionTypes;
+                            player = player.Shop[targetIndexHealthByType].TargetedBySpell(player);
+                        }
+                    }
+
+                    if (minionTypesHealth.Any())
+                    {
+                        foreach (var minion in player.Board.Where(x => x.CardType == CardType.Minion))
+                        {
+                            foreach (var minionType in minion.MinionTypes)
+                            {
+                                if (minionTypesHealth.Contains(minionType))
+                                {
+                                    minion.Health += amount;
+                                    break;
+                                }
+                            }
+                        }
+                        foreach (var minion in player.Shop.Where(x => x.CardType == CardType.Minion))
+                        {
+                            foreach (var minionType in minion.MinionTypes)
+                            {
+                                if (minionTypesHealth.Contains(minionType))
+                                {
+                                    minion.Health += amount;
+                                    break;
+                                }
+                            }
+                        }
+
+                        return true;
+                    }
+
+                    return false;
+                case SpellType.DiscoverBattlecry:
+                    var possibleBattlecryDiscovers = _cardService.GetAllMinions().Where(x => x.CardType == CardType.Minion && x.Tier <= player.Tier && x.HasBattlecry && !player.DiscoverOptions.Any(y => y.Id == x.Id)).DistinctBy(x => x.PokemonId).ToList();
+                    if (possibleBattlecryDiscovers == null || !possibleBattlecryDiscovers.Any())
+                    {
+                        return false;
+                    }
+
+                    if (player.DiscoverOptions == null)
+                    {
+                        player.DiscoverOptions = new List<Card>();
+                    }
+                    else if (player.DiscoverOptions.Any())
+                    {
+                        player.DiscoverOptionsQueue.Add(player.DiscoverOptions.Clone());
+                        player.DiscoverOptions.Clear();
+                    }
+
+                    for (var i = 0; i < _discoverAmount; i++)
+                    {
+                        if (possibleBattlecryDiscovers.Any())
+                        {
+                            var index = ThreadSafeRandom.ThisThreadsRandom.Next(possibleBattlecryDiscovers.Count());
+                            player.DiscoverOptions.Add(possibleBattlecryDiscovers[index]);
+                            possibleBattlecryDiscovers.RemoveAt(index);
+                        }
+                    }
+
+                    return true;
+                case SpellType.CopyRightmostMinionInHand:
+                    if (!player.Hand.Any())
+                    {
+                        return false;
+                    }
+
+                    var rightmostMinion = player.Hand[player.Hand.Count() - 1];
+                    var copy = rightmostMinion.Clone();
+                    copy.Id = Guid.NewGuid().ToString() + _copyStamp;
+                    player.Hand.Add(copy);
+                    player.CardAddedToHand();
+                    return true;
+                case SpellType.SetArmor:
+                    if (player.IsDead)
+                    {
+                        return false;
+                    }
+
+                    player.Armor = amount;
+                    return true;
+                case SpellType.DiscoverDeathrattle:
+                    var possibleDeathrattleDiscovers = _cardService.GetAllMinions().Where(x => x.CardType == CardType.Minion && x.Tier <= player.Tier && x.HasDeathrattle && !player.DiscoverOptions.Any(y => y.Id == x.Id)).DistinctBy(x => x.PokemonId).ToList();
+                    if (possibleDeathrattleDiscovers == null || !possibleDeathrattleDiscovers.Any())
+                    {
+                        return false;
+                    }
+
+                    if (player.DiscoverOptions == null)
+                    {
+                        player.DiscoverOptions = new List<Card>();
+                    }
+                    else if (player.DiscoverOptions.Any())
+                    {
+                        player.DiscoverOptionsQueue.Add(player.DiscoverOptions.Clone());
+                        player.DiscoverOptions.Clear();
+                    }
+
+                    for (var i = 0; i < _discoverAmount; i++)
+                    {
+                        if (possibleDeathrattleDiscovers.Any())
+                        {
+                            var index = ThreadSafeRandom.ThisThreadsRandom.Next(possibleDeathrattleDiscovers.Count());
+                            player.DiscoverOptions.Add(possibleDeathrattleDiscovers[index]);
+                            possibleDeathrattleDiscovers.RemoveAt(index);
+                        }
+                    }
+
+                    return true;
+                case SpellType.BugConsumeShopMinion:
+                    if (string.IsNullOrWhiteSpace(targetId))
+                    {
+                        return false;
+                    }
+
+                    var targetIndexBugConsume = player.Board.FindIndex(x => x.Id == targetId);
+                    if (targetIndexBugConsume >= 0 && targetIndexBugConsume < player.Board.Count() && player.Board[targetIndexBugConsume].MinionTypes.Contains(MinionType.Bug))
+                    {
+                        if (player.Shop.Any(x => x.CardType == CardType.Minion))
+                        {
+                            for (var i = 0; i < amount; i++)
+                            {
+                                if (!player.Shop.Any(x => x.CardType == CardType.Minion))
+                                {
+                                    break;
+                                }
+
+                                var minionToConsume = player.Shop.Where(x => x.CardType == CardType.Minion).ToList()[ThreadSafeRandom.ThisThreadsRandom.Next(player.Shop.Count(x => x.CardType == CardType.Minion))];
+                                if (minionToConsume != null)
+                                {
+                                    player.Board[targetIndexBugConsume].Attack += minionToConsume.Attack;
+                                    player.Board[targetIndexBugConsume].Health += minionToConsume.Health;
+                                    player.Shop.Remove(minionToConsume);
+                                    player.CardsToReturnToPool.Add(minionToConsume);
+                                }
+                            }
+
+                            player = player.Board[targetIndexBugConsume].GainedStatsTrigger(player);
+                            player = player.Board[targetIndexBugConsume].TargetedBySpell(player);
+                        }
+
+                        return true;
+                    }
+
+                    return false;
+                case SpellType.RefreshTavernAllSpells:
+                    if (player.Shop.Any())
+                    {
+                        foreach (var card in player.Shop)
+                        {
+                            player.CardsToReturnToPool.Add(card);
+                        }
+                        player.Shop.Clear();
+                    }
+
+                    var shopSize = 0;
+                    switch (player.Tier)
+                    {
+                        case 1:
+                            shopSize = _shopSizeTierOne;
+                            break;
+                        case 2:
+                            shopSize = _shopSizeTierTwo;
+                            break;
+                        case 3:
+                            shopSize = _shopSizeTierThree;
+                            break;
+                        case 4:
+                            shopSize = _shopSizeTierFour;
+                            break;
+                        case 5:
+                            shopSize = _shopSizeTierFive;
+                            break;
+                        case 6:
+                            shopSize = _shopSizeTierSix;
+                            break;
+                        default:
+                            return false;
+                    }
+
+                    var spells = _cardService.GetAllSpells().Where(x => x.Tier <= player.Tier).ToList();
+                    for (var i = 0; i < shopSize + 1; i++)
+                    {
+                        var spellToAddAllSpells = spells[ThreadSafeRandom.ThisThreadsRandom.Next(spells.Count())].Clone();
+                        spellToAddAllSpells.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        player.Shop.Add(spellToAddAllSpells);
+                    }
+
+                    return true;
+                case SpellType.EvolveMinion:
+                    return player.EvolveMinion(targetId);
+                case SpellType.EvolveRandomMinionInShop:
+                    if (!player.Shop.Any(x => x.CardType == CardType.Minion && x.NextEvolutions.Any()))
+                    {
+                        return false;
+                    }
+
+                    var minionsToEvolve = player.Shop.Where(x => x.CardType == CardType.Minion && x.NextEvolutions.Any()).ToList();
+                    var minionToEvolve = minionsToEvolve[ThreadSafeRandom.ThisThreadsRandom.Next(minionsToEvolve.Count())];
+                    if (minionToEvolve != null)
+                    {
+                        return player.EvolveMinion(minionToEvolve.Id);
+                    }
+
+                    return false;
+                case SpellType.RefreshTavernByType:
+                    if (string.IsNullOrWhiteSpace(targetId))
+                    {
+                        return false;
+                    }
+
+                    var minionTypesRefresh = new List<MinionType>();
+                    var typeToRefresh = MinionType.None;
+                    var targetOnBoardRefreshByType = player.Board.Any(x => x.Id == targetId);
+                    var targetInShopRefreshByType = player.Shop.Any(x => x.Id == targetId);
+                    if (targetOnBoardRefreshByType)
+                    {
+                        var targetIndexRefreshByType = player.Board.FindIndex(x => x.Id == targetId);
+                        if (targetIndexRefreshByType >= 0 && targetIndexRefreshByType < player.Board.Count())
+                        {
+                            minionTypesRefresh = player.Board[targetIndexRefreshByType].MinionTypes;
+                            player = player.Board[targetIndexRefreshByType].TargetedBySpell(player);
+                        }
+                    }
+
+                    if (targetInShopRefreshByType)
+                    {
+                        var targetIndexRefreshByType = player.Shop.FindIndex(x => x.Id == targetId);
+                        if (targetIndexRefreshByType >= 0 && targetIndexRefreshByType < player.Shop.Count())
+                        {
+                            minionTypesRefresh = player.Shop[targetIndexRefreshByType].MinionTypes;
+                            player = player.Shop[targetIndexRefreshByType].TargetedBySpell(player);
+                        }
+                    }
+
+                    if (minionTypesRefresh.Any())
+                    {
+                        typeToRefresh = minionTypesRefresh[ThreadSafeRandom.ThisThreadsRandom.Next(minionTypesRefresh.Count())];
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                    if (player.Shop.Any())
+                    {
+                        foreach (var card in player.Shop)
+                        {
+                            player.CardsToReturnToPool.Add(card);
+                        }
+                        player.Shop.Clear();
+                    }
+
+                    var shopSizeByType = 0;
+                    switch (player.Tier)
+                    {
+                        case 1:
+                            shopSizeByType = _shopSizeTierOne;
+                            break;
+                        case 2:
+                            shopSizeByType = _shopSizeTierTwo;
+                            break;
+                        case 3:
+                            shopSizeByType = _shopSizeTierThree;
+                            break;
+                        case 4:
+                            shopSizeByType = _shopSizeTierFour;
+                            break;
+                        case 5:
+                            shopSizeByType = _shopSizeTierFive;
+                            break;
+                        case 6:
+                            shopSizeByType = _shopSizeTierSix;
+                            break;
+                        default:
+                            return false;
+                    }
+
+                    var minions = _cardService.GetAllMinions().Where(x => x.Tier <= player.Tier && x.MinionTypes.Contains(typeToRefresh)).ToList();
+                    for (var i = 0; i < shopSizeByType; i++)
+                    {
+                        var minionToAdd = minions[ThreadSafeRandom.ThisThreadsRandom.Next(minions.Count())].Clone();
+                        minionToAdd.Id = Guid.NewGuid().ToString() + _copyStamp;
+                        player.Shop.Add(minionToAdd);
+                    }
+
+                    var spellsRefreshByType = _cardService.GetAllSpells().Where(x => x.Tier <= player.Tier).ToList();
+                    var spellToAdd = spellsRefreshByType[ThreadSafeRandom.ThisThreadsRandom.Next(spellsRefreshByType.Count())];
+                    spellToAdd.Id = Guid.NewGuid().ToString() + _copyStamp;
+                    player.Shop.Add(spellToAdd);
+
+                    return true;
+                case SpellType.SetAttack:
+                    if (string.IsNullOrWhiteSpace(targetId))
+                    {
+                        return false;
+                    }
+
+                    var targetOnBoardSetAttack = player.Board.Any(x => x.Id == targetId);
+                    var targetInShopSetAttack = player.Shop.Any(x => x.Id == targetId);
+                    if (targetOnBoardSetAttack)
+                    {
+                        var targetIndexSetAttack = player.Board.FindIndex(x => x.Id == targetId);
+                        if (targetIndexSetAttack >= 0 && targetIndexSetAttack < player.Board.Count())
+                        {
+                            player.Board[targetIndexSetAttack].Attack = amount;
+                            player = player.Board[targetIndexSetAttack].TargetedBySpell(player);
+                            player = player.Board[targetIndexSetAttack].GainedStatsTrigger(player);
+                        }
+                    }
+
+                    if (targetInShopSetAttack)
+                    {
+                        var targetIndexSetAttack = player.Shop.FindIndex(x => x.Id == targetId);
+                        if (targetIndexSetAttack >= 0 && targetIndexSetAttack < player.Shop.Count())
+                        {
+                            player.Shop[targetIndexSetAttack].Attack = amount;
+                            player = player.Shop[targetIndexSetAttack].TargetedBySpell(player);
+                            player = player.Shop[targetIndexSetAttack].GainedStatsTrigger(player);
+                        }
+                    }
+
+                    return true;
+                case SpellType.SetHealth:
+                    if (string.IsNullOrWhiteSpace(targetId))
+                    {
+                        return false;
+                    }
+
+                    var targetOnBoardSetHealth = player.Board.Any(x => x.Id == targetId);
+                    var targetInShopSetHealth = player.Shop.Any(x => x.Id == targetId);
+                    if (targetOnBoardSetHealth)
+                    {
+                        var targetIndexSetHealth = player.Board.FindIndex(x => x.Id == targetId);
+                        if (targetIndexSetHealth >= 0 && targetIndexSetHealth < player.Board.Count())
+                        {
+                            player.Board[targetIndexSetHealth].Health = amount;
+                            player = player.Board[targetIndexSetHealth].TargetedBySpell(player);
+                            player = player.Board[targetIndexSetHealth].GainedStatsTrigger(player);
+                        }
+                    }
+
+                    if (targetInShopSetHealth)
+                    {
+                        var targetIndexSetHealth = player.Shop.FindIndex(x => x.Id == targetId);
+                        if (targetIndexSetHealth >= 0 && targetIndexSetHealth < player.Shop.Count())
+                        {
+                            player.Shop[targetIndexSetHealth].Health = amount;
+                            player = player.Shop[targetIndexSetHealth].TargetedBySpell(player);
+                            player = player.Shop[targetIndexSetHealth].GainedStatsTrigger(player);
                         }
                     }
 
@@ -1897,7 +2447,13 @@ namespace PokeChess.Server.Extensions
                 return false;
             }
 
+            var targetOnBoard = true;
             var target = player.Board.Where(x => x.Id == targetId).FirstOrDefault();
+            if (target == null)
+            {
+                targetOnBoard = false;
+                target = player.Shop.Where(x => x.Id == targetId).FirstOrDefault();
+            }
             if (target != null && target.NextEvolutions.Any())
             {
                 var num = string.Empty;
@@ -1913,10 +2469,26 @@ namespace PokeChess.Server.Extensions
                 var evolvedMinion = _cardService.GetMinionCopyByNum(num);
                 if (evolvedMinion != null)
                 {
-                    var index = player.Board.IndexOf(target);
-                    player.Board.Remove(target);
-                    player.CardsToReturnToPool.Add(target);
-                    player.Board.Insert(index, evolvedMinion);
+                    var extraAttack = target.Attack - target.BaseAttack;
+                    var extraHealth = target.Health - target.BaseHealth;
+                    evolvedMinion.Attack += extraAttack;
+                    evolvedMinion.Health += extraHealth;
+
+                    if (targetOnBoard)
+                    {
+                        var index = player.Board.IndexOf(target);
+                        player.Board.Remove(target);
+                        player.CardsToReturnToPool.Add(target);
+                        player.Board.Insert(index, evolvedMinion);
+                    }
+                    else
+                    {
+                        var index = player.Shop.IndexOf(target);
+                        player.Shop.Remove(target);
+                        player.CardsToReturnToPool.Add(target);
+                        player.Shop.Insert(index, evolvedMinion);
+                    }
+
                     return true;
                 }
             }
@@ -1960,6 +2532,46 @@ namespace PokeChess.Server.Extensions
             {
                 return MinionType.None;
             }
+        }
+
+        private static bool DiscoverMinionByTier(this Player player, int amount)
+        {
+            if (amount <= 0)
+            {
+                amount = player.Tier;
+            }
+            if (amount > _playerMaxTier)
+            {
+                amount = _playerMaxTier;
+            }
+
+            var possibleDiscoversByTier = _cardService.GetAllMinions().Where(x => x.CardType == CardType.Minion && x.Tier == amount).DistinctBy(x => x.PokemonId).ToList();
+            if (possibleDiscoversByTier == null || !possibleDiscoversByTier.Any())
+            {
+                return false;
+            }
+
+            if (player.DiscoverOptions == null)
+            {
+                player.DiscoverOptions = new List<Card>();
+            }
+            else if (player.DiscoverOptions.Any())
+            {
+                player.DiscoverOptionsQueue.Add(player.DiscoverOptions.Clone());
+                player.DiscoverOptions.Clear();
+            }
+
+            for (var i = 0; i < _discoverAmount; i++)
+            {
+                if (possibleDiscoversByTier.Any())
+                {
+                    var index = ThreadSafeRandom.ThisThreadsRandom.Next(possibleDiscoversByTier.Count());
+                    player.DiscoverOptions.Add(possibleDiscoversByTier[index]);
+                    possibleDiscoversByTier.RemoveAt(index);
+                }
+            }
+
+            return true;
         }
     }
 }

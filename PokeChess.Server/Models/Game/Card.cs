@@ -89,12 +89,24 @@ namespace PokeChess.Server.Models.Game
             {
                 if (CardType == CardType.Spell && SpellTypes.Any())
                 {
-                    if (SpellTypes.Contains(SpellType.BuffTargetAttack) || SpellTypes.Contains(SpellType.BuffTargetHealth) || SpellTypes.Contains(SpellType.AddKeywordToTarget))
+                    if (SpellTypes.Contains(SpellType.BuffTargetAttack) ||
+                        SpellTypes.Contains(SpellType.BuffTargetHealth) ||
+                        SpellTypes.Contains(SpellType.AddKeywordToTarget) ||
+                        SpellTypes.Contains(SpellType.BuffAttackByType) ||
+                        SpellTypes.Contains(SpellType.BuffHealthByType) ||
+                        SpellTypes.Contains(SpellType.ConsumeMinion) ||
+                        SpellTypes.Contains(SpellType.EvolveMinion) ||
+                        SpellTypes.Contains(SpellType.RefreshTavernByType) ||
+                        SpellTypes.Contains(SpellType.SetAttack) ||
+                        SpellTypes.Contains(SpellType.SetHealth))
                     {
                         return TargetType.Any.ToString().ToLower();
                     }
 
-                    if (SpellTypes.Contains(SpellType.BuffFriendlyTargetAttack) || SpellTypes.Contains(SpellType.BuffFriendlyTargetHealth) || SpellTypes.Contains(SpellType.EvolveMinion))
+                    if (SpellTypes.Contains(SpellType.BuffFriendlyTargetAttack) ||
+                        SpellTypes.Contains(SpellType.BuffFriendlyTargetHealth) ||
+                        SpellTypes.Contains(SpellType.EvolveFriendlyMinion) ||
+                        SpellTypes.Contains(SpellType.BugConsumeShopMinion))
                     {
                         return TargetType.Friendly.ToString().ToLower();
                     }

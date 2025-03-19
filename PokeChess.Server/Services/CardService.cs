@@ -51,7 +51,7 @@ namespace PokeChess.Server.Services
             CardType = CardType.Spell,
             SpellTypes = new List<SpellType>
             {
-                SpellType.EvolveMinion
+                SpellType.EvolveFriendlyMinion
             },
             Amount = new List<int>
             {
@@ -109,6 +109,20 @@ namespace PokeChess.Server.Services
             }
         };
 
+        private static readonly Card _evolveReward = new Card
+        {
+            Name = "Evolve Reward",
+            Text = "__Discover__ a minion from tier 0",
+            CardType = CardType.Spell,
+            SpellTypes = new List<SpellType>
+            {
+                SpellType.DiscoverMinionByTier
+            },
+            Amount = new List<int>
+            {
+                -1
+            }
+        };
 
         #region class setup
 
@@ -357,6 +371,27 @@ namespace PokeChess.Server.Services
         public Card GetPokemonEgg()
         {
             var card = _pokemonEgg.Clone();
+            card.Id = Guid.NewGuid().ToString() + _copyStamp;
+            return card;
+        }
+
+        public Card GetEvolveReward(int tier)
+        {
+            if (tier <= 0)
+            {
+                tier = 1;
+            }
+            if (tier > _playerMaxTier)
+            {
+                tier = _playerMaxTier;
+            }
+
+            var card = _evolveReward.Clone();
+            card.Amount = new List<int>
+            {
+                tier
+            };
+            card.Text = card.Text.Replace("tier 0", $"tier {tier}");
             card.Id = Guid.NewGuid().ToString() + _copyStamp;
             return card;
         }
