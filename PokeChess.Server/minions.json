@@ -2971,7 +2971,7 @@
     "pokemonId": 121,
     "num": "121",
     "tier": 6,
-    "text": "At the end of your turn, trigger __Battlecries__ of the minions adjacent to this",
+    "text": "At the end of your turn, trigger __Battlecries__ of the minions adjacent to this (_except Persian_)",
     "name": "Starmie",
     "baseAttack": 12,
     "baseHealth": 18,

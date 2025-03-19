@@ -427,31 +427,6 @@ namespace PokeChess.Server.Extensions
                 case 96:
                     if (!string.IsNullOrWhiteSpace(targetId) && targetId != card.Id)
                     {
-                        // Keeping the below code commented out in case we want to return to this being a psychic only target in the future
-
-                        //var minionOnBoard96 = player.Board.Any(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
-                        //var minionInShop96 = player.Shop.Any(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
-                        //if (minionOnBoard96)
-                        //{
-                        //    var index96 = player.Board.FindIndex(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
-                        //    if (index96 >= 0 && index96 < player.Board.Count())
-                        //    {
-                        //        player.Board[index96].Attack += 5;
-                        //        player.Board[index96].Health += 5;
-                        //        player = player.Board[index96].GainedStatsTrigger(player);
-                        //    }
-                        //}
-                        //if (minionInShop96)
-                        //{
-                        //    var index96 = player.Shop.FindIndex(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
-                        //    if (index96 >= 0 && index96 < player.Shop.Count())
-                        //    {
-                        //        player.Shop[index96].Attack += 5;
-                        //        player.Shop[index96].Health += 5;
-                        //        player = player.Shop[index96].GainedStatsTrigger(player);
-                        //    }
-                        //}
-
                         var minionOnBoard96 = player.Board.Any(x => x.Id == targetId);
                         var minionInShop96 = player.Shop.Any(x => x.Id == targetId);
                         if (minionOnBoard96)
@@ -474,24 +449,17 @@ namespace PokeChess.Server.Extensions
                                 player = player.Shop[index96].GainedStatsTrigger(player);
                             }
                         }
+
+                        player.BattlecriesPlayed++;
+                    }
+                    else
+                    {
+                        player.Board = player.Board.Where(x => x.Id != card.Id).ToList();
+                        player.Hand.Add(card);
                     }
 
-                    player.BattlecriesPlayed++;
                     return player;
                 case 97:
-                    // Keeping the below code commented out in case we want to return to this being a psychic only target in the future
-
-                    //if (!string.IsNullOrWhiteSpace(targetId) && targetId != card.Id)
-                    //{
-                    //    var index97 = player.Board.FindIndex(x => x.Id == targetId && x.MinionTypes.Contains(MinionType.Psychic));
-                    //    if (index97 >= 0 && index97 < player.Board.Count())
-                    //    {
-                    //        player.Board[index97].Attack += player.BattlecriesPlayed;
-                    //        player.Board[index97].Health += player.BattlecriesPlayed;
-                    //        player = player.Board[index97].GainedStatsTrigger(player);
-                    //    }
-                    //}
-
                     if (!string.IsNullOrWhiteSpace(targetId) && targetId != card.Id)
                     {
                         var index97 = player.Board.FindIndex(x => x.Id == targetId);
@@ -501,9 +469,15 @@ namespace PokeChess.Server.Extensions
                             player.Board[index97].Health += player.BattlecriesPlayed;
                             player = player.Board[index97].GainedStatsTrigger(player);
                         }
+
+                        player.BattlecriesPlayed++;
+                    }
+                    else
+                    {
+                        player.Board = player.Board.Where(x => x.Id != card.Id).ToList();
+                        player.Hand.Add(card);
                     }
 
-                    player.BattlecriesPlayed++;
                     return player;
                 case 100:
                     if (player.Board.Any(x => x.CardType == CardType.Minion && x.MinionTypes.Contains(MinionType.Electric) && x.Id != card.Id))
@@ -748,22 +722,34 @@ namespace PokeChess.Server.Extensions
                                 if (minionIndex == 0)
                                 {
                                     // Minion is on far left
-                                    var targetId = GetTargetId(player, player.Board[1]);
-                                    player = player.Board[1].TriggerBattlecry(player, targetId);
+                                    if (player.Board[1].PokemonId != 53)
+                                    {
+                                        var targetId = GetTargetId(player, player.Board[1]);
+                                        player = player.Board[1].TriggerBattlecry(player, targetId);
+                                    }
                                 }
                                 else if (minionIndex == player.Board.Count() - 1)
                                 {
                                     // Minion is on far right
-                                    var targetId = GetTargetId(player, player.Board[player.Board.Count() - 2]);
-                                    player = player.Board[player.Board.Count() - 2].TriggerBattlecry(player, targetId);
+                                    if (player.Board[player.Board.Count() - 2].PokemonId != 53)
+                                    {
+                                        var targetId = GetTargetId(player, player.Board[player.Board.Count() - 2]);
+                                        player = player.Board[player.Board.Count() - 2].TriggerBattlecry(player, targetId);
+                                    }
                                 }
                                 else
                                 {
                                     // Minion isn't on far left or right
-                                    var targetId1 = GetTargetId(player, player.Board[minionIndex - 1]);
-                                    player = player.Board[minionIndex - 1].TriggerBattlecry(player, targetId1);
-                                    var targetId2 = GetTargetId(player, player.Board[minionIndex + 1]);
-                                    player = player.Board[minionIndex + 1].TriggerBattlecry(player, targetId2);
+                                    if (player.Board[minionIndex - 1].PokemonId != 53)
+                                    {
+                                        var targetId1 = GetTargetId(player, player.Board[minionIndex - 1]);
+                                        player = player.Board[minionIndex - 1].TriggerBattlecry(player, targetId1);
+                                    }
+                                    if (player.Board[minionIndex + 1].PokemonId != 53)
+                                    {
+                                        var targetId2 = GetTargetId(player, player.Board[minionIndex + 1]);
+                                        player = player.Board[minionIndex + 1].TriggerBattlecry(player, targetId2);
+                                    }
                                 }
                             }
                         }
