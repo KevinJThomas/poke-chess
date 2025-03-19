@@ -2105,17 +2105,18 @@ namespace PokeChess.Server.Services
 
             while (player.Hand.Any(x => !x.BotAttemptedToPlay))
             {
+                var cardToPlay = player.Hand.Where(x => !x.BotAttemptedToPlay).FirstOrDefault();
                 var targetId = string.Empty;
                 if (player.Hand[0].TargetOptions != TargetType.None.ToString().ToLower())
                 {
                     targetId = player.Board[ThreadSafeRandom.ThisThreadsRandom.Next(player.Board.Count())].Id;
                 }
 
-                if (player.Hand[0].CardType == CardType.Spell)
+                if (cardToPlay.CardType == CardType.Spell)
                 {
-                    lobby = MoveCard(lobby, player, player.Hand[0], MoveCardAction.Play, -1, targetId);
+                    lobby = MoveCard(lobby, player, cardToPlay, MoveCardAction.Play, -1, targetId);
                 }
-                else if (player.Hand[0].CardType == CardType.Minion)
+                else if (cardToPlay.CardType == CardType.Minion)
                 {
                     if (player.Board.Count() >= _boardsSlots)
                     {
@@ -2125,7 +2126,7 @@ namespace PokeChess.Server.Services
                         }
                     }
 
-                    (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                    (lobby, player) = PlayCard(lobby, player, cardToPlay, player.Board.Count(), null);
                 }
             }
 
