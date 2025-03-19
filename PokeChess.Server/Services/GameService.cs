@@ -120,8 +120,8 @@ namespace PokeChess.Server.Services
 #if DEBUG
             foreach (var player in lobby.Players.Where(x => !x.IsBot && !x.IsDead))
             {
-                player.Gold = 100;
-                player.BaseGold = 100;
+                //player.Gold = 100;
+                //player.BaseGold = 100;
 
                 if (player.Name.Length > 6 && player.Name.Substring(0, 6).ToLower() == "minion")
                 {
@@ -605,7 +605,7 @@ namespace PokeChess.Server.Services
                 player.CardBought(card);
                 player.CardAddedToHand();
                 lobby = player.ReturnCardsToPool(lobby);
-                
+
             }
 
             return (lobby, player);
@@ -656,6 +656,14 @@ namespace PokeChess.Server.Services
             if (success)
             {
                 player.CardPlayed(card);
+            }
+            else
+            {
+                var cardIndex = player.Hand.FindIndex(x => x.Id == card.Id);
+                if (cardIndex >= 0)
+                {
+                    player.Hand[cardIndex].BotAttemptedToPlay = true;
+                }
             }
 
             return (lobby, player);
@@ -2012,6 +2020,16 @@ namespace PokeChess.Server.Services
                             lobby.Players[playerIndex] = player;
                         }
 
+                        if (player.Board.Any(x => x.Name == "Pokémon Egg"))
+                        {
+                            var pokemonEgg = player.Board.Where(x => x.Name == "Pokémon Egg").FirstOrDefault();
+                            if (pokemonEgg != null)
+                            {
+                                lobby = MoveCard(lobby, player, pokemonEgg, MoveCardAction.Sell, -1, null);
+                                (lobby, player) = BotPlayAllCardsInHand(lobby, player);
+                            }
+                        }
+
                         var actions = 0;
                         var tieredThisTurn = false;
                         while (player.Gold >= 3 && actions < 50)
@@ -2072,6 +2090,7 @@ namespace PokeChess.Server.Services
             catch (Exception e)
             {
                 _logger.LogError($"PlayTurnAsBot exception caught. Message: {e.Message}");
+                Console.WriteLine(e.StackTrace);
             }
 
             return (lobby, player);
@@ -2079,7 +2098,12 @@ namespace PokeChess.Server.Services
 
         private (Lobby, Player) BotPlayAllCardsInHand(Lobby lobby, Player player)
         {
-            while (player.Hand.Any())
+            foreach (var card in player.Hand)
+            {
+                card.BotAttemptedToPlay = false;
+            }
+
+            while (player.Hand.Any(x => !x.BotAttemptedToPlay))
             {
                 var targetId = string.Empty;
                 if (player.Hand[0].TargetOptions != TargetType.None.ToString().ToLower())
@@ -2102,6 +2126,14 @@ namespace PokeChess.Server.Services
                     }
 
                     (lobby, player) = PlayCard(lobby, player, player.Hand[0], player.Board.Count(), null);
+                }
+            }
+
+            if (player.Hand.Count() > 5)
+            {
+                for (var i = 0; i < 4; i++)
+                {
+                    player.Hand.RemoveAt(0);
                 }
             }
 

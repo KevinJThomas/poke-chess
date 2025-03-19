@@ -63,6 +63,7 @@ namespace PokeChess.Server.Models.Game
         public bool IsTemporary { get; set; }
         public bool IsFrozen { get; set; }
         public decimal Priority { get; set; }
+        public bool BotAttemptedToPlay { get; set; }
         public PlayCardTriggerType PlayCardTriggerType { get; set; } = PlayCardTriggerType.Either;
         public CardType CardType { get; set; } = CardType.Unknown;
         public List<MinionType> MinionTypes { get; set; } = new List<MinionType>();
