@@ -14,6 +14,7 @@ namespace PokeChess.Server.Extensions
         private static readonly decimal _botPriorityAttack = ConfigurationHelper.config.GetValue<decimal>("App:Bot:Priorities:Attack");
         private static readonly decimal _botPriorityHealth = ConfigurationHelper.config.GetValue<decimal>("App:Bot:Priorities:Health");
         private static readonly int _discoverAmount = ConfigurationHelper.config.GetValue<int>("App:Game:DiscoverAmount");
+        private static readonly int _playerMaxTier = ConfigurationHelper.config.GetValue<int>("App:Player:MaxTier");
 
         public static void ScrubModifiers(this Card card)
         {
@@ -26,6 +27,10 @@ namespace PokeChess.Server.Extensions
                 card.Attacked = false;
                 card.AttackedOnceWindfury = false;
                 card.CombatKeywords = new Keywords();
+                if (card.Name == "Pokémon Egg")
+                {
+                    card.UpdatePokemonEggTier(1);
+                }
             }
 
             if (card.CardType == CardType.Spell)
@@ -187,7 +192,7 @@ namespace PokeChess.Server.Extensions
                     player.BattlecriesPlayed++;
                     return player;
                 case 23:
-                    var minionsToDiscover23 = _cardService.GetAllMinions().Where(x => x.CardType == CardType.Minion && x.Tier == 1 && !player.DiscoverOptions.Any(y => y.Id == x.Id)).DistinctBy(x => x.PokemonId).ToList();
+                    var minionsToDiscover23 = _cardService.GetAllMinions().Where(x => x.CardType == CardType.Minion && x.Tier == 1 && x.PokemonId != 23).DistinctBy(x => x.PokemonId).ToList();
                     if (minionsToDiscover23 == null || !minionsToDiscover23.Any())
                     {
                         return player;
@@ -197,7 +202,7 @@ namespace PokeChess.Server.Extensions
                     player.BattlecriesPlayed++;
                     return player;
                 case 24:
-                    var minionsToDiscover24 = _cardService.GetAllMinions().Where(x => x.CardType == CardType.Minion && x.Tier <= player.Tier && !player.DiscoverOptions.Any(y => y.Id == x.Id) && x.MinionTypes.Contains(player.GetPrimaryTypeOnBoard())).DistinctBy(x => x.PokemonId).ToList();
+                    var minionsToDiscover24 = _cardService.GetAllMinions().Where(x => x.CardType == CardType.Minion && x.Tier <= player.Tier && x.PokemonId != 24 && x.MinionTypes.Contains(player.GetPrimaryTypeOnBoard())).DistinctBy(x => x.PokemonId).ToList();
                     if (minionsToDiscover24 == null || !minionsToDiscover24.Any())
                     {
                         return player;
@@ -756,13 +761,7 @@ namespace PokeChess.Server.Extensions
 
                         return player;
                     case 152:
-                        card.Amount[0]++;
-                        if (card.Amount[0] > 6)
-                        {
-                            card.Amount[0] = 6;
-                        }
-
-                        card.Text = card.Text.Replace($"{card.Amount[0] - 1}", $"{card.Amount[0]}");
+                        card.UpdatePokemonEggTier(++card.Amount[0]);
                         return player;
                     default:
                         return player;
@@ -1245,7 +1244,7 @@ namespace PokeChess.Server.Extensions
             {
                 case 111:
                     card.SellValue += 2;
-                    card.Text = $"__Avenge (3):__ This minion sells for 2 more gold\nSells for {card.SellValue - 1} more gold!";
+                    card.Text = $"__Avenge (3):__ This minion sells for 2 more gold  \n(Sells for {card.SellValue - 1} more gold!)";
                     return;
             }
         }
@@ -1710,6 +1709,22 @@ namespace PokeChess.Server.Extensions
                 default:
                     return keywords;
             }
+        }
+
+        private static void UpdatePokemonEggTier(this Card card, int tier)
+        {
+            var oldValue = card.Amount[0];
+            card.Amount[0] = tier;
+            if (card.Amount[0] <= 0)
+            {
+                card.Amount[0] = 1;
+            }
+            if (card.Amount[0] > _playerMaxTier)
+            {
+                card.Amount[0] = _playerMaxTier;
+            }
+
+            card.Text = card.Text.Replace($"{oldValue}", $"{card.Amount[0]}");
         }
     }
 }

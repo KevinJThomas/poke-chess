@@ -545,7 +545,7 @@ namespace PokeChess.Server.Managers
 
             foreach (var lobby in _lobbies)
             {
-                if (lobby.Value.IsActive || lobby.Value.TimeMarkedInactive - DateTime.Now < TimeSpan.FromMinutes(5))
+                if ((lobby.Value.IsActive || lobby.Value.TimeMarkedInactive - DateTime.Now < TimeSpan.FromMinutes(5)) && lobby.Value.LastActionDateTime - DateTime.Now < TimeSpan.FromMinutes(15))
                 {
                     newLobbiesList.Add(lobby.Key, lobby.Value);
                 }

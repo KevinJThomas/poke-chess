@@ -90,6 +90,12 @@ namespace PokeChess.Server.Services
                 return lobby;
             }
 
+            if (!lobby.IsWaitingToStart)
+            {
+                _logger.LogError($"StartGame failed because lobby was already started. Lobby id: {lobby.Id}");
+                return lobby;
+            }
+
             if (lobby.Players.Count() < _playersPerLobby)
             {
                 if (_populateEmptySlotsWithBots)
@@ -120,8 +126,8 @@ namespace PokeChess.Server.Services
 #if DEBUG
             foreach (var player in lobby.Players.Where(x => !x.IsBot && !x.IsDead))
             {
-                player.Gold = 100;
-                player.BaseGold = 100;
+                //player.Gold = 100;
+                //player.BaseGold = 100;
 
                 if (player.Name.Length > 6 && player.Name.Substring(0, 6).ToLower() == "minion")
                 {
@@ -927,18 +933,18 @@ namespace PokeChess.Server.Services
             {
                 player.TrimCombatHistory();
 
-                if (player.IsDead && player.IsActive)
+                if (player.IsDead && player.IsActive && player.Placement == 0)
                 {
                     if (player.CombatActions == null)
                     {
                         player.CombatActions = new List<CombatAction>();
                     }
 
-                    player.IsActive = false;
+                    player.Placement = lobby.Players.Count(x => !x.IsDead) + 1;
                     player.CombatActions.Add(new CombatAction
                     {
                         Type = CombatActionType.GameOver.ToString().ToLower(),
-                        Placement = lobby.Players.Count(x => !x.IsDead) + 1
+                        Placement = player.Placement
                     });
 
                     if (!player.BoardReturnedToPool)
@@ -2133,7 +2139,7 @@ namespace PokeChess.Server.Services
                         }
                     }
 
-                    (lobby, player) = PlayCard(lobby, player, cardToPlay, player.Board.Count(), null);
+                    (lobby, player) = PlayCard(lobby, player, cardToPlay, player.Board.Count(), targetId);
                 }
             }
 

@@ -50,6 +50,7 @@ namespace PokeChess.Server.Models.Player
             TavernSpellsCasted = 0;
             BoardReturnedToPool = false;
             FreeRefreshCount = 0;
+            Placement = 0;
             Discounts = new Discounts();
             Hero = new Hero.Hero();
             Board = new List<Card>();
@@ -168,6 +169,7 @@ namespace PokeChess.Server.Models.Player
         public int TavernSpellsCasted { get; set; }
         public bool BoardReturnedToPool { get; set; }
         public int FreeRefreshCount { get; set; }
+        public int Placement { get; set; }
         public Discounts Discounts { get; set; }
         public Hero.Hero Hero { get; set; }
         public List<Card> Board { get; set; }

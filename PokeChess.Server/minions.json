@@ -1290,7 +1290,7 @@
     "pokemonId": 50,
     "num": "050",
     "tier": 1,
-    "text": "After you play 2 minions, add a __Discover Treasure__ to your hand",
+    "text": "After you play 3 minions, add a __Discover Treasure__ to your hand",
     "name": "Diglett",
     "baseAttack": 1,
     "baseHealth": 1,
@@ -1308,7 +1308,7 @@
       }
     ],
     "hasPlayCardTrigger": true,
-    "basePlayCardTriggerInterval": 2,
+    "basePlayCardTriggerInterval": 3,
     "playCardTriggerType": 0
   },
   {

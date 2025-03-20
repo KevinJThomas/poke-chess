@@ -106,7 +106,7 @@ namespace PokeChess.Server.Extensions
             }
 
             var success = true;
-            var castCount = (player.SpellsCastTwiceThisTurn || player.NextSpellCastsTwice || player.Board.Any(x => x.PokemonId == 9)) ? 2 : 1;
+            var castCount = (player.SpellsCastTwiceThisTurn || player.NextSpellCastsTwice || player.Board.Any(x => x.PokemonId == 9)) && spell.Name != "Self-Destruct" ? 2 : 1;
             for (var i = 0; i < castCount; i++)
             {
                 if (spell.Delay > 0)
@@ -1209,6 +1209,12 @@ namespace PokeChess.Server.Extensions
 
         public static void UpdateHeroPowerStatus(this Player player)
         {
+            if (!player.Hero.HeroPower.IsPassive && player.Hero.HeroPower.Cost > 0 && player.Hero.HeroPower.Cost > player.Gold)
+            {
+                player.Hero.HeroPower.IsDisabled = true;
+                return;
+            }
+
             switch (player.Hero.HeroPower.Id)
             {
                 case 1:
@@ -1541,7 +1547,13 @@ namespace PokeChess.Server.Extensions
             }
             else if (player.DiscoverOptions.Any())
             {
-                player.DiscoverOptionsQueue.Add(player.DiscoverOptions.Clone());
+                var clonedOptions = player.DiscoverOptions.Clone();
+                foreach (var option in clonedOptions)
+                {
+                    option.Id = Guid.NewGuid().ToString() + _copyStamp;
+                }
+
+                player.DiscoverOptionsQueue.Add(clonedOptions);
                 player.DiscoverOptions.Clear();
             }
 
@@ -2252,6 +2264,9 @@ namespace PokeChess.Server.Extensions
                         player.Shop.Add(spellToAddAllSpells);
                     }
 
+                    player.ApplyShopDiscounts();
+                    player.UpdateHeroPowerStatus();
+
                     return true;
                 case SpellType.EvolveMinion:
                     return player.EvolveMinion(targetId);
@@ -2354,6 +2369,9 @@ namespace PokeChess.Server.Extensions
                     var spellToAdd = spellsRefreshByType[ThreadSafeRandom.ThisThreadsRandom.Next(spellsRefreshByType.Count())];
                     spellToAdd.Id = Guid.NewGuid().ToString() + _copyStamp;
                     player.Shop.Add(spellToAdd);
+
+                    player.ApplyShopDiscounts();
+                    player.UpdateHeroPowerStatus();
 
                     return true;
                 case SpellType.SetAttack:
