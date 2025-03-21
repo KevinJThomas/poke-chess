@@ -85,7 +85,9 @@ export default function Pokemon({
       >
         <div className="relative flex h-20 w-20 flex-col items-center justify-center">
           {!isMinion && (
-            <span className="w-20 px-1 text-center text-xs">{name}</span>
+            <span className="w-20 px-1 text-center text-xs break-words">
+              {name}
+            </span>
           )}
           {isMinion && (
             <Attack
