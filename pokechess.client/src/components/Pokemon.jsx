@@ -45,7 +45,7 @@ export default function Pokemon({
 
   useAsyncEffect(async () => {
     setShowDamage(true);
-    await delay(3000);
+    await delay(1500);
     setShowDamage(false);
   }, [damage]);
 
